@@ -23,7 +23,9 @@
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.3.1"
+    "@docusaurus/module-type-aliases": "2.3.1",
+    "@types/prettier": "^2",
+    "prettier": "^2.8.8"
   },
   "browserslist": {
     "production": [
