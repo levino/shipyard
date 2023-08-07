@@ -1,0 +1,14 @@
+{
+  "version.label": {
+    "message": "Next",
+    "description": "The label for version current"
+  },
+  "sidebar.tutorialSidebar.category.Garten": {
+    "message": "Garten",
+    "description": "The label for category Garten in sidebar tutorialSidebar"
+  },
+  "sidebar.tutorialSidebar.category.Blumenwiese": {
+    "message": "Blumenwiese",
+    "description": "The label for category Blumenwiese in sidebar tutorialSidebar"
+  }
+}
