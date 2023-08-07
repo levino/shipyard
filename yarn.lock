@@ -3402,6 +3402,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/unist@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@types/unist@npm:3.0.0"
+  checksum: 8c6b2b50aafee9d8abeb6fd7f16b354e7d2f84771fd2c44f8e2a73924571083a5c318b490038dfac8c0cec7c23bf0a5c832e83921f47ab052cd3c9da9a09713d
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.5.1":
   version: 8.5.4
   resolution: "@types/ws@npm:8.5.4"
@@ -9356,6 +9363,7 @@ __metadata:
     react: "npm:^17.0.2"
     react-dom: "npm:^17.0.2"
     typescript: "npm:^5.1.6"
+    vfile: "npm:^6.0.1"
   languageName: unknown
   linkType: soft
 
@@ -12801,6 +12809,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"unist-util-stringify-position@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "unist-util-stringify-position@npm:4.0.0"
+  dependencies:
+    "@types/unist": "npm:^3.0.0"
+  checksum: c2c3e537e7de3cb0a479ec9901137115174473221afbe635952521f1ad581a94e775859b7fcb7f72fca01f2b00cdf3b4da9cb019930937b978d9b59f424e3a61
+  languageName: node
+  linkType: hard
+
 "unist-util-visit-parents@npm:^3.0.0":
   version: 3.1.1
   resolution: "unist-util-visit-parents@npm:3.1.1"
@@ -13071,6 +13088,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vfile-message@npm:^4.0.0":
+  version: 4.0.2
+  resolution: "vfile-message@npm:4.0.2"
+  dependencies:
+    "@types/unist": "npm:^3.0.0"
+    unist-util-stringify-position: "npm:^4.0.0"
+  checksum: f053c09c70ce07eaf2f6f97abfdca59e621a9a0e48827b23b54ed02d444c04ca13fd7ce1c0d5425f011a8a7a24a1b7d3fa95df7aae3c913d12cce3f3ed9541a8
+  languageName: node
+  linkType: hard
+
 "vfile-reporter@npm:^7.0.0":
   version: 7.0.5
   resolution: "vfile-reporter@npm:7.0.5"
@@ -13128,6 +13155,17 @@ __metadata:
     unist-util-stringify-position: "npm:^3.0.0"
     vfile-message: "npm:^3.0.0"
   checksum: 54ad13e2ace60db147f0b0d288ccf79b883d80b5e3f7c1e76698ed81d1ad1cdbe02d37bb7a0dc8d1eef560160b2c1fa4780c49f0b5df29e257a1b70a31b5ffde
+  languageName: node
+  linkType: hard
+
+"vfile@npm:^6.0.1":
+  version: 6.0.1
+  resolution: "vfile@npm:6.0.1"
+  dependencies:
+    "@types/unist": "npm:^3.0.0"
+    unist-util-stringify-position: "npm:^4.0.0"
+    vfile-message: "npm:^4.0.0"
+  checksum: 9c444a5c60c1c06eba62b9c853513dc89acc448f3eea72f5e174c79da4040d1e05b7317f7fd3bc202efbff373ed6aaa2bc77f769396e23a10e9724b569e13d14
   languageName: node
   linkType: hard
 
