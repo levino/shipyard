@@ -29,7 +29,7 @@ const config = {
   // to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'de',
-    locales: ['de'],
+    locales: ['de', 'en'],
   },
   plugins: ['@docusaurus/plugin-ideal-image'],
 
@@ -49,6 +49,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl: 'https://github.com/levino/levinkeller.de/tree/main',
+          blogSidebarTitle: 'Letzte Beiträge',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -70,12 +71,20 @@ const config = {
         },
         items: [
           {
+            to: '/work',
+            label: 'Software Development',
+          },
+          {
             type: 'doc',
             docId: 'intro',
             position: 'left',
             label: 'Wissen',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
+          {
+            type: 'localeDropdown',
+            position: 'right',
+          },
           {
             href: 'https://github.com/levino/levinkeller.de',
             label: 'GitHub',

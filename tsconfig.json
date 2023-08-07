@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     // The directory which we'll be exporting our compiled JavaScript files to
-    "lib": [
-      "ESNext",
-      "DOM"
-    ], // The libraries we wish to use in TS (ESNext being the latest version of JavaScript, and DOM being JavaScript DOM libraries - like console.log)
+    "lib": ["ESNext", "DOM"], // The libraries we wish to use in TS (ESNext being the latest version of JavaScript, and DOM being JavaScript DOM libraries - like console.log)
     "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
@@ -18,12 +15,6 @@
     "incremental": true,
     "module": "esnext"
   },
-  "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
 }
