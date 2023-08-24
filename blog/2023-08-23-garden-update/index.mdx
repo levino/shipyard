@@ -47,21 +47,15 @@ entsprechend länger. Das Aufsammeln des Mahdguts ging aber gut von der Hand.
     <div className="row-span-3">
       <ZoomableResponsiveImage {...heutonne} alt="Drahttonne mit Heu" />
     </div>
-    <div>
-      <ZoomableResponsiveImage
-        {...heutonnen}
-        alt="Mehrere Drahttonnen mit Heu"
-      />
-    </div>
-    <div>
-      <ZoomableResponsiveImage
-        {...flaechenkompostierungUnterBueschen}
-        alt="Flächenkompostierung unter Büschen"
-      />
-    </div>
-    <div>
-      <ZoomableResponsiveImage {...flaechenkompostierungUnterBueschen} />
-    </div>
+    <ZoomableResponsiveImage {...heutonnen} alt="Mehrere Drahttonnen mit Heu" />
+    <ZoomableResponsiveImage
+      {...flaechenkompostierungUnterBueschen}
+      alt="Flächenkompostierung unter Büschen"
+    />
+    <ZoomableResponsiveImage
+      {...require('./flaechenkompostierung3.jpg')}
+      alt="Flächenkompostierung unter Büschen von der anderen Seite"
+    />
   </div>
   <FigureCaption>Kompostierung des Mahdguts</FigureCaption>
 </figure>
@@ -144,30 +138,24 @@ von Culinaris, kann ich nicht sagen. Ich bin jedenfalls zufrieden.
 
 <figure>
   <div className="grid grid-rows-3 grid-cols-2 gap-2 items-center">
-    <div>
-      <ZoomableResponsiveImage
-        {...require('./beetLinks.jpg')}
-        alt="Tomatenpflanze mit reifen und unreifen Früchten"
-      />
-    </div>
+    <ZoomableResponsiveImage
+      {...require('./beetLinks.jpg')}
+      alt="Tomatenpflanze mit reifen und unreifen Früchten"
+    />
     <div className="row-span-3">
       <ZoomableResponsiveImage
         {...require('./agastache.jpg')}
         alt="50 Grad Celsius im Kompost"
       />
     </div>
-    <div>
-      <ZoomableResponsiveImage
-        {...require('./beetRechts.jpg')}
-        alt="Tomatenpflanze mit reifen und unreifen Früchten"
-      />
-    </div>
-    <div>
-      <ZoomableResponsiveImage
-        {...require('./bluetenImBeet.jpg')}
-        alt="50 Grad Celsius im Kompost"
-      />
-    </div>
+    <ZoomableResponsiveImage
+      {...require('./beetRechts.jpg')}
+      alt="Tomatenpflanze mit reifen und unreifen Früchten"
+    />
+    <ZoomableResponsiveImage
+      {...require('./bluetenImBeet.jpg')}
+      alt="50 Grad Celsius im Kompost"
+    />
   </div>
   <FigureCaption>Beete in Hochform</FigureCaption>
 </figure>
