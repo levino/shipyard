@@ -2,8 +2,6 @@
 title: Mahd
 ---
 
-import Image from '@theme/IdealImage'
-
 Ich selbst habe lange gebraucht, bis ich verstanden habe, wie und vor allem wann
 eine Blumenwiese zu schneiden ist. Das lag meiner Meinung nach vor allem an der
 merkwürdigen Darstellung und Erklärung der Zusammenhänge. Deshalb versuche ich
@@ -38,9 +36,9 @@ Nutzwert für höhere Tiere (zum Beispiel Vögel) unterscheiden.
 
 Die gängigste Mahdmethode ist die zweischürige Mahd.
 
-<Image
+<img
   alt="Diagramm zweischürige Mahd"
-  img={require('./assets/zweischuerige-mahd.png')}
+  {...require('./assets/zweischuerige-mahd.png')}
 />
 
 Bei der zweischürigen Mahd erfolgt eine Mahd (mit Abtragen des Schnitts)
@@ -62,9 +60,9 @@ sonst nicht vorhanden wären.
 Die einschürige Mahd hat für höhere Tiere (vor allem Vögel) einen höheren
 Nutzwert. Auch die Kosten sind, durch den halbierten Arbeitsaufwand, geringer.
 
-<Image
+<img
   alt="Diagramm einschürige Mahd"
-  img={require('./assets/einschuerige-mahd.png')}
+  {...require('./assets/einschuerige-mahd.png')}
 />
 
 Hier bilden sich bereits im Hochsommer ab August die Samenstände. Vögel und
@@ -85,9 +83,10 @@ wie Stickstoffeintrag zu gering geworden ist. Das wiederholte Abtragen der
 Pflanzen entzieht der Fläche Stickstoff und schwächt die Gräser zu Gunsten der
 Blumen.
 
-<Image
+<ZoomableResponsiveImage
+  loading="eager"
   alt="Diagramm dreischürige Mahd"
-  img={require('./assets/dreischuerige-mahd.png')}
+  {...require('./assets/dreischuerige-mahd.png')}
 />
 
 Der Zeitraum für das Ausreifen der Samen im Herbst ist knapp bemessen.

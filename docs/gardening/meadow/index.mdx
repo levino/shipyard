@@ -1,10 +1,6 @@
----
-title: 'Blumenwiese'
----
-
-import Image from '@theme/IdealImage'
-
+import blumenwiese from '@site/static/img/roessinger-blumenwiese.jpg'
 import DocCardList from '@theme/DocCardList'
+import { ZoomableResponsiveImage } from '../../../src/components/Figure'
 
 # Blumenwiese
 
@@ -12,9 +8,10 @@ Die Blumenwiese ist ein wichtiges Element der naturnahen Gartengestaltung. Sie
 ist schön für die Menschen, wertvoll für die Insekten und andere Tiere und dazu
 noch sehr pflegeleicht.
 
-<Image
+<ZoomableResponsiveImage
+  loading="eager"
+  {...blumenwiese}
   alt="Rössinger Blumenwiese"
-  img={require('/img/roessinger-blumenwiese.jpg')}
 />
 
 ## Artikel
