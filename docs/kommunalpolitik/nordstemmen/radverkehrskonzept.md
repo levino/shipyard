@@ -22,13 +22,12 @@ von der Gemeinde durchgeführt.
 
 - 14\. Dezember 2021: Karsten Wegener von den Grünen macht den
   [Haushaltsausschuss](./assets/Oeffentliche_Protokollunterlagen_Fachausschuss_Finanzen-_Wirtschaftsfoerderung-_Marketing_und_Feuerschutz_14.12.2021.pdf)
-  auf
-  das[Förderprogramm Stadt und Land](https://www.nbank.de/F%C3%B6rderprogramme/Aktuelle-F%C3%B6rderprogramme/Sonderprogramm-Stadt-und-Land.html)
+  auf das
+  [Förderprogramm Stadt und Land](https://www.nbank.de/F%C3%B6rderprogramme/Aktuelle-F%C3%B6rderprogramme/Sonderprogramm-Stadt-und-Land.html)
   der NBank aufmerksam, welche 75% der Kosten übernimmt. Es werden 50.000 Euro
   für 2022 und 50.000 Euro für 2023 im Haushalt für die Erstellung eines
   Radverkehrskonzepts veranschlagt. Die Gemeinde trägt nunmehr 25.000 Euro
-  Kosten für das Radverkehrskonzept. Radverkehrskonzepts veranschlagt. Die
-  Gemeinde trägt nunmehr 25.000 Euro Kosten für das Radverkehrskonzept.
+  Kosten für das Radverkehrskonzept.
 - 21\. Dezember 2021: Der vom Haushaltsausschuss vorgeschlagene
   [Haushalt](./assets/Oeffentliche_Sitzungsunterlagen_Rat_21.12.2021-41-54.pdf)
   wird

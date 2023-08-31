@@ -1,3 +1,4 @@
 .docusaurus/
 .yarn/
 .pnp.*
+build/
