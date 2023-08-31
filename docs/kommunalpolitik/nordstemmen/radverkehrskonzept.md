@@ -35,7 +35,9 @@ von der Gemeinde durchgeführt.
   [angenommen](./assets/Oeffentliche_Protokollunterlagen_Rat_21.12.2021.pdf)
   (Seite 8).
   - Ob die Förderung durch die NBank ausgezahlt wird, kann ich in den Unterlagen
-    nicht finden.
+    nicht finden. Ich habe eine
+    [Anfrage](https://fragdenstaat.de/anfrage/foerderung-des-radverkehrskonzept-durch-stadt-und-land/)
+    an die Gemeinde gestellt.
   - Auch ein Vorbehalt der Ausgaben im Haushalt für diese Förderung kann ich
     nicht finden.
 - 08\. Juni 2023: Der Klimamanager, Herr Wegner, wird als verantwortlich für das
@@ -52,3 +54,16 @@ von der Gemeinde durchgeführt.
   > ebenfalls durch das Büro PGV-Dargel-Hildebrandt erfolgen.
 
 ## Rechtsgrundlagen
+
+Die Rechtsgrundlagen für das Radverkehrskonzept sind mir noch schleierhaft.
+Insbesondere die Frage, auf welcher Basis die Gemeinde berechtigt ist, ein
+solches Konzept erstellen zu lassen und wofür es zu verwenden ist, verstehe ich
+nicht. Ich werde dazu noch weiter recherchieren.
+
+## Prozess
+
+Mir ist bislang noch nicht klar, wozu das Radverkehrskonzept erstellt wird.
+Insbesondere die Bevölkerungsumfrage erscheint mir doch mehr eine
+Feel-Good-Veranstaltung zu sein, als ein notwendiger Teil des Prozesses. Ich
+habe eine [Anfrage](https://fragdenstaat.de/anfrage/umfrage-radverkehrsplanung/)
+dazu an die Bürgermeisterin gestellt.
