@@ -131,6 +131,7 @@ const config = {
             label: 'Wissen',
           },
           { to: '/blog', label: 'Blog', position: 'left' },
+          { to: '/about', label: 'About', position: 'left' },
           {
             type: 'localeDropdown',
             position: 'right',
