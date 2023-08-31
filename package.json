@@ -18,6 +18,7 @@
     "@docusaurus/core": "^2.3.1",
     "@docusaurus/preset-classic": "^2.3.1",
     "@docusaurus/responsive-loader": "^1.7.0",
+    "@heroicons/react": "^2.0.18",
     "@mdx-js/react": "^1.6.22",
     "autoprefixer": "^10.4.15",
     "classnames": "^2.3.2",
@@ -34,7 +35,7 @@
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
-    "@docusaurus/module-type-aliases": "2.3.1",
+    "@docusaurus/module-type-aliases": "^2.4.1",
     "@types/eslint": "^8",
     "@types/prettier": "^2",
     "@types/prop-types": "^15",
