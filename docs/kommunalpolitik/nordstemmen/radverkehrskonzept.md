@@ -54,10 +54,10 @@ von der Gemeinde durchgeführt.
 
 ## Rechtsgrundlagen
 
-Die Rechtsgrundlagen für das Radverkehrskonzept sind mir noch schleierhaft.
-Insbesondere die Frage, auf welcher Basis die Gemeinde berechtigt ist, ein
-solches Konzept erstellen zu lassen und wofür es zu verwenden ist, verstehe ich
-nicht. Ich werde dazu noch weiter recherchieren.
+Es gibt meines Wissens keine Rechtsgrundlage für die Erstellung eines
+Radverkehrskonzept. Vielmehr scheint dies ein sinnvoller Schritt zur
+Vorbereitung von Baumaßnahmen zur Verbesserung der Radinfrastruktur zu sein, was
+die Aufgabe der Kommune ist.
 
 ## Prozess
 
@@ -65,4 +65,11 @@ Mir ist bislang noch nicht klar, wozu das Radverkehrskonzept erstellt wird.
 Insbesondere die Bevölkerungsumfrage erscheint mir doch mehr eine
 Feel-Good-Veranstaltung zu sein, als ein notwendiger Teil des Prozesses. Ich
 habe eine [Anfrage](https://fragdenstaat.de/anfrage/umfrage-radverkehrsplanung/)
-dazu an die Bürgermeisterin gestellt.
+dazu an die Bürgermeisterin gestellt. Auch nach Gesprächen mit Karsten Wegener
+von den Grünen habe ich den Eindruck gewonnen, dass sich bislang keine
+rechtlichen Konsequenzen für die Verwaltung aus der Erstellung eines
+Radverkehrskonzepts ergeben. Der Inhalt und Umfang des Konzepts wurde durch den
+Gemeinderat nicht klar vorgegeben, ebensowenig ein Zeitraum für die konkrete
+Umsetzung des Konzepts nach Fertigstellung. Insofern hängt die Verbesserung der
+Radverkehrsinfrastruktur in Nordstemmen vom Gutdünken der Verwaltung sowie der
+zukünftigen Gemeinderatsmitglieder ab.
