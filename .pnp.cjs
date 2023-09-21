@@ -55,6 +55,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:17.0.2"],\
             ["react-medium-image-zoom", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:5.1.8"],\
             ["responsive-loader", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:3.1.2"],\
+            ["reveal.js", "npm:4.6.1"],\
             ["sharp", "npm:0.32.5"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
@@ -12370,6 +12371,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["react-dom", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:17.0.2"],\
             ["react-medium-image-zoom", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:5.1.8"],\
             ["responsive-loader", "virtual:7e8c972c51234af33de239885b16c6d9eb2c8815278be83638fa8a5c55b173d8c810c33156932bc4a0483ffefa0adcd5bface36cb33f6fcb433cac8b3350d729#npm:3.1.2"],\
+            ["reveal.js", "npm:4.6.1"],\
             ["sharp", "npm:0.32.5"],\
             ["tailwindcss", "npm:3.3.3"],\
             ["typescript", "patch:typescript@npm%3A5.1.6#~builtin<compat/typescript>::version=5.1.6&hash=5da071"],\
@@ -15356,6 +15358,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/reusify-npm-1.0.4-95ac4aec11-c3076ebcc2.zip/node_modules/reusify/",\
           "packageDependencies": [\
             ["reusify", "npm:1.0.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["reveal.js", [\
+        ["npm:4.6.1", {\
+          "packageLocation": "./.yarn/cache/reveal.js-npm-4.6.1-359343dec5-d7325c5c9f.zip/node_modules/reveal.js/",\
+          "packageDependencies": [\
+            ["reveal.js", "npm:4.6.1"]\
           ],\
           "linkType": "HARD"\
         }]\

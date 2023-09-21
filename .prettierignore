@@ -2,3 +2,5 @@
 .yarn/
 .pnp.*
 build/
+static/netsan/presentation.md
+static/revealjs/
