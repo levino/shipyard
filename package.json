@@ -32,7 +32,7 @@
     "react-medium-image-zoom": "^5.1.8",
     "responsive-loader": "^3.1.2",
     "reveal.js": "^4.6.1",
-    "sharp": "^0.32.5",
+    "sharp": "0.33.0-alpha.8",
     "tailwindcss": "^3.3.3"
   },
   "devDependencies": {
@@ -64,6 +64,5 @@
   },
   "engines": {
     "node": ">=16.14"
-  },
-  "packageManager": "yarn@3.6.2"
+  }
 }
