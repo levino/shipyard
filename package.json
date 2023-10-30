@@ -35,6 +35,7 @@
     "prop-types": "^15.8.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-loadable": "^5.5.0",
     "react-medium-image-zoom": "^5.1.8",
     "responsive-loader": "^3.1.2",
     "reveal.js": "^4.6.1",
