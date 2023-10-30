@@ -7,29 +7,24 @@ description:
 
 import { Feature } from '../components/Feature'
 
-<div className="bg-white py-12 sm:py-36">
-  <div className="mx-auto max-w-7xl px-6 lg:px-8">
-    <div className="mx-auto max-w-2xl lg:text-center">
-      <h1>Levin's Homepage</h1>
-      Willkommen auf meiner Homepage. Diese Seite wird lean
-      entwickelt, insofern sind hier noch wenige Inhalte und viele Dinge
-      unvollständig oder ästhetisch nicht stimmig. Außerdem ermöglicht mir diese
-      Seite ein bisschen mit NextJS und MDX herumzuspielen, was interessant ist.
-    </div>
-    <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
-      <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-2 lg:gap-y-16">
-        <Feature
-          title="Blog"
-          description="Ereignisse über die ich berichten möchte. Eindrücke und aktuelle Gedanken, die ich festhalten möchte."
-          href="/blog"
-        />
-          <Feature
-              title="Wissen"
-              description="Dinge, die ich gelernt habe. Sachverhalte, die ich recherchiert habe."
-              href="/docs/intro"
-          />
-      </dl>
-    </div>
-
+<h1>Levin's Homepage</h1>
+Willkommen auf meiner Homepage. Diese Seite wird lean entwickelt, insofern sind hier
+noch wenige Inhalte und viele Dinge unvollständig oder ästhetisch nicht stimmig.
+Außerdem ermöglicht mir diese Seite ein bisschen mit NextJS und MDX herumzuspielen,
+was interessant ist.
+<div className="row">
+  <div className="col">
+    <Feature
+      title="Blog"
+      description="Ereignisse über die ich berichten möchte. Eindrücke und aktuelle Gedanken, die ich festhalten möchte."
+      href="/blog"
+    />
+  </div>
+  <div className="col">
+    <Feature
+      title="Wissen"
+      description="Dinge, die ich gelernt habe. Sachverhalte, die ich recherchiert habe."
+      href="/docs/intro"
+    />
   </div>
 </div>
