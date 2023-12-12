@@ -86,7 +86,7 @@ interface LoanPlan {
 }
 
 export const getLoanPlan = (
-  loansSpecs: LoansSpecs
+  loansSpecs: LoansSpecs,
 ): {
   loans: LoanPlan[]
   totalInterest: number
@@ -126,5 +126,5 @@ export const getLoanPlan = (
       totalInterest: 0,
       totalAmount: 0,
       annuity: 0,
-    }
+    },
   )

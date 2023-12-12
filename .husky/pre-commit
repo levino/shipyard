@@ -3,4 +3,4 @@
 
 bun test
 bun lint
-bun prettier -c .
+bunx prettier -c .
