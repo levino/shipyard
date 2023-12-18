@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from '@docusaurus/Link'
 interface Props {
   title: string
   description: string
@@ -15,9 +14,9 @@ export const Feature: React.FC<Props> = ({ title, description, href }) => (
       <p>{description}</p>
     </div>
     <div className="card__footer button">
-      <Link to={href}>
+      <a href={href}>
         <button className="button button--primary">Besuchen</button>
-      </Link>
+      </a>
     </div>
   </div>
 )

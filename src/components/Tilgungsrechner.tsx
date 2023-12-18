@@ -1,5 +1,5 @@
 import React from 'react'
-import { LoansSpecs, getLoanPlan } from './tools'
+import { type LoansSpecs, getLoanPlan } from './tools'
 import { pipe } from 'fp-ts/lib/function'
 import { Field, Formik } from 'formik'
 

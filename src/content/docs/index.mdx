@@ -1,0 +1,29 @@
+---
+title: Startseite
+description:
+  Unsortierte Inhalte zu Garten, Politik, Code und allem, was sonst so
+  interessant ist.
+template: splash
+hero:
+  title: Levin's Homepage
+---
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components'
+
+Willkommen auf meiner Homepage. Diese Seite wird lean entwickelt, insofern sind
+hier noch wenige Inhalte und viele Dinge unvollständig oder ästhetisch nicht
+stimmig. Außerdem ermöglicht mir diese Seite ein bisschen mit NextJS und MDX
+herumzuspielen, was interessant ist.
+
+<CardGrid>
+  <LinkCard
+    description="Ereignisse über die ich berichten möchte. Eindrücke und aktuelle Gedanken, die ich festhalten möchte."
+    title="Blog"
+    href="/blog"
+  />
+  <LinkCard
+    title="Wissen"
+    description="Dinge, die ich gelernt habe. Sachverhalte, die ich recherchiert habe."
+    href="/docs"
+  />
+</CardGrid>

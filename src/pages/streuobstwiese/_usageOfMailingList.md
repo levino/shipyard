@@ -1,5 +1,0 @@
-- Ankündigungen zu bevorstehenden Treffen und Veranstaltungen.
-- Teilen von Ressourcen und Informationen zur Pflege von Streuobstwiesen.
-- Diskussionen über aktuelle Projekte und Entwicklungen.
-- Koordination von Freiwilligenarbeit und Arbeitsgruppen.
-- Austausch von Erfahrungen und Best Practices im Streuobstwiesenmanagement.
