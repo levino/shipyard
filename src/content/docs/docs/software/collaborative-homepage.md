@@ -15,7 +15,7 @@ haben Software-Bausteine für JavaScript-Applikationen entwickelt und
 veröffentlichen diese zur freien und kostenlosen Nutzung auf der Plattform
 [npmjs.com](https://www.npmjs.com/). Auch diese Menschen arbeiten permanent
 zusammen, helfen sich gegenseitig mit Teilleistungen für ihre Projekte. Dabei
-gibt es keine Chef:innen, keine Aktionär:innen und keinen Staat, der die
+gibt es keine Chef\:innen, keine Aktionär\:innen und keinen Staat, der die
 Menschen zu dieser Arbeit zwingt oder ihre Arbeit organisiert\*. Auch
 Video-Konferenzen, Dailies oder Sprints finden nicht statt. Welche Arbeit
 gemacht wird, entscheiden die Menschen selbst, genauso wann sie diese Arbeit
@@ -28,14 +28,14 @@ Ein Beispiel für derartige Kollaboration ist mein
 [`flowbite-react`](https://www.flowbite-react.com/). Auch ohne Verständnis von
 Software oder dem konkreten Code kann man sich über das Interface von github
 einen Eindruck davon machen, wie diese Arbeit funktioniert: Die Software wird
-von Leuten, nennen wir sie Administrator:innen, verwaltet. Ich habe eine
+von Leuten, nennen wir sie Administrator\:innen, verwaltet. Ich habe eine
 fehlende Funktion gefunden und einen konkreten Lösungsvorschlag eingebracht. Der
-Lösungsvorschlag war in seiner ersten Version für die Administrator:innen nicht
+Lösungsvorschlag war in seiner ersten Version für die Administrator\:innen nicht
 akzeptabel, da ich Details und Muster nicht kannte, die ich berücksichtigen
 musste. Die Kommunikation dazu fand ausschließlich über github statt. Der Ton
 ist wertschätzend, die Inhalte fokussiert und ergebnisorientiert. Nach einigen
 Iterationen, habe ich einen akzeptablen Lösungsvorschlag präsentiert, den die
-Administrator:innen mit einem Klick auf eine Schaltfläche im Interface ihrer
+Administrator\:innen mit einem Klick auf eine Schaltfläche im Interface ihrer
 Software hinzufügen konnten. Unsere gesamte Arbeit, inklusive der Kommunikation
 haben wir öffentlich geführt und sie wird für immer dokumentiert und für die
 ganze Welt einsehbar sein. Andere können es sich ansehen und davon lernen, oder
@@ -45,16 +45,16 @@ uns helfen, besser zu werden. Eine einzige, riesige Kooperation.
 
 Ich liebe diese Art und Weise der Zusammenarbeit so sehr, dass ich inzwischen
 oft frustriert bin, wenn ich in Projekten arbeiten muss, die diese Arbeit noch
-nicht für sich entdeckt haben. Das können meine Kund:innen sein, die glauben,
+nicht für sich entdeckt haben. Das können meine Kund\:innen sein, die glauben,
 dass stundenlange Video-Telefonate mit 20 Personen Projekte positiv
 beeinflussen. Aber meistens sind es Projekte, die nichts mit Software zu tun
 haben.
 
 Da sind die Gemeinde-Verwaltungen, die auf einem Berg von interessanten Daten
 sitzen und die Ressourcen und Berechtigungen haben, tolle Online-Dienste und
-Informationen für die Bürger:innen bereitzustellen. Aber statt allen Bürgern die
-Nutzung dieser Daten zu ermöglichen und die freiwillige Mitarbeit der
-Bürger:innen an den Informationen und Diensten zu fördern, werden die Daten und
+Informationen für die Bürger\:innen bereitzustellen. Aber statt allen Bürgern
+die Nutzung dieser Daten zu ermöglichen und die freiwillige Mitarbeit der
+Bürger\:innen an den Informationen und Diensten zu fördern, werden die Daten und
 Unterlagen versteckt oder in proprietären Datenbanken versteckt.
 
 Da sind die Eltern im Kindergarten oder Mitglieder im Verein, die Menschen im
@@ -105,7 +105,7 @@ probier es doch gleich hier aus.
 Dabei wünsche ich vor allem viel Freude!
 
 _\*Um korrekt zu bleiben, muss man zugeben, dass es inzwischen zahlreiche Firmen
-gibt, die Mitarbeiter:innen bezahlen um an Open-Source-Projekten zu arbeiten.
+gibt, die Mitarbeiter\:innen bezahlen um an Open-Source-Projekten zu arbeiten.
 Ein gutes Beispiel dafür ist Meta, die unter anderem die Software
 [React](https://react.dev/) entwickeln lassen. Aber auch diese Arbeit findet
 weitgehend öffentlich statt und viele Teile der Applikation wurden von

@@ -12,6 +12,16 @@ export default defineConfig({
   integrations: [
     starlightBlog(),
     starlight({
+      defaultLocale: 'root',
+      locales: {
+        root: {
+          label: 'Deutsch',
+          lang: 'de',
+        },
+        en: {
+          label: 'English',
+        },
+      },
       editLink: {
         baseUrl: 'https://github.com/levino/levinkeller.de/edit/main/docs/',
       },
