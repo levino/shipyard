@@ -58,6 +58,8 @@ dann aus der Vorlage ein verbindliches Dokument. Beispiele für derartige
 - Geschichten
 - Arbeitsanweisungen
 - Berichte
+- Wissenschaftliche Arbeiten
+- Zeitungsartikel
 - Terminkalender
 - To Do Listen
 - Verträge
@@ -80,8 +82,13 @@ Oben habe ich geschrieben, dass bei der politischen Arbeit **mehrheitsfähige**
 Beschlussvorlagen ausgearbeitet werden. Damit meine ich aber nicht, dass eine
 Person in der Abgeschiedenheit ihrer Kammer still und heimlich ein Dokument
 ausarbeitet, was dann auf Wohlwollen und Zustimmung einer größeren Gruppe
-trifft. Das ist quasi unmöglich. Ohne einen intensiven Austausch mit allen
-Personen, die dem Entwurf zustimmen sollen, ist es so gut wie unmöglich eine
-mehrheitsfähige Beschlussvorlage auszuarbeiten. In diesem Prozess ist zunächst
-das Zuhören und Sammeln von Bedürfnissen und Anforderungen aller beteiligten
-Personen oder Parteien notwendig.
+trifft. Denn ohne einen intensiven Austausch mit allen Personen, die dem Entwurf
+zustimmen sollen, ist es so gut wie unmöglich eine mehrheitsfähige
+Beschlussvorlage auszuarbeiten. In diesem Prozess ist zunächst das Zuhören und
+Sammeln von Bedürfnissen und Anforderungen aller beteiligten Personen oder
+Parteien notwendig. Aber auch dies reicht im Normalfall nicht aus um
+mehrheitsfähige Beschlussvorlage herzustellen. Vielmehr ist eine intensive
+Überzeugungsarbeit von den Vorteilen der eigenen oder wenigstens der am
+wahrscheinlichst mehrheitsfähigen Inhalte zu leisten. Genau hierfür eignet sich
+Software wie github oder gitlab hervorragend, worauf ich in anderen Artikeln
+noch näher eingehe.
