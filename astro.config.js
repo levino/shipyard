@@ -36,6 +36,10 @@ export default defineConfig({
       },
       sidebar: [
         {
+          label: 'Wissen',
+          link: '/docs',
+        },
+        {
           label: 'Garten',
           autogenerate: {
             directory: 'docs/gardening',
