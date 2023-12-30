@@ -3,7 +3,6 @@ import starlight from '@astrojs/starlight'
 import starlightBlog from 'starlight-blog'
 import react from '@astrojs/react'
 import tailwind from '@astrojs/tailwind'
-
 import sitemap from '@astrojs/sitemap'
 
 // https://astro.build/config

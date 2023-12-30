@@ -5,10 +5,11 @@ module.exports = {
     'node_modules/flowbite-react/lib/esm/**/*.js',
   ],
   darkMode: ['class', '[data-theme="dark"]'],
-  corePlugins: {
-    preflight: false, // disable Tailwind's reset
-  },
   theme: {
+    container: {
+      center: true,
+      padding: '1.5rem',
+    },
     extend: {},
   },
   plugins: [

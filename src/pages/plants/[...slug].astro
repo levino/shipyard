@@ -1,23 +1,22 @@
 ---
-import Layout from '../../layouts/PlantsLayout.astro';
-import { Badge } from 'flowbite-react'
-import { MdHeight } from 'react-icons/md';
-
-import { getCollection } from 'astro:content';
+import Layout from '../../layouts/PlantsLayout.astro'
+import { Plant } from '@components/Plant'
+import { getCollection } from 'astro:content'
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
-  const plants = await getCollection('plants');
-  return plants.map(entry => ({
-    params: { slug: entry.slug }, props: { entry },
-  }));
+  const plants = await getCollection('plants')
+  return plants.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }))
 }
 // 2. For your template, you can get the entry directly from the prop
-const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { entry: plant } = Astro.props
+const { Content } = await plant.render()
 ---
+
 <Layout>
-  <div class="flex flex-wrap gap-2">
-    <Badge icon={MdHeight}>{entry.data.height} cm</Badge>
+  <div class="max-w-3xl">
+    <Plant plant={plant}><Content /></Plant>
   </div>
-<Content />
 </Layout>
