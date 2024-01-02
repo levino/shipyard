@@ -1,11 +1,12 @@
 import { Badge } from 'flowbite-react'
-import { MdHeight, MdWaterDrop } from 'react-icons/md'
-import { FaWater } from 'react-icons/fa'
-import { PiCactus } from 'react-icons/pi'
-import { BsCircleHalf, BsCircle, BsCircleFill } from 'react-icons/bs'
+import { MdHeight, MdWaterDrop } from 'react-icons/md/index.js'
+import { FaWater } from 'react-icons/fa/index.js'
+import { PiCactus } from 'react-icons/pi/index.js'
+import { BsCircle, BsCircleFill, BsCircleHalf } from 'react-icons/bs/index.js'
+import { Carousel } from 'flowbite-react'
+import SowingIcon from './SowingIcon'
+import { IoFlowerOutline } from 'react-icons/io5/index.js'
 
-import { IoFlowerOutline } from 'react-icons/io5'
-import { RiSeedlingLine } from 'react-icons/ri'
 import { type CollectionEntry } from 'astro:content'
 import { MONTHS_DE, MONTHS_EN } from 'src/types'
 import type { PropsWithChildren, FC } from 'react'
@@ -22,10 +23,12 @@ export const Plant: FC<PropsWithChildren<Props>> = ({ plant, children }) => (
       <Sun plant={plant} />
     </div>
     {plant.data.images && (
-      <div className="flex flex-wrap gap-2">
-        {plant.data.images.map((image, index) => (
-          <img key={index} src={image.src.src} alt={image.alt} />
-        ))}
+      <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
+        <Carousel>
+          {plant.data.images.map((image, index) => (
+            <img key={index} src={image.src.src} alt={image.alt} />
+          ))}
+        </Carousel>
       </div>
     )}
     <PlantTable plant={plant} />
@@ -39,12 +42,19 @@ const Sun: FC<Props> = ({ plant }) => (
       Steht gerne
       {plant.data.sunExposure.map((sunExposure, key) => {
         if (key === 0) {
-          return <ExposureBadge sunExposure={sunExposure} />
+          return <ExposureBadge key={key} sunExposure={sunExposure} />
+        }
+        if (key < plant.data.sunExposure.length - 1) {
+          return (
+            <span className="flex gap-2" key={key}>
+              , <ExposureBadge sunExposure={sunExposure} />
+            </span>
+          )
         }
         return (
-          <>
+          <span className="flex gap-2" key={key}>
             oder <ExposureBadge sunExposure={sunExposure} />
-          </>
+          </span>
         )
       })}
     </div>
@@ -117,43 +127,44 @@ const Dimensions: FC<Props> = ({ plant }) => (
 )
 
 const PlantTable: FC<Props> = ({ plant }) => (
-  <div className="px-4">
+  <div className="p-4">
     <table className="w-full table-fixed border-collapse rounded border border-slate-400">
       <thead>
         <tr>
           {MONTHS_DE.map((month, key) => (
             <th key={key} className="border border-slate-400 py-2 font-normal">
-              {month.slice(0, 3)}
+              <span className="hidden md:block">{month.slice(0, 3)}</span>
+              <span className="md:hidden">{month.slice(0, 1)}</span>
             </th>
           ))}
         </tr>
-        <tbody>
-          <tr>
-            {MONTHS_EN.map((month, key) => {
-              if (plant.data.floweringSeason.includes(month)) {
-                return (
-                  <td key={key} className="border border-slate-400 py-2">
-                    <IoFlowerOutline className="mx-auto" />
-                  </td>
-                )
-              }
-              return <td key={key} className="border border-slate-400 py-2" />
-            })}
-          </tr>
-          <tr>
-            {MONTHS_EN.map((month) => {
-              if (plant.data.sowingTime?.includes(month)) {
-                return (
-                  <td className="border border-slate-400 py-2">
-                    <RiSeedlingLine className="mx-auto" />
-                  </td>
-                )
-              }
-              return <td className="border border-slate-400 py-2" />
-            })}
-          </tr>
-        </tbody>
       </thead>
+      <tbody>
+        <tr>
+          {MONTHS_EN.map((month, key) => {
+            if (plant.data.floweringSeason.includes(month)) {
+              return (
+                <td key={key} className="border border-slate-400 py-2">
+                  <IoFlowerOutline className="mx-auto" />
+                </td>
+              )
+            }
+            return <td key={key} className="border border-slate-400 py-2" />
+          })}
+        </tr>
+        <tr>
+          {MONTHS_EN.map((month, key) => {
+            if (plant.data.sowingTime?.includes(month)) {
+              return (
+                <td key={key} className="border border-slate-400 py-2">
+                  <SowingIcon className="mx-auto" />
+                </td>
+              )
+            }
+            return <td key={key} className="border border-slate-400 py-2" />
+          })}
+        </tr>
+      </tbody>
     </table>
   </div>
 )

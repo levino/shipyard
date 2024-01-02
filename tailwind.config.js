@@ -1,7 +1,7 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
-    './{blog,src,docs}/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
     'node_modules/flowbite-react/lib/esm/**/*.js',
   ],
   darkMode: ['class', '[data-theme="dark"]'],

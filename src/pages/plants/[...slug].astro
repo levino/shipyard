@@ -17,6 +17,6 @@ const { Content } = await plant.render()
 
 <Layout>
   <div class="max-w-3xl">
-    <Plant plant={plant}><Content /></Plant>
+    <Plant client:load plant={plant}><Content /></Plant>
   </div>
 </Layout>
