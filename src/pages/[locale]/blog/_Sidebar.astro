@@ -1,0 +1,21 @@
+---
+import { getCollection } from 'astro:content'
+import { Sidebar as SidebarComponent } from '@components/Sidebar'
+import { tap } from 'ramda'
+interface Props {
+  locale: string
+}
+
+const { locale } = Astro.props
+
+const entries = await getCollection('blog').then((collection) =>
+  collection.map(({ slug, data: { title } }) =>
+    tap(console.log)({
+      href: `/${locale}/blog/${slug.split('/').slice(1).join('/')}`,
+      label: title,
+    }),
+  ),
+)
+---
+
+<SidebarComponent entries={entries} />

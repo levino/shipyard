@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/PlantsLayout.astro'
+import Layout from '../../layouts/Page.astro'
 import { Plant } from '@components/Plant'
 import { getCollection } from 'astro:content'
 // 1. Generate a new path for every collection entry
@@ -15,7 +15,7 @@ const { entry: plant } = Astro.props
 const { Content } = await plant.render()
 ---
 
-<Layout>
+<Layout locale="de">
   <div class="max-w-3xl">
     <Plant client:load plant={plant}><Content /></Plant>
   </div>

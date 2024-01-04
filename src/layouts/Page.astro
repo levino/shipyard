@@ -1,0 +1,37 @@
+---
+import Footer from './Footer.astro'
+import Header from './Header.astro'
+
+type Props = {
+  frontmatter?: {
+    title?: string
+    description?: string
+    locale: string
+  }
+} & {
+  title?: string
+  description?: string
+  locale: string
+}
+
+const { locale, title, description } = Astro.props.frontmatter || Astro.props
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>{title ? `Levin Keller - ${title}` : 'Levin Keller'}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div class="min-h-screen flex flex-col">
+      <div class="fixed w-full">
+        <Header locale={locale} />
+      </div>
+      <div class="flex-grow pt-10">
+        <slot />
+      </div>
+      <Footer />
+    </div>
+  </body>
+</html>

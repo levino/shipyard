@@ -1,0 +1,19 @@
+---
+import { Header as HeaderComponent } from '@components/Header'
+
+interface Props {
+  locale: string
+}
+
+const { locale } = Astro.props
+---
+
+<HeaderComponent
+  brand={{ name: 'Levin Keller', href: `/${locale}` }}
+  links={[
+    { href: `/${locale}/work`, label: 'Work' },
+    { href: `/${locale}/docs`, label: 'Docs' },
+    { href: `/${locale}/blog`, label: 'Blog' },
+    { href: `/${locale}/about`, label: 'About' },
+  ]}
+/>

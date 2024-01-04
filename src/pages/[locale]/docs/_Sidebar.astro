@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content'
+import { Sidebar as SidebarComponent } from '@components/Sidebar'
+
+interface Props {
+  locale: string
+}
+
+const { locale } = Astro.props
+
+const entries = await getCollection('docs').then((collection) =>
+  collection.map(({ slug, data: { title } }) => ({
+    href: `/${locale}/docs/${slug.split('/').slice(1).join('/')}`,
+    label: title,
+  })),
+)
+---
+
+<SidebarComponent entries={entries} />

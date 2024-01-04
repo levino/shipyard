@@ -1,5 +1,7 @@
 ---
 title: Über meine Homepage
+layout: '@layouts/MarkdownSplash.astro'
+locale: 'de'
 prev: false
 next: false
 tableOfContents: false

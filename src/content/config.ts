@@ -1,9 +1,20 @@
-import { defineCollection } from 'astro:content'
-import { i18nSchema } from '@astrojs/starlight/schema'
-import { docsAndBlogSchema } from 'starlight-blog/schema'
-import { plantsSchema } from './_schema'
+import { defineCollection, z } from 'astro:content'
+
+import { plantsSchema } from './schema'
 export const collections = {
-  docs: defineCollection({ schema: docsAndBlogSchema }),
-  i18n: defineCollection({ type: 'data', schema: i18nSchema() }),
+  docs: defineCollection({
+    type: 'content',
+    schema: z.object({
+      title: z.string(),
+      description: z.string().optional(),
+    }),
+  }),
   plants: defineCollection({ type: 'content', schema: plantsSchema }),
+  blog: defineCollection({
+    type: 'content',
+    schema: z.object({
+      date: z.date(),
+      title: z.string(),
+    }),
+  }),
 }

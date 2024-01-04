@@ -1,0 +1,36 @@
+---
+import Layout from '@layouts/Page.astro'
+import { getCollection } from 'astro:content'
+import Sidebar from './_Sidebar.astro'
+// 1. Generate a new path for every collection entry
+
+export async function getStaticPaths() {
+  const getParams = (slug: string) => {
+    const [locale, ...rest] = slug.split('/')
+    return {
+      slug: rest.length ? rest.join('/') : undefined,
+      locale,
+    }
+  }
+  const docs = await getCollection('docs')
+  docs.forEach(({ slug }) => {
+    console.log(getParams(slug))
+  })
+  return docs.map((entry) => ({
+    params: getParams(entry.slug),
+    props: { entry, locale: getParams(entry.slug).locale },
+  }))
+}
+// 2. For your template, you can get the entry directly from the prop
+const { entry, locale } = Astro.props
+const { Content } = await entry.render()
+---
+
+<Layout locale={locale}>
+  <div class="lg:flex">
+    <Sidebar locale={locale} />
+    <div class="prose mx-auto">
+      <Content />
+    </div>
+  </div>
+</Layout>
