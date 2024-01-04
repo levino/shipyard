@@ -13,9 +13,6 @@ export async function getStaticPaths() {
     }
   }
   const blogPosts = await getCollection('blog')
-  blogPosts.forEach(({ slug }) => {
-    console.log(getParams(slug))
-  })
   return blogPosts.map((entry) => ({
     params: getParams(entry.slug),
     props: { entry, locale: getParams(entry.slug).locale },

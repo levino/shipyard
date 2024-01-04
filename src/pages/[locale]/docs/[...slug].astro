@@ -13,9 +13,6 @@ export async function getStaticPaths() {
     }
   }
   const docs = await getCollection('docs')
-  docs.forEach(({ slug }) => {
-    console.log(getParams(slug))
-  })
   return docs.map((entry) => ({
     params: getParams(entry.slug),
     props: { entry, locale: getParams(entry.slug).locale },
