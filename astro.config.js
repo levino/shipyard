@@ -12,6 +12,9 @@ export default defineConfig({
     routing: {
       prefixDefaultLocale: true,
     },
+    fallback: {
+      en: 'de',
+    },
   },
   site: 'https://www.levinkeller.de',
   integrations: [
