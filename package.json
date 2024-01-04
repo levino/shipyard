@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
+    "test": "vitest",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
@@ -83,7 +84,8 @@
     "storybook-framework-docusaurus": "^0.1.0-alpha.0",
     "tailwindcss": "^3.0.24",
     "typescript": "^5.3.3",
-    "vfile": "^6.0.1"
+    "vfile": "^6.0.1",
+    "vitest": "^1.1.1"
   },
   "browserslist": {
     "production": [
