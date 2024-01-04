@@ -1,0 +1,27 @@
+slug: valeriana-officinalis
+name:
+  latin: Valeriana officinalis
+  german: Arznei-Baldrian
+height: 125
+floweringSeason:
+  - june
+  - july
+  - august
+soil:
+  - moist
+  - normal
+sunExposure:
+  - full
+  - semi-shade
+flowerColor:
+  - white
+lifecycle: perennial
+hardiness: hardy
+spread: 60
+foliageColor: green
+germination: normal
+sowingTime:
+  - march
+  - april
+  - may
+  - june

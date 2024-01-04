@@ -1,19 +1,24 @@
 ---
 import { Header as HeaderComponent } from '@components/Header'
 
-interface Props {
-  locale: string
-}
+const locale = Astro.currentLocale
 
-const { locale } = Astro.props
+const currentPath = Astro.url.pathname
+
+const links = [
+  {
+    label: 'Work',
+    href: `/${locale}/work`,
+  },
+  { href: `/docs/${locale}`, label: 'Docs' },
+  { href: `/blog/${locale}`, label: 'Blog' },
+  { href: `/garden/${locale}`, label: 'Gartenplaner' },
+  { href: `/${locale}/about`, label: 'About' },
+]
 ---
 
 <HeaderComponent
+  client:load
   brand={{ name: 'Levin Keller', href: `/${locale}` }}
-  links={[
-    { href: `/${locale}/work`, label: 'Work' },
-    { href: `/${locale}/docs`, label: 'Docs' },
-    { href: `/${locale}/blog`, label: 'Blog' },
-    { href: `/${locale}/about`, label: 'About' },
-  ]}
+  links={links.map((link) => ({ ...link, active: link.href === currentPath }))}
 />

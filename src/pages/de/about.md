@@ -7,6 +7,8 @@ next: false
 tableOfContents: false
 ---
 
+# Über levinkeller.de
+
 Ich betreibe diese Homepage aus verschiedenen Gründen, die ich hier erläutern
 möchte.
 
@@ -24,7 +26,7 @@ Historie nachhaltig zu dokumentieren.
 
 ## Showcase für meine Arbeit
 
-ch arbeite als selbstständiger Software-Entwickler und der Quellcode dieser
+Ich arbeite als selbstständiger Software-Entwickler und der Quellcode dieser
 Webseite, inklusive aller Inhalte, ist
 [öffentlich](https://github.com/levino/levinkeller.de) auf github zugänglich.
 Jede Person kann mich bei meiner Arbeit an dieser Webseite beobachten und mit

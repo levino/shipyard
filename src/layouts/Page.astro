@@ -6,15 +6,13 @@ type Props = {
   frontmatter?: {
     title?: string
     description?: string
-    locale: string
   }
 } & {
   title?: string
   description?: string
-  locale: string
 }
 
-const { locale, title, description } = Astro.props.frontmatter || Astro.props
+const { title } = Astro.props.frontmatter || Astro.props
 ---
 
 <html>
@@ -26,7 +24,7 @@ const { locale, title, description } = Astro.props.frontmatter || Astro.props
   <body>
     <div class="min-h-screen flex flex-col">
       <div class="fixed w-full">
-        <Header locale={locale} />
+        <Header />
       </div>
       <div class="flex-grow pt-10">
         <slot />

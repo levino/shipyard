@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from 'astro'
+import Layout from '@layouts/Page.astro'
+import { getCollection, getEntry } from 'astro:content'
+export const getStaticPaths = (async ({ paginate }) => {
+  const descriptions = await getCollection('plantDescriptions')
+  const plantsWithDescriptions = await Promise.all(
+    descriptions.map(async (description) => {
+      const plant = await getEntry(description.data.plant)
+      return {
+        data: {
+          ...plant.data,
+        },
+        Content: (await description.render()).Content,
+      }
+    }),
+  )
+  return paginate(plantsWithDescriptions, {
+    pageSize: 5,
+    params: {
+      locale: 'de',
+    },
+  })
+}) satisfies GetStaticPaths
+
+const { page } = Astro.props
+---
+
+<Layout>
+  <div class="p-20">
+    <ul>
+      {
+        page.data.map(
+          ({
+            data: {
+              name: { latin },
+            },
+            Content,
+          }) => (
+            <li>
+              <>
+                <h2>{latin}</h2>
+                <Content />
+              </>
+            </li>
+          ),
+        )
+      }
+    </ul>
+    {page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
+    {page.url.next ? <a href={page.url.next}>Next</a> : null}
+  </div>
+</Layout>

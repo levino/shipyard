@@ -1,0 +1,23 @@
+slug: rhamnus-frangula
+name:
+  latin: Rhamnus frangula
+  german: Faulbaum
+height: 600
+floweringSeason:
+  - may
+  - june
+  - july
+  - august
+soil:
+  - moist
+sunExposure:
+  - full
+  - semi-shade
+  - shade
+flowerColor:
+  - white
+lifecycle: shrub
+hardiness: hardy
+spread: 100
+foliageColor: green
+germination: normal

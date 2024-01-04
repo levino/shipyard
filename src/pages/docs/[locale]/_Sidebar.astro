@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content'
+import { Sidebar as SidebarComponent, type Entry } from '@components/Sidebar'
+import { path } from 'ramda'
+import { toSidebarEntries } from 'src/tools/sidebarEntries'
+
+const docs = await getCollection('docs').then((docs) =>
+  docs.map(
+    ({
+      slug,
+      data: {
+        title,
+        sidebar: { render, label },
+      },
+    }) => ({
+      path: `/docs/${slug}`,
+      title: label ?? title,
+      link: render,
+    }),
+  ),
+)
+
+const locale = Astro.currentLocale as string
+
+const entries = path(['docs', 'subEntry', locale, 'subEntry'])(
+  toSidebarEntries(docs),
+) as Entry
+---
+
+<SidebarComponent client:load entry={entries} />

@@ -1,0 +1,22 @@
+name:
+  latin: Alchemilla Mollis
+  german: Weicher Frauenmantel
+height: 55
+floweringSeason:
+  - june
+  - july
+  - august
+soil:
+  - moist
+  - normal
+germination: cold
+hardiness: hardy
+sunExposure:
+  - full
+  - semi-shade
+foliageColor: green
+lifecycle: perennial
+spread: 40
+flowerColor:
+  - yellow
+  - green

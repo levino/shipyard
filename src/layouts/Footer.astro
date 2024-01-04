@@ -1,9 +1,11 @@
 ---
 import { Footer as FooterComponent } from '@components/Footer'
+
+const locale = Astro.currentLocale
 ---
 
 <FooterComponent
-  links={[{ href: '/imprint', label: 'Impressum' }]}
+  links={[{ href: `${locale}/imprint`, label: 'Impressum' }]}
   copyright={{
     href: 'https://github.com/levino',
     label: 'Levin Keller',

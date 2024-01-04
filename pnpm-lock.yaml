@@ -57,8 +57,11 @@ dependencies:
     specifier: ^1.0.1
     version: 1.0.1
   fp-ts:
-    specifier: ^2.16.1
+    specifier: ^2.16.2
     version: 2.16.2
+  fs-tree-structure:
+    specifier: ^0.0.4
+    version: 0.0.4
   lint-staged:
     specifier: ^15.2.0
     version: 15.2.0
@@ -10997,6 +11000,12 @@ packages:
   /fs-monkey@1.0.5:
     resolution: {integrity: sha512-8uMbBjrhzW76TYgEV27Y5E//W2f/lTFmx78P2w19FZSxarhI/798APGQyuGCwmkNxgwGRhrLfvWyLBvNtuOmew==}
 
+  /fs-tree-structure@0.0.4:
+    resolution: {integrity: sha512-pAtZat+Msvc34RPo3ObNCnWy0/iV8mopFBPFDNSEN5PX9uhWKe0R1fdDUNFTTA6XpLNOHH5XjmpuJkxk7qkiAA==}
+    dependencies:
+      lodash.set: 4.3.2
+    dev: false
+
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
@@ -13219,6 +13228,10 @@ packages:
 
   /lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
+  /lodash.set@4.3.2:
+    resolution: {integrity: sha512-4hNPN5jlm/N/HLMCO43v8BXKq9Z7QdAGc/VGrRD61w8gN9g/6jF9A4L1pbUgBLCffi0w9VsXfTOij5x8iTyFvg==}
+    dev: false
 
   /lodash.template@4.5.0:
     resolution: {integrity: sha512-84vYFxIkmidUiFxidA/KjjH9pAycqW+h980j7Fuz5qxRtO9pgB7MDFTdys1N7A5mcucRiDyEq4fusljItR1T/A==}

@@ -1,6 +1,10 @@
 ---
 title: Radverkehrskonzept für Nordstemmen
+sidebar:
+  label: Radverkehrskonzept
 ---
+
+# Radverkehrskonzept für Nordstemmen
 
 Die Gemeinde Nordstemmen lässt ein Radverkehrskonzept erstellen. Beauftragt ist
 die

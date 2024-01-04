@@ -1,0 +1,21 @@
+slug: polemonium-caeruleum
+name:
+  latin: Polemonium caeruleum
+  german: Jakobsleiter
+height: 85
+floweringSeason:
+  - june
+  - july
+soil:
+  - moist
+  - normal
+sunExposure:
+  - full
+  - semi-shade
+flowerColor:
+  - blue
+lifecycle: perennial
+hardiness: hardy
+spread: 50
+foliageColor: green
+germination: normal
