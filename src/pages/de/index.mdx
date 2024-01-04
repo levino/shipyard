@@ -7,22 +7,22 @@ description:
   interessant ist.
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components'
+import { LinkCard } from '@components/LinkCard'
 
 Willkommen auf meiner Homepage. Diese Seite wird lean entwickelt, insofern sind
 hier noch wenige Inhalte und viele Dinge unvollständig oder ästhetisch nicht
 stimmig. Außerdem ermöglicht mir diese Seite ein bisschen mit NextJS und MDX
 herumzuspielen, was interessant ist.
 
-<CardGrid>
+<div className="grid grid-cols-2 gap-4">
   <LinkCard
     description="Ereignisse über die ich berichten möchte. Eindrücke und aktuelle Gedanken, die ich festhalten möchte."
     title="Blog"
-    href="/blog"
+    href="/de/blog"
   />
   <LinkCard
     title="Wissen"
     description="Dinge, die ich gelernt habe. Sachverhalte, die ich recherchiert habe."
-    href="/docs"
+    href="/de/docs"
   />
-</CardGrid>
+</div>

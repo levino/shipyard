@@ -62,11 +62,11 @@ beschleunigen.
 
 Ich betrachte dieses Projekt auch als "Mitmach-Seite". Diese Idee finde ich so
 spannend, dass ich darüber eine eigene
-[Doku-Seite](/docs/software/collaborative-homepage) geschrieben habe. Ich hoffe
-nämlich, dass sich die Menschen, die meine Seite besuchen nicht nur an meiner
-Arbeit erfreuen und an den Ergebnissen bedienen, sondern auch helfen, meine
-Seite besser zu machen. Dazu zählt für mich das Verbessern meiner Fehler, das
-Erstellen von Gastbeiträgen oder, dass man mir neue Tricks und Kniffe für meine
-Arbeit mit Software oder Daten zeigt. Außerdem hoffe ich, andere Menschen zu
-ermutigen, Internetseiten auf eine ähnliche Art und Weise zu erstellen und zu
+[Doku-Seite](/de/docs/software/collaborative-homepage) geschrieben habe. Ich
+hoffe nämlich, dass sich die Menschen, die meine Seite besuchen nicht nur an
+meiner Arbeit erfreuen und an den Ergebnissen bedienen, sondern auch helfen,
+meine Seite besser zu machen. Dazu zählt für mich das Verbessern meiner Fehler,
+das Erstellen von Gastbeiträgen oder, dass man mir neue Tricks und Kniffe für
+meine Arbeit mit Software oder Daten zeigt. Außerdem hoffe ich, andere Menschen
+zu ermutigen, Internetseiten auf eine ähnliche Art und Weise zu erstellen und zu
 betreiben und somit von der Kraft der öffentlichen Kollaboration zu profitieren.
