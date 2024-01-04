@@ -1,5 +1,5 @@
 import { z, type SchemaContext } from 'astro:content'
-import { MONTHS_EN } from 'src/types'
+import { MONTHS_EN } from '@/types'
 
 const months = z.enum(MONTHS_EN)
 

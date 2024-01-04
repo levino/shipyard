@@ -1,4 +1,14 @@
 import React from 'react'
+
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+import { NavigationMenuSub } from '@radix-ui/react-navigation-menu'
+import { cn } from '@/lib/utils'
 export type Entry = Record<
   string,
   {
@@ -18,21 +28,34 @@ const SidebarElement = ({ entry }: { entry: Entry }) =>
     if (entry.subEntry) {
       if ('href' in entry) {
         return (
-          <div key={key}>
-            <a href={entry.href}>{label}</a>
-            <div className="pl-4">
-              <SidebarElement entry={entry.subEntry} key={key} />
-            </div>
-          </div>
+          <NavigationMenuItem key={key}>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+            >
+              <a href={entry.href}>{label}</a>
+            </NavigationMenuLink>
+            <NavigationMenuSub orientation="vertical">
+              <NavigationMenuList className="flex-col items-start pl-4">
+                <SidebarElement entry={entry.subEntry} key={key} />
+              </NavigationMenuList>
+            </NavigationMenuSub>
+          </NavigationMenuItem>
         )
       }
       return (
-        <div key={key}>
-          {label}
-          <div className="pl-4">
-            <SidebarElement entry={entry.subEntry} key={key} />
-          </div>
-        </div>
+        <NavigationMenuItem key={key}>
+          <NavigationMenuLink
+            className={cn(navigationMenuTriggerStyle(), 'hover:bg-transparent')}
+          >
+            {label}
+          </NavigationMenuLink>
+          <NavigationMenuSub orientation="vertical">
+            <NavigationMenuList className="flex-col items-start pl-4">
+              <SidebarElement entry={entry.subEntry} key={key} />
+            </NavigationMenuList>
+          </NavigationMenuSub>
+        </NavigationMenuItem>
       )
     }
     if (!entry.href) {
@@ -40,19 +63,18 @@ const SidebarElement = ({ entry }: { entry: Entry }) =>
       return <div key={key}>{label}</div>
     }
     return (
-      <div key={key}>
-        <a href={entry.href}>{label}</a>
-      </div>
+      <NavigationMenuItem key={key}>
+        <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+          <a href={entry.href}>{label}</a>
+        </NavigationMenuLink>
+      </NavigationMenuItem>
     )
   })
 
 export const Sidebar: React.FC<SidebarProps> = ({ entry }) => (
-  <div className="fixed h-full lg:h-auto lg:overflow-y-visible">
-    <nav
-      className="w-128 pl=-8 hidden flex-col bg-slate-200 py-4 pl-8 md:flex"
-      aria-label="Seitenmenü für Dokumentationsartikel"
-    >
+  <NavigationMenu orientation="vertical">
+    <NavigationMenuList className="flex-col items-start">
       <SidebarElement entry={entry} />
-    </nav>
-  </div>
+    </NavigationMenuList>
+  </NavigationMenu>
 )

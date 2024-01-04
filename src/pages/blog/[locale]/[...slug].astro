@@ -1,7 +1,7 @@
 ---
-import Layout from '@layouts/Page.astro'
+import Layout from '@/layouts/WithSidebar.astro'
 import { getCollection } from 'astro:content'
-import { TableOfContents } from '@components/TableOfContents'
+import { TableOfContents } from '@/components/TableOfContents'
 import Sidebar from './_Sidebar.astro'
 
 export async function getStaticPaths() {
@@ -23,8 +23,8 @@ const { Content, headings } = await entry.render()
 ---
 
 <Layout>
-  <div class="lg:flex">
-    <Sidebar />
+  <Sidebar slot="sidebar" />
+  <div>
     <div class="prose px-8 w-full mx-auto">
       <Content />
     </div>

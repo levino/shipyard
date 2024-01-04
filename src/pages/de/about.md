@@ -1,6 +1,6 @@
 ---
 title: Über meine Homepage
-layout: '@layouts/MarkdownSplash.astro'
+layout: '@/layouts/MarkdownSplash.astro'
 locale: 'de'
 prev: false
 next: false

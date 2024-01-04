@@ -19,7 +19,9 @@ export default defineConfig({
   site: 'https://www.levinkeller.de',
   integrations: [
     react(),
-    tailwind(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
     sitemap({
       filter: (page) => !page.startsWith('https://www.levinkeller.de/private/'),
     }),

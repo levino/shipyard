@@ -1,6 +1,7 @@
 ---
 import Footer from './Footer.astro'
 import Header from './Header.astro'
+import '@/styles/globals.css'
 
 type Props = {
   frontmatter?: {
@@ -22,13 +23,11 @@ const { title } = Astro.props.frontmatter || Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <div class="min-h-screen flex flex-col">
-      <div class="fixed w-full">
-        <Header />
-      </div>
-      <div class="flex-grow pt-10">
+    <div class="relative min-h-screen flex-col flex bg-background">
+      <Header />
+      <main class="flex-1">
         <slot />
-      </div>
+      </main>
       <Footer />
     </div>
   </body>

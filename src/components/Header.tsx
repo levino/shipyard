@@ -1,5 +1,12 @@
 import React from 'react'
-import { Navbar } from 'flowbite-react'
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  navigationMenuTriggerStyle,
+} from '@/components/ui/navigation-menu'
+import { cn } from '@/lib/utils'
 
 interface HeaderProps {
   brand: {
@@ -14,17 +21,32 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ brand, links }) => (
-  <Navbar fluid rounded>
-    <Navbar.Brand href={brand.href}>
-      <span className="text-xl font-semibold">{brand.name}</span>
-    </Navbar.Brand>
-    <Navbar.Toggle />
-    <Navbar.Collapse>
-      {links.map(({ active, label, href }, index) => (
-        <Navbar.Link key={index} href={href} active={active}>
-          {label}
-        </Navbar.Link>
-      ))}
-    </Navbar.Collapse>
-  </Navbar>
+  <div className="sticky top-0 z-50 bg-background/95">
+    <NavigationMenu>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuLink
+            href={brand.href}
+            className={cn(
+              'text-xl font-semibold',
+              navigationMenuTriggerStyle(),
+            )}
+          >
+            {brand.name}
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+        {links.map(({ active, label, href }, index) => (
+          <NavigationMenuItem key={index}>
+            <NavigationMenuLink
+              asChild
+              className={navigationMenuTriggerStyle()}
+              active={active}
+            >
+              <a href={href}>{label}</a>
+            </NavigationMenuLink>
+          </NavigationMenuItem>
+        ))}
+      </NavigationMenuList>
+    </NavigationMenu>
+  </div>
 )

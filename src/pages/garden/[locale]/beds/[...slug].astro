@@ -1,7 +1,7 @@
 ---
 import type { GetStaticPaths } from 'astro'
 import { getCollection, getEntry } from 'astro:content'
-import Layout from '@layouts/Page.astro'
+import Layout from '@/layouts/Page.astro'
 
 export const getStaticPaths = (async () => {
   const beds = await getCollection('beds')

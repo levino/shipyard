@@ -1,6 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro'
-import Layout from '@layouts/Page.astro'
+import Layout from '@/layouts/Page.astro'
 import { getCollection, getEntry } from 'astro:content'
 export const getStaticPaths = (async ({ paginate }) => {
   const descriptions = await getCollection('plantDescriptions')
