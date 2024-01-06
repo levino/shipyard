@@ -1,0 +1,22 @@
+flowerColor:
+  - blue
+  - violet
+  - red
+  - pink
+floweringSeason:
+  - august
+  - september
+germination: normal
+hardiness: hardy
+height: 150
+lifecycle: perennial
+name:
+  german: Glattblattaster
+  latin: Aster novi-belgii
+soil:
+  - normal
+  - moist
+spread: 100
+sunExposure:
+  - full
+foliageColor: green

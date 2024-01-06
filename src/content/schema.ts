@@ -38,4 +38,5 @@ export const plantsSchema = ({ image }: SchemaContext) =>
         }),
       )
       .optional(),
+    inStock: z.boolean().default(false),
   })

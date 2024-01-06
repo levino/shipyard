@@ -2,7 +2,8 @@
 import { getEntry } from 'astro:content'
 import Layout from '@/layouts/Splash.astro'
 import type { GetStaticPaths } from 'astro'
-import { prop, groupBy, indexBy } from 'ramda'
+import { prop, groupBy, indexBy, mapObjIndexed } from 'ramda'
+import { pipe } from 'fp-ts/lib/function'
 import { getCollection } from 'astro:content'
 export const getStaticPaths = (() => {
   return [
@@ -19,7 +20,15 @@ const vegetables = await Promise.all(
   shoppingList.data.vegetables.map((vegRef) => getEntry(vegRef)),
 )
 const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
-const vegBySupplier = groupBy((veg) => veg.data.supplier.id, vegetables)
+const vegBySupplier = pipe(
+  vegetables,
+  // @ts-expect-error
+  groupBy((veg) => veg.data.supplier.id),
+  mapObjIndexed((vegetables, supplierId) => ({
+    supplierName: suppliers[supplierId].data.name,
+    vegetables,
+  })),
+)
 ---
 
 <Layout>
@@ -27,11 +36,11 @@ const vegBySupplier = groupBy((veg) => veg.data.supplier.id, vegetables)
     <h1>{2024}</h1>
     <ul>
       {
-        Object.entries(vegBySupplier).map(([supplier, vegetables]) => (
+        Object.values(vegBySupplier).map(({ vegetables, supplierName }) => (
           <li>
-            <h2>{suppliers[supplier].data.name}</h2>
+            <h2>{supplierName}</h2>
             <ul class="list-disc">
-              {vegetables.map((veg) => (
+              {vegetables!.map((veg) => (
                 <li>{veg.data.name.common}</li>
               ))}
             </ul>

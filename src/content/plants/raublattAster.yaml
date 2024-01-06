@@ -1,0 +1,20 @@
+flowerColor:
+  - red
+  - pink
+floweringSeason:
+  - september
+  - october
+germination: normal
+hardiness: hardy
+height: 150
+lifecycle: perennial
+name:
+  german: Raublattaster
+  latin: Aster novae-angliae
+soil:
+  - normal
+spread: 50
+sunExposure:
+  - full
+inStock: true
+foliageColor: green

@@ -1,0 +1,23 @@
+flowerColor:
+  - pink
+  - blue
+  - white
+floweringSeason:
+  - june
+  - july
+  - august
+foliageColor: green
+germination: normal
+hardiness: hardy
+height: 70
+inStock: true
+lifecycle: perennial
+name:
+  german: Ysop Dreifarbenmischung
+  latin: Hyssopus officinalis
+soil:
+  - dry
+  - normal
+spread: 35
+sunExposure:
+  - full

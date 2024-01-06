@@ -1,0 +1,21 @@
+flowerColor:
+  - white
+floweringSeason:
+  - july
+  - august
+foliageColor: green
+germination: normal
+hardiness: hardy
+height: 70
+inStock: true
+lifecycle: perennial
+name:
+  german: Weiße Bergminze
+  latin: Agastache rugosa
+soil:
+  - normal
+sowingTime:
+  - may
+spread: 80
+sunExposure:
+  - full

@@ -20,3 +20,4 @@ spread: 40
 flowerColor:
   - yellow
   - green
+inStock: true

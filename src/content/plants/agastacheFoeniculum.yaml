@@ -1,0 +1,19 @@
+flowerColor:
+  - blue
+floweringSeason:
+  - july
+  - august
+foliageColor: green
+germination: normal
+hardiness: hardy
+height: 70
+inStock: true
+lifecycle: perennial
+name:
+  german: Fenchel-Agastache
+  latin: Agastache foeniculum
+soil:
+  - normal
+spread: 50
+sunExposure:
+  - full
