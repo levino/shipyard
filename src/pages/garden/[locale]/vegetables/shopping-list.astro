@@ -1,0 +1,43 @@
+---
+import { getEntry } from 'astro:content'
+import Layout from '@/layouts/Splash.astro'
+import type { GetStaticPaths } from 'astro'
+import { prop, groupBy, indexBy } from 'ramda'
+import { getCollection } from 'astro:content'
+export const getStaticPaths = (() => {
+  return [
+    {
+      params: {
+        locale: 'de',
+      },
+    },
+  ]
+}) satisfies GetStaticPaths
+
+const shoppingList = await getEntry('shoppingLists', '2024')
+const vegetables = await Promise.all(
+  shoppingList.data.vegetables.map((vegRef) => getEntry(vegRef)),
+)
+const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
+const vegBySupplier = groupBy((veg) => veg.data.supplier.id, vegetables)
+---
+
+<Layout>
+  <div class="prose">
+    <h1>{2024}</h1>
+    <ul>
+      {
+        Object.entries(vegBySupplier).map(([supplier, vegetables]) => (
+          <li>
+            <h2>{suppliers[supplier].data.name}</h2>
+            <ul class="list-disc">
+              {vegetables.map((veg) => (
+                <li>{veg.data.name.common}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

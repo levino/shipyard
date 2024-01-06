@@ -35,4 +35,28 @@ export const collections = {
       plants: z.array(reference('plants')),
     }),
   }),
+  vegetables: defineCollection({
+    type: 'data',
+    schema: z.object({
+      name: z.object({
+        latin: z.string(),
+        common: z.string(),
+      }),
+      supplier: reference('suppliers'),
+      inStock: z.boolean().default(false),
+    }),
+  }),
+  suppliers: defineCollection({
+    type: 'data',
+    schema: z.object({
+      name: z.string(),
+      url: z.string(),
+    }),
+  }),
+  shoppingLists: defineCollection({
+    type: 'data',
+    schema: z.object({
+      vegetables: z.array(reference('vegetables')),
+    }),
+  }),
 }
