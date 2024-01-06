@@ -20,8 +20,6 @@ hardiness: hardy
 spread: 60
 foliageColor: green
 germination: normal
-sowingTime:
-  - march
-  - april
-  - may
-  - june
+sowingScheme: D
+supplier: saatgutVielfalt
+inStock: true

@@ -20,3 +20,6 @@ spread: 100
 flowerColor:
   - yellow
   - brown
+supplier: saatgutVielfalt
+inStock: true
+sowingScheme: B

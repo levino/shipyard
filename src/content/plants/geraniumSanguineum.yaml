@@ -21,3 +21,6 @@ hardiness: hardy
 spread: 45
 foliageColor: green
 germination: cool
+supplier: saatgutVielfalt
+inStock: true
+sowingScheme: B

@@ -21,3 +21,5 @@ soil:
 spread: 35
 sunExposure:
   - full
+supplier: saatgutVielfalt
+sowingScheme: D
