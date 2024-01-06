@@ -19,6 +19,7 @@ export const plantsSchema = ({ image }: SchemaContext) =>
       spread: z.number(),
       flowerColor: z.array(
         z.enum([
+          'wine-red',
           'red',
           'blue',
           'yellow',

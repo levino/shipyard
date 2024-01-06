@@ -21,12 +21,14 @@ export const PlantTable: FC<{
     <TableHeader>
       <TableRow>
         <TableHead>Name</TableHead>
+        <TableHead>deutscher Name</TableHead>
         <TableHead>vorrätig</TableHead>
       </TableRow>
     </TableHeader>
     <TableBody>
       {plants.map((plant) => (
         <TableRow key={plant.id}>
+          <TableCell>{plant.data.name.latin}</TableCell>
           <TableCell>{plant.data.name.german}</TableCell>
           <TableCell>
             {plant.data.inStock ? <CheckIcon /> : <Cross2Icon />}

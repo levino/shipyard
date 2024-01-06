@@ -1,23 +1,23 @@
 flowerColor:
   - white
 floweringSeason:
+  - june
   - july
-  - august
 foliageColor: green
-germination: normal
+germination: cool
 hardiness: hardy
 height: 70
 inStock: true
 lifecycle: perennial
 name:
-  german: Weiße Bergminze
-  latin: Agastache rugosa 'Alba'
+  german: Weiße Wildakelei
+  latin: Aquilegia vulgaris 'Alba'
 soil:
   - normal
-sowingTime:
-  - may
-spread: 80
+  - moist
+sowingScheme: B
+spread: 35
 sunExposure:
   - full
+  - semi-shade
 supplier: saatgutVielfalt
-sowingScheme: D

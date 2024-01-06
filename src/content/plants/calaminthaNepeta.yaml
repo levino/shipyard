@@ -1,23 +1,26 @@
 flowerColor:
   - white
+  - blue
 floweringSeason:
   - july
   - august
+  - september
 foliageColor: green
-germination: normal
+germination: cool
 hardiness: hardy
 height: 70
 inStock: true
 lifecycle: perennial
 name:
-  german: Weiße Bergminze
-  latin: Agastache rugosa 'Alba'
+  german: Steinquendel
+  latin: Calamintha nepeta
 soil:
-  - normal
+  - dry
+sowingScheme: C
 sowingTime:
-  - may
-spread: 80
+  - march
+  - april
+spread: 35
 sunExposure:
   - full
 supplier: saatgutVielfalt
-sowingScheme: D

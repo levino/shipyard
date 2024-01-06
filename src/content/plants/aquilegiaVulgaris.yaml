@@ -1,0 +1,27 @@
+name:
+  latin: Aquilegia vulgaris 'Blue'
+  german: Blaue Wildakelei
+height: 70
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+hardiness: hardy
+spread: 35
+flowerColor:
+  - blue
+lifecycle: perennial
+germination: cool
+sowingTime:
+  - march
+  - april
+  - may
+  - june
+sowingScheme: C
+floweringSeason:
+  - june
+  - july
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

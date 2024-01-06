@@ -1,0 +1,28 @@
+name:
+  latin: Malva sylvestris
+  german: Wilde Malve
+height: 150
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 75 # Estimated spread based on height and plant characteristics
+flowerColor:
+  - pink
+lifecycle: perennial
+germination: normal
+sowingTime:
+  - march
+  - april
+  - may
+sowingScheme: B # Assuming scheme B based on sowing time
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt
+toSow: true

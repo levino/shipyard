@@ -1,0 +1,29 @@
+name:
+  latin: Knautia macedonica
+  german: Mazedonische Witwenblume
+height: 100
+soil:
+  - dry
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 50 # Estimated spread based on height
+flowerColor:
+  - wine-red
+lifecycle: perennial
+germination: cool
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

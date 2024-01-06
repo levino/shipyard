@@ -1,0 +1,29 @@
+name:
+  latin: Althaea officinalis
+  german: Echter Eibisch
+height: 150
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+hardiness: hardy
+spread: 75 # Estimated spread based on height and plant characteristics
+flowerColor:
+  - white
+  - pink
+lifecycle: perennial
+germination: cool
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - july
+  - august
+  - september
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt
