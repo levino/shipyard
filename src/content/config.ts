@@ -1,9 +1,6 @@
 import { defineCollection, reference, z } from 'astro:content'
-import { MONTHS_EN } from '@/types'
-
+import { vegetablesSchema } from './_vegetableSchema'
 import { plantsSchema } from './_plantSchema'
-
-const months = z.enum(MONTHS_EN)
 
 export const collections = {
   docs: defineCollection({
@@ -41,17 +38,7 @@ export const collections = {
   }),
   vegetables: defineCollection({
     type: 'data',
-    schema: z.object({
-      name: z.object({
-        latin: z.string(),
-        common: z.string(),
-      }),
-      sowing: z.array(months),
-      harvest: z.array(months),
-      planting: z.array(months),
-      supplier: reference('suppliers'),
-      inStock: z.boolean().default(false),
-    }),
+    schema: vegetablesSchema,
   }),
   suppliers: defineCollection({
     type: 'data',
