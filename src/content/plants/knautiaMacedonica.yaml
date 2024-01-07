@@ -12,7 +12,6 @@ spread: 50 # Estimated spread based on height
 flowerColor:
   - wine-red
 lifecycle: perennial
-germination: cool
 sowingTime:
   - february
   - march

@@ -4,7 +4,6 @@ flowerColor:
 floweringSeason:
   - september
   - october
-germination: normal
 hardiness: hardy
 height: 150
 lifecycle: perennial

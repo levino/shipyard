@@ -20,7 +20,6 @@ lifecycle: shrub
 hardiness: hardy
 spread: 100
 foliageColor: green
-germination: normal
 supplier: baumschuleEggert
 inStock: true
 sowingTime:

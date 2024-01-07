@@ -20,7 +20,6 @@ lifecycle: perennial
 hardiness: hardy
 spread: 50
 foliageColor: green
-germination: cold
 images:
   - src: './images/astrantiaMajor.jpg'
     alt: Blüten der Sterndolde

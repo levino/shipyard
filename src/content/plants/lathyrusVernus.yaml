@@ -1,26 +1,24 @@
 name:
-  latin: Dipsacus fullonum
-  german: Wilde Karde
-height: 180
+  latin: Lathyrus vernus
+  german: Frühlings-Platterbse
+height: 30
 soil:
   - normal
-  - moist
 sunExposure:
-  - full
   - semi-shade
 hardiness: hardy
-spread: 90
+spread: 20 # Estimated spread based on height
 flowerColor:
-  - blue
+  - red
 lifecycle: perennial
 sowingTime:
+  - march
+  - april
+sowingScheme: C
+floweringSeason:
+  - march
   - april
   - may
-  - june
-sowingScheme: D
-floweringSeason:
-  - july
-  - august
 foliageColor: green
 inStock: true
 supplier: saatgutVielfalt

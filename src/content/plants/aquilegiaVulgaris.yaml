@@ -12,7 +12,6 @@ spread: 35
 flowerColor:
   - blue
 lifecycle: perennial
-germination: cool
 sowingTime:
   - march
   - april

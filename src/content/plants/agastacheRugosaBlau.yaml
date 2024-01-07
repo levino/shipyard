@@ -12,7 +12,6 @@ flowerColor:
   - 'blue'
 foliageColor: 'green'
 lifecycle: 'perennial'
-germination: 'normal'
 floweringSeason:
   - 'july'
   - 'august'

@@ -17,6 +17,13 @@ export const plantsSchema = ({ image }: SchemaContext) =>
       sunExposure: z.array(z.enum(['full', 'semi-shade', 'shade'])),
       hardiness: z.enum(['hardy', 'tender']),
       spread: z.number(),
+      germination: z
+        .object({
+          dark: z.boolean().default(false),
+          light: z.boolean().default(false),
+        })
+        .optional()
+        .default({ dark: false, light: false }),
       flowerColor: z.array(
         z.enum([
           'wine-red',
@@ -29,12 +36,12 @@ export const plantsSchema = ({ image }: SchemaContext) =>
           'brown',
           'orange',
           'violet',
+          'rose',
         ]),
       ),
       toSow: z.boolean().default(false),
       foliageColor: z.enum(['green', 'red', 'silver']),
       lifecycle: z.enum(['annual', 'perennial', 'biennial', 'shrub', 'tree']),
-      germination: z.enum(['cold', 'cool', 'normal']),
       sowingTime: z.array(months).optional(),
       sowingScheme: z.enum(SOWING_SCHEMAS).optional(),
       floweringSeason: z.array(months),

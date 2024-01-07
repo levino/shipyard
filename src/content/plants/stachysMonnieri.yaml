@@ -11,7 +11,6 @@ spread: 20
 flowerColor:
   - pink
 lifecycle: perennial
-germination: cool
 sowingTime:
   - march
   - april

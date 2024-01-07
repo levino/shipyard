@@ -1,26 +1,27 @@
 name:
-  latin: Malva sylvestris
-  german: Wilde Malve
-height: 150
+  latin: Verbena bonariensis
+  german: Argentinische Verbene
+height: 100
 soil:
   - normal
 sunExposure:
   - full
 hardiness: hardy
-spread: 75 # Estimated spread based on height and plant characteristics
+spread: 50 # Estimated spread based on plant height
 flowerColor:
-  - pink
+  - violet
 lifecycle: perennial
 sowingTime:
+  - february
   - march
   - april
   - may
-sowingScheme: B # Assuming scheme B based on sowing time
+sowingScheme: B
 floweringSeason:
-  - june
   - july
   - august
   - september
+  - october
 foliageColor: green
 inStock: true
 supplier: saatgutVielfalt

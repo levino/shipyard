@@ -1,9 +1,11 @@
 import React from 'react'
 import {
   NavigationMenu,
+  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
@@ -16,6 +18,7 @@ interface HeaderProps {
   links: {
     href: string
     label: string
+    Content?: React.ComponentType
     active: boolean
   }[]
 }
@@ -35,17 +38,28 @@ export const Header: React.FC<HeaderProps> = ({ brand, links }) => (
             {brand.name}
           </NavigationMenuLink>
         </NavigationMenuItem>
-        {links.map(({ active, label, href }, index) => (
-          <NavigationMenuItem key={index}>
-            <NavigationMenuLink
-              asChild
-              className={navigationMenuTriggerStyle()}
-              active={active}
-            >
-              <a href={href}>{label}</a>
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        ))}
+        {links.map(({ Content, label, active, href }, index) =>
+          Content ? (
+            <NavigationMenuItem key={index}>
+              <NavigationMenuTrigger>{label}</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <NavigationMenuLink>
+                  <Content />
+                </NavigationMenuLink>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          ) : (
+            <NavigationMenuItem key={index}>
+              <NavigationMenuLink
+                asChild
+                className={navigationMenuTriggerStyle()}
+                active={active}
+              >
+                <a href={href}>{label}</a>
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          ),
+        )}
       </NavigationMenuList>
     </NavigationMenu>
   </div>

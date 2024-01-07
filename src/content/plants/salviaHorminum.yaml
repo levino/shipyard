@@ -1,24 +1,28 @@
 name:
-  latin: Malva alcea 'Fastigiata'
-  german: Rosenpappel
-height: 120
+  latin: Salvia horminum
+  german: Blauer Schopfsalbei
+height: 40
 soil:
   - normal
 sunExposure:
   - full
-hardiness: hardy
-spread: 60 # Estimated spread based on height
+hardiness: tender
+spread: 20 # Estimated spread based on height
 flowerColor:
+  - blue
+  - white
   - pink
-lifecycle: perennial
+lifecycle: annual
 sowingTime:
   - march
   - april
-sowingScheme: C
+sowingScheme: B
 floweringSeason:
+  - june
   - july
   - august
   - september
+  - october
 foliageColor: green
 inStock: true
 supplier: saatgutVielfalt

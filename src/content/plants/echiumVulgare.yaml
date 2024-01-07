@@ -1,24 +1,25 @@
 name:
-  latin: Dipsacus fullonum
-  german: Wilde Karde
-height: 180
+  latin: Echium vulgare
+  german: Blauer Natternkopf
+height: 80
 soil:
+  - dry
   - normal
-  - moist
 sunExposure:
   - full
-  - semi-shade
 hardiness: hardy
-spread: 90
+spread: 40 # Estimated spread based on height
 flowerColor:
   - blue
-lifecycle: perennial
+lifecycle: biennial
 sowingTime:
+  - february
+  - march
   - april
   - may
-  - june
-sowingScheme: D
+sowingScheme: B
 floweringSeason:
+  - june
   - july
   - august
 foliageColor: green

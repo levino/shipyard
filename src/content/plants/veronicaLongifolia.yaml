@@ -1,27 +1,26 @@
 name:
-  latin: Malva sylvestris
-  german: Wilde Malve
-height: 150
+  latin: Veronica longifolia
+  german: Langblättriger Ehrenpreis
+height: 100
 soil:
   - normal
+  - moist
 sunExposure:
   - full
+  - semi-shade
 hardiness: hardy
-spread: 75 # Estimated spread based on height and plant characteristics
+spread: 50 # Estimated spread based on height
 flowerColor:
-  - pink
+  - blue
 lifecycle: perennial
 sowingTime:
   - march
   - april
-  - may
-sowingScheme: B # Assuming scheme B based on sowing time
+sowingScheme: B
 floweringSeason:
-  - june
   - july
   - august
   - september
 foliageColor: green
 inStock: true
 supplier: saatgutVielfalt
-toSow: true

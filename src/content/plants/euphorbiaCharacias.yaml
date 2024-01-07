@@ -10,7 +10,6 @@ floweringSeason:
 soil:
   - dry
   - normal
-germination: cool
 hardiness: hardy
 sunExposure:
   - full

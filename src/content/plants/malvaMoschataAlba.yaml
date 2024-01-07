@@ -1,27 +1,29 @@
 name:
-  latin: Malva sylvestris
-  german: Wilde Malve
-height: 150
+  latin: Malva moschata 'Alba'
+  german: Weiße Moschus-Malve
+height: 70
 soil:
+  - dry
   - normal
 sunExposure:
   - full
 hardiness: hardy
-spread: 75 # Estimated spread based on height and plant characteristics
+spread: 35 # Estimated spread based on height
 flowerColor:
-  - pink
+  - white
 lifecycle: perennial
+germination:
+  dark: true
 sowingTime:
   - march
   - april
   - may
-sowingScheme: B # Assuming scheme B based on sowing time
-floweringSeason:
   - june
+sowingScheme: C
+floweringSeason:
   - july
   - august
   - september
 foliageColor: green
 inStock: true
 supplier: saatgutVielfalt
-toSow: true
