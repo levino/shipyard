@@ -27,3 +27,10 @@ export const MONTHS_DE = [
   'November',
   'Dezember',
 ] as const
+
+export interface LinkData {
+  href: string
+  label: string
+  Content?: React.ComponentType
+  active: boolean
+}

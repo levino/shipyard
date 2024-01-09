@@ -9,22 +9,17 @@ import {
   navigationMenuTriggerStyle,
 } from '@/components/ui/navigation-menu'
 import { cn } from '@/lib/utils'
-
+import type { LinkData } from '@/types'
 interface HeaderProps {
   brand: {
     name: string
     href: string
   }
-  links: {
-    href: string
-    label: string
-    Content?: React.ComponentType
-    active: boolean
-  }[]
+  links: LinkData[]
 }
 
 export const Header: React.FC<HeaderProps> = ({ brand, links }) => (
-  <div className="sticky top-0 z-50 bg-background/95">
+  <div className="sticky top-0 z-50 hidden bg-background/95 md:block">
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>

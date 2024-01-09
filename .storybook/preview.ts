@@ -1,7 +1,5 @@
 import type { Preview } from '@storybook/react'
-import 'infima/dist/css/default/default.css'
-import 'tailwindcss/tailwind.css'
-import '../src/css/custom.css'
+import '../src/styles/globals.css'
 
 const preview: Preview = {
   parameters: {
