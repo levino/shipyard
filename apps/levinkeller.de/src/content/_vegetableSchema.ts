@@ -1,5 +1,5 @@
 import { reference, z } from 'astro:content'
-import { MONTHS_EN } from '@/types'
+import { MONTHS_EN } from '@shipyard/base/src/types'
 
 const months = z.enum(MONTHS_EN)
 

@@ -21,7 +21,7 @@ jobs:
         with:
           version: 8
           run_install: true
-      - run: pnpm lint
+      - run: pnpm -w run lint
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -47,4 +47,4 @@ jobs:
         with:
           version: 8
           run_install: true
-      - run: pnpm test
+      - run: pnpm recursive run test

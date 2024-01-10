@@ -1,19 +1,10 @@
 ---
 import Layout from '@/layouts/Splash.astro'
 import type { GetStaticPaths } from 'astro'
-import {
-  prop,
-  map,
-  groupBy,
-  path,
-  indexBy,
-  flatten,
-  tap,
-  mapObjIndexed,
-} from 'ramda'
+import { prop, map, groupBy, path, flatten } from 'ramda'
 import { pipe } from 'fp-ts/lib/function'
 import { getCollection } from 'astro:content'
-import { MONTHS_DE, MONTHS_EN } from '@/types'
+import { MONTHS_DE, MONTHS_EN } from '@shipyard/base/src/types'
 export const getStaticPaths = (() => {
   return [
     {

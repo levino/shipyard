@@ -1,4 +1,4 @@
-import type { Entry } from '@/components/LocalNavigation'
+import type { Entry } from '@shipyard/base/components/LocalNavigation'
 import { mergeDeepLeft } from 'ramda'
 interface DocsData {
   title: string

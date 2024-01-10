@@ -2,7 +2,9 @@
   "scripts": {
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "pnpm workspace run test",
+    "lint": "eslint ."
   },
   "keywords": [],
   "author": "",

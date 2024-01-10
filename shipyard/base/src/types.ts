@@ -1,3 +1,9 @@
+export interface LinkData {
+  href: string
+  label: string
+  Content?: React.ComponentType
+  active: boolean
+}
 export const MONTHS_EN = [
   'january',
   'february',
