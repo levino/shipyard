@@ -1,0 +1,28 @@
+name:
+  latin: Verbena bonariensis
+  german: Argentinische Verbene
+height: 100
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 50 # Estimated spread based on plant height
+flowerColor:
+  - violet
+lifecycle: perennial
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - july
+  - august
+  - september
+  - october
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt
+toSow: true

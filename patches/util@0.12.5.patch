@@ -1,0 +1,13 @@
+diff --git a/util.js b/util.js
+index 6db393e279126c82e074539649053a2cf314206a..34ddc1adfb82d5bc6096fe9d1b9f0b25f55d5777 100644
+--- a/util.js
++++ b/util.js
+@@ -106,7 +106,7 @@ exports.deprecate = function(fn, msg) {
+ var debugs = {};
+ var debugEnvRegex = /^$/;
+ 
+-if (process.env.NODE_DEBUG) {
++if (typeof process !== 'undefined' && process.env.NODE_DEBUG) {
+   var debugEnv = process.env.NODE_DEBUG;
+   debugEnv = debugEnv.replace(/[|\\{}()[\]^$+?.]/g, '\\$&')
+     .replace(/\*/g, '.*')

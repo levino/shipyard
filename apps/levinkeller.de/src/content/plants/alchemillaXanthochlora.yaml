@@ -1,0 +1,26 @@
+flowerColor:
+  - yellow
+floweringSeason:
+  - may
+  - june
+  - july
+  - august
+  - september
+  - october
+foliageColor: green
+hardiness: hardy
+height: 40
+inStock: true
+lifecycle: perennial
+name:
+  german: Gewöhnlicher Frauenmantel
+  latin: Alchemilla xanthochlora
+soil:
+  - normal
+  - moist
+sowingScheme: A
+spread: 30
+sunExposure:
+  - full
+  - semi-shade
+supplier: saatgutVielfalt

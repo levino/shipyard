@@ -1,0 +1,24 @@
+name:
+  latin: Alchemilla mollis
+  german: Weicher Frauenmantel
+height: 55
+floweringSeason:
+  - june
+  - july
+  - august
+soil:
+  - moist
+  - normal
+hardiness: hardy
+sunExposure:
+  - full
+  - semi-shade
+foliageColor: green
+lifecycle: perennial
+spread: 40
+flowerColor:
+  - yellow
+  - green
+inStock: true
+supplier: saatgutVielfalt
+sowingScheme: A

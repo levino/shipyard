@@ -1,0 +1,25 @@
+name:
+  latin: Stachys monnieri
+  german: Rosa Ziest
+height: 40
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 20
+flowerColor:
+  - pink
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - june
+  - july
+  - august
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

@@ -1,0 +1,26 @@
+name:
+  latin: Dipsacus fullonum
+  german: Wilde Karde
+height: 180
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+spread: 90
+flowerColor:
+  - blue
+lifecycle: perennial
+sowingTime:
+  - april
+  - may
+  - june
+sowingScheme: D
+floweringSeason:
+  - july
+  - august
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

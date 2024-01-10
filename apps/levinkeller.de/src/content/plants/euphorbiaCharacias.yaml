@@ -1,0 +1,24 @@
+slug: euphorbia-characias
+name:
+  latin: Euphorbia Characias
+  german: Mediterrane Wolfsmilch
+height: 125
+floweringSeason:
+  - april
+  - may
+  - june
+soil:
+  - dry
+  - normal
+hardiness: hardy
+sunExposure:
+  - full
+foliageColor: green
+lifecycle: perennial
+spread: 100
+flowerColor:
+  - yellow
+  - brown
+supplier: saatgutVielfalt
+inStock: true
+sowingScheme: B

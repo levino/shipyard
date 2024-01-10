@@ -1,0 +1,22 @@
+flowerColor:
+  - white
+floweringSeason:
+  - july
+  - august
+foliageColor: green
+hardiness: hardy
+height: 70
+inStock: true
+lifecycle: perennial
+name:
+  german: Weiße Bergminze
+  latin: Agastache rugosa 'Alba'
+soil:
+  - normal
+sowingTime:
+  - may
+spread: 80
+sunExposure:
+  - full
+supplier: saatgutVielfalt
+sowingScheme: D

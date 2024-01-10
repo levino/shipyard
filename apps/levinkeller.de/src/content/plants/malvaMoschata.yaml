@@ -1,0 +1,29 @@
+name:
+  latin: Malva moschata
+  german: Moschus-Malve
+height: 70
+soil:
+  - dry
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 35 # Estimated spread based on height
+flowerColor:
+  - rose
+lifecycle: perennial
+germination:
+  dark: true
+sowingTime:
+  - march
+  - april
+  - may
+  - june
+sowingScheme: C
+floweringSeason:
+  - july
+  - august
+  - september
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

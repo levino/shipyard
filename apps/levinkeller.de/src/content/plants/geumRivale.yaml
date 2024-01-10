@@ -1,0 +1,26 @@
+slug: geum-rivale
+name:
+  latin: Geum rivale
+  german: Bach-Nelkenwurz
+height: 30
+floweringSeason:
+  - april
+  - may
+  - june
+  - july
+soil:
+  - moist
+  - wet
+sunExposure:
+  - full
+  - semi-shade
+flowerColor:
+  - brown
+  - orange
+lifecycle: perennial
+hardiness: hardy
+spread: 30
+foliageColor: green
+supplier: saatgutVielfalt
+inStock: true
+sowingScheme: C

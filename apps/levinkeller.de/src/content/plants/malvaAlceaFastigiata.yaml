@@ -1,0 +1,24 @@
+name:
+  latin: Malva alcea 'Fastigiata'
+  german: Rosenpappel
+height: 120
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+spread: 60 # Estimated spread based on height
+flowerColor:
+  - pink
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+sowingScheme: C
+floweringSeason:
+  - july
+  - august
+  - september
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

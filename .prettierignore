@@ -4,3 +4,5 @@
 build/
 static/*/presentation.md
 static/revealjs/
+src/env.d.ts
+pnpm-lock.yaml

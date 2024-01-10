@@ -1,0 +1,29 @@
+name:
+  latin: Aquilegia vulgaris 'Bauerngarten'
+  german: Bauerngarten-Akelei
+height: 70
+soil:
+  - normal
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+spread: 35
+flowerColor:
+  - blue
+  - violet
+  - white
+  - pink
+lifecycle: perennial
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - june
+  - july
+foliageColor: green
+inStock: true
+supplier: saatgutVielfalt

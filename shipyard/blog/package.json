@@ -1,0 +1,12 @@
+{
+  "name": "@shipyard/blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "astro": "^4.0.1"
+  }
+}

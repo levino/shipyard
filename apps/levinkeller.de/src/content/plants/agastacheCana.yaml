@@ -1,0 +1,21 @@
+flowerColor:
+  - pink
+  - red
+floweringSeason:
+  - july
+  - august
+foliageColor: green
+hardiness: hardy
+height: 70
+inStock: true
+lifecycle: perennial
+name:
+  german: Rosarote Bergminze
+  latin: Agastache cana
+soil:
+  - normal
+spread: 50
+sunExposure:
+  - full
+supplier: saatgutVielfalt
+sowingScheme: D

@@ -1,0 +1,23 @@
+slug: succisa-pratensis
+name:
+  latin: Succisa pratensis
+  german: Teufelsabbiss
+height: 55
+floweringSeason:
+  - july
+  - august
+  - september
+soil:
+  - moist
+  - wet
+sunExposure:
+  - full
+flowerColor:
+  - violet
+lifecycle: perennial
+hardiness: hardy
+spread: 30
+foliageColor: green
+supplier: saatgutVielfalt
+inStock: true
+sowingScheme: B
