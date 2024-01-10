@@ -9,12 +9,15 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint .",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "lint": "eslint ."
   },
   "type": "module",
   "dependencies": {
+    "@shipyard/base": "workspace:*",
+    "@shipyard/blog": "workspace:*",
+    "@shipyard/docs": "workspace:*",
+    "@shipyard/ui": "workspace:*",
+    "@shipyard/garden-planner": "workspace:*",
     "@astrojs/check": "^0.3.1",
     "@astrojs/mdx": "^2.0.3",
     "@astrojs/react": "^3.0.7",
@@ -56,15 +59,6 @@
     "usehooks-ts": "^2.9.2"
   },
   "devDependencies": {
-    "@storybook/addon-essentials": "^7.4.6",
-    "@storybook/addon-interactions": "^7.4.6",
-    "@storybook/addon-links": "^7.4.6",
-    "@storybook/addon-onboarding": "^1.0.8",
-    "@storybook/blocks": "^7.4.6",
-    "@storybook/react": "^7.4.6",
-    "@storybook/react-vite": "^7.4.6",
-    "@storybook/test": "^7.6.7",
-    "@storybook/testing-library": "^0.2.2",
     "@tailwindcss/forms": "^0.5.6",
     "@types/eslint": "^8",
     "@types/prettier": "^2",

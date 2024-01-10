@@ -1,7 +1,7 @@
 import type { StorybookConfig } from '@storybook/react-vite'
-import path from 'path'
+
 const config: StorybookConfig = {
-  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: ['../{shipyard,apps}/**/*.stories.tsx'],
   addons: [
     '@storybook/addon-links',
     '@storybook/addon-essentials',
@@ -14,19 +14,6 @@ const config: StorybookConfig = {
   },
   docs: {
     autodocs: 'tag',
-  },
-  async viteFinal(config, { configType }) {
-    return {
-      ...config,
-      resolve: {
-        alias: [
-          {
-            find: '@',
-            replacement: path.resolve(__dirname, '../src'),
-          },
-        ],
-      },
-    }
   },
 }
 export default config

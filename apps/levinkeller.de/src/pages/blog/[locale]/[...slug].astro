@@ -1,23 +1,9 @@
 ---
+export { getStaticPaths } from '@shipyard/blog'
 import Layout from '@/layouts/WithSidebar.astro'
-import { getCollection } from 'astro:content'
-import { TableOfContents } from '@/components/TableOfContents'
+import { TableOfContents } from '@shipyard/base/components/TableOfContents'
 import Sidebar from './_Sidebar.astro'
 
-export async function getStaticPaths() {
-  const getParams = (slug: string) => {
-    const [locale, ...rest] = slug.split('/')
-    return {
-      slug: rest.join('/'),
-      locale,
-    }
-  }
-  const blogPosts = await getCollection('blog')
-  return blogPosts.map((entry) => ({
-    params: getParams(entry.slug),
-    props: { entry },
-  }))
-}
 const { entry } = Astro.props
 const { Content, headings } = await entry.render()
 ---

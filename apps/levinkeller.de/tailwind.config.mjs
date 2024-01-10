@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: ['./src/**/*.{ts,tsx,md,mdx,astro}'],
+  content: [
+    './src/**/*.{ts,tsx,md,mdx,astro}',
+    'node_modules/@shipyard/**/*.tsx',
+  ],
   prefix: '',
   theme: {
     container: {

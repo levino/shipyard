@@ -1,6 +1,7 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { vegetablesSchema } from './_vegetableSchema'
 import { plantsSchema } from './_plantSchema'
+import { blogSchema } from '@shipyard/blog'
 
 export const collections = {
   docs: defineCollection({
@@ -25,10 +26,7 @@ export const collections = {
   }),
   blog: defineCollection({
     type: 'content',
-    schema: z.object({
-      date: z.date(),
-      title: z.string(),
-    }),
+    schema: blogSchema,
   }),
   beds: defineCollection({
     type: 'content',
