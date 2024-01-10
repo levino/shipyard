@@ -14,7 +14,7 @@ export const SidebarElement = ({ entry }: { entry: Entry }) => (
       return (
         <div className="flex flex-col" key={key}>
           {'href' in entry ? (
-            <a className="pl-2 hover:bg-accent" href={entry.href}>
+            <a className="hover:bg-accent pl-2" href={entry.href}>
               {label}
             </a>
           ) : (

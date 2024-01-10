@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.46.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "prettier-plugin-astro": "^0.12.3",
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "typescript": "^5.3.3"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "util@0.12.5": "patches/util@0.12.5.patch"
+    }
+  }
+}

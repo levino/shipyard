@@ -11,8 +11,7 @@
     "astro": "astro",
     "lint": "eslint .",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "prepare": "husky install"
+    "build-storybook": "storybook build"
   },
   "type": "module",
   "dependencies": {
@@ -34,7 +33,6 @@
     "classnames": "^2.3.2",
     "clsx": "^2.1.0",
     "eslint-config-prettier": "^9.0.0",
-    "flowbite-react": "^0.7.2",
     "formik": "^2.4.5",
     "formula-pmt": "^1.0.1",
     "fp-ts": "^2.16.2",
@@ -53,7 +51,6 @@
     "responsive-loader": "^3.1.2",
     "reveal.js": "^4.6.1",
     "sharp": "^0.33",
-    "starlight-blog": "^0.4.0",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^2.9.2"
@@ -69,14 +66,12 @@
     "@storybook/test": "^7.6.7",
     "@storybook/testing-library": "^0.2.2",
     "@tailwindcss/forms": "^0.5.6",
-    "@tsconfig/docusaurus": "^2.0.1",
     "@types/eslint": "^8",
     "@types/prettier": "^2",
     "@types/prop-types": "^15",
     "@types/ramda": "^0.29.9",
     "@types/react": "^18.0.21",
     "@types/reveal.js": "^4.4.5",
-    "@types/spectacle": "^5.2.3",
     "@typescript-eslint/eslint-plugin": "^6.2.1",
     "@typescript-eslint/parser": "^6.2.1",
     "bun-types": "^1.0.6",
@@ -91,7 +86,6 @@
     "prettier-plugin-tailwindcss": "^0.5.9",
     "shadcn-ui": "^0.6.0",
     "storybook": "^7.4.6",
-    "storybook-framework-docusaurus": "^0.1.0-alpha.0",
     "tailwindcss": "^3.0.24",
     "typescript": "^5.3.3",
     "vfile": "^6.0.1",
@@ -108,11 +102,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "packageManager": "bun@1.0.15",
-  "pnpm": {
-    "patchedDependencies": {
-      "util@0.12.5": "patches/util@0.12.5.patch"
-    }
   }
 }

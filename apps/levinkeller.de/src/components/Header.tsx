@@ -19,7 +19,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ brand, links }) => (
-  <div className="sticky top-0 z-50 hidden bg-background/95 md:block">
+  <div className="bg-background/95 sticky top-0 z-50 hidden md:block">
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>

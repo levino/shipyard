@@ -24,7 +24,7 @@ const { title } = Astro.props.frontmatter || Astro.props
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
-    <div class="relative min-h-screen flex-col flex bg-background">
+    <div class="bg-background relative flex min-h-screen flex-col">
       <Header client:load locale={locale} path={currentPath} />
       <main class="flex-1">
         <slot />
