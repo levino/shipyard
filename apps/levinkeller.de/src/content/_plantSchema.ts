@@ -16,7 +16,7 @@ export const plantsSchema = ({ image }: SchemaContext) =>
       soil: z.array(z.enum(['moist', 'dry', 'normal', 'wet'])),
       sunExposure: z.array(z.enum(['full', 'semi-shade', 'shade'])),
       hardiness: z.enum(['hardy', 'tender']),
-      spread: z.number(),
+      spread: z.number().optional(),
       germination: z
         .object({
           dark: z.boolean().default(false),
