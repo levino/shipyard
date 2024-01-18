@@ -1,0 +1,32 @@
+description:
+  Wunderschöne, reinweiße Form der beliebten Beetstaude. Dieser mittelhohe
+  Rittersporn wird bis 1,20 m hoch und ist weitgehend standfest. Rittersporne
+  haben einen sehr hohen Nährstoffbedarf und sollten nur in den besten
+  Gartenboden gesetzt werden, viel Humus und konstante Wasserversorgung sind für
+  ein gutes Gedeihen unerlässlich.
+flowerColor:
+  - white
+floweringSeason:
+  - june
+  - july
+  - august
+foliageColor: green
+germination:
+  dark: false
+  light: false
+hardiness: hardy
+height: 120
+inStock: false
+lifecycle: perennial
+name:
+  german: Rittersporn
+  latin: Delphinium belladonna
+soil:
+  - normal
+  - moist
+sowingScheme: D
+spread: 50
+sunExposure:
+  - full
+supplier: saatgutVielfalt
+toSow: true

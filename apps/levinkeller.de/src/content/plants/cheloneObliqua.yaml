@@ -1,0 +1,41 @@
+name:
+  latin: Chelone obliqua
+  german: Schlangenkopf
+description: "Diese robuste, bis 1 m hohe Wildstaude aus den \xF6stlichen USA
+  w\xE4\
+  chst auf jedem feuchtem Gartenboden, auch schwere Lehmb\xF6den werden
+  besiedelt.\
+  \ Die rosavioletten Bl\xFCten bestehen aus einer 2-lappigen Ober- und einer
+  dreilappigen\
+  \ Unterlippe. Mit etwas Fantasie kann man einen Schlangenkopf erkennen.
+  Sch\xF6\
+  n zusammen mit Physostegia, hohen Glockenblumen, Agastache, oder
+  Schleierkraut.\
+  \ Wertvoll durch die sp\xE4tsommerliche Bl\xFCtezeit!"
+height: 100
+soil:
+  - moist
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+germination:
+  dark: false
+  light: false
+flowerColor:
+  - pink
+  - violet
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+sowingScheme: C
+floweringSeason:
+  - july
+  - august
+  - september
+inStock: true
+supplier: saatgutVielfalt

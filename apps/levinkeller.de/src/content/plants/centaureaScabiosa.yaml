@@ -1,0 +1,31 @@
+name:
+  latin: Centaurea scabiosa
+  german: Skabiosen-Flockenblume
+height: 100
+soil:
+  - normal
+  - dry
+sunExposure:
+  - full
+hardiness: hardy
+germination:
+  dark: false
+  light: true
+flowerColor:
+  - red
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+  - june
+sowingScheme: D
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+inStock: true
+supplier: saatgutVielfalt
