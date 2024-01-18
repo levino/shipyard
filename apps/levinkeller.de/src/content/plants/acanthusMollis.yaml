@@ -1,0 +1,29 @@
+name:
+  latin: Acanthus mollis
+  german: Weicher Akanthus
+height: 100
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+germination:
+  dark: true
+  light: false
+flowerColor:
+  - white
+  - pink
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+  - june
+sowingScheme: D
+floweringSeason:
+  - june
+  - july
+inStock: true
+supplier: saatgutVielfalt

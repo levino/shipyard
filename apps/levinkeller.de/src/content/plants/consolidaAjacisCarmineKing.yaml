@@ -1,0 +1,30 @@
+name:
+  latin: Consolida ajacis 'Carmine King'
+  german: Einjähriger Rittersporn 'Carmine King'
+height: 150
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+germination:
+  dark: true
+  light: false
+flowerColor:
+  - red
+  - pink
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+inStock: true
+supplier: saatgutVielfalt

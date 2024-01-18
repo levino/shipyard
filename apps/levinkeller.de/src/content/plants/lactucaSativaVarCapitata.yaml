@@ -1,0 +1,37 @@
+name:
+  latin: Lactuca sativa var. capitata
+  german: Kopfsalat
+description:
+  Wine red Bativian lettuce with strong, shiny, toothed leaves. Compact growth
+  with a slight tendency towards forming heads. Very healthy and vigorous, for
+  the whole growing season. Aromatic with a touch of bitterness.
+height: 30
+soil:
+  - moist
+  - normal
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+spread: 15
+flowerColor:
+  - green
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+  - june
+  - july
+  - august
+floweringSeason:
+  - may
+  - june
+  - july
+  - august
+  - september
+inStock: true
+supplier: saatgutVielfalt

@@ -1,0 +1,39 @@
+name:
+  latin: Cephalaria gigantea
+  german: Gelbe Riesenskabiose
+description: "Aus den Schluchten des Kaukasus stammende, bis 2,50 m hoch
+  werdende\
+  \ Wildstaude, die an der Basis leicht verholzt und einen imposanten, stark
+  verzweigten\
+  \ Bl\xFCtenstand entwickelt. An dessen Ende stehen zahlreiche, etwa 5 cm
+  gro\xDF\
+  e, hellgelbe Skabiosenbl\xFCten, die gerne von Bienen und Hummeln angeflogen
+  werden.\
+  \ Solit\xE4rstaude, die einigen Platz braucht. Ben\xF6tigt kaum Pflege, auch
+  zum\
+  \ Verwildern geeignet. Eindrucksvolle Pflanze !"
+height: 250
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+germination:
+  dark: false
+  light: false
+flowerColor:
+  - yellow
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+sowingScheme: C
+floweringSeason:
+  - june
+  - july
+  - august
+inStock: true
+supplier: saatgutVielfalt

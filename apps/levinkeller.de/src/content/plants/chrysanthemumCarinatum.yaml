@@ -1,0 +1,46 @@
+name:
+  latin: Chrysanthemum carinatum
+  german: Bunte Sommermargerite
+description: "Sommermargeriten sind ideale Gew\xE4chse f\xFCr Bauerng\xE4rten,
+  f\xFC\
+  r Rabatten, und zur Schnittblumengewinnung. Die Bl\xFCten sind faszinierend
+  gezeichnet\
+  \ und fast immer dreifarbig: die Bl\xFCtenscheibe im Inneren ist dunkelbraun,
+  nach\
+  \ au\xDFen folgen bei der abgebildeten Variante innen zun\xE4chst ein schmaler
+  gelber\
+  \ Ring, gefolgt von einem kr\xE4ftigeren rotbraunen Ring, und au\xDFen
+  strahlendes\
+  \ Wei\xDF. Sommermargeriten sind leider etwas aus der Mode gekommen, die
+  Anzucht\
+  \ per Direktsaat ist aber denkbar einfach. Bl\xFCht von Juni bis Oktober."
+height: 70
+soil:
+  - normal
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+germination:
+  dark: false
+  light: true
+flowerColor:
+  - white
+  - red
+  - brown
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingTime:
+  - february
+  - march
+  - april
+  - may
+sowingScheme: B
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+inStock: true
+supplier: saatgutVielfalt

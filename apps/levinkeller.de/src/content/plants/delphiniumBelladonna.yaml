@@ -1,0 +1,31 @@
+description:
+  Die wunderbaren enzianblauen Blüten dieses Rittersporns tragen eine
+  schwarzviolette Mitte. 'Bellamosum' ist eine mittelhohe, weitgehend standfeste
+  Sorte.
+flowerColor:
+  - blue
+  - violet
+floweringSeason:
+  - june
+  - july
+  - august
+foliageColor: green
+germination:
+  dark: false
+  light: false
+hardiness: hardy
+height: 150
+inStock: false
+lifecycle: perennial
+name:
+  german: Rittersporn
+  latin: Delphinium belladonna
+soil:
+  - normal
+  - moist
+sowingScheme: D
+spread: 50
+sunExposure:
+  - full
+supplier: saatgutVielfalt
+toSow: true

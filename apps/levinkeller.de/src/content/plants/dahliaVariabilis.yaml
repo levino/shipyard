@@ -1,0 +1,36 @@
+description:
+  Eine sehr exklusive Mischung der Collarette-Dahlien, mit einem zweiten,
+  kleineren Blütenkranz, der oft in Kontrast zur eigentlichen Blüte steht.
+flowerColor:
+  - white
+  - yellow
+  - red
+  - pink
+  - orange
+floweringSeason:
+  - july
+  - august
+  - september
+  - october
+foliageColor: green
+germination:
+  dark: false
+  light: false
+hardiness: tender
+height: 40
+inStock: false
+lifecycle: annual
+name:
+  german: Collarette-Dahlie
+  latin: Dahlia variabilis
+soil:
+  - normal
+  - moist
+sowingTime:
+  - march
+  - april
+spread: 20
+sunExposure:
+  - full
+supplier: saatgutVielfalt
+toSow: true

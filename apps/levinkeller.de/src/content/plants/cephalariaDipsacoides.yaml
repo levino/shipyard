@@ -1,0 +1,35 @@
+name:
+  latin: Cephalaria dipsacoides
+  german: Anatolische Riesenskabiose
+description: "Aus Anatolien stammende, hellgelb bis cremeweiss bl\xFChende
+  Riesenskabiose,\
+  \ die aber nicht so hoch wird, wie die bekanntere Cephalaria gigantea (sie
+  bleibt\
+  \ unter 2 m). Ben\xF6tigt kaum Pflege, auch zum Verwildern geeignet.
+  Eindrucksvolle\
+  \ Pflanze, und gro\xDFe Rarit\xE4t !"
+height: 150
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+germination:
+  dark: false
+  light: false
+flowerColor:
+  - yellow
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingTime:
+  - march
+  - april
+  - may
+sowingScheme: C
+floweringSeason:
+  - june
+  - july
+  - august
+inStock: true
+supplier: saatgutVielfalt

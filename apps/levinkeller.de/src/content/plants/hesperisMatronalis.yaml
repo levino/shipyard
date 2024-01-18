@@ -1,0 +1,34 @@
+name:
+  latin: Hesperis matronalis
+  german: Nachtviole
+description: "Die Nachtviole ist eine zweij\xE4hrige Wildstaude, die gerne auf
+  n\xE4\
+  hrstoffreichen, feuchten Standorten w\xE4chst. Sie bl\xFCht von Mai bis Juli
+  und\
+  \ verbreitet abends einen intensiven Duft."
+height: 100
+soil:
+  - normal
+  - moist
+sunExposure:
+  - semi-shade
+  - shade
+hardiness: hardy
+germination:
+  dark: false
+  light: true
+flowerColor:
+  - violet
+toSow: true
+foliageColor: green
+lifecycle: biennial
+sowingTime:
+  - march
+  - april
+sowingScheme: B
+floweringSeason:
+  - may
+  - june
+  - july
+inStock: true
+supplier: saatgutVielfalt
