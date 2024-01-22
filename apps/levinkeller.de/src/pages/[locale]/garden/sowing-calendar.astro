@@ -18,11 +18,12 @@ export const getStaticPaths = (() => {
 const vegetables = await getCollection('vegetables').then((vegetables) =>
   vegetables.map(
     ({
+      id,
       data: {
         sowing,
         name: { common: name },
       },
-    }) => ({ sowing, name }),
+    }) => ({ sowing, name, link: `./vegetables/${id}` }),
   ),
 )
 
@@ -30,36 +31,52 @@ const plants = await getCollection('plants', path(['data', 'toSow'])).then(
   (plants) =>
     plants.map(
       ({
+        id,
         data: {
           sowingTime,
-          name: { german: name },
+          name: { latin: name },
         },
-      }) => ({ sowing: sowingTime, name }),
+      }) => ({ sowing: sowingTime, name, link: `./plants/${id}` }),
     ),
 )
 const plantsBySowingMonth = pipe(
   vegetables.concat(plants),
-  map(({ sowing, name }) => sowing.map((sowing) => ({ sowing, name }))),
+  map((plant) => plant.sowing.map((sowing) => ({ ...plant, sowing }))),
   flatten,
   groupBy(prop('sowing')),
 )
 ---
 
 <Layout>
-  <div class="prose">
-    <ul>
-      {
-        MONTHS_EN.map((month, index) => (
-          <li>
-            <h2>{MONTHS_DE[index]}</h2>
-            <ul class="list-disc">
-              {plantsBySowingMonth[month]?.map(({ name }) => (
-                <li>{name}</li>
-              ))}
-            </ul>
-          </li>
-        ))
-      }
-    </ul>
+  <div class="container mx-auto">
+    <h1 class="m-4 text-center text-xl">Aussaatkalender</h1>
+    <table class="table table-xs">
+      <thead>
+        <tr>
+          {
+            MONTHS_DE.map((month) => (
+              <th class="odd:bg-base-200 even:bg-base-100">{month}</th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          {
+            MONTHS_EN.map((month) => (
+              <td class="align-top odd:bg-base-200 even:bg-base-100">
+                <ul class="list-none">
+                  {plantsBySowingMonth[month]?.map(({ name, link }) => (
+                    <li class="py-1">
+                      <a href={link}>{name}</a>
+                    </li>
+                  ))}
+                </ul>
+              </td>
+            ))
+          }
+        </tr>
+      </tbody>
+    </table>
   </div>
 </Layout>

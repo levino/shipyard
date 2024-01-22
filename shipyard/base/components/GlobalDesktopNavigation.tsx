@@ -4,7 +4,7 @@ import { cn } from '../tools/cn'
 export const GlobalDesktopNavigation: React.FC<
   Pick<Config, 'brand' | 'navigation'> & { showBrand: boolean }
 > = ({ brand, navigation, showBrand = false }) => (
-  <div className="navbar bg-base-100">
+  <div className="navbar z-10 bg-base-100">
     <span
       className="tooltip tooltip-bottom before:text-xs before:content-[attr(data-tip)]"
       data-tip="Menu"

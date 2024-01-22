@@ -31,5 +31,7 @@ const entries = path([locale, 'subEntry', 'docs', 'subEntry'])(
 ---
 
 <BaseLayout sidebarNavigation={entries}>
-  <slot />
+  <div class="prose mx-auto">
+    <slot />
+  </div>
 </BaseLayout>

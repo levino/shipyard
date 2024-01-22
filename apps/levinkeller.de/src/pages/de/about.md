@@ -1,10 +1,6 @@
 ---
 title: Über meine Homepage
-layout: '@shipyard/base/layouts/Page.astro'
-locale: 'de'
-prev: false
-next: false
-tableOfContents: false
+layout: '@shipyard/base/layouts/Splash.astro'
 ---
 
 # Über levinkeller.de

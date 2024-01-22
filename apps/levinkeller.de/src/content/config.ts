@@ -32,6 +32,7 @@ export const collections = {
     type: 'content',
     schema: z.object({
       plants: z.array(reference('plants')),
+      name: z.string(),
     }),
   }),
   vegetables: defineCollection({

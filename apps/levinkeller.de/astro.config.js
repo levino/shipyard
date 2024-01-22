@@ -52,7 +52,7 @@ export default defineConfig({
           subEntry: {
             beds: {
               label: 'Beetplaner',
-              href: '/garden/beds/1',
+              href: '/garden/beds',
             },
             plants: {
               label: 'Pflanzen',
