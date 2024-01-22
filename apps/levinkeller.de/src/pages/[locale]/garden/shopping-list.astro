@@ -21,22 +21,24 @@ const vegetables = await getCollection('vegetables', outOfStock).then(
   (vegetables) =>
     vegetables.map(
       ({
+        id,
         data: {
           supplier: { id: supplierId },
           name: { common: name },
         },
-      }) => ({ supplierId, name }),
+      }) => ({ supplierId, name, link: `./vegetables/${id}` }),
     ),
 )
 
 const plants = await getCollection('plants', outOfStock).then((plants) =>
   plants.map(
     ({
+      id,
       data: {
         supplier: { id: supplierId },
         name: { german: name },
       },
-    }) => ({ supplierId, name }),
+    }) => ({ supplierId, name, link: `./plants/${id}` }),
   ),
 )
 const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
@@ -52,21 +54,33 @@ const vegBySupplier = pipe(
 ---
 
 <Layout>
-  <div class="prose">
-    <h1>{2024}</h1>
-    <ul>
-      {
-        Object.values(vegBySupplier).map(({ vegetables, supplierName }) => (
-          <li>
-            <h2>{supplierName}</h2>
-            <ul class="list-disc">
-              {vegetables!.map(({ name }) => (
-                <li>{name}</li>
-              ))}
-            </ul>
-          </li>
-        ))
-      }
-    </ul>
+  <div class="container mx-auto">
+    <h1 class="m-4 text-center text-xl">Einkaufsliste</h1>
+    <table class="table">
+      <thead>
+        <tr>
+          {
+            Object.values(vegBySupplier).map(({ supplierName }) => (
+              <th>{supplierName}</th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody>
+        {
+          Object.values(vegBySupplier).map(({ vegetables, supplierName }) => (
+            <td class="align-top">
+              <ul class="list-inside list-disc">
+                {vegetables!.map(({ name, link }) => (
+                  <li>
+                    <a href={link}>{name}</a>
+                  </li>
+                ))}
+              </ul>
+            </td>
+          ))
+        }
+      </tbody>
+    </table>
   </div>
 </Layout>
