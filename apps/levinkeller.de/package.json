@@ -15,7 +15,7 @@
     "@astrojs/check": "^0.3.1",
     "@astrojs/mdx": "^2.0.3",
     "@astrojs/react": "^3.0.7",
-    "@astrojs/sitemap": "^3.0.3",
+    "@astrojs/sitemap": "^3.0.5",
     "@astrojs/tailwind": "^5.0.3",
     "@heroicons/react": "^2.0.18",
     "@mdx-js/react": "^3",
