@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content'
 import BaseLayout from '@shipyard/base/layouts/Page.astro'
 import { toSidebarEntries } from './sidebarEntries'
 import { path } from 'ramda'
-import type { Entry } from '@shipyard/base/components/SidebarElement'
+import type { NavigationTree } from '@shipyard/base/src/schemas/config'
 
 const locale = Astro.currentLocale as string
 const docs = await getCollection<{
@@ -25,13 +25,9 @@ const docs = await getCollection<{
   ),
 )
 
-console.log(toSidebarEntries(docs))
-
 const entries = path([locale, 'subEntry', 'docs', 'subEntry'])(
   toSidebarEntries(docs),
-) as Entry
-
-console.log({ entries })
+) as NavigationTree
 ---
 
 <BaseLayout sidebarNavigation={entries}>

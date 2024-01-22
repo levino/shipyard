@@ -1,8 +1,9 @@
 import type { Config } from '@/schemas/config'
+import { cn } from '../tools/cn'
 
 export const GlobalDesktopNavigation: React.FC<
-  Pick<Config, 'brand' | 'navigation'>
-> = ({ brand, navigation }) => (
+  Pick<Config, 'brand' | 'navigation'> & { showBrand: boolean }
+> = ({ brand, navigation, showBrand = false }) => (
   <div className="navbar bg-base-100">
     <span
       className="tooltip tooltip-bottom before:text-xs before:content-[attr(data-tip)]"
@@ -31,11 +32,16 @@ export const GlobalDesktopNavigation: React.FC<
       </label>
     </span>
     <div className="flex-1">
-      <a href="/" className="btn btn-ghost text-xl">
+      <a
+        href="/"
+        className={cn('btn btn-ghost text-xl', {
+          'md:hidden': !showBrand,
+        })}
+      >
         {brand}
       </a>
     </div>
-    <div className="flex-none">
+    <div className="hidden flex-none lg:flex">
       <ul className="menu menu-horizontal px-1">
         {Object.entries(navigation).map(([key, entry]) =>
           entry.subEntry ? (
