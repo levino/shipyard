@@ -4,8 +4,14 @@ import tailwind from '@astrojs/tailwind'
 import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import shipyard from '@shipyard/base'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+
 // https://astro.build/config
 export default defineConfig({
+  markdown: {
+    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
+  },
   i18n: {
     defaultLocale: 'de',
     locales: ['de', 'en'],
@@ -29,6 +35,18 @@ export default defineConfig({
     mdx(),
     shipyard({
       navigation: {
+        docs: {
+          label: 'Wissen',
+          href: '/docs',
+        },
+        blog: {
+          label: 'Blog',
+          href: '/blog',
+        },
+        work: {
+          label: 'Work',
+          href: '/work',
+        },
         garden: {
           label: 'Gartenplaner',
           subEntry: {
@@ -49,18 +67,6 @@ export default defineConfig({
               href: '/garden/sowing-calendar',
             },
           },
-        },
-        docs: {
-          label: 'Docs',
-          href: '/docs',
-        },
-        blog: {
-          label: 'Blog',
-          href: '/blog',
-        },
-        work: {
-          label: 'Work',
-          href: '/work',
         },
         about: {
           label: 'About',
