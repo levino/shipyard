@@ -1,3 +1,6 @@
-import config from '@shipyard/ui/postcss.config.js'
-
-export default config
+export default {
+  plugins: {
+    tailwindcss: {},
+    autoprefixer: {},
+  },
+}

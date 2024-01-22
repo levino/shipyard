@@ -5,6 +5,11 @@ export const blogSchema = z.object({
   title: z.string(),
 })
 
+interface BlogData {
+  title: string
+  description?: string
+}
+
 import { getCollection } from 'astro:content'
 
 export const getStaticPaths = async () => {
@@ -15,7 +20,7 @@ export const getStaticPaths = async () => {
       locale,
     }
   }
-  const blogPosts = await getCollection('blog')
+  const blogPosts = await getCollection<BlogData>('blog')
   return blogPosts.map((entry) => ({
     params: getParams(entry.slug),
     props: { entry },

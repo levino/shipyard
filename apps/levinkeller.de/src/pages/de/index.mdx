@@ -1,5 +1,5 @@
 ---
-layout: '@/layouts/MarkdownSplash.astro'
+layout: '@shipyard/base/layouts/Page.astro'
 title: Startseite
 locale: de
 description:
@@ -7,7 +7,7 @@ description:
   interessant ist.
 ---
 
-import { LinkCard } from '@shipyard/base/components/LinkCard'
+import { Card } from '@/components/Card'
 
 Willkommen auf meiner Homepage. Diese Seite wird lean entwickelt, insofern sind
 hier noch wenige Inhalte und viele Dinge unvollständig oder ästhetisch nicht
@@ -15,12 +15,12 @@ stimmig. Außerdem ermöglicht mir diese Seite ein bisschen mit NextJS und MDX
 herumzuspielen, was interessant ist.
 
 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-  <LinkCard
+  <Card
     description="Ereignisse über die ich berichten möchte. Eindrücke und aktuelle Gedanken, die ich festhalten möchte."
     title="Blog"
     href="/blog/de"
   />
-  <LinkCard
+  <Card
     title="Wissen"
     description="Dinge, die ich gelernt habe. Sachverhalte, die ich recherchiert habe."
     href="/docs/de"

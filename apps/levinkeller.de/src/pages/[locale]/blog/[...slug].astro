@@ -1,0 +1,17 @@
+---
+export { getStaticPaths } from '@shipyard/blog'
+import Layout from '@shipyard/blog/Layout.astro'
+import { TableOfContents } from '@shipyard/base/components/TableOfContents'
+
+const { entry } = Astro.props
+const { Content, headings } = await entry.render()
+---
+
+<Layout>
+  <div>
+    <div class="prose mx-auto w-full px-8">
+      <Content />
+    </div>
+    <TableOfContents links={headings} />
+  </div>
+</Layout>

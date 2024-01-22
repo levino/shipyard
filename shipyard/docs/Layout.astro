@@ -1,0 +1,39 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '@shipyard/base/layouts/Page.astro'
+import { toSidebarEntries } from './sidebarEntries'
+import { path } from 'ramda'
+import type { Entry } from '@shipyard/base/components/SidebarElement'
+
+const locale = Astro.currentLocale as string
+const docs = await getCollection<{
+  title: string
+  sidebar: { render: boolean; label: string }
+}>('docs').then((docs) =>
+  docs.map(
+    ({
+      slug,
+      data: {
+        title,
+        sidebar: { render, label },
+      },
+    }) => ({
+      path: `/${locale}/docs/${slug.slice(3)}`,
+      title: label ?? title,
+      link: render,
+    }),
+  ),
+)
+
+console.log(toSidebarEntries(docs))
+
+const entries = path([locale, 'subEntry', 'docs', 'subEntry'])(
+  toSidebarEntries(docs),
+) as Entry
+
+console.log({ entries })
+---
+
+<BaseLayout sidebarNavigation={entries}>
+  <slot />
+</BaseLayout>

@@ -1,0 +1,22 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '@shipyard/base/layouts/Page.astro'
+const locale = Astro.currentLocale
+const entry = await getCollection<{ title: string }>('blog').then(
+  (collection) =>
+    collection.reduce(
+      (acc, { slug, data: { title } }, key) => ({
+        ...acc,
+        [key]: {
+          href: `/${locale}/blog/${slug.slice(3)}`,
+          label: title,
+        },
+      }),
+      {},
+    ),
+)
+---
+
+<BaseLayout sidebarNavigation={entry}>
+  <slot />
+</BaseLayout>

@@ -1,0 +1,72 @@
+---
+import Layout from '@shipyard/base/layouts/Page.astro'
+import type { GetStaticPaths } from 'astro'
+import { prop, groupBy, indexBy, mapObjIndexed } from 'ramda'
+import { pipe } from 'fp-ts/lib/function'
+import { getCollection } from 'astro:content'
+export const getStaticPaths = (() => {
+  return [
+    {
+      params: {
+        locale: 'de',
+      },
+    },
+  ]
+}) satisfies GetStaticPaths
+
+const outOfStock = ({ data: { inStock } }: { data: { inStock: boolean } }) =>
+  !inStock
+
+const vegetables = await getCollection('vegetables', outOfStock).then(
+  (vegetables) =>
+    vegetables.map(
+      ({
+        data: {
+          supplier: { id: supplierId },
+          name: { common: name },
+        },
+      }) => ({ supplierId, name }),
+    ),
+)
+
+const plants = await getCollection('plants', outOfStock).then((plants) =>
+  plants.map(
+    ({
+      data: {
+        supplier: { id: supplierId },
+        name: { german: name },
+      },
+    }) => ({ supplierId, name }),
+  ),
+)
+const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
+const vegBySupplier = pipe(
+  vegetables.concat(plants),
+  // @ts-expect-error
+  groupBy(prop('supplierId')),
+  mapObjIndexed((vegetables, supplierId) => ({
+    supplierName: suppliers[supplierId].data.name,
+    vegetables,
+  })),
+)
+---
+
+<Layout>
+  <div class="prose">
+    <h1>{2024}</h1>
+    <ul>
+      {
+        Object.values(vegBySupplier).map(({ vegetables, supplierName }) => (
+          <li>
+            <h2>{supplierName}</h2>
+            <ul class="list-disc">
+              {vegetables!.map(({ name }) => (
+                <li>{name}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Layout>

@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@shipyard/ui": "workspace:*",
+    "@shipyard/base": "workspace:*",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-interactions": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",
@@ -19,21 +19,30 @@
     "@storybook/react": "^7.6.7",
     "@storybook/react-vite": "^7.6.7",
     "@storybook/test": "^7.6.7",
+    "autoprefixer": "^10.4.15",
+    "daisyui": "^4.6.0",
     "eslint": "^8.46.0",
     "eslint-plugin-storybook": "^0.6.15",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
+    "postcss": "^8.4.28",
     "prettier": "^3.1.1",
     "prettier-plugin-astro": "^0.12.3",
     "prettier-plugin-tailwindcss": "^0.5.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.6.7",
-    "typescript": "^5.3.3"
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3",
+    "vite": "^4.5.1"
   },
   "pnpm": {
     "patchedDependencies": {
       "util@0.12.5": "patches/util@0.12.5.patch"
     }
+  },
+  "dependencies": {
+    "astro": "^4.0.1",
+    "infima": "0.2.0-alpha.43"
   }
 }

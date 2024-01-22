@@ -1,13 +1,3 @@
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@shipyard/ui/components/ui/table'
-
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
 import type { CollectionEntry } from 'astro:content'
 import type { FC } from 'react'
@@ -16,29 +6,27 @@ export const PlantTable: FC<{
   plants: CollectionEntry<'plants'>[]
   caption: string
 }> = ({ plants, caption }) => (
-  <Table>
-    <TableCaption>{caption}</TableCaption>
-    <TableHeader>
-      <TableRow>
-        <TableHead>Name</TableHead>
-        <TableHead>deutscher Name</TableHead>
-        <TableHead>vorrätig</TableHead>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
+  <table className="table">
+    <p>{caption}</p>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>deutscher Name</th>
+        <th>vorrätig</th>
+      </tr>
+    </thead>
+    <tbody>
       {plants.map((plant) => (
-        <TableRow key={plant.id}>
-          <TableCell>
-            <a href={`/garden/de/plants/${plant.id}`}>
+        <tr key={plant.id}>
+          <th>
+            <a href={`/de/garden/plants/${plant.id}`}>
               {plant.data.name.latin}
             </a>
-          </TableCell>
-          <TableCell>{plant.data.name.german}</TableCell>
-          <TableCell>
-            {plant.data.inStock ? <CheckIcon /> : <Cross2Icon />}
-          </TableCell>
-        </TableRow>
+          </th>
+          <td>{plant.data.name.german}</td>
+          <td>{plant.data.inStock ? <CheckIcon /> : <Cross2Icon />}</td>
+        </tr>
       ))}
-    </TableBody>
-  </Table>
+    </tbody>
+  </table>
 )

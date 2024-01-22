@@ -1,0 +1,82 @@
+---
+import Footer from './Footer.astro'
+import '../globals.css'
+import config from 'virtual:shipyard/config'
+import { GlobalDesktopNavigation } from '../components/GlobalDesktopNavigation'
+import type { NavigationTree, NavigationEntry } from '@/schemas/config'
+import { mapObjIndexed } from 'ramda'
+import { SidebarNavigation } from '../components/SidebarNavigation'
+
+type Props = {
+  frontmatter?: {
+    title?: string
+    description?: string
+    sidebarNavigation?: NavigationTree
+  }
+} & {
+  title?: string
+  description?: string
+  sidebarNavigation?: NavigationTree
+}
+const locale = Astro.currentLocale || 'de'
+const currentPath = Astro.url.pathname
+const props = Astro.props.frontmatter || Astro.props
+
+const withLocale = (locale: string) => (path: string) => `/${locale}${path}`
+const withCurrentLocale = withLocale(locale)
+const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
+  mapObjIndexed((entry: NavigationEntry) => ({
+    ...entry,
+    ...(entry.href ? { href: withCurrentLocale(entry.href) } : {}),
+    active: entry.href === currentPath,
+    ...(entry.subEntry
+      ? { subEntry: applyLocaleAndSetActive(entry.subEntry) }
+      : {}),
+  }))
+
+const navigation = applyLocaleAndSetActive(config.navigation)
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>
+      {
+        config.meta.title
+          ? `Levin Keller - ${config.meta.title}`
+          : 'Levin Keller'
+      }
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <div class="drawer lg:drawer-open">
+      <input id="drawer" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content">
+        <div class="flex min-h-screen flex-col">
+          <GlobalDesktopNavigation
+            brand={config.brand}
+            navigation={navigation}
+          />
+          <div class="grow">
+            <div class="container prose mx-auto px-4">
+              <slot />
+            </div>
+          </div>
+          <Footer />
+        </div>
+      </div>
+
+      <div class="drawer-side z-40">
+        <label for="drawer" aria-label="close sidebar" class="drawer-overlay"
+        ></label>
+        <div>
+          <SidebarNavigation
+            global={navigation}
+            local={props.sidebarNavigation || {}}
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

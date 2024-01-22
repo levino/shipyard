@@ -5,5 +5,11 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ramda": "^0.29.1"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.29.9"
+  }
 }

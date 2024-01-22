@@ -1,3 +1,15 @@
 {
-  "redirects": [{ "source": "/", "destination": "/de", "permanent": false }]
+  "redirects": [
+    { "source": "/", "destination": "/de", "permanent": false },
+    {
+      "source": "/blog/de/:path*",
+      "destination": "/de/blog/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/docs/de/:path*",
+      "destination": "/de/docs/:path*",
+      "permanent": true
+    }
+  ]
 }
