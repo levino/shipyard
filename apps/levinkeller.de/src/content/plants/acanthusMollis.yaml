@@ -13,7 +13,7 @@ germination:
 flowerColor:
   - white
   - pink
-toSow: true
+toSow: false
 foliageColor: green
 lifecycle: perennial
 sowingTime:

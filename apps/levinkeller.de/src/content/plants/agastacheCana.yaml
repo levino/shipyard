@@ -7,7 +7,7 @@ floweringSeason:
 foliageColor: green
 hardiness: hardy
 height: 70
-inStock: true
+inStock: false
 lifecycle: perennial
 name:
   german: Rosarote Bergminze
