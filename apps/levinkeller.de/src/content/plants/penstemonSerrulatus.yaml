@@ -1,0 +1,24 @@
+name:
+  latin: Penstemon serrulatus
+  german: "Ges\xE4gter Bartfaden"
+height: 70
+soil:
+  - normal
+  - moist
+  - wet
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+flowerColor:
+  - blue
+  - violet
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingScheme: B
+floweringSeason:
+  - may
+  - june
+  - july
+supplier: saatgutVielfalt

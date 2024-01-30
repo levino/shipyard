@@ -1,0 +1,21 @@
+name:
+  latin: Echinops sphaerocephalus
+  german: Kugeldistel
+height: 200
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - white
+  - blue
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingScheme: D
+floweringSeason:
+  - june
+  - july
+  - august
+supplier: saatgutVielfalt

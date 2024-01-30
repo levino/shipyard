@@ -1,0 +1,24 @@
+name:
+  latin: Baptisia australis
+  german: Indigolupine
+height: 150
+soil:
+  - dry
+  - normal
+  - moist
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - blue
+toSow: true
+foliageColor: green
+lifecycle: perennial
+
+sowingScheme: B
+floweringSeason:
+  - july
+  - august
+images: []
+inStock: true
+supplier: saatgutVielfalt

@@ -1,0 +1,21 @@
+name:
+  latin: Gaillardia pulchella Sundance Red
+  german: "Gef\xFCllte Rote Kokardenblume"
+height: 40
+soil:
+  - normal
+  - dry
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - red
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingScheme: D
+floweringSeason:
+  - july
+  - august
+  - september
+supplier: saatgutVielfalt

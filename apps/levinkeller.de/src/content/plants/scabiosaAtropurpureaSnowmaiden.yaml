@@ -1,0 +1,21 @@
+name:
+  latin: Scabiosa atropurpurea Snowmaiden
+  german: "Wei\xDFe Garten-Skabiose"
+height: 100
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - white
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingScheme: D
+floweringSeason:
+  - july
+  - august
+  - september
+  - october
+supplier: saatgutVielfalt

@@ -1,0 +1,23 @@
+name:
+  latin: Geum coccineum Borisii
+  german: Orangerote Nelkenwurz
+height: 40
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+flowerColor:
+  - orange
+toSow: true
+lifecycle: perennial
+sowingScheme: B
+foliageColor: green
+supplier: saatgutVielfalt
+floweringSeason:
+  - may
+  - june
+  - july
+  - august

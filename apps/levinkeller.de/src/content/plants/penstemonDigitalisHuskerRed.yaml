@@ -1,0 +1,19 @@
+name:
+  latin: Penstemon digitalis Husker Red Strain
+  german: "Rotbl\xE4ttriger Fingerhut-Bartfaden"
+height: 150
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - white
+toSow: true
+foliageColor: red
+lifecycle: perennial
+sowingScheme: B
+floweringSeason:
+  - july
+  - august
+supplier: saatgutVielfalt

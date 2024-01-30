@@ -1,0 +1,22 @@
+name:
+  latin: Helenium autumnale Rotgold-Hybriden
+  german: Rot-Gelbe Herbst-Sonnenbraut
+height: 150
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - red
+  - yellow
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingScheme: D
+floweringSeason:
+  - august
+  - september
+  - october
+supplier: saatgutVielfalt

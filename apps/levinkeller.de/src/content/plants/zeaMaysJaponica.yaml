@@ -1,0 +1,21 @@
+name:
+  latin: Zea mays Japonica
+  german: Gestreifter Mais
+height: 200
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - green
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingScheme: D
+floweringSeason:
+  - august
+  - september
+  - october
+supplier: saatgutVielfalt

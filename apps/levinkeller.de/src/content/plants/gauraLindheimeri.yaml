@@ -1,0 +1,25 @@
+name:
+  latin: Gaura lindheimeri
+  german: "Pr\xE4riekerze"
+height: 150
+soil:
+  - normal
+  - dry
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - white
+  - pink
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingScheme: D
+floweringSeason:
+  - may
+  - june
+  - july
+  - august
+  - september
+  - october
+supplier: saatgutVielfalt

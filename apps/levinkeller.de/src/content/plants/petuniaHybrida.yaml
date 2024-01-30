@@ -1,0 +1,30 @@
+name:
+  latin: Petunia hybrida
+  german: Aufrechte Beet-Petunie
+height: 40
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - white
+  - blue
+  - violet
+  - yellow
+  - red
+  - pink
+  - orange
+toSow: false
+foliageColor: green
+lifecycle: annual
+sowingTime:
+  - january
+  - february
+  - march
+floweringSeason:
+  - june
+  - july
+  - august
+  - september
+supplier: saatgutVielfalt

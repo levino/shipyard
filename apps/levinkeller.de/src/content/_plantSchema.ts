@@ -37,6 +37,7 @@ export const plantsSchema = ({ image }: SchemaContext) =>
           'orange',
           'violet',
           'rose',
+          'black',
         ]),
       ),
       toSow: z.boolean().default(false),

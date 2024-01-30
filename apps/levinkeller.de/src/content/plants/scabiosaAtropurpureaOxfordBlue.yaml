@@ -1,0 +1,21 @@
+name:
+  latin: Scabiosa atropurpurea Oxford Blue
+  german: Blaue Garten-Skabiose
+height: 100
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - blue
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingScheme: D
+floweringSeason:
+  - july
+  - august
+  - september
+  - october
+supplier: saatgutVielfalt

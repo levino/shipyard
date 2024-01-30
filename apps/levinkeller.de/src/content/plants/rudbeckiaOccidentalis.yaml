@@ -1,30 +1,24 @@
 name:
-  latin: Chelone obliqua
-  german: Schlangenkopf
-height: 100
+  latin: Rudbeckia occidentalis
+  german: Strahlenloser Sonnenhut
+height: 150
 soil:
+  - normal
   - moist
 sunExposure:
   - full
   - semi-shade
 hardiness: hardy
-germination:
-  dark: false
-  light: false
 flowerColor:
-  - pink
-  - violet
+  - brown
+  - black
+  - green
 toSow: true
 foliageColor: green
 lifecycle: perennial
-sowingTime:
-  - march
-  - april
-  - may
-sowingScheme: C
+sowingScheme: D
 floweringSeason:
   - july
   - august
   - september
-inStock: true
 supplier: saatgutVielfalt

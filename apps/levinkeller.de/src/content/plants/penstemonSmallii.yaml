@@ -1,0 +1,19 @@
+name:
+  latin: Penstemon smallii
+  german: Bartfaden
+height: 70
+soil:
+  - normal
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - violet
+toSow: true
+foliageColor: green
+lifecycle: perennial
+sowingScheme: B
+floweringSeason:
+  - july
+  - august
+supplier: saatgutVielfalt

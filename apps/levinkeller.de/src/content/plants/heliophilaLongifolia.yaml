@@ -1,0 +1,22 @@
+name:
+  latin: Heliophila longifolia
+  german: Heliophila
+height: 70
+soil:
+  - normal
+  - moist
+sunExposure:
+  - full
+  - semi-shade
+hardiness: hardy
+flowerColor:
+  - blue
+toSow: true
+foliageColor: green
+lifecycle: annual
+sowingScheme: D
+floweringSeason:
+  - june
+  - july
+  - september
+supplier: saatgutVielfalt
