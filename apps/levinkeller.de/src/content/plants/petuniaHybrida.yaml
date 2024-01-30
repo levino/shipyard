@@ -18,7 +18,10 @@ flowerColor:
 toSow: false
 foliageColor: green
 lifecycle: annual
-sowingScheme: D
+sowingTime:
+  - january
+  - february
+  - march
 floweringSeason:
   - june
   - july
