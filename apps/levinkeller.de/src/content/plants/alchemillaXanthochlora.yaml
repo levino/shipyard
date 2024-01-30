@@ -18,6 +18,7 @@ name:
 soil:
   - normal
   - moist
+toSow: false
 sowingScheme: A
 spread: 30
 sunExposure:

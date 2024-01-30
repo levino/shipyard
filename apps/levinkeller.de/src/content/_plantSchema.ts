@@ -40,7 +40,7 @@ export const plantsSchema = ({ image }: SchemaContext) =>
           'black',
         ]),
       ),
-      toSow: z.boolean().default(false),
+      toSow: z.boolean().default(true),
       foliageColor: z.enum(['green', 'red', 'silver']),
       lifecycle: z.enum(['annual', 'perennial', 'biennial', 'shrub', 'tree']),
       sowingTime: z.array(months).optional(),
