@@ -3,20 +3,20 @@ name:
   german: Heliophila
 height: 70
 soil:
-- normal
-- moist
+  - normal
+  - moist
 sunExposure:
-- full
-- semi-shade
+  - full
+  - semi-shade
 hardiness: hardy
 flowerColor:
-- blue
+  - blue
 toSow: true
 foliageColor: green
 lifecycle: annual
 sowingScheme: D
 floweringSeason:
-- june
-- july
-- september
+  - june
+  - july
+  - september
 supplier: saatgutVielfalt

@@ -3,19 +3,19 @@ name:
   german: Blaue Garten-Skabiose
 height: 100
 soil:
-- normal
+  - normal
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- blue
+  - blue
 toSow: true
 foliageColor: green
 lifecycle: annual
 sowingScheme: D
 floweringSeason:
-- july
-- august
-- september
-- october
+  - july
+  - august
+  - september
+  - october
 supplier: saatgutVielfalt

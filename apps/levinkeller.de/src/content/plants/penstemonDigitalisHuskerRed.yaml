@@ -3,17 +3,17 @@ name:
   german: "Rotbl\xE4ttriger Fingerhut-Bartfaden"
 height: 150
 soil:
-- normal
+  - normal
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- white
+  - white
 toSow: true
 foliageColor: red
 lifecycle: perennial
 sowingScheme: B
 floweringSeason:
-- july
-- august
+  - july
+  - august
 supplier: saatgutVielfalt

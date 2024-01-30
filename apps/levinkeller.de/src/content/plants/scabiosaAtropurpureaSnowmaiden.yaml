@@ -3,19 +3,19 @@ name:
   german: "Wei\xDFe Garten-Skabiose"
 height: 100
 soil:
-- normal
+  - normal
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- white
+  - white
 toSow: true
 foliageColor: green
 lifecycle: annual
 sowingScheme: D
 floweringSeason:
-- july
-- august
-- september
-- october
+  - july
+  - august
+  - september
+  - october
 supplier: saatgutVielfalt

@@ -3,17 +3,17 @@ name:
   german: Bartfaden
 height: 70
 soil:
-- normal
+  - normal
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- violet
+  - violet
 toSow: true
 foliageColor: green
 lifecycle: perennial
 sowingScheme: B
 floweringSeason:
-- july
-- august
+  - july
+  - august
 supplier: saatgutVielfalt

@@ -3,19 +3,19 @@ name:
   german: "Gef\xFCllte Rote Kokardenblume"
 height: 40
 soil:
-- normal
-- dry
+  - normal
+  - dry
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- red
+  - red
 toSow: true
 foliageColor: green
 lifecycle: annual
 sowingScheme: D
 floweringSeason:
-- july
-- august
-- september
+  - july
+  - august
+  - september
 supplier: saatgutVielfalt

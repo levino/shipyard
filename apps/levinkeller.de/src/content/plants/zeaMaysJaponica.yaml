@@ -3,19 +3,19 @@ name:
   german: Gestreifter Mais
 height: 200
 soil:
-- normal
-- moist
+  - normal
+  - moist
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- green
+  - green
 toSow: true
 foliageColor: green
 lifecycle: annual
 sowingScheme: D
 floweringSeason:
-- august
-- september
-- october
+  - august
+  - september
+  - october
 supplier: saatgutVielfalt

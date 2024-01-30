@@ -3,20 +3,20 @@ name:
   german: Rot-Gelbe Herbst-Sonnenbraut
 height: 150
 soil:
-- normal
-- moist
+  - normal
+  - moist
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- red
-- yellow
+  - red
+  - yellow
 toSow: true
 foliageColor: green
 lifecycle: perennial
 sowingScheme: D
 floweringSeason:
-- august
-- september
-- october
+  - august
+  - september
+  - october
 supplier: saatgutVielfalt

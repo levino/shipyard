@@ -3,19 +3,19 @@ name:
   german: Kugeldistel
 height: 200
 soil:
-- normal
+  - normal
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- white
-- blue
+  - white
+  - blue
 toSow: true
 foliageColor: green
 lifecycle: perennial
 sowingScheme: D
 floweringSeason:
-- june
-- july
-- august
+  - june
+  - july
+  - august
 supplier: saatgutVielfalt

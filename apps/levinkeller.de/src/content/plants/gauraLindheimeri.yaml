@@ -3,23 +3,23 @@ name:
   german: "Pr\xE4riekerze"
 height: 150
 soil:
-- normal
-- dry
+  - normal
+  - dry
 sunExposure:
-- full
+  - full
 hardiness: hardy
 flowerColor:
-- white
-- pink
+  - white
+  - pink
 toSow: true
 foliageColor: green
 lifecycle: perennial
 sowingScheme: D
 floweringSeason:
-- may
-- june
-- july
-- august
-- september
-- october
+  - may
+  - june
+  - july
+  - august
+  - september
+  - october
 supplier: saatgutVielfalt
