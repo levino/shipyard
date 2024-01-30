@@ -20,5 +20,6 @@ flowerColor:
   - yellow
   - green
 inStock: true
+toSow: false
 supplier: saatgutVielfalt
 sowingScheme: A
