@@ -9,3 +9,4 @@ planting:
 harvest:
   - october
 supplier: reinsaat
+inStock: true

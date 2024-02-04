@@ -1,8 +1,11 @@
 name:
-  latin: Brassica oleracea var. botrytis L.
-  common: Blumenkohl "Di Sicilia violetto"
+  common: Kohlrabi Lanro
+  latin: Brassica oleracea var. gongylodes 'Lanro'
 sowing:
   - march
+  - april
+  - may
+  - june
 planting:
   - april
   - may
@@ -14,4 +17,4 @@ harvest:
   - august
   - september
   - october
-supplier: reinsaat
+supplier: sativa

@@ -1,21 +1,24 @@
 name:
-  latin: Brassica oleracea convar. botrytis var. italica 'Ramoso calabrese'
-  common: Brokkoli 'Ramoso calabrese'
+  latin: Brassica oleracea convar. capitata var. rubra 'Rosamund'
+  common: Rotkohl 'Rosamund'
 sowing:
+  - february
   - march
   - april
-  - july
+  - may
+  - june
 planting:
   - april
   - may
   - june
   - july
-  - august
 harvest:
+  - june
+  - july
   - august
   - september
   - october
   - november
   - december
 supplier: reinsaat
-inStock: false
+inStock: true

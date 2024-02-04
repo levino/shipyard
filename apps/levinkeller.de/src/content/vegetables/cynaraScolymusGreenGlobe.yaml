@@ -1,5 +1,5 @@
 name:
-  latin: Cynara scolymus
+  latin: Cynara scolymus "Green Globe"
   common: Artischocke "Green Globe"
 sowing:
   - february
@@ -14,3 +14,4 @@ harvest:
   - july
   - august
 supplier: reinsaat
+inStock: false
