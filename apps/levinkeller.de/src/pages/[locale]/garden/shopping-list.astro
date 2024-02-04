@@ -68,7 +68,7 @@ const vegBySupplier = pipe(
       </thead>
       <tbody>
         {
-          Object.values(vegBySupplier).map(({ vegetables, supplierName }) => (
+          Object.values(vegBySupplier).map(({ vegetables }) => (
             <td class="align-top">
               <ul class="list-inside list-disc">
                 {vegetables!.map(({ name, link }) => (

@@ -1,11 +1,11 @@
 ---
 import type { GetStaticPaths } from 'astro'
 import Layout from '@shipyard/base/layouts/Page.astro'
-import { PlantTable } from '@shipyard/garden-planner/components/PlantTable'
-import { getCollection, getEntry } from 'astro:content'
+import { VegetableTable } from '@shipyard/garden-planner/components/VegetableTable'
+import { getCollection } from 'astro:content'
 export const getStaticPaths = (async ({ paginate }) => {
-  const plants = await getCollection('plants')
-  return paginate(plants, {
+  const vegetables = await getCollection('vegetables')
+  return paginate(vegetables, {
     pageSize: 30,
     params: {
       locale: 'de',
@@ -18,7 +18,7 @@ const { page } = Astro.props
 
 <Layout>
   <div class="mt-8">
-    <PlantTable caption="Stauden" plants={page.data} />
+    <VegetableTable caption="Pflanzen" vegetables={page.data} />
 
     {page.url.prev ? <a href={page.url.prev}>Previous</a> : null}
     {page.url.next ? <a href={page.url.next}>Next</a> : null}

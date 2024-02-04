@@ -1,0 +1,19 @@
+harvest:
+  - april
+  - may
+  - june
+  - july
+  - august
+inStock: true
+name:
+  common: Gewürzfenchel
+  latin: Foeniculum vulgare
+planting:
+  - april
+  - may
+  - june
+sowing:
+  - april
+  - may
+  - june
+supplier: sperli
