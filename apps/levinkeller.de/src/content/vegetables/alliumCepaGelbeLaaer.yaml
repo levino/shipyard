@@ -4,14 +4,14 @@ harvest:
   - september
 inStock: true
 name:
-  common: Zwiebel Karmen
-  latin: Allium cepa 'Karmen'
+  common: Zwiebel Gelbe Laaer
+  latin: Allium cepa 'Gelbe Laaer'
 planting:
   - march
   - april
   - may
 sowing:
+  - february
   - march
   - april
-  - may
 supplier: reinsaat

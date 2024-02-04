@@ -5,7 +5,7 @@ harvest:
 inStock: true
 name:
   common: Zwiebel Stuttgarter Riesen
-  latin: Allium cepa
+  latin: Allium cepa 'Stuttgarter Riesen'
 planting:
   - march
   - april
