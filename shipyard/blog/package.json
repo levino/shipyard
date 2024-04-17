@@ -7,6 +7,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "astro": "^4.0.1"
+    "astro": "^4.6.2"
   }
 }
