@@ -1,0 +1,28 @@
+name:
+  latin: Geranium macrorrhizum
+  german: Balkan-Storchschnabel
+height: 30
+spread: 25
+soil:
+  - normal
+  - dry
+sunExposure:
+  - full
+hardiness: hardy
+flowerColor:
+  - pink
+toSow: false
+foliageColor: green
+lifecycle: perennial
+sowingScheme: A
+floweringSeason:
+  - april
+  - may
+  - june
+  - july
+supplier: saatgutVielfalt
+images:
+  - src: './images/geraniumMacrorrhizum/PXL_20240417_163850264.jpg'
+    alt: Blüten der Sterndolde
+  - src: './images/geraniumMacrorrhizum/PXL_20240417_163912999.jpg'
+    alt: Blüten der Sterndolde

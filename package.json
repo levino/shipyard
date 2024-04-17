@@ -42,7 +42,7 @@
     }
   },
   "dependencies": {
-    "astro": "^4.0.1",
+    "astro": "^4.6.2",
     "infima": "0.2.0-alpha.43"
   }
 }

@@ -27,7 +27,11 @@ export const Plant: FC<PropsWithChildren<Props>> = ({ plant, children }) => (
       <div className="carousel aspect-[4/3] rounded-box">
         {plant.data.images.map((image, index) => (
           <div className="carousel-item aspect-[4/3]" key={index}>
-            <img className="w-full" src={image.src.src} alt={image.alt} />
+            <img
+              className="w-full object-cover"
+              src={image.src.src}
+              alt={image.alt}
+            />
           </div>
         ))}
       </div>
