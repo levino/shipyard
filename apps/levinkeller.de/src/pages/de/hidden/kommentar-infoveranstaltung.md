@@ -66,4 +66,3 @@ diese Investion nicht.
 Der Vorstand der Bürgerenergie Leinebergland hat dieser Darstellung nicht
 widersprochen, was ich für problematisch halte. Er hätte klar darauf hinweisen
 müssen, dass hier erhebliche Risiken vorhanden sind.
-
