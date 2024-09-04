@@ -22,7 +22,12 @@
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh"
       },
-      "extensions": ["esbenp.prettier-vscode", "astro-build.astro-vscode"]
+      "extensions": [
+        "esbenp.prettier-vscode",
+        "astro-build.astro-vscode",
+        "unifiedjs.vscode-mdx",
+        "bradlc.vscode-tailwindcss"
+      ]
     }
   }
 

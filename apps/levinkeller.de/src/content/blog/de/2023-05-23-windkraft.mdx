@@ -1,5 +1,5 @@
 ---
-title: Übersicht nachhaltige Energie
+title: Vergleich alternativer Energiequellen
 authors:
   - name: Levin Keller
 tags: [sustainability]
@@ -9,6 +9,8 @@ description:
   anderen Technologien, die als nachhaltig bezeichnet werden.
 date: 2023-05-23
 ---
+
+# Vergleich alternativer Energiequellen
 
 In meiner Gemeinde (Nordstemmen, Niedersachsen) gibt es einen sogenannten
 [Energiemonitor](https://energiemonitor.avacon.de/nordstemmen), auf dem der
@@ -88,6 +90,49 @@ Damit verbraucht diese "Technologie" 1.700-mal so viel Fläche wie Windenergie.
 Oder anders ausgedrückt: Um den Energiebedarf des Jahres 2050 in unserer
 Gemeinde zu decken, müssten wir auf 4280 Hektar oder 42,8 km² Energiemais
 anbauen. Zum Vergleich: Die Gemeinde hat ca 60 km² Fläche.
+
+## Visualisierung
+
+Womöglich sind die obigen Zahlen etwas abstrakt, deshalb hier eine graphische
+Darstellung der Unterschiede.
+
+<figure>
+  <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+    <rect
+      x="0"
+      y="0"
+      width="1000"
+      height="1000"
+      className="fill-error"
+      stroke="black"
+      stroke-width="1"
+    />
+    <rect
+      x="0"
+      y="907"
+      width="94"
+      height="94"
+      className="fill-warning"
+      stroke="black"
+      stroke-width="1"
+    />
+    <rect
+      x="0"
+      y="976"
+      width="25"
+      height="25"
+      className="fill-success"
+      stroke="black"
+      stroke-width="1"
+    />
+  </svg>
+  <div className="mt-4 flex flex-row justify-center gap-3">
+    <div className="badge badge-success">Windkraft</div>
+    <div className="badge badge-warning">Solarenergie</div>
+    <div className="badge badge-error">Faulgas</div>
+  </div>
+  <figcaption>Der Flächenverbrauch pro Energieeinheit im Vergleich.</figcaption>
+</figure>
 
 ## Fazit
 
