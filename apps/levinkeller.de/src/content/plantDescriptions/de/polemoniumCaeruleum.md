@@ -1,5 +1,5 @@
 ---
-plant: polemoniumCaeruleum
+plant: polemonium-caeruleum
 ---
 
 Polemonium caeruleum ist die einzige in Mitteleuropa wild wachsende

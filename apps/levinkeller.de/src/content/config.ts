@@ -1,9 +1,11 @@
 import { defineCollection, reference, z } from 'astro:content'
 import { vegetablesSchema } from './_vegetableSchema'
-import { plantsSchema } from './_plantSchema'
+import { collections as plantCollections } from 'astro-collection-plants'
 import { blogSchema } from '@shipyard/blog'
+import { glob } from 'astro/loaders'
 
 export const collections = {
+  ...plantCollections,
   docs: defineCollection({
     type: 'content',
     schema: z.object({
@@ -17,7 +19,6 @@ export const collections = {
       description: z.string().optional(),
     }),
   }),
-  plants: defineCollection({ type: 'data', schema: plantsSchema }),
   plantDescriptions: defineCollection({
     type: 'content',
     schema: z.object({
@@ -36,14 +37,10 @@ export const collections = {
     }),
   }),
   vegetables: defineCollection({
-    type: 'data',
-    schema: vegetablesSchema,
-  }),
-  suppliers: defineCollection({
-    type: 'data',
-    schema: z.object({
-      name: z.string(),
-      url: z.string(),
+    loader: glob({
+      pattern: '**/*.yaml',
+      base: './vegetables',
     }),
+    schema: vegetablesSchema,
   }),
 }

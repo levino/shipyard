@@ -1,5 +1,5 @@
 ---
-plant: geumRivale
+plant: geum-rivale
 ---
 
 Die Bach-Nelkenwurz liebt grundwassernahe Standorte und kommt in der Natur

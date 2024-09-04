@@ -1,4 +1,4 @@
----
+<!-- ---
 import Layout from '@shipyard/base/layouts/Page.astro'
 import type { GetStaticPaths } from 'astro'
 import { prop, groupBy, indexBy, mapObjIndexed } from 'ramda'
@@ -44,7 +44,6 @@ const plants = await getCollection('plants', outOfStock).then((plants) =>
 const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
 const vegBySupplier = pipe(
   vegetables.concat(plants),
-  // @ts-expect-error
   groupBy(prop('supplierId')),
   mapObjIndexed((vegetables, supplierId) => ({
     supplierName: suppliers[supplierId].data.name,
@@ -83,4 +82,4 @@ const vegBySupplier = pipe(
       </tbody>
     </table>
   </div>
-</Layout>
+</Layout> -->

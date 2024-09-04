@@ -1,12 +1,12 @@
 {
-  "name": "plant-collection",
+  "name": "astro-collection-plants",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "index.ts",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "astro": "^4.15.2"
+  }
 }

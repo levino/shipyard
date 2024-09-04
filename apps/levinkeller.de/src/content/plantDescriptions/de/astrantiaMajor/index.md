@@ -1,6 +1,6 @@
 ---
 name: astrantia-major
-plant: astrantiaMajor
+plant: astrantiamajor
 ---
 
 Diese in Gärten weit verbreitete Halbschattenstaude ist als Wildpflanze in

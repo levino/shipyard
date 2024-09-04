@@ -1,5 +1,5 @@
 ---
-plant: euphorbiaCharacias
+plant: euphorbia-characias
 ---
 
 Diese äußerst attraktive, immergrüne Wolfsmilch sieht man häufig in botanischen

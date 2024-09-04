@@ -1,5 +1,5 @@
 ---
-plant: succisaPratensis
+plant: succisa-pratensis
 ---
 
 Eine heimische Skabiosenart für magere Feuchtstandorte. Die bis 3 cm großen

@@ -1,5 +1,5 @@
 ---
-plant: alchemillaMollis
+plant: alchemillamollis
 ---
 
 Beliebter, genügsamer und rasch wachsender Bodenbegrüner, der sowohl trocken wie

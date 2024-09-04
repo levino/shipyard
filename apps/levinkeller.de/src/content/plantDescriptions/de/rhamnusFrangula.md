@@ -1,5 +1,5 @@
 ---
-plant: rhamnusFrangula
+plant: rhamnus-frangula
 ---
 
 Das ökologisch wertvolle Gehölz schmückt sich im Sommer mit sattgrünen Blättern,

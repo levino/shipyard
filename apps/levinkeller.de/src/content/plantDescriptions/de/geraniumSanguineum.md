@@ -1,5 +1,5 @@
 ---
-plant: geraniumSanguineum
+plant: geranium-sanguineum
 ---
 
 Robuster und dauerhafter Wildstorchschnabel, von dem es inzwischen sehr viele

@@ -3,6 +3,7 @@ import Layout from '@shipyard/base/layouts/Page.astro'
 import { Plant } from '@shipyard/garden-planner/components/Plant'
 import { getCollection } from 'astro:content'
 import { flatten } from 'ramda'
+import { Array, Effect, Exit, pipe } from 'effect'
 // 1. Generate a new path for every collection entry
 export async function getStaticPaths() {
   const plants = await getCollection('plants')
@@ -17,10 +18,32 @@ export async function getStaticPaths() {
 }
 // 2. For your template, you can get the entry directly from the prop
 const { entry: plant } = Astro.props
+const getDescription = pipe(
+  Effect.tryPromise(() =>
+    getCollection(
+      'plantDescriptions',
+      (entry) => entry.data.plant.id === plant.id,
+    ),
+  ),
+  Effect.flatMap(Array.head),
+  Effect.flatMap((description) =>
+    Effect.tryPromise(() => description.render()),
+  ),
+  Effect.map(({ Content }) => Content),
+)
+
+const Description = await Effect.runPromiseExit(getDescription)
 ---
 
 <Layout>
   <div class="mx-auto max-w-3xl">
     <Plant plant={plant} />
+    {
+      Exit.isSuccess(Description) ? (
+        <Description.value />
+      ) : (
+        <p>There is no description for this plant yet.</p>
+      )
+    }
   </div>
 </Layout>
