@@ -1,12 +1,12 @@
 {
-  "name": "@shipyard/blog",
+  "name": "astro-collection-plants",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "astro": "^4.15.2"
   }
 }

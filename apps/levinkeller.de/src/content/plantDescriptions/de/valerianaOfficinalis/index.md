@@ -1,5 +1,5 @@
 ---
-plant: valerianaOfficinalis
+plant: valeriana-officinalis
 ---
 
 Die bewährte Heilpflanze. Wirkungsvoll als sanftes Schlafmittel.

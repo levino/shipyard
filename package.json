@@ -19,6 +19,7 @@
     "@storybook/react": "^7.6.7",
     "@storybook/react-vite": "^7.6.7",
     "@storybook/test": "^7.6.7",
+    "astro": "^4.15.2",
     "autoprefixer": "^10.4.15",
     "daisyui": "^4.6.0",
     "eslint": "^8.46.0",
@@ -40,9 +41,5 @@
     "patchedDependencies": {
       "util@0.12.5": "patches/util@0.12.5.patch"
     }
-  },
-  "dependencies": {
-    "astro": "^4.6.2",
-    "infima": "0.2.0-alpha.43"
   }
 }
