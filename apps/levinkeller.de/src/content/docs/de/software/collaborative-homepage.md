@@ -16,7 +16,7 @@ veröffentlichen diese zur freien und kostenlosen Nutzung auf der Plattform
 [npmjs.com](https://www.npmjs.com/). Auch diese Menschen arbeiten permanent
 zusammen, helfen sich gegenseitig mit Teilleistungen für ihre Projekte. Dabei
 gibt es keine Chef\:innen, keine Aktionär\:innen und keinen Staat, der die
-Menschen zu dieser Arbeit zwingt oder ihre Arbeit organisiert\*. Auch
+Menschen zu dieser Arbeit zwingt oder ihre Arbeit organisiert[^1]. Auch
 Video-Konferenzen, Dailies oder Sprints finden nicht statt. Welche Arbeit
 gemacht wird, entscheiden die Menschen selbst, genauso wann sie diese Arbeit
 machen. Die Ergebnisse werden genutzt, wenn sie gut sind. Die Kommunikation und
@@ -55,7 +55,8 @@ sitzen und die Ressourcen und Berechtigungen haben, tolle Online-Dienste und
 Informationen für die Bürger\:innen bereitzustellen. Aber statt allen Bürgern
 die Nutzung dieser Daten zu ermöglichen und die freiwillige Mitarbeit der
 Bürger\:innen an den Informationen und Diensten zu fördern, werden die Daten und
-Unterlagen versteckt oder in proprietären Datenbanken versteckt.
+Unterlagen versteckt oder in proprietären Datenbanken mehr oder weniger
+unnutzbar gehalten.
 
 Da sind die Eltern im Kindergarten oder Mitglieder im Verein, die Menschen im
 Dorf, die tolle Ideen haben. Aber alle machen die Arbeit unabhängig voneinander,
@@ -104,11 +105,12 @@ probier es doch gleich hier aus.
 
 Dabei wünsche ich vor allem viel Freude!
 
-_\*Um korrekt zu bleiben, muss man zugeben, dass es inzwischen zahlreiche Firmen
-gibt, die Mitarbeiter\:innen bezahlen um an Open-Source-Projekten zu arbeiten.
-Ein gutes Beispiel dafür ist Meta, die unter anderem die Software
-[React](https://react.dev/) entwickeln lassen. Aber auch diese Arbeit findet
-weitgehend öffentlich statt und viele Teile der Applikation wurden von
-unabhängigen Dritten entwickelt und sind mittels
-[Pull-Requests](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
-in den Quellcode aufgenommen worden._
+[^1]:
+    Um korrekt zu bleiben, muss man zugeben, dass es inzwischen zahlreiche
+    Firmen gibt, die Mitarbeiter\:innen bezahlen um an Open-Source-Projekten zu
+    arbeiten. Ein gutes Beispiel dafür ist Meta, die unter anderem die Software
+    [React](https://react.dev/) entwickeln lassen. Aber auch diese Arbeit findet
+    weitgehend öffentlich statt und viele Teile der Applikation wurden von
+    unabhängigen Dritten entwickelt und sind mittels
+    [Pull-Requests](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests)
+    in den Quellcode aufgenommen worden.\_
