@@ -15,7 +15,7 @@ toSow: true
 lifecycle: perennial
 sowingScheme: B
 foliageColor: green
-supplier: saatgutVielfalt
+supplier: saatgutvielfalt
 floweringSeason:
   - may
   - june
