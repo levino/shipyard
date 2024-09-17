@@ -45,13 +45,10 @@ const suppliers = await getCollection('suppliers').then(indexBy(prop('id')))
 const vegBySupplier = pipe(
   vegetables.concat(plants),
   groupBy(prop('supplierId')),
-  mapObjIndexed(
-    (vegetables, supplierId) =>
-      console.log(supplierId) || {
-        supplierName: suppliers[supplierId].data.name,
-        vegetables,
-      },
-  ),
+  mapObjIndexed((vegetables, supplierId) => ({
+    supplierName: suppliers[supplierId].data.name,
+    vegetables,
+  })),
 )
 ---
 
