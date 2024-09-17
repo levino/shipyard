@@ -26,7 +26,8 @@
         "esbenp.prettier-vscode",
         "astro-build.astro-vscode",
         "unifiedjs.vscode-mdx",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "eamodio.gitlens"
       ]
     }
   }

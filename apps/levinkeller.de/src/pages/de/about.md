@@ -15,10 +15,10 @@ genau es mir eben möglich ist. Manchmal sind die Dinge wahrscheinlich wichtig
 und von generellem Interesse, manchmal mag es sich um für die meisten Menschen
 unwichtige Details handeln, die ich aber interessant oder unterhaltsam finde.
 Die Ergebnisse dieser Arbeit möchte ich hier öffentlich festhalten. Die Software
-[Docusaurus](https://docusaurus.io/) in Verbindung mit
-[git](https://git-scm.com/) und [github](https://github.com/) erlaubt mir, die
-Informationen ansprechend und übersichtlich abzulegen und den Prozess und die
-Historie nachhaltig zu dokumentieren.
+[astrojs](https://astro.build/) in Verbindung mit [git](https://git-scm.com/)
+und [github](https://github.com/) erlaubt mir, die Informationen ansprechend und
+übersichtlich abzulegen und den Prozess und die Historie nachhaltig zu
+dokumentieren.
 
 ## Showcase für meine Arbeit
 
