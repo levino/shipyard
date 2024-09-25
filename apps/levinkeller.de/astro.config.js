@@ -6,15 +6,18 @@ import mdx from '@astrojs/mdx'
 import shipyard from '@shipyard/base'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import vercel from '@astrojs/vercel/static'
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
     rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
   },
+
   experimental: {
     contentLayer: true,
   },
+
   i18n: {
     defaultLocale: 'de',
     locales: ['de', 'en'],
@@ -27,7 +30,9 @@ export default defineConfig({
       en: 'de',
     },
   },
+
   site: 'https://www.levinkeller.de',
+
   integrations: [
     react(),
     tailwind({
@@ -84,4 +89,9 @@ export default defineConfig({
       brand: 'Levin Keller',
     }),
   ],
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
 })
