@@ -104,7 +104,7 @@ export const Heatpump = () => {
                 <td>{pipe(values, totalCostsHeatpump, formatEuros)}</td>
               </tr>
               <tr>
-                <td>CO² Ausstoß</td>
+                <td>CO₂ Ausstoß</td>
                 <td>{pipe(values, yearlyCo2Heatpump, formatTonneCo2)}</td>
                 <td>{pipe(values, totalCo2Heatpump, formatTonneCo2)}</td>
               </tr>
@@ -138,7 +138,7 @@ export const Heatpump = () => {
                 <td>{pipe(values, totalCostsGasheat, formatEuros)}</td>
               </tr>
               <tr>
-                <td>CO² Ausstoß</td>
+                <td>CO₂ Ausstoß</td>
                 <td>{pipe(values, yearlyCo2Gasheat, formatTonneCo2)}</td>
                 <td>{pipe(values, totalCo2Gasheat, formatTonneCo2)}</td>
               </tr>
@@ -168,8 +168,8 @@ export const Heatpump = () => {
           <p>
             Die Wärmepumpe kostet{' '}
             {pipe(values, totalCostsHeatpump, formatEuros)} und stößt{' '}
-            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO² aus. Wenn ich
-            die Gasheizung nutze und den dadurch zusätzlich verursachten CO²
+            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO₂ aus. Wenn ich
+            die Gasheizung nutze und den dadurch zusätzlich verursachten CO₂
             Ausstoß von{' '}
             {pipe(values, totalDifferenceCo2HeatpumpGasheat, formatTonneCo2)}{' '}
             kompensieren möchte, kostet mich das insgesamt{' '}
@@ -179,14 +179,14 @@ export const Heatpump = () => {
             )}
             . Ich kann also{' '}
             {pipe(values, savingsHeatpumpGasheatWithSameEmission, formatEuros)}{' '}
-            sparen und trotzdem so "wenig" CO² ausstoßen wie mit der Wärmepumpe.
+            sparen und trotzdem so "wenig" CO₂ ausstoßen wie mit der Wärmepumpe.
           </p>
           <p>
-            Würde ich die Ersparnis vollständig für die Kompensation von CO²
+            Würde ich die Ersparnis vollständig für die Kompensation von CO₂
             ausgeben, könnte ich zusätzlich{' '}
-            {pipe(values, compensationWithSavings, formatTonneCo2)} CO²
+            {pipe(values, compensationWithSavings, formatTonneCo2)} CO₂
             kompensieren. Gegenüber der Nutzung einer Wärmepumpe würde ich also
-            den CO² Ausstoß um Faktor{' '}
+            den CO₂ Ausstoß um Faktor{' '}
             {pipe(
               values,
               compensationFactor,
@@ -196,13 +196,13 @@ export const Heatpump = () => {
               }).format,
             )}{' '}
             reduzieren. Für das gleiche Geld würde ich, anstatt{' '}
-            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO² mit der
+            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO₂ mit der
             Wärmepumpe auszustoßen, mit der Gasheizung den Ausstoß von{' '}
             {pipe(
               compensationWithSavings(values) - totalCo2Gasheat(values),
               formatTonneCo2,
             )}{' '}
-            CO² verhindern!
+            CO₂ verhindern!
           </p>
         </>
       )}
