@@ -10,12 +10,22 @@
   ],
   "overrides": [
     {
+      "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "parserOptions": {
+        "ecmaVersion": 2021
+      },
+      "extends": ["plugin:@typescript-eslint/recommended", "prettier"]
+    },
+    {
       "files": ["*.mdx", "*.md"],
-      // "parser": "eslint-mdx", // enable `eslint-mdx` manually if it does not work
+      "parser": "eslint-mdx",
       "extends": "plugin:mdx/recommended",
       "rules": {
         // TODO: Switch this on again. It seems currently mdx imports are not correctly supported by @typescript-eslint
-        "@typescript-eslint/no-unused-vars": "off"
+        "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
+        "no-unused-expressions": "off"
       }
     }
   ]

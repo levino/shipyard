@@ -5,13 +5,21 @@ import sitemap from '@astrojs/sitemap'
 import mdx from '@astrojs/mdx'
 import shipyard from '@shipyard/base'
 import rehypeSlug from 'rehype-slug'
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import vercel from '@astrojs/vercel/static'
 
 // https://astro.build/config
 export default defineConfig({
   markdown: {
-    rehypePlugins: [rehypeSlug, [rehypeAutolinkHeadings, { behavior: 'wrap' }]],
+    remarkPlugins: [remarkMath],
+    rehypePlugins: [
+      rehypeSlug,
+      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+      rehypeKatex,
+    ],
   },
 
   experimental: {
