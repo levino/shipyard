@@ -1,0 +1,7 @@
+{
+  "workspace": [
+    "./apps/*",
+    "./shipyard/*",
+    "./packages/*"
+  ]
+}
