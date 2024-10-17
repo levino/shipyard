@@ -2,9 +2,9 @@
   "fmt": {
     "semiColons": false,
     "singleQuote": true,
-    "exclude": ["build", ".docusaurus", ".astro"]
+    "exclude": ["build", ".docusaurus", "**/.astro"]
   },
   "lint": {
-    "exclude": ["build", ".docusaurus", ".astro"]
+    "exclude": ["build", ".docusaurus", "**/.astro"]
   }
 }

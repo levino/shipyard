@@ -13,7 +13,8 @@
       "extensions": [
         "unifiedjs.vscode-mdx",
         "denoland.vscode-deno",
-        "streetsidesoftware.code-spell-checker"
+        "streetsidesoftware.code-spell-checker",
+        "astro-build.astro-vscode"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
