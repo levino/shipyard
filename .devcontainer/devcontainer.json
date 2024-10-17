@@ -14,7 +14,8 @@
         "unifiedjs.vscode-mdx",
         "denoland.vscode-deno",
         "streetsidesoftware.code-spell-checker",
-        "astro-build.astro-vscode"
+        "astro-build.astro-vscode",
+        "bradlc.vscode-tailwindcss"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
