@@ -16,7 +16,9 @@
         "streetsidesoftware.code-spell-checker"
       ],
       "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh"
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "editor.defaultFormatter": "denoland.vscode-deno",
+        "deno.enable": true
       }
     }
   }

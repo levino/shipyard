@@ -1,5 +1,5 @@
 import { cn } from '../tools/cn'
-import { SidebarElement, type Entry } from './SidebarElement'
+import { type Entry, SidebarElement } from './SidebarElement'
 export interface MobileSidebarProps {
   local?: Entry
   global: Entry
@@ -17,20 +17,20 @@ export const SidebarNavigation: React.FC<MobileSidebarProps> = ({
     })}
   >
     <div>
-      <a href="/" className="btn btn-ghost mb-2 text-xl">
+      <a href='/' className='btn btn-ghost mb-2 text-xl'>
         {brand}
       </a>
     </div>
-    <div className="block md:hidden">
+    <div className='block md:hidden'>
       <li>
-        {local ? (
-          <details>
-            <summary>Main menu</summary>
-            <SidebarElement entry={global} />
-          </details>
-        ) : (
-          <SidebarElement entry={global} />
-        )}
+        {local
+          ? (
+            <details>
+              <summary>Main menu</summary>
+              <SidebarElement entry={global} />
+            </details>
+          )
+          : <SidebarElement entry={global} />}
       </li>
       <div className={cn('divider my-1 block md:hidden', { hidden: !local })} />
     </div>

@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest'
+import { describe, expect, test } from 'vitest'
 import { toSidebarEntries } from '../../apps/levinkeller.de/src/tools./../../../shipyard/docs./../../../shipyard/docs/sidebarEntries'
 describe('Sidebar subEntry helpers', () => {
   test.each([

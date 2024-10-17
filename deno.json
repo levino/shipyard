@@ -1,7 +1,10 @@
 {
-  "workspace": [
-    "./apps/*",
-    "./shipyard/*",
-    "./packages/*"
-  ]
+  "fmt": {
+    "semiColons": false,
+    "singleQuote": true,
+    "exclude": ["build", ".docusaurus", ".astro"]
+  },
+  "lint": {
+    "exclude": ["build", ".docusaurus", ".astro"]
+  }
 }

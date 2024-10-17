@@ -36,8 +36,8 @@
     "vite": "^4.5.1"
   },
   "workspaces": [
-    "./apps/*",
-    "./shipyard/*",
-    "./packages/*"
+    "apps/*",
+    "shipyard/*",
+    "packages/*"
   ]
 }

@@ -13,7 +13,7 @@ type Story = StoryObj<typeof SidebarElement>
 
 export const Simple: Story = {
   render: () => (
-    <div className="menu">
+    <div className='menu'>
       <SidebarElement
         entry={{
           cat1: {

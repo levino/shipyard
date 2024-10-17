@@ -139,16 +139,15 @@ effizientestes Werkzeug zurückgreifen:
 Ich hoffe, auch hierzu bald einen Artikel schreiben zu können.
 
 [^1]: [§1 (1) GenG](https://www.gesetze-im-internet.de/geng/__1.html)
-[^2]:
-    Leider kann ich dafür keine belastbare und eindeutige Quelle anführen, aber
-    nach diversen Rücksprachen mit Menschen aus Genossenschaften und Recherchen
-    im Internet bin ich der Überzeugung, dass die alleinige Ausrichtung auf
-    maximale Rendite einer Genossenschaft rechtswidrig ist. Genossenschaften
-    sind von der Gesetzgeberin gegenüber anderen Gesellschaftsformen
-    priviligiert, weil ihnen ein besonderer Mehrwert für die Gesellschaft
-    zugeschrieben wird. Dies wäre bei einer reinen Renditegenossenschaft nicht
-    gegeben. Ich würde mich sehr über Hinweise freuen, die diese Vermutung
-    bestätigen oder widerlegen.
 
-[^3]:
-    [§15 Richtlinie zum Elektrizitätsbinnenmarkt](/assets/binnenmarkrichtlinie.pdf)
+[^2]: Leider kann ich dafür keine belastbare und eindeutige Quelle anführen,
+    aber nach diversen Rücksprachen mit Menschen aus Genossenschaften und
+    Recherchen im Internet bin ich der Überzeugung, dass die alleinige
+    Ausrichtung auf maximale Rendite einer Genossenschaft rechtswidrig ist.
+    Genossenschaften sind von der Gesetzgeberin gegenüber anderen
+    Gesellschaftsformen priviligiert, weil ihnen ein besonderer Mehrwert für die
+    Gesellschaft zugeschrieben wird. Dies wäre bei einer reinen
+    Renditegenossenschaft nicht gegeben. Ich würde mich sehr über Hinweise
+    freuen, die diese Vermutung bestätigen oder widerlegen.
+
+[^3]: [§15 Richtlinie zum Elektrizitätsbinnenmarkt](/assets/binnenmarkrichtlinie.pdf)
