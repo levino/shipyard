@@ -2,15 +2,13 @@
   "scripts": {
     "prepare": "husky install",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build",
-    "test": "pnpm workspace run test",
-    "lint": "eslint ."
+    "build-storybook": "storybook build"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@shipyard/base": "workspace:*",
+    "@shipyard/base": "*",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-interactions": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",
@@ -27,9 +25,6 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8.4.28",
-    "prettier": "^3.1.1",
-    "prettier-plugin-astro": "^0.12.3",
-    "prettier-plugin-tailwindcss": "^0.5.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "storybook": "^7.6.7",
@@ -37,9 +32,9 @@
     "typescript": "^5.3.3",
     "vite": "^4.5.1"
   },
-  "pnpm": {
-    "patchedDependencies": {
-      "util@0.12.5": "patches/util@0.12.5.patch"
-    }
-  }
+  "workspaces": [
+    "apps/*",
+    "shipyard/*",
+    "packages/*"
+  ]
 }

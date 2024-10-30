@@ -10,8 +10,8 @@ export const Footer: FC<{
     year: number
   }
 }> = ({ links, copyright }) => (
-  <footer className="flex w-full items-center justify-between px-6 py-4 text-sm font-medium">
-    <a href={copyright.href} target="_blank">
+  <footer className='flex w-full items-center justify-between px-6 py-4 text-sm font-medium'>
+    <a href={copyright.href} target='_blank'>
       © {copyright.label}, {copyright.year}
     </a>
     {links.map(({ label, href }, index) => (

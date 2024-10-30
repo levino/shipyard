@@ -13,11 +13,9 @@ export const SidebarElement = ({ entry }: { entry: Entry }) =>
     const label = entry.label ?? key
     return (
       <li key={key}>
-        {entry.href ? (
-          <a href={entry.href}>{label}</a>
-        ) : (
-          <span className="menu-title">{label}</span>
-        )}
+        {entry.href
+          ? <a href={entry.href}>{label}</a>
+          : <span className='menu-title'>{label}</span>}
         {entry.subEntry && (
           <ul>
             <SidebarElement entry={entry.subEntry} key={key} />

@@ -13,38 +13,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: denoland/setup-deno@v2
         with:
-          node-version: 20
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: true
-      - run: pnpm -w run lint
-  prettier:
+          deno-version: '2.0.0'
+      - run: deno lint
+  check-format:
+    name: check format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: denoland/setup-deno@v2
         with:
-          node-version: 20
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: true
-      - run: pnpm prettier -c .
+          deno-version: '2.0.0'
+      - run: deno fmt --check
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Install Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: true
-      - run: pnpm recursive run test
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run test --workspaces --if-present

@@ -1,4 +1,4 @@
-import { times, add, max, always, __, T, cond, equals, gt, lte } from 'ramda'
+import { __, add, always, cond, equals, gt, lte, max, T, times } from 'ramda'
 import { pipe } from 'effect'
 import * as A from 'effect/Array'
 

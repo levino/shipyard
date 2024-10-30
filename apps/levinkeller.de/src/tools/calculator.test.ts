@@ -1,5 +1,5 @@
-import { describe, test, expect } from 'vitest'
-import { loanData, interest, getLoanPlan } from './calculator'
+import { describe, expect, test } from 'vitest'
+import { getLoanPlan, interest, loanData } from './calculator'
 const interestRates = [
   {
     from: 0,
@@ -28,8 +28,7 @@ describe('Financial helper functions', () => {
         annuity,
         interestRates,
       }).amount,
-    ).toBeCloseTo(expected, 5),
-  )
+    ).toBeCloseTo(expected, 5))
   test('totalInterest', () =>
     expect(
       interest({ runtime: 10, annuity: 833.7535416568145, interestRates }),

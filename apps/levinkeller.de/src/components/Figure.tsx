@@ -14,7 +14,7 @@ export const Figure: React.FC<React.PropsWithChildren<{ caption: string }>> = ({
 export const FigureCaption: React.FC<
   React.PropsWithChildren<Record<string, unknown>>
 > = ({ children }) => (
-  <figcaption className="mt-2 text-center text-sm text-gray-500 dark:text-gray-400">
+  <figcaption className='mt-2 text-center text-sm text-gray-500 dark:text-gray-400'>
     {children}
   </figcaption>
 )
