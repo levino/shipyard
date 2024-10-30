@@ -1,3 +1,5 @@
+import daisyui from 'daisyui'
+
 /** @type {import('tailwindcss').Config} */
 export default {
   theme: {
@@ -19,5 +21,5 @@ export default {
     './src/**/*.{ts,tsx,md,mdx,astro}',
     '../../shipyard/**/*.{tsx,astro}',
   ],
-  plugins: [require('@tailwindcss/typography'), require('daisyui')],
+  plugins: [require('@tailwindcss/typography'), daisyui],
 }

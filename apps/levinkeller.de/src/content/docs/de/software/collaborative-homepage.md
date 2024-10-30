@@ -105,8 +105,7 @@ probier es doch gleich hier aus.
 
 Dabei wünsche ich vor allem viel Freude!
 
-[^1]:
-    Um korrekt zu bleiben, muss man zugeben, dass es inzwischen zahlreiche
+[^1]: Um korrekt zu bleiben, muss man zugeben, dass es inzwischen zahlreiche
     Firmen gibt, die Mitarbeiter\:innen bezahlen um an Open-Source-Projekten zu
     arbeiten. Ein gutes Beispiel dafür ist Meta, die unter anderem die Software
     [React](https://react.dev/) entwickeln lassen. Aber auch diese Arbeit findet

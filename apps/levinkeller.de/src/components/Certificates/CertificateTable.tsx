@@ -1,4 +1,4 @@
-import { times, add } from 'ramda'
+import { add, times } from 'ramda'
 import { pipe } from 'effect'
 import * as A from 'effect/Array'
 import {
@@ -19,8 +19,8 @@ export const CertificateTable: React.FC<CertificateTableProps> = ({
   startYear,
   years,
 }) => (
-  <div className="not-prose h-96 overflow-x-auto">
-    <table className="table table-pin-rows">
+  <div className='not-prose h-96 overflow-x-auto'>
+    <table className='table table-pin-rows'>
       <thead>
         <tr>
           <th>Jahr</th>

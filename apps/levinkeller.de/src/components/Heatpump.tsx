@@ -35,45 +35,45 @@ export const Heatpump = () => {
     >
       {({ values }) => (
         <>
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <NumberInput name="consumption" label="Verbrauch" unit="kWh" />
+          <div className='grid grid-cols-1 gap-4 lg:grid-cols-3'>
+            <NumberInput name='consumption' label='Verbrauch' unit='kWh' />
             <NumberInput
-              name="heatpumpEfficiency"
-              label="Wirkungsgrad Wärmepumpe"
-              unit=""
+              name='heatpumpEfficiency'
+              label='Wirkungsgrad Wärmepumpe'
+              unit=''
             />
             <NumberInput
-              name="gasheatEfficiency"
-              label="Wirkungsgrad Gasheizung"
-              unit=""
+              name='gasheatEfficiency'
+              label='Wirkungsgrad Gasheizung'
+              unit=''
             />
             <NumberInput
-              name="heatpumpInstallationCost"
-              label="Installationskosten Wärmepumpe"
-              unit="€"
+              name='heatpumpInstallationCost'
+              label='Installationskosten Wärmepumpe'
+              unit='€'
             />
             <NumberInput
-              name="gasheatInstallationCost"
-              label="Installationskosten Gasheizung"
-              unit="€"
+              name='gasheatInstallationCost'
+              label='Installationskosten Gasheizung'
+              unit='€'
             />
             <NumberInput
-              name="electricityPricePerKwh"
-              label="Strompreis"
-              unit="€/kWh"
+              name='electricityPricePerKwh'
+              label='Strompreis'
+              unit='€/kWh'
             />
-            <NumberInput name="gasPricePerKwh" label="Gaspreis" unit="€/kWh" />
-            <NumberInput name="runtimeInYears" label="Laufzeit" unit="Jahre" />
-            <NumberInput name="co2PricePerTon" label="CO2 Preis" unit="€/t" />
+            <NumberInput name='gasPricePerKwh' label='Gaspreis' unit='€/kWh' />
+            <NumberInput name='runtimeInYears' label='Laufzeit' unit='Jahre' />
+            <NumberInput name='co2PricePerTon' label='CO2 Preis' unit='€/t' />
             <NumberInput
-              name="co2EmissionElectricity"
-              label="CO2 Emissionen Strom"
-              unit="g/kWh"
+              name='co2EmissionElectricity'
+              label='CO2 Emissionen Strom'
+              unit='g/kWh'
             />
             <NumberInput
-              name="co2EmissionGas"
-              label="CO2 Emissionen Gas"
-              unit="g/kWh"
+              name='co2EmissionGas'
+              label='CO2 Emissionen Gas'
+              unit='g/kWh'
             />
           </div>
           <h2>Wärmepumpe</h2>
@@ -98,7 +98,7 @@ export const Heatpump = () => {
                 </td>
                 <td>{formatEuros(values.heatpumpInstallationCost)}</td>
               </tr>
-              <tr className="font-bold">
+              <tr className='font-bold'>
                 <td>Gesamtkosten</td>
                 <td>{pipe(values, yearlyTotalCostsHeatpump, formatEuros)}</td>
                 <td>{pipe(values, totalCostsHeatpump, formatEuros)}</td>
@@ -132,7 +132,7 @@ export const Heatpump = () => {
                 </td>
                 <td>{pipe(values.gasheatInstallationCost, formatEuros)}</td>
               </tr>
-              <tr className="font-bold">
+              <tr className='font-bold'>
                 <td>Gesamtkosten</td>
                 <td>{pipe(values, yearlyTotalCostsGasheat, formatEuros)}</td>
                 <td>{pipe(values, totalCostsGasheat, formatEuros)}</td>
@@ -145,7 +145,7 @@ export const Heatpump = () => {
               <tr>
                 <td>
                   <div>Kompensationskosten</div>
-                  <div className="text-xs">
+                  <div className='text-xs'>
                     des Mehrausstoßes ggü. Wärmepumpe
                   </div>
                 </td>
@@ -168,41 +168,39 @@ export const Heatpump = () => {
           <p>
             Die Wärmepumpe kostet{' '}
             {pipe(values, totalCostsHeatpump, formatEuros)} und stößt{' '}
-            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO₂ aus. Wenn ich
-            die Gasheizung nutze und den dadurch zusätzlich verursachten CO₂
-            Ausstoß von{' '}
-            {pipe(values, totalDifferenceCo2HeatpumpGasheat, formatTonneCo2)}{' '}
-            kompensieren möchte, kostet mich das insgesamt{' '}
-            {formatEuros(
+            {pipe(values, totalCo2Heatpump, formatTonneCo2)}{' '}
+            CO₂ aus. Wenn ich die Gasheizung nutze und den dadurch zusätzlich
+            verursachten CO₂ Ausstoß von{' '}
+            {pipe(values, totalDifferenceCo2HeatpumpGasheat, formatTonneCo2)}
+            {' '}
+            kompensieren möchte, kostet mich das insgesamt {formatEuros(
               totalCompensationCostCo2HeatpumpGasheat(values) +
                 totalCostsGasheat(values),
             )}
             . Ich kann also{' '}
-            {pipe(values, savingsHeatpumpGasheatWithSameEmission, formatEuros)}{' '}
+            {pipe(values, savingsHeatpumpGasheatWithSameEmission, formatEuros)}
+            {' '}
             sparen und trotzdem so "wenig" CO₂ ausstoßen wie mit der Wärmepumpe.
           </p>
           <p>
             Würde ich die Ersparnis vollständig für die Kompensation von CO₂
             ausgeben, könnte ich zusätzlich{' '}
-            {pipe(values, compensationWithSavings, formatTonneCo2)} CO₂
-            kompensieren. Gegenüber der Nutzung einer Wärmepumpe würde ich also
-            den CO₂ Ausstoß um Faktor{' '}
-            {pipe(
+            {pipe(values, compensationWithSavings, formatTonneCo2)}{' '}
+            CO₂ kompensieren. Gegenüber der Nutzung einer Wärmepumpe würde ich
+            also den CO₂ Ausstoß um Faktor {pipe(
               values,
               compensationFactor,
               Intl.NumberFormat('de-DE', {
                 style: 'decimal',
                 maximumFractionDigits: 2,
               }).format,
-            )}{' '}
-            reduzieren. Für das gleiche Geld würde ich, anstatt{' '}
-            {pipe(values, totalCo2Heatpump, formatTonneCo2)} CO₂ mit der
-            Wärmepumpe auszustoßen, mit der Gasheizung den Ausstoß von{' '}
-            {pipe(
+            )} reduzieren. Für das gleiche Geld würde ich, anstatt{' '}
+            {pipe(values, totalCo2Heatpump, formatTonneCo2)}{' '}
+            CO₂ mit der Wärmepumpe auszustoßen, mit der Gasheizung den Ausstoß
+            von {pipe(
               compensationWithSavings(values) - totalCo2Gasheat(values),
               formatTonneCo2,
-            )}{' '}
-            CO₂ verhindern!
+            )} CO₂ verhindern!
           </p>
         </>
       )}
@@ -214,10 +212,12 @@ const compensationFactor = (values: HeatpumpFormValues) =>
   compensationWithSavings(values) / totalDifferenceCo2HeatpumpGasheat(values)
 
 const formatTonneCo2 = (value: number) =>
-  `${Intl.NumberFormat('de-DE', {
-    style: 'decimal',
-    maximumFractionDigits: 2, // Adjust this as needed for decimal places
-  }).format(value)} t`
+  `${
+    Intl.NumberFormat('de-DE', {
+      style: 'decimal',
+      maximumFractionDigits: 2, // Adjust this as needed for decimal places
+    }).format(value)
+  } t`
 
 const formatEuros = (value: number) =>
   Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(
@@ -255,12 +255,12 @@ const NumberInput = ({
   label: string
   unit: string
 }) => (
-  <label className="form-control">
-    <div className="label">
-      <span className="label-text">{label}</span>
+  <label className='form-control'>
+    <div className='label'>
+      <span className='label-text'>{label}</span>
     </div>
-    <div className="input input-bordered flex items-center gap-2">
-      <Field name={name} type="number" className="w-full max-w-xs text-right" />
+    <div className='input input-bordered flex items-center gap-2'>
+      <Field name={name} type='number' className='w-full max-w-xs text-right' />
       {unit}
     </div>
   </label>

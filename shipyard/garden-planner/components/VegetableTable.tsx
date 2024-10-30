@@ -6,7 +6,7 @@ export const VegetableTable: FC<{
   vegetables: CollectionEntry<'vegetables'>[]
   caption: string
 }> = ({ vegetables, caption }) => (
-  <table className="table">
+  <table className='table'>
     <p>{caption}</p>
     <thead>
       <tr>
