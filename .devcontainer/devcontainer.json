@@ -15,7 +15,8 @@
         "denoland.vscode-deno",
         "streetsidesoftware.code-spell-checker",
         "astro-build.astro-vscode",
-        "bradlc.vscode-tailwindcss"
+        "bradlc.vscode-tailwindcss",
+        "streetsidesoftware.code-spell-checker-german"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
