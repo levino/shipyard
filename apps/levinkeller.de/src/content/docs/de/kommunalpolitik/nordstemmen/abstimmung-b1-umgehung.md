@@ -49,27 +49,30 @@ Stellen wir uns doch nur einmal vor, hier in Rössing würden wir über Themen
 abstimmen wie:
 
 - die Zulässigkeit von Schwangerschaftsabbrüchen
+- das Adoptionsrecht für homosexuelle Paare
 - die Aufnahme von Geflüchteten
-- die Art der Besteuerung
-- etc.
+- die Legalisierung von Cannabis
+- und so weiter...
 
-Dies würde nicht nur zu einem heillosen Chaos in unserem Land führen, sondern
-auch zu einer tiefen Spaltung in der Gesellschaft und unserem schönen Dorf und
-unserer Gemeinde. Und zwar entlang einer Vielzahl von Bruchlinien, so dass am
-Ende jede und jeder miteinander streitet. Als Bewohner:innen eines kleinen
-Dorfes wissen Sie, wie ich denke, sehr genau, dass viele politischen Themen auf
-den Dorffesten, dem Weihnachtsmarkt, auf den Sportplätzen und in den Vereinen
-nur ein seltener Gast sein dürfen, welcher nur bei wichtigem Grund seine
-Anwesenheitsberechtigung hat. Wir möchten uns nicht bei jeder Gelegenheit mit
-den möglicherweise kontroversen politischen Ansichten aller anderen
-Dorfbewohner:innen beschäftigen. Denn nur im Verzicht auf den ständigen
-politischen Kampf, können wir unsere oft sehr unterschiedlichen Ansichten
-ausblenden und uns auf den Menschen im Gegenüber einlassen und uns an ihm
-erfreuen.
+Dies würde nicht nur zu einem heillosen Chaos und schließlich zum Zerbrechen
+unseres schönen Deutschlands führen, sondern auch zu einer tiefen Spaltung in
+der Gesellschaft und unserem schönen Dorf und unserer Gemeinde. Und zwar entlang
+einer Vielzahl von Bruchlinien, so dass am Ende jede und jeder miteinander
+streitet.
+
+Als Bewohner:innen eines kleinen Dorfes wissen Sie, wie ich denke, sehr genau,
+dass viele politischen Themen auf den Dorffesten, dem Weihnachtsmarkt, auf den
+Sportplätzen und in den Vereinen nur ein seltener Gast sein dürfen, welcher nur
+bei wichtigem Grund seine Anwesenheitsberechtigung hat. Wir möchten uns nicht
+bei jeder Gelegenheit mit den möglicherweise kontroversen politischen Ansichten
+aller anderen Dorfbewohner:innen beschäftigen. Denn nur im Verzicht auf den
+ständigen politischen Kampf, können wir unsere oft sehr unterschiedlichen
+Ansichten ausblenden und uns auf den Menschen im Gegenüber einlassen und uns an
+ihm erfreuen.
 
 Über die B1-Umgehung abzustimmen ist ein Spiel, bei dem wir alle nur verlieren
 können. Ich halte es in solchen Fällen für die beste Strategie, einfach nicht
 mitzuspielen. Ich würde mich sehr freuen, wenn Sie meinen Vorschlag annehmen
-würden.
+könnten.
 
 Levin Keller
