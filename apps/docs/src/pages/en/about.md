@@ -6,6 +6,4 @@ description:
   A general purpose page builder for astro.
 ---
 
-## Demo
-
-Check out the [demo](https://shipyard-demo.levinkeller.de).
+Written so far by Levin Keller, Hohenzollerndamm 152, 14199 Berlin, Germany.

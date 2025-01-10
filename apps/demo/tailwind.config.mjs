@@ -1,5 +1,6 @@
 import daisyui from 'daisyui'
 const path = require('node:path')
+import typography from '@tailwindcss/typography'
 
 console.log(
   path.join(
@@ -25,5 +26,6 @@ export default {
   },
   plugins: [
     daisyui,
+    typography,
   ],
 }
