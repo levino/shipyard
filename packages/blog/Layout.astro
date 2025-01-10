@@ -1,14 +1,14 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseLayout from '@shipyard/base/layouts/Page.astro'
+import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 const locale = Astro.currentLocale
 const entry = await getCollection<{ title: string }>('blog').then(
   (collection) =>
     collection.reduce(
-      (acc, { slug, data: { title } }, key) => ({
+      (acc, { id, data: { title } }, key) => ({
         ...acc,
         [key]: {
-          href: `/${locale}/blog/${slug.slice(3)}`,
+          href: `/${locale}/blog/${id.slice(3)}`,
           label: title,
         },
       }),
