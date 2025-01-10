@@ -1,12 +1,16 @@
 {
-  "name": "@shipyard/blog",
-  "version": "1.0.0",
+  "name": "@levino/shipyard-blog",
+  "version": "0.1.0",
   "description": "",
   "main": "index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "@levino/shipyard-base": "^0.1"
+  },
   "devDependencies": {
-    "astro": "^4.15.2"
+    "astro": "^4.15.2",
+    "@levino/shipyard-base": "^0.1"
   }
 }

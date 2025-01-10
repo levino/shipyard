@@ -1,15 +1,19 @@
 {
-  "name": "@shipyard/docs",
-  "version": "1.0.0",
+  "name": "@levino/shipyard-docs",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "peerDependencies": {
+    "@levino/shipyard-base": "^0.1"
+  },
   "dependencies": {
     "ramda": "^0.29.1"
   },
   "devDependencies": {
-    "@types/ramda": "^0.29.9"
+    "@types/ramda": "^0.29.9",
+    "@levino/shipyard-base": "^0.1"
   }
 }

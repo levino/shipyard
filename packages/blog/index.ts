@@ -22,7 +22,7 @@ export const getStaticPaths = async () => {
   }
   const blogPosts = await getCollection<BlogData>('blog')
   return blogPosts.map((entry) => ({
-    params: getParams(entry.slug),
+    params: getParams(entry.id),
     props: { entry },
   }))
 }

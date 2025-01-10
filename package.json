@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "prepare": "husky install",
+    "prepare": "husky install || true",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
@@ -8,7 +8,6 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@shipyard/base": "*",
     "@storybook/addon-essentials": "^7.6.7",
     "@storybook/addon-interactions": "^7.6.7",
     "@storybook/addon-links": "^7.6.7",
@@ -17,11 +16,8 @@
     "@storybook/react": "^7.6.7",
     "@storybook/react-vite": "^7.6.7",
     "@storybook/test": "^7.6.7",
-    "astro": "^4.15.2",
     "autoprefixer": "^10.4.15",
     "daisyui": "^4.6.0",
-    "eslint": "^8.46.0",
-    "eslint-plugin-storybook": "^0.6.15",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
     "postcss": "^8.4.28",
@@ -33,9 +29,7 @@
     "vite": "^4.5.1"
   },
   "workspaces": [
-    "docs",
     "packages/*",
-    "apps/docs",
-    "apps/demo"
+    "apps/*"
   ]
 }

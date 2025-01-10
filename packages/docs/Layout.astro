@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseLayout from '@shipyard/base/layouts/Page.astro'
+import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { toSidebarEntries } from './sidebarEntries'
 import { path } from 'ramda'
-import type { NavigationTree } from '@shipyard/base/src/schemas/config'
+import type { NavigationTree } from '@levino/shipyard-base/src/schemas/config'
 
 const locale = Astro.currentLocale as string
 const docs = await getCollection<{
@@ -12,13 +12,13 @@ const docs = await getCollection<{
 }>('docs').then((docs) =>
   docs.map(
     ({
-      slug,
+      id,
       data: {
         title,
         sidebar: { render, label },
       },
     }) => ({
-      path: `/${locale}/docs/${slug.slice(3)}`,
+      path: `/${locale}/docs/${id.slice(3)}`,
       title: label ?? title,
       link: render,
     }),

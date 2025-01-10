@@ -1,16 +1,14 @@
 {
-  "name": "docs",
-  "version": "1.0.0",
-  "description": "Documentation for shipyard",
-  "main": "index.js",
-  "devDependencies": {},
+  "name": "apps-docs",
+  "type": "module",
+  "version": "0.0.1",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "repository": {
-    "type": "git",
-    "url": "."
-  },
-  "author": "Levin Keller",
-  "license": "MIT"
+  "dependencies": {
+    "astro": "^5.1.5"
+  }
 }
