@@ -1,5 +1,5 @@
 import type { Preview } from '@storybook/react'
-import '@shipyard/base/globals.css'
+import '../packages/base/globals.css'
 const preview: Preview = {
   parameters: {
     actions: { argTypesRegex: '^on[A-Z].*' },
