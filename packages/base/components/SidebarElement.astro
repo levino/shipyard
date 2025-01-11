@@ -1,0 +1,26 @@
+---
+import type { Entry } from './types';
+
+
+interface Props {
+  entry: Entry;
+}
+
+const { entry } = Astro.props;
+---
+
+{Object.entries(entry).map(([key, entry]) => {
+  const label = entry.label ?? key;
+  return (
+    <li>
+      {entry.href
+        ? <a href={entry.href}>{label}</a>
+        : <span class='menu-title'>{label}</span>}
+      {entry.subEntry ? (
+        <ul>
+          <Astro.self entry={entry.subEntry} />
+        </ul>
+      ) : null}
+    </li>
+  )
+})}

@@ -3,9 +3,13 @@ import { defineConfig } from 'astro/config'
 
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
-import react from '@astrojs/react'
+import shipyardDocs from '@levino/shipyard-docs'
+import shipyardBlog from '@levino/shipyard-blog'
 // https://astro.build/config
 export default defineConfig({
+  redirects: {
+    '/': '/de',
+  },
   i18n: {
     defaultLocale: 'de',
     locales: ['de', 'en'],
@@ -43,6 +47,7 @@ export default defineConfig({
       },
       brand: 'Levin Keller',
     }),
-    react(),
+    shipyardDocs(['docs']),
+    shipyardBlog(['blog']),
   ],
 })

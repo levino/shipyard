@@ -1,0 +1,37 @@
+---
+import Layout from '@levino/shipyard-blog/Layout.astro'
+import TableOfContents from '@levino/shipyard-base/components/TableOfContents.astro'
+import { render, getCollection } from 'astro:content'
+
+interface BlogData {
+  title: string
+  description?: string
+}
+
+export const getStaticPaths = async () => {
+  const getParams = (slug: string) => {
+    const [locale, ...rest] = slug.split('/')
+    return {
+      slug: rest.join('/'),
+      locale,
+    }
+  }
+  const blogPosts = await getCollection<BlogData>('blog')
+  return blogPosts.map((entry) => ({
+    params: getParams(entry.id),
+    props: { entry },
+  }))
+}
+
+const { entry } = Astro.props
+const { Content, headings } = await render(entry)
+---
+
+<Layout>
+  <div>
+    <div class="prose mx-auto w-full px-8">
+      <Content />
+    </div>
+    <TableOfContents links={headings} />
+  </div>
+</Layout>

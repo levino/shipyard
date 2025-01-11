@@ -2,10 +2,10 @@
 import Footer from './Footer.astro'
 import '../globals.css'
 import config from 'virtual:shipyard/config'
-import { GlobalDesktopNavigation } from '../components/GlobalDesktopNavigation'
+import GlobalDesktopNavigation from '../components/GlobalDesktopNavigation.astro'
 import type { NavigationTree, NavigationEntry } from '@/schemas/config'
 import { mapObjIndexed } from 'ramda'
-import { SidebarNavigation } from '../components/SidebarNavigation'
+import SidebarNavigation from '../components/SidebarNavigation.astro'
 
 type Props = {
   frontmatter?: {
