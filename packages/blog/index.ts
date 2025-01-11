@@ -1,28 +1,21 @@
 import { z } from 'astro/zod'
+import type { AstroIntegration } from 'astro'
 
 export const blogSchema = z.object({
   date: z.date(),
   title: z.string(),
 })
 
-interface BlogData {
-  title: string
-  description?: string
-}
-
-import { getCollection } from 'astro:content'
-
-export const getStaticPaths = async () => {
-  const getParams = (slug: string) => {
-    const [locale, ...rest] = slug.split('/')
-    return {
-      slug: rest.join('/'),
-      locale,
-    }
-  }
-  const blogPosts = await getCollection<BlogData>('blog')
-  return blogPosts.map((entry) => ({
-    params: getParams(entry.id),
-    props: { entry },
-  }))
-}
+export default (blogPaths: string[]): AstroIntegration => ({
+  name: 'shipyard-blog',
+  hooks: {
+    'astro:config:setup': ({ injectRoute }) => {
+      blogPaths.forEach((path) => {
+        injectRoute({
+          pattern: `/[locale]/${path}/[...slug]`,
+          entrypoint: `@levino/shipyard-blog/blogEntry.astro`,
+        })
+      })
+    },
+  },
+})

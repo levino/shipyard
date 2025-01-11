@@ -1,5 +1,5 @@
 import type { AstroIntegration } from 'astro'
-import type { Config } from './schemas/config'
+import type { Config } from './schemas/config.ts'
 
 const shipyardConfigId = 'virtual:shipyard/config'
 
