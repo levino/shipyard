@@ -2,7 +2,8 @@
   "name": "@levino/shipyard-docs",
   "version": "0.1.0",
   "description": "",
-  "main": "index.ts",
+  "type": "module",
+  "main": "lib/index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -18,5 +19,13 @@
     "@types/ramda": "^0.29.9",
     "@levino/shipyard-base": "^0.1",
     "@tailwindcss/typography": "^0.5.16"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && rsync -avm --include='*/' --include='*.astro' --include='*.css' --exclude='*' ./src/ ./lib/",
+    "prepublishOnly": "npm run build"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
   }
 }

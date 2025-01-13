@@ -14,11 +14,11 @@ export default {
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
     path.join(
       path.dirname(require.resolve('@levino/shipyard-base')),
-      '../**/*.{tsx,astro}',
+      '**/*.{tsx,astro}',
     ),
     path.join(
       path.dirname(require.resolve('@levino/shipyard-base')),
-      '../**/*.{tsx,astro}',
+      '**/*.{tsx,astro}',
     ),
   ],
   theme: {

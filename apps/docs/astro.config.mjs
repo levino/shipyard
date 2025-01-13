@@ -4,7 +4,7 @@ import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
-import shipyardBlog from '@levino/shipyard-blog'
+import shipyardBlog from '../../packages/blog/src/index.ts'
 
 // https://astro.build/config
 export default defineConfig({

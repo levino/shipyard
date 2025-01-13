@@ -2,16 +2,24 @@
   "name": "@levino/shipyard-base",
   "version": "0.1.0",
   "type": "module",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "peerDependencies": {
     "astro": "^5",
     "daisyui": "^4",
     "tailwindcss": "^3",
     "@tailwindcss/typography": "^0.5.10"
   },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && rsync -avm --include='*/' --include='*.astro' --include='*.css' --exclude='*' ./src/ ./lib/",
+    "prepublishOnly": "npm run build"
+  },
   "files": [
-    "./virtual.d.ts"
+    "lib"
   ],
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
+  },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/ramda": "^0.29.9",

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "type": "module",
-  "main": "index.ts",
+  "main": "lib/index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -14,5 +14,13 @@
   "devDependencies": {
     "astro": "^5",
     "@levino/shipyard-base": "^0.1"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./*": "./lib/*"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && rsync -avm --include='*/' --include='*.astro' --include='*.css' --exclude='*' ./src/ ./lib/",
+    "prepublishOnly": "npm run build"
   }
 }
