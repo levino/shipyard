@@ -1,5 +1,5 @@
 import daisyui from 'daisyui'
-const path = require('node:path')
+import path from 'node:path'
 import typography from '@tailwindcss/typography'
 
 console.log(
