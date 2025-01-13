@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-blog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "type": "module",
   "main": "lib/index.ts",
@@ -8,12 +8,12 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@levino/shipyard-base": "^0.1",
+    "@levino/shipyard-base": "^0.1.1",
     "astro": "^5"
   },
   "devDependencies": {
     "astro": "^5",
-    "@levino/shipyard-base": "^0.1"
+    "@levino/shipyard-base": "^0.1.1"
   },
   "exports": {
     ".": "./lib/index.js",

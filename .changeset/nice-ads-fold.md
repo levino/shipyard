@@ -4,4 +4,4 @@
 "@levino/shipyard-docs": patch
 ---
 
-release bump
+bump to try a publication

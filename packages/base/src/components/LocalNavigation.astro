@@ -1,14 +1,6 @@
 ---
 import SidebarElement from './SidebarElement.astro';
-
-export type Entry = Record<
-  string,
-  {
-    label?: string;
-    href?: string;
-    subEntry?: Entry;
-  }
->;
+import { Entry } from './types';
 
 interface SidebarProps {
   entry: Entry;

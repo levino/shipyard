@@ -1,6 +1,6 @@
 import type { AstroIntegration } from 'astro'
 import type { Config } from './schemas/config.ts'
-
+export type { Entry } from './components/types.ts'
 const shipyardConfigId = 'virtual:shipyard/config'
 
 const resolveId: Record<string, string | undefined> = {
