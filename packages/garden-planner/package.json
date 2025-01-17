@@ -2,7 +2,9 @@
   "name": "@levino/shipyard-garden-planner",
   "version": "0.0.1",
   "description": "",
-  "main": "src/index.ts",
+  "exports": {
+    "./*": "./lib/*"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
