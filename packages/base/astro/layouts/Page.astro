@@ -1,9 +1,9 @@
 ---
 import Footer from "./Footer.astro";
-import "../../globals.css";
+import "../../src/globals.css";
 import config from "virtual:shipyard/config";
 import { GlobalDesktopNavigation, SidebarNavigation } from "../components";
-import type { NavigationTree, NavigationEntry } from "../../schemas/config";
+import type { NavigationTree, NavigationEntry } from "../../src/schemas/config";
 import { mapObjIndexed } from "ramda";
 
 type Props = {

@@ -3,12 +3,13 @@
   "version": "0.1.2",
   "description": "",
   "type": "module",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "exports": {
-    ".": "./index.ts",
-    "./astro": "./astro.ts",
+    ".": "./src/index.ts",
+    "./astro": "./src/astro.ts",
     "./astro/*": "./astro/*"
   },
+  "files": ["astro","src"],
   "keywords": [],
   "author": "",
   "license": "ISC",
