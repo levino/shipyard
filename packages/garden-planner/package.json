@@ -16,9 +16,15 @@
   },
   "devDependencies": {
     "@levino/shipyard-base": "*",
-    "@types/react": "^18.2.48"
+    "@types/react": "^18.2.48",
+    "tsup": "^8.3.5",
+    "@levino/astro-content-collection-plants": "0.1"
   },
   "peerDependencies": {
     "@levino/shipyard-base": "^0.1"
+  },
+  "scripts": {
+    "dev": "tsup-node --watch",
+    "build": "tsup-node 'src/**/*.tsx' --format esm --dts"
   }
 }

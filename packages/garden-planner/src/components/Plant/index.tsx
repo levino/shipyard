@@ -1,3 +1,4 @@
+//@ts-expect-error no types yet
 import { type CollectionEntry } from 'astro:content'
 import { MONTHS_DE, MONTHS_EN } from '@levino/shipyard-base'
 import type { FC, PropsWithChildren } from 'react'
