@@ -1,30 +1,29 @@
 ---
-import Footer from './Footer.astro'
-import '../globals.css'
-import config from 'virtual:shipyard/config'
-import GlobalDesktopNavigation from '../components/GlobalDesktopNavigation.astro'
-import type { NavigationTree, NavigationEntry } from '../schemas/config'
-import { mapObjIndexed } from 'ramda'
-import SidebarNavigation from '../components/SidebarNavigation.astro'
+import Footer from "./Footer.astro";
+import "../../globals.css";
+import config from "virtual:shipyard/config";
+import { GlobalDesktopNavigation, SidebarNavigation } from "../components";
+import type { NavigationTree, NavigationEntry } from "../../schemas/config";
+import { mapObjIndexed } from "ramda";
 
 type Props = {
   frontmatter?: {
-    title?: string
-    description?: string
-    sidebarNavigation?: NavigationTree
-  }
+    title?: string;
+    description?: string;
+    sidebarNavigation?: NavigationTree;
+  };
 } & {
-  title?: string
-  description?: string
-  sidebarNavigation?: NavigationTree
-}
+  title?: string;
+  description?: string;
+  sidebarNavigation?: NavigationTree;
+};
 
-const locale = Astro.currentLocale || 'de'
-const currentPath = Astro.url.pathname
-const props = Astro.props.frontmatter || Astro.props
+const locale = Astro.currentLocale || "de";
+const currentPath = Astro.url.pathname;
+const props = Astro.props.frontmatter || Astro.props;
 
-const withLocale = (locale: string) => (path: string) => `/${locale}${path}`
-const withCurrentLocale = withLocale(locale)
+const withLocale = (locale: string) => (path: string) => `/${locale}${path}`;
+const withCurrentLocale = withLocale(locale);
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
@@ -33,9 +32,9 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
     ...(entry.subEntry
       ? { subEntry: applyLocaleAndSetActive(entry.subEntry) }
       : {}),
-  }))
+  }));
 
-const navigation = applyLocaleAndSetActive(config.navigation)
+const navigation = applyLocaleAndSetActive(config.navigation);
 ---
 
 <html>
@@ -46,7 +45,7 @@ const navigation = applyLocaleAndSetActive(config.navigation)
       {
         config.meta.title
           ? `Levin Keller - ${config.meta.title}`
-          : 'Levin Keller'
+          : "Levin Keller"
       }
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />

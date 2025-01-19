@@ -14,10 +14,6 @@ const { links } = Astro.props as TableOfContentsProps;
 
 <div class="fixed right-0 h-full lg:h-auto lg:overflow-y-visible">
   <div class="w-128 sticky" aria-label="Auf dieser Seite">
-    {links.map((link, key) => (
-      <a href={`#${link.slug}`}>
-        {link.text}
-      </a>
-    ))}
+    {links.map((link) => <a href={`#${link.slug}`}>{link.text}</a>)}
   </div>
 </div>

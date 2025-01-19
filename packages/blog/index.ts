@@ -13,7 +13,7 @@ export default (blogPaths: string[]): AstroIntegration => ({
       blogPaths.forEach((path) => {
         injectRoute({
           pattern: `/[locale]/${path}/[...slug]`,
-          entrypoint: `@levino/shipyard-blog/blogEntry.astro`,
+          entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
         })
       })
     },

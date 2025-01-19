@@ -3,7 +3,7 @@
   "version": "0.1.2",
   "description": "",
   "type": "module",
-  "main": "lib/index.ts",
+  "main": "index.ts",
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -26,7 +26,8 @@
     "prepublishOnly": "npm run build"
   },
   "exports": {
-    ".": "./lib/index.js",
-    "./*": "./lib/*"
+    ".": "./index.ts",
+    "./layout": "./astro/Layout.astro",
+    "./astro": "./astro/index.ts"
   }
 }

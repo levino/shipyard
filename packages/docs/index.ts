@@ -20,7 +20,7 @@ export default (docsPaths: string[]): AstroIntegration => ({
       docsPaths.forEach((path) => {
         injectRoute({
           pattern: `/[locale]/${path}/[...slug]`,
-          entrypoint: `@levino/shipyard-docs/docsEntry.astro`,
+          entrypoint: `@levino/shipyard-docs/astro/DocsEntry.astro`,
         })
       })
     },

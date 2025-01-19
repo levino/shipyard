@@ -1,0 +1,6 @@
+export { default as Footer } from './Footer.astro'
+export { default as GlobalDesktopNavigation } from './GlobalDesktopNavigation.astro'
+export { default as LocalNavigation } from './LocalNavigation.astro'
+export { default as SidebarElement } from './SidebarElement.astro'
+export { default as SidebarNavigation } from './SidebarNavigation.astro'
+export { default as TableOfContents } from './TableOfContents.astro'

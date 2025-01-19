@@ -1,8 +1,8 @@
 ---
-import { getCollection } from 'astro:content'
-import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
-const locale = Astro.currentLocale
-const entry = await getCollection<{ title: string }>('blog').then(
+import { getCollection } from "astro:content";
+import { Page as BaseLayout } from "@levino/shipyard-base/layouts";
+const locale = Astro.currentLocale;
+const entry = await getCollection<{ title: string }>("blog").then(
   (collection) =>
     collection.reduce(
       (acc, { id, data: { title } }, key) => ({
@@ -14,7 +14,7 @@ const entry = await getCollection<{ title: string }>('blog').then(
       }),
       {},
     ),
-)
+);
 ---
 
 <BaseLayout sidebarNavigation={entry}>
