@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-docs",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
   "main": "src/index.ts",
@@ -13,7 +13,7 @@
   "dependencies": {
     "effect": "^3.12.5",
     "ramda": "^0.29.1",
-    "@levino/shipyard-base": "^0.1.2"
+    "@levino/shipyard-base": "^0.2.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
