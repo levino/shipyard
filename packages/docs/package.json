@@ -8,15 +8,14 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@levino/shipyard-base": "^0.1.2",
     "astro": "^5"
   },
   "dependencies": {
     "effect": "^3.12.5",
-    "ramda": "^0.29.1"
+    "ramda": "^0.29.1",
+    "@levino/shipyard-base": "^0.1.2"
   },
   "devDependencies": {
-    "@levino/shipyard-base": "^0.1.2",
     "@tailwindcss/typography": "^0.5.16",
     "@types/ramda": "^0.29.9",
     "astro": "^5",
