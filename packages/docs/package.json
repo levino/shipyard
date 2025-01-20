@@ -21,10 +21,6 @@
     "astro": "^5",
     "vitest": "^2.1.8"
   },
-  "scripts": {
-    "build": "tsc -p tsconfig.build.json && rsync -avm --include='*/' --include='*.astro' --include='*.css' --exclude='*' ./src/ ./lib/",
-    "prepublishOnly": "npm run build"
-  },
   "exports": {
     ".": "./src/index.ts",
     "./layout": "./astro/Layout.astro",
