@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-blog",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "",
   "type": "module",
   "main": "src/index.ts",
@@ -9,12 +9,15 @@
     "./astro": "./src/astro.ts",
     "./astro/*": "./astro/*"
   },
-  "files": ["astro", "src"],
+  "files": [
+    "astro",
+    "src"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@levino/shipyard-base": "^0.1.2"
+    "@levino/shipyard-base": "^0.2.0"
   },
   "peerDependencies": {
     "astro": "^5"
