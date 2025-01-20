@@ -1,6 +1,6 @@
 import type { AstroIntegration } from 'astro'
 import type { Config } from './schemas/config'
-export type { Entry } from '../components/types'
+export type { Entry } from '../astro/components/types'
 export * from './types'
 const shipyardConfigId = 'virtual:shipyard/config'
 
