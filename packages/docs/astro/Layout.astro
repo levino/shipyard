@@ -1,0 +1,47 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@levino/shipyard-base/layouts/Page.astro";
+import { toSidebarEntries } from "../src/sidebarEntries";
+import { path } from "ramda";
+import type { NavigationTree } from "@levino/shipyard-base";
+import { Array, Option } from "effect";
+
+const locale = Astro.currentLocale as string;
+const docs = await getCollection("docs")
+  .then(
+    Array.map(async (doc) => {
+      const {
+        id,
+        data: {
+          title,
+          sidebar: { render: shouldBeRendered, label },
+        },
+      } = doc;
+      return {
+        path: `/${locale}/docs/${id.slice(3)}`,
+        title:
+          label ??
+          title ??
+          Option.getOrUndefined(
+            Array.findFirst(
+              (await render(doc)).headings,
+              ({ depth }) => depth === 1,
+            ),
+          )?.text ??
+          id,
+        link: shouldBeRendered,
+      };
+    }),
+  )
+  .then(Promise.all.bind(Promise));
+
+const entries = path([locale, "subEntry", "docs", "subEntry"])(
+  toSidebarEntries(docs),
+) as NavigationTree;
+---
+
+<BaseLayout sidebarNavigation={entries}>
+  <div class="prose mx-auto">
+    <slot />
+  </div>
+</BaseLayout>

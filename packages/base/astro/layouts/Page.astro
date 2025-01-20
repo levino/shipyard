@@ -1,0 +1,88 @@
+---
+import Footer from "./Footer.astro";
+import "../../src/globals.css";
+import config from "virtual:shipyard/config";
+import { GlobalDesktopNavigation, SidebarNavigation } from "../components";
+import type { NavigationTree, NavigationEntry } from "../../src/schemas/config";
+import { mapObjIndexed } from "ramda";
+
+type Props = {
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    sidebarNavigation?: NavigationTree;
+  };
+} & {
+  title?: string;
+  description?: string;
+  sidebarNavigation?: NavigationTree;
+};
+
+const locale = Astro.currentLocale || "de";
+const currentPath = Astro.url.pathname;
+const props = Astro.props.frontmatter || Astro.props;
+
+const withLocale = (locale: string) => (path: string) => `/${locale}${path}`;
+const withCurrentLocale = withLocale(locale);
+const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
+  mapObjIndexed((entry: NavigationEntry) => ({
+    ...entry,
+    ...(entry.href ? { href: withCurrentLocale(entry.href) } : {}),
+    active: entry.href === currentPath,
+    ...(entry.subEntry
+      ? { subEntry: applyLocaleAndSetActive(entry.subEntry) }
+      : {}),
+  }));
+
+const navigation = applyLocaleAndSetActive(config.navigation);
+const title =         `${config.title} - ${props.title}`
+
+---
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <title>
+      {
+        title
+      }
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={props.description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={props.description} />
+  </head>
+  <body>
+    <div class="drawer lg:drawer-open">
+      <input id="drawer" type="checkbox" class="drawer-toggle" />
+      <div class="drawer-content">
+        <div class="flex min-h-screen flex-col">
+          <GlobalDesktopNavigation
+            showBrand={!props.sidebarNavigation}
+            brand={config.brand}
+            navigation={navigation}
+          />
+          <div class="grow">
+            <div class="mx-auto px-4">
+              <slot />
+            </div>
+          </div>
+          <Footer />
+        </div>
+      </div>
+
+      <div class="drawer-side z-40">
+        <label for="drawer" aria-label="close sidebar" class="drawer-overlay"
+        ></label>
+        <div>
+          <SidebarNavigation
+            brand={config.brand}
+            global={navigation}
+            local={props.sidebarNavigation}
+          />
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

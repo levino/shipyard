@@ -4,14 +4,14 @@ import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
-import shipyardBlog from '@levino/shipyard-blog'
+import shipyardBlog from '../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
   redirects: {
     '/': '/de',
   },
   i18n: {
-    defaultLocale: 'de',
+    defaultLocale: 'en',
     locales: ['de', 'en'],
     routing: {
       redirectToDefaultLocale: false,
@@ -19,7 +19,7 @@ export default defineConfig({
       strategy: 'pathname',
     },
     fallback: {
-      en: 'de',
+      de: 'en',
     },
   },
   integrations: [
@@ -41,11 +41,9 @@ export default defineConfig({
           href: '/about',
         },
       },
-      meta: {
-        title: 'Levin Keller',
-        description: 'Levins Homepage',
-      },
-      brand: 'Levin Keller',
+      title: 'Shipyard Demo',
+      tagline: 'A website to demonstrate the Shipyard capabilities.',
+      brand: 'Shipyard',
     }),
     shipyardDocs(['docs']),
     shipyardBlog(['blog']),

@@ -8,11 +8,14 @@
   "devDependencies": {
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
-    "typescript": "^5.3.3",
-    "vite": "^4.5.1"
+    "turbo": "^2.3.3",
+    "typescript": "^5.3.3"
   },
   "workspaces": [
     "packages/*",
     "apps/*"
-  ]
+  ],
+  "dependencies": {
+    "@changesets/cli": "^2.27.11"
+  }
 }

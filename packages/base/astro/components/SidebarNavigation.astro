@@ -1,0 +1,37 @@
+---
+import { cn } from "../../src/tools/cn";
+import SidebarElement from "./SidebarElement.astro";
+import type { Entry } from "./types";
+
+interface Props {
+  local: Entry | undefined;
+  global: Entry;
+  brand: string;
+}
+
+const { local, global, brand } = Astro.props;
+---
+
+<ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })}>
+  <div>
+    <a href="/" class="btn btn-ghost mb-2 text-xl">
+      {brand}
+    </a>
+  </div>
+  <div class="block md:hidden">
+    <li>
+      {
+        local ? (
+          <details>
+            <summary>Main menu</summary>
+            <SidebarElement entry={global} />
+          </details>
+        ) : (
+          <SidebarElement entry={global} />
+        )
+      }
+    </li>
+    <div class={cn("divider my-1 block md:hidden", { hidden: !local })}></div>
+  </div>
+  {local && <SidebarElement entry={local} />}
+</ul>

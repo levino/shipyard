@@ -1,8 +1,16 @@
 {
   "name": "@levino/shipyard-base",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "type": "module",
   "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./astro": "./src/astro.ts",
+    "./layouts": "./astro/layouts/index.ts",
+    "./layouts/*": "./astro/layouts/*",
+    "./components": "./astro/components/index.ts",
+    "./components/*": "./astro/components/*"
+  },
   "peerDependencies": {
     "astro": "^5",
     "daisyui": "^4",
@@ -10,7 +18,8 @@
     "@tailwindcss/typography": "^0.5.10"
   },
   "files": [
-    "./virtual.d.ts"
+    "astro",
+    "src"
   ],
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",

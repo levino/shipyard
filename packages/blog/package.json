@@ -1,18 +1,24 @@
 {
   "name": "@levino/shipyard-blog",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
-  "main": "index.ts",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./astro": "./src/astro.ts",
+    "./astro/*": "./astro/*"
+  },
+  "files": ["astro", "src"],
   "keywords": [],
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "@levino/shipyard-base": "^0.1",
+    "@levino/shipyard-base": "^0.1.2",
     "astro": "^5"
   },
   "devDependencies": {
     "astro": "^5",
-    "@levino/shipyard-base": "^0.1"
+    "@levino/shipyard-base": "^0.1.2"
   }
 }
