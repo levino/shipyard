@@ -13,12 +13,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "@levino/shipyard-base": "^0.1.2"
+  },
   "peerDependencies": {
-    "@levino/shipyard-base": "^0.1.2",
     "astro": "^5"
   },
   "devDependencies": {
-    "astro": "^5",
-    "@levino/shipyard-base": "^0.1.2"
+    "astro": "^5"
   }
 }
