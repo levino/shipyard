@@ -9,7 +9,7 @@ export const docsSchema = z.object({
       label: z.string().optional(),
     })
     .default({ render: true }),
-  title: z.string(),
+  title: z.string().optional(),
   description: z.string().optional(),
 })
 

@@ -9,7 +9,7 @@
     "./astro": "./src/astro.ts",
     "./astro/*": "./astro/*"
   },
-  "files": ["astro","src"],
+  "files": ["astro", "src"],
   "keywords": [],
   "author": "",
   "license": "ISC",

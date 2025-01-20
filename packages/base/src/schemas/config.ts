@@ -10,8 +10,6 @@ export type NavigationTree = Record<string, NavigationEntry>
 export type Config = {
   brand: string
   navigation: NavigationTree
-  meta: {
-    title: string
-    description: string
-  }
+  title: string
+  tagline: string
 }

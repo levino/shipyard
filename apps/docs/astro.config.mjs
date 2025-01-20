@@ -39,10 +39,8 @@ export default defineConfig({
           href: '/about',
         },
       },
-      meta: {
-        title: 'Shipyard',
-        description: 'A universal page builder for astro',
-      },
+      title: 'Shipyard',
+      tagline: 'A universal page builder for astro',
       brand: 'Shipyard',
     }),
     shipyardDocs(['docs']),

@@ -3,7 +3,7 @@ layout: '@levino/shipyard-base/layouts/Splash.astro'
 title: Startseite
 locale: de
 description:
-  A telling description.
+  Welcom to the demo page of Shipyard.
 ---
 
-Hello my friend.
+This is a simple markdown page.

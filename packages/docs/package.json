@@ -12,6 +12,7 @@
     "astro": "^5"
   },
   "dependencies": {
+    "effect": "^3.12.5",
     "ramda": "^0.29.1"
   },
   "devDependencies": {
@@ -31,5 +32,8 @@
     "./astro": "./astro/index.ts",
     "./astro/*": "./astro/*"
   },
-  "files": ["astro","src"]
+  "files": [
+    "astro",
+    "src"
+  ]
 }

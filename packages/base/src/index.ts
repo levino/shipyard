@@ -2,6 +2,7 @@ import type { AstroIntegration } from 'astro'
 import type { Config } from './schemas/config'
 export type { Entry } from '../astro/components/types'
 export * from './types'
+export type * from './schemas/config'
 const shipyardConfigId = 'virtual:shipyard/config'
 
 const resolveId: Record<string, string | undefined> = {

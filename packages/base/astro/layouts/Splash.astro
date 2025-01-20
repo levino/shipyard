@@ -1,7 +1,18 @@
 ---
+import type { NavigationTree } from '../../src/schemas/config';
 import Base from './Page.astro'
+
+type Props = {
+  frontmatter?: {
+    title?: string;
+    description?: string;
+    sidebarNavigation?: NavigationTree;
+  };
+}
+
+const props = Astro.props
 ---
 
-<Base>
+<Base {...props}>
   <div class="prose mx-auto"><slot /></div>
 </Base>

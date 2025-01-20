@@ -35,6 +35,8 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   }));
 
 const navigation = applyLocaleAndSetActive(config.navigation);
+const title =         `${config.title} - ${props.title}`
+
 ---
 
 <html>
@@ -43,12 +45,13 @@ const navigation = applyLocaleAndSetActive(config.navigation);
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>
       {
-        config.meta.title
-          ? `Levin Keller - ${config.meta.title}`
-          : "Levin Keller"
+        title
       }
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={props.description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={props.description} />
   </head>
   <body>
     <div class="drawer lg:drawer-open">
