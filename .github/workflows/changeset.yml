@@ -16,7 +16,7 @@ jobs:
       - uses: actions/create-github-app-token@v1
         id: generate-token
         with:
-          app-id: ${{ secrets.APP_ID }}
+          app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
       - uses: actions/setup-node@v4
         with:
