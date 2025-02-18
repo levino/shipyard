@@ -1,2 +1,2 @@
-export { default as BlogEntry } from './BlogEntry.astro'
-export { default as Layout } from './Layout.astro'
+export { default as BlogEntry } from '../astro/BlogEntry.astro'
+export { default as Layout } from '../astro/Layout.astro'

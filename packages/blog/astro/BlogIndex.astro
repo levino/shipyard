@@ -1,0 +1,39 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "./Layout.astro";
+import { getCollection } from "astro:content";
+import config from "virtual:shipyard/config";
+
+export const getStaticPaths = (() =>
+  config.locales.map((locale) => ({
+    params: {
+      locale,
+    },
+  }))) satisfies GetStaticPaths;
+
+const entries = await getCollection("blog").then((posts) =>
+  posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+);
+
+const getBlogPostLink = (id: string, locale: string) =>
+  id.replace(`${locale}/`, `${locale}/blog/`);
+
+const { locale } = Astro.params;
+const formatDate = new Intl.DateTimeFormat(locale).format;
+---
+
+<Layout>
+  <div class="mx-auto max-w-prose px-8">
+    {
+      entries.map(async (entry) => (
+        <a class="block my-8" href={`/${getBlogPostLink(entry.id, locale)}`}>
+          <div class="prose">
+            <div class="text-sm">{formatDate(entry.data.date)}</div>
+            <h2 class="my-0">{entry.data.title}</h2>
+            <p>{entry.data.description}</p>
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</Layout>
