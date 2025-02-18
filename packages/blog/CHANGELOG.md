@@ -1,5 +1,16 @@
 # @levino/shipyard-blog
 
+## 0.3.0
+
+### Minor Changes
+
+- bfdf717: Improve usage and functionality of the blog. Showing an "all posts" page now.
+
+### Patch Changes
+
+- Updated dependencies [bfdf717]
+  - @levino/shipyard-base@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
