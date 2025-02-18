@@ -3,11 +3,6 @@ import Layout from "./Layout.astro";
 import { TableOfContents } from "@levino/shipyard-base/components";
 import { render, getCollection } from "astro:content";
 
-interface BlogData {
-  title: string;
-  description?: string;
-}
-
 export const getStaticPaths = async () => {
   const getParams = (slug: string) => {
     const [locale, ...rest] = slug.split("/");
@@ -16,7 +11,7 @@ export const getStaticPaths = async () => {
       locale,
     };
   };
-  const blogPosts = await getCollection<BlogData>("blog");
+  const blogPosts = await getCollection("blog");
   return blogPosts.map((entry) => ({
     params: getParams(entry.id),
     props: { entry },
