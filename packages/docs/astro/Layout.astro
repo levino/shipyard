@@ -5,8 +5,13 @@ import { toSidebarEntries } from "../src/sidebarEntries";
 import { path } from "ramda";
 import type { NavigationTree } from "@levino/shipyard-base";
 import { Array, Option } from "effect";
+import config from "virtual:shipyard/config";
 
-const locale = Astro.currentLocale as string;
+const locale = (Astro.currentLocale as string) ?? config.defaultLocale;
+const getPath = (id: string) =>
+  locale === config.defaultLocale
+    ? `/docs/${id}`
+    : `/${locale}/docs/${id.slice(3)}`;
 const docs = await getCollection("docs")
   .then(
     Array.map(async (doc) => {
@@ -18,7 +23,7 @@ const docs = await getCollection("docs")
         },
       } = doc;
       return {
-        path: `/${locale}/docs/${id.slice(3)}`,
+        path: getPath(id),
         title:
           label ??
           title ??
@@ -35,9 +40,11 @@ const docs = await getCollection("docs")
   )
   .then(Promise.all.bind(Promise));
 
-const entries = path([locale, "subEntry", "docs", "subEntry"])(
-  toSidebarEntries(docs),
-) as NavigationTree;
+const entries = (
+  locale == config.defaultLocale
+    ? path(["docs", "subEntry"])
+    : path([locale, "subEntry", "docs", "subEntry"])
+)(toSidebarEntries(docs)) as NavigationTree;
 ---
 
 <BaseLayout sidebarNavigation={entries}>
