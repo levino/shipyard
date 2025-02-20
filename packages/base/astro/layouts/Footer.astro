@@ -1,11 +1,15 @@
 ---
 import { Footer as FooterComponent } from "../components";
+import config from "virtual:shipyard/config";
 
-const locale = Astro.currentLocale;
+const locale = Astro.currentLocale || config.defaultLocale;
+
+const withLocale = (path: string) =>
+  locale === config.defaultLocale ? path : `/${locale}${path}`;
 ---
 
 <FooterComponent
-  links={[{ href: `/${locale}/imprint`, label: "Impressum" }]}
+  links={[{ href: withLocale("/imprint"), label: "Impressum" }]}
   copyright={{
     href: "https://github.com/levino",
     label: "Levin Keller",

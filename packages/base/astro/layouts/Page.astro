@@ -18,16 +18,16 @@ type Props = {
   sidebarNavigation?: NavigationTree;
 };
 
-const locale = Astro.currentLocale || "de";
+const currentLocale = Astro.currentLocale || config.defaultLocale;
 const currentPath = Astro.url.pathname;
 const props = Astro.props.frontmatter || Astro.props;
 
-const withLocale = (locale: string) => (path: string) => `/${locale}${path}`;
-const withCurrentLocale = withLocale(locale);
+const withLocale = (path: string) =>
+  currentLocale === config.defaultLocale ? path : `/${currentLocale}${path}`;
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
-    ...(entry.href ? { href: withCurrentLocale(entry.href) } : {}),
+    ...(entry.href ? { href: withLocale(entry.href) } : {}),
     active: entry.href === currentPath,
     ...(entry.subEntry
       ? { subEntry: applyLocaleAndSetActive(entry.subEntry) }
@@ -35,8 +35,7 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   }));
 
 const navigation = applyLocaleAndSetActive(config.navigation);
-const title =         `${config.title} - ${props.title}`
-
+const title = `${config.title} - ${props.title}`;
 ---
 
 <html>
@@ -44,9 +43,7 @@ const title =         `${config.title} - ${props.title}`
     <meta charset="utf-8" />
     <link rel="sitemap" href="/sitemap-index.xml" />
     <title>
-      {
-        title
-      }
+      {title}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={props.description} />
