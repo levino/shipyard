@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.4.0
+
+### Minor Changes
+
+- 10362e3: enable usage without i18n
+
 ## 0.3.0
 
 ### Minor Changes
