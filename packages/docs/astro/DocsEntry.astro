@@ -1,7 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import { getCollection, render } from "astro:content";
-
+import config from "virtual:shipyard/config";
 export async function getStaticPaths() {
   const getParams = (slug: string) => {
     const [locale, ...rest] = slug.split("/");
@@ -12,10 +12,24 @@ export async function getStaticPaths() {
   };
   const docs = await getCollection("docs");
 
-  return docs.map((entry) => ({
-    params: getParams(entry.id),
-    props: { entry },
-  }));
+  return docs
+    .filter((entry) => {
+      const [, locale] = entry.id.split("/");
+      if (!locale) {
+        return true;
+      }
+      if (locale === config.defaultLocale) {
+        return false;
+      }
+      if (config.locales.includes(locale)) {
+        return true;
+      }
+      return false;
+    })
+    .map((entry) => ({
+      params: getParams(entry.id),
+      props: { entry },
+    }));
 }
 // 2. For your template, you can get the entry directly from the prop
 const { entry } = Astro.props;
