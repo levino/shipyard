@@ -1,5 +1,12 @@
 # @levino/shipyard-blog
 
+## 0.3.1
+
+### Patch Changes
+
+- Updated dependencies [10362e3]
+  - @levino/shipyard-base@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
