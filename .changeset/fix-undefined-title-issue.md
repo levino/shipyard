@@ -3,4 +3,4 @@
 "@levino/shipyard-blog": patch
 ---
 
-Fix undefined title issue when no page title is defined
+Do not show the string "undefined" when page title is not provided. Fix #17.
