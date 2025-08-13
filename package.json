@@ -1,8 +1,8 @@
 {
   "scripts": {
     "prepare": "husky install || true",
-    "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e": "cd apps/demo && npm run test:e2e",
+    "test:e2e:ui": "cd apps/demo && npm run test:e2e:ui"
   },
   "keywords": [],
   "author": "",
@@ -12,8 +12,7 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.2.0",
     "turbo": "^2.3.3",
-    "typescript": "^5.3.3",
-    "@playwright/test": "^1.47.2"
+    "typescript": "^5.3.3"
   },
   "workspaces": [
     "packages/*",

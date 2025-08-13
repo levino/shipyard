@@ -1,30 +1,25 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Page Title Integration Tests', () => {
-  test('home page shows site title without duplication', async ({ page }) => {
-    await page.goto('/');
-    await expect(page).toHaveTitle('Shipyard');
-  });
-
   test('about page shows site title only when no page title is defined', async ({ page }) => {
     await page.goto('/en/about');
-    await expect(page).toHaveTitle('Shipyard');
+    await expect(page).toHaveTitle('Shipyard Demo');
   });
 
   test('blog index shows site title with Blog', async ({ page }) => {
     await page.goto('/en/blog');
-    await expect(page).toHaveTitle('Shipyard - Blog');
+    await expect(page).toHaveTitle('Shipyard Demo - Blog');
   });
 
   test('blog post shows site title with post title', async ({ page }) => {
     await page.goto('/en/blog/2024-01-10-blog-post-1');
-    await expect(page).toHaveTitle('Shipyard - First Blog Post');
+    await expect(page).toHaveTitle('Shipyard Demo - First Blog Post');
   });
 
   test('page with defined title shows site title with page title', async ({ page }) => {
     await page.goto('/');
     // The index page has title: "Startseite" in frontmatter
-    await expect(page).toHaveTitle('Shipyard - Startseite');
+    await expect(page).toHaveTitle('Shipyard Demo - Startseite');
   });
 });
 
