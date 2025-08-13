@@ -35,7 +35,7 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   }));
 
 const navigation = applyLocaleAndSetActive(config.navigation);
-const title = `${config.title} - ${props.title}`;
+const title = props.title && props.title !== config.title ? `${config.title} - ${props.title}` : config.title;
 ---
 
 <html>
