@@ -29,6 +29,7 @@ Shipyard is an Astro-based documentation and blog framework built with TypeScrip
 2. Test changes early and iteratively
 3. Use existing tools and frameworks rather than reinventing
 4. Validate with both unit and integration tests
+5. **Always add changeset information** using `npx changeset add` for any changes that affect packages
 
 ## CI/CD
 - Uses GitHub Actions for linting, formatting, unit tests, and e2e tests
@@ -48,7 +49,14 @@ Shipyard is an Astro-based documentation and blog framework built with TypeScrip
 5. Update documentation if changes affect public APIs
 
 ## Playwright Testing
-- Tests are in `/tests/e2e/`
-- Tests run against the demo app at `http://localhost:4321`
+- Tests are in `apps/demo/tests/` directory (moved from root level)
+- Tests run against the demo app production build using `npm run preview`
 - Focus on testing user-facing functionality and regression prevention
 - Include tests for title handling, navigation, and core features
+
+## Changesets
+- **Always create changeset files** for any package changes using `npx changeset add`
+- Changeset files document changes for versioning and release notes
+- Use appropriate semver levels: `patch` for bug fixes, `minor` for features, `major` for breaking changes
+- Include clear, concise descriptions of what was changed and why
+- Specify which packages are affected by the changes
