@@ -22,7 +22,7 @@ const { locale } = Astro.params;
 const formatDate = new Intl.DateTimeFormat(locale).format;
 ---
 
-<Layout>
+<Layout title="Blog">
   <div class="mx-auto max-w-prose px-8">
     {
       entries.map(async (entry) => (
