@@ -1,5 +1,13 @@
 # @levino/shipyard-blog
 
+## 0.3.2
+
+### Patch Changes
+
+- 6c8ac30: Do not show the string "undefined" when page title is not provided. Fix #17.
+- Updated dependencies [6c8ac30]
+  - @levino/shipyard-base@0.4.1
+
 ## 0.3.1
 
 ### Patch Changes
