@@ -3,7 +3,7 @@ import type { Config } from './schemas/config'
 export type { Entry } from '../astro/components/types'
 export * from './types'
 export type * from './schemas/config'
-export { constructPageTitle } from './titleUtils'
+export { getTitle } from './tools/title'
 const shipyardConfigId = 'virtual:shipyard/config'
 
 const resolveId: Record<string, string | undefined> = {
