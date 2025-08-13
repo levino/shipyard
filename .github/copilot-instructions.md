@@ -42,6 +42,12 @@ documentation sites with blogs.
 5. **Always add changeset information** using `npx changeset add` for any
    changes that affect packages
 
+## Pull Request Workflow
+
+- **Open PRs as "ready for review"** by default rather than draft status
+- Only use draft status for PRs with significant blocking issues that need resolution before review
+- Avoid unnecessary friction in the review process
+
 ## CI/CD
 
 - Uses GitHub Actions for linting, formatting, unit tests, and e2e tests
