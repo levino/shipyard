@@ -58,5 +58,7 @@ Shipyard is an Astro-based documentation and blog framework built with TypeScrip
 - **Always create changeset files** for any package changes using `npx changeset add`
 - Changeset files document changes for versioning and release notes
 - Use appropriate semver levels: `patch` for bug fixes, `minor` for features, `major` for breaking changes
-- Include clear, concise descriptions of what was changed and why
+- **User-focused descriptions**: Write changeset descriptions for users of the Shipyard framework, not developers
+- Keep descriptions concise (one line preferred) and focus on user-facing benefits or fixes
+- Avoid mentioning internal file structure, testing details, or implementation specifics
 - Specify which packages are affected by the changes
