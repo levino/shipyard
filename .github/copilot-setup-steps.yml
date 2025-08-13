@@ -8,7 +8,6 @@ setup:
     run: npm ci
     timeout: 300
     description: "Installs all workspace dependencies including husky git hooks (takes 8-90 seconds)"
-    
   # Install Deno for linting and formatting
   - name: Install Deno
     run: |
@@ -16,7 +15,6 @@ setup:
       echo "$HOME/.deno/bin" >> $GITHUB_PATH
     timeout: 120
     description: "Installs Deno 2.0.0+ for code formatting and linting"
-    
   # Verify installations
   - name: Verify setup
     run: |
@@ -30,7 +28,6 @@ setup:
 environment:
   node_version: "20"
   deno_version: "2.0.0"
-  
 # Required network access for setup
 network_allowlist:
   - dl.deno.land

@@ -27,7 +27,7 @@ Shipyard is a general purpose page builder for Astro applications, organized as 
 ### Linting and Formatting (Deno Pre-installed)
 - **Setup**: Deno 2.0.0 is automatically installed via setup steps (may fail due to network restrictions in some environments)
 - Lint code: `deno lint` -- works if Deno is available
-- Format code: `deno fmt` -- works if Deno is available  
+- Format code: `deno fmt` -- works if Deno is available
 - Check formatting: `deno fmt --check` -- used in CI
 - **Fallback**: If Deno installation fails locally, CI environment will have proper access
 
@@ -66,10 +66,10 @@ After making changes, ALWAYS perform these validation steps:
    curl -I http://localhost:4321/
    # Should return HTTP 308 redirect to /de
    kill %1
-   
+
    cd apps/docs && npm run dev &
    curl -I http://localhost:4321/
-   # Should return HTTP 308 redirect to /en  
+   # Should return HTTP 308 redirect to /en
    kill %1
    ```
 
@@ -83,19 +83,19 @@ After making changes, ALWAYS perform these validation steps:
 
 - **Environment Setup**: Dependencies pre-installed via setup steps, manual `npm ci` takes 8-90 seconds if needed
 - **NEVER CANCEL** long-running builds if they appear to hang -- apps build in 4 seconds but allow 60+ seconds timeout
-- Test runs are very fast (1 second) but allow 30+ seconds timeout for safety  
+- Test runs are very fast (1 second) but allow 30+ seconds timeout for safety
 - Dev server startup is immediate (1 second) but allow 30+ seconds for initialization
 
 ## Project Structure and Key Locations
 
 ### Applications (`apps/`)
 - `apps/demo/` - Demo Astro application showcasing Shipyard components
-- `apps/docs/` - Documentation Astro application 
+- `apps/docs/` - Documentation Astro application
 - Both use Astro 5.1.5+ with Tailwind CSS and DaisyUI
 
 ### Packages (`packages/`)
 - `packages/base/` - Core Shipyard components (@levino/shipyard-base)
-- `packages/blog/` - Blog-related components (@levino/shipyard-blog)  
+- `packages/blog/` - Blog-related components (@levino/shipyard-blog)
 - `packages/docs/` - Documentation components (@levino/shipyard-docs)
 
 ### Important Files
@@ -115,7 +115,7 @@ After making changes, ALWAYS perform these validation steps:
 
 The CI expects these commands to succeed:
 - `deno lint` -- requires Deno 2.0.0
-- `deno fmt --check` -- requires Deno 2.0.0  
+- `deno fmt --check` -- requires Deno 2.0.0
 - `npm ci` -- installs dependencies
 - `npm run test --workspaces --if-present` -- runs tests
 
@@ -146,7 +146,7 @@ Frequently used commands with exact timings from validation:
 # Environment setup (automated via .github/copilot-setup-steps.yml)
 # Manual setup if needed: npm ci             # 8-90 seconds (first time longer)
 
-# Build applications  
+# Build applications
 cd apps/demo && npm run build            # 4 seconds
 cd apps/docs && npm run build            # 4 seconds
 
