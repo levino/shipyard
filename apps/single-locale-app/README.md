@@ -1,0 +1,64 @@
+# Single Locale App
+
+This is a test application for single-locale navigation testing. It is
+configured with only English locale but with `prefixDefaultLocale: true` to test
+that navigation links correctly include locale prefixes even in single-locale
+setups.
+
+## Configuration
+
+- Single locale: `en`
+- `prefixDefaultLocale: true`
+- All navigation should include `/en/` prefix
+
+## Testing
+
+This app is used to test navigation behavior in single-locale scenarios where
+locale prefixes are still required.
+
+```bash
+npm run build
+npm run preview
+npm run test:e2e
+```
+
+> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+
+![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+
+## 🚀 Project Structure
+
+Inside of your Astro project, you'll see the following folders and files:
+
+```text
+/
+├── public/
+│   └── favicon.svg
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro
+│   └── pages/
+│       └── index.astro
+└── package.json
+```
+
+To learn more about the folder structure of an Astro project, refer to
+[our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+
+## 🧞 Commands
+
+All commands are run from the root of the project, from a terminal:
+
+| Command                   | Action                                           |
+| :------------------------ | :----------------------------------------------- |
+| `npm install`             | Installs dependencies                            |
+| `npm run dev`             | Starts local dev server at `localhost:4321`      |
+| `npm run build`           | Build your production site to `./dist/`          |
+| `npm run preview`         | Preview your build locally, before deploying     |
+| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
+| `npm run astro -- --help` | Get help using the Astro CLI                     |
+
+## 👀 Want to learn more?
+
+Feel free to check [our documentation](https://docs.astro.build) or jump into
+our [Discord server](https://astro.build/chat).

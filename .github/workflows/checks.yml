@@ -46,6 +46,10 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --workspace=demo
+      - run: npm run build --workspace=single-locale-app
       - run: npx playwright install --with-deps
         working-directory: ./apps/demo
+      - run: npx playwright install --with-deps
+        working-directory: ./apps/single-locale-app
       - run: npm run test:e2e
+      - run: npm run test:e2e:single-locale

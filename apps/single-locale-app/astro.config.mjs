@@ -8,18 +8,15 @@ import shipyardBlog from '../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
   redirects: {
-    '/': '/de',
+    '/': '/en',
   },
   i18n: {
     defaultLocale: 'en',
-    locales: ['de', 'en'],
+    locales: ['en'],
     routing: {
       redirectToDefaultLocale: false,
       prefixDefaultLocale: true,
       strategy: 'pathname',
-    },
-    fallback: {
-      de: 'en',
     },
   },
   integrations: [
@@ -27,7 +24,7 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     shipyard({
-      locales: ['de', 'en'],
+      locales: ['en'],
       defaultLocale: 'en',
       navigation: {
         docs: {
@@ -43,8 +40,8 @@ export default defineConfig({
           href: '/about',
         },
       },
-      title: 'Shipyard Demo',
-      tagline: 'A website to demonstrate the Shipyard capabilities.',
+      title: 'Shipyard Single Locale Demo',
+      tagline: 'A single-locale website to test navigation.',
       brand: 'Shipyard',
     }),
     shipyardDocs(['docs']),
