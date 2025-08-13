@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Page Title Integration Tests', () => {
+  test('server health check', async ({ page }) => {
+    await page.goto('/en/')
+    await page.waitForLoadState('networkidle')
+    await expect(page.locator('body')).toBeVisible()
+    await expect(page.locator('title')).toBeVisible()
+  })
+
   test('about page shows site title only when no page title is defined', async ({ page }) => {
     await page.goto('/en/about')
     await page.waitForLoadState('networkidle')
@@ -20,7 +27,7 @@ test.describe('Page Title Integration Tests', () => {
   })
 
   test('page with defined title shows site title with page title', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/en/')
     await page.waitForLoadState('networkidle')
     // The index page has title: "Startseite" in frontmatter
     await expect(page).toHaveTitle('Shipyard Demo - Startseite')
@@ -29,11 +36,12 @@ test.describe('Page Title Integration Tests', () => {
 
 test.describe('Basic Site Functionality', () => {
   test('navigation works correctly', async ({ page }) => {
-    await page.goto('/')
+    await page.goto('/en/')
     await page.waitForLoadState('networkidle')
 
     // Check that the site loads correctly
     await expect(page.locator('body')).toBeVisible()
+    await expect(page.locator('a[href="/"]')).toBeVisible()
   })
 
   test('blog navigation works', async ({ page }) => {
