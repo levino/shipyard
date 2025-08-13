@@ -31,6 +31,24 @@ Shipyard is a general purpose page builder for Astro applications, organized as 
 - Check formatting: `deno fmt --check` -- used in CI
 - **Fallback**: If Deno installation fails locally, CI environment will have proper access
 
+### File Creation and Formatting Best Practices
+**ALWAYS ensure proper file formatting when creating or modifying files:**
+- **End all files with a newline** -- Critical for format checks to pass
+- Follow existing indentation and style patterns in the codebase
+- Use consistent spacing and line endings (LF, not CRLF)
+- For YAML files: Use 2-space indentation, no trailing spaces
+- For Markdown files: Add blank line after headers, end with newline
+- For TypeScript/JavaScript: Follow project's ESLint and Prettier config if available
+
+**Verify formatting immediately after file creation:**
+```bash
+# Check if file ends with newline (should see \n at end)
+tail -c 5 path/to/file | od -c
+
+# Add newline if missing
+echo >> path/to/file
+```
+
 ## Validation After Changes
 
 ### Required Manual Testing
