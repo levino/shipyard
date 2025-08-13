@@ -5,6 +5,7 @@ import config from "virtual:shipyard/config";
 import { GlobalDesktopNavigation, SidebarNavigation } from "../components";
 import type { NavigationTree, NavigationEntry } from "../../src/schemas/config";
 import { mapObjIndexed } from "ramda";
+import { constructPageTitle } from "../../src/titleUtils";
 
 type Props = {
   frontmatter?: {
@@ -35,7 +36,7 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   }));
 
 const navigation = applyLocaleAndSetActive(config.navigation);
-const title = props.title && props.title !== config.title ? `${config.title} - ${props.title}` : config.title;
+const title = constructPageTitle(config.title, props.title);
 ---
 
 <html>
