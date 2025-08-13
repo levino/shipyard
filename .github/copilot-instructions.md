@@ -4,8 +4,9 @@ Shipyard is a general purpose page builder for Astro applications, organized as 
 
 ## Working Effectively
 
-### Bootstrap and Install Dependencies
-- Install dependencies: `npm ci` -- takes 8-90 seconds (first install longer). NEVER CANCEL. Set timeout to 300+ seconds.
+### Environment Setup
+- **Automatic Setup**: Dependencies and tools are pre-installed via `.github/copilot-setup-steps.yml`
+- **Manual Setup** (if needed): Run `npm ci` -- takes 8-90 seconds (first install longer). NEVER CANCEL. Set timeout to 300+ seconds.
 - The install process includes husky git hooks setup automatically.
 
 ### Building Applications
@@ -23,12 +24,12 @@ Shipyard is a general purpose page builder for Astro applications, organized as 
 - Run docs package tests: `cd packages/docs && npx vitest run` -- takes 0.5 seconds, runs 6 tests
 - Only packages/docs currently has tests (vitest testing sidebar entry helpers)
 
-### Linting and Formatting (Deno Required)
-- **IMPORTANT**: Deno 2.0.0 is required for linting/formatting but may fail to install due to network restrictions
+### Linting and Formatting (Deno Pre-installed)
+- **Setup**: Deno 2.0.0 is automatically installed via setup steps (may fail due to network restrictions in some environments)
 - Lint code: `deno lint` -- works if Deno is available
 - Format code: `deno fmt` -- works if Deno is available  
 - Check formatting: `deno fmt --check` -- used in CI
-- **WORKAROUND**: If Deno installation fails, skip linting locally but ensure CI will have access
+- **Fallback**: If Deno installation fails locally, CI environment will have proper access
 
 ## Validation After Changes
 
@@ -62,7 +63,7 @@ After making changes, ALWAYS perform these validation steps:
 
 ## Critical Timing and Timeout Information
 
-- **NEVER CANCEL** `npm ci` -- takes 8-90 seconds (first install longer), set timeout to 300+ seconds
+- **Environment Setup**: Dependencies pre-installed via setup steps, manual `npm ci` takes 8-90 seconds if needed
 - **NEVER CANCEL** long-running builds if they appear to hang -- apps build in 4 seconds but allow 60+ seconds timeout
 - Test runs are very fast (1 second) but allow 30+ seconds timeout for safety  
 - Dev server startup is immediate (1 second) but allow 30+ seconds for initialization
@@ -124,8 +125,8 @@ Always ensure changes pass these checks before committing.
 Frequently used commands with exact timings from validation:
 
 ```bash
-# Fresh setup (first time)
-npm ci                                    # 8-90 seconds (first time longer)
+# Environment setup (automated via .github/copilot-setup-steps.yml)
+# Manual setup if needed: npm ci             # 8-90 seconds (first time longer)
 
 # Build applications  
 cd apps/demo && npm run build            # 4 seconds
@@ -146,14 +147,19 @@ cd apps/docs && npm run preview          # Preview static build
 
 ## Troubleshooting
 
+### Environment Setup Issues
+- Dependencies are auto-installed via `.github/copilot-setup-steps.yml`
+- If setup steps fail, manually run `npm ci` (takes 8-90 seconds)
+- Deno installation may fail in restricted networks - this is expected and documented
+
 ### Deno Installation Issues
-- If `curl -fsSL https://deno.land/install.sh | sh` fails with network errors, this is expected in restricted environments
-- Document the limitation but proceed with npm-based development
+- Setup steps handle Deno installation automatically where network allows
+- If `deno` commands fail, this is expected in restricted environments
 - CI environment will have proper network access for Deno installation
 
 ### Build Failures
 - Most builds complete in 4 seconds - if longer, check for missing dependencies
-- Run `npm ci` first if packages are missing
+- Run `npm ci` manually if packages are missing after setup steps
 - Check for TypeScript errors in build output
 
 ### Port Conflicts

@@ -1,0 +1,38 @@
+# GitHub Copilot Setup Steps for Shipyard Development Environment
+# These steps run automatically before the firewall is enabled in Copilot coding environments
+# to ensure all necessary dependencies and tools are available for development.
+
+setup:
+  # Install Node.js dependencies
+  - name: Install npm dependencies
+    run: npm ci
+    timeout: 300
+    description: "Installs all workspace dependencies including husky git hooks (takes 8-90 seconds)"
+    
+  # Install Deno for linting and formatting
+  - name: Install Deno
+    run: |
+      curl -fsSL https://deno.land/install.sh | sh
+      echo "$HOME/.deno/bin" >> $GITHUB_PATH
+    timeout: 120
+    description: "Installs Deno 2.0.0+ for code formatting and linting"
+    
+  # Verify installations
+  - name: Verify setup
+    run: |
+      node --version
+      npm --version
+      deno --version || echo "Deno installation failed - will be available in CI"
+    timeout: 30
+    description: "Verifies Node.js, npm, and Deno installations"
+
+# Environment configuration
+environment:
+  node_version: "20"
+  deno_version: "2.0.0"
+  
+# Required network access for setup
+network_allowlist:
+  - dl.deno.land
+  - registry.npmjs.org
+  - telemetry.astro.build
