@@ -1,6 +1,9 @@
 # Single Locale App
 
-This is a test application for single-locale navigation testing. It is configured with only English locale but with `prefixDefaultLocale: true` to test that navigation links correctly include locale prefixes even in single-locale setups.
+This is a test application for single-locale navigation testing. It is
+configured with only English locale but with `prefixDefaultLocale: true` to test
+that navigation links correctly include locale prefixes even in single-locale
+setups.
 
 ## Configuration
 
@@ -10,7 +13,8 @@ This is a test application for single-locale navigation testing. It is configure
 
 ## Testing
 
-This app is used to test navigation behavior in single-locale scenarios where locale prefixes are still required.
+This app is used to test navigation behavior in single-locale scenarios where
+locale prefixes are still required.
 
 ```bash
 npm run build

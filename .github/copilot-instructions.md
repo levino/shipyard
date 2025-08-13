@@ -39,7 +39,8 @@ documentation sites with blogs.
 2. Test changes early and iteratively
 3. Use existing tools and frameworks rather than reinventing
 4. Validate with both unit and integration tests
-5. **Always add changeset information** using `npx changeset add` for any
+5. **Always run `deno fmt` before committing** to ensure consistent formatting
+6. **Always add changeset information** using `npx changeset add` for any
    changes that affect packages
 
 ## Pull Request Workflow
