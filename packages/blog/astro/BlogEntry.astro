@@ -22,7 +22,7 @@ const { entry } = Astro.props;
 const { Content, headings } = await render(entry);
 ---
 
-<Layout>
+<Layout title={entry.data.title}>
   <div>
     <div class="prose mx-auto w-full px-8">
       <Content />

@@ -1,7 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 import { Page as BaseLayout } from "@levino/shipyard-base/layouts";
+
+type Props = {
+  title?: string;
+};
+
 const locale = Astro.currentLocale;
+const { title } = Astro.props;
 const entry = await getCollection("blog")
   .then((posts) =>
     posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
@@ -20,6 +26,6 @@ const entry = await getCollection("blog")
   );
 ---
 
-<BaseLayout sidebarNavigation={entry}>
+<BaseLayout title={title} sidebarNavigation={entry}>
   <slot />
 </BaseLayout>
