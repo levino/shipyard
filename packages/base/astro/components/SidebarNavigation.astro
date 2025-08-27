@@ -2,6 +2,7 @@
 import { cn } from "../../src/tools/cn";
 import SidebarElement from "./SidebarElement.astro";
 import type { Entry } from "./types";
+import config from "virtual:shipyard/config";
 
 interface Props {
   local: Entry | undefined;
@@ -10,11 +11,15 @@ interface Props {
 }
 
 const { local, global, brand } = Astro.props;
+
+// Always prefix with locale when currentLocale is available (handles prefixDefaultLocale: true)
+const currentLocale = Astro.currentLocale || config.defaultLocale;
+const withLocale = (path: string) => currentLocale ? `/${currentLocale}${path}` : path;
 ---
 
 <ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })}>
   <div>
-    <a href="/" class="btn btn-ghost mb-2 text-xl">
+    <a href={withLocale("/")} class="btn btn-ghost mb-2 text-xl">
       {brand}
     </a>
   </div>

@@ -23,8 +23,8 @@ const currentLocale = Astro.currentLocale || config.defaultLocale;
 const currentPath = Astro.url.pathname;
 const props = Astro.props.frontmatter || Astro.props;
 
-const withLocale = (path: string) =>
-  currentLocale === config.defaultLocale ? path : `/${currentLocale}${path}`;
+// Always prefix with locale when currentLocale is available (handles prefixDefaultLocale: true)
+const withLocale = (path: string) => currentLocale ? `/${currentLocale}${path}` : path;
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
