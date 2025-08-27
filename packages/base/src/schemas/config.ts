@@ -12,6 +12,4 @@ export type Config = {
   navigation: NavigationTree
   title: string
   tagline: string
-  locales: string[]
-  defaultLocale: string
 }

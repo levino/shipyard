@@ -1,25 +1,25 @@
 ---
-import type { GetStaticPaths } from "astro";
-import Layout from "./Layout.astro";
-import { getCollection } from "astro:content";
-import config from "virtual:shipyard/config";
+import type { GetStaticPaths } from 'astro'
+import Layout from './Layout.astro'
+import { getCollection } from 'astro:content'
+import config from 'virtual:shipyard/config'
 
 export const getStaticPaths = (() =>
   config.locales.map((locale) => ({
     params: {
       locale,
     },
-  }))) satisfies GetStaticPaths;
+  }))) satisfies GetStaticPaths
 
-const entries = await getCollection("blog").then((posts) =>
+const entries = await getCollection('blog').then((posts) =>
   posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
-);
+)
 
 const getBlogPostLink = (id: string, locale: string) =>
-  id.replace(`${locale}/`, `${locale}/blog/`);
+  id.replace(`${locale}/`, `${locale}/blog/`)
 
-const { locale } = Astro.params;
-const formatDate = new Intl.DateTimeFormat(locale).format;
+const { locale } = Astro.params
+const formatDate = new Intl.DateTimeFormat(locale).format
 ---
 
 <Layout title="Blog">

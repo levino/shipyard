@@ -1,30 +1,31 @@
 ---
-import Footer from "./Footer.astro";
-import "../../src/globals.css";
-import config from "virtual:shipyard/config";
-import { GlobalDesktopNavigation, SidebarNavigation } from "../components";
-import type { NavigationTree, NavigationEntry } from "../../src/schemas/config";
-import { mapObjIndexed } from "ramda";
-import { getTitle } from "../../src/tools/title";
+import Footer from './Footer.astro'
+import '../../src/globals.css'
+import config from 'virtual:shipyard/config'
+import { GlobalDesktopNavigation, SidebarNavigation } from '../components'
+import type { NavigationTree, NavigationEntry } from '../../src/schemas/config'
+import { mapObjIndexed } from 'ramda'
+import { getTitle } from '../../src/tools/title'
 
 type Props = {
   frontmatter?: {
-    title?: string;
-    description?: string;
-    sidebarNavigation?: NavigationTree;
-  };
+    title?: string
+    description?: string
+    sidebarNavigation?: NavigationTree
+  }
 } & {
-  title?: string;
-  description?: string;
-  sidebarNavigation?: NavigationTree;
-};
+  title?: string
+  description?: string
+  sidebarNavigation?: NavigationTree
+}
 
-const currentLocale = Astro.currentLocale || config.defaultLocale;
-const currentPath = Astro.url.pathname;
-const props = Astro.props.frontmatter || Astro.props;
+const currentLocale = Astro.currentLocale || config.defaultLocale
+const currentPath = Astro.url.pathname
+const props = Astro.props.frontmatter || Astro.props
 
 // Only prefix with locale when i18n is configured AND we have a currentLocale from Astro
-const withLocale = (path: string) => Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path;
+const withLocale = (path: string) =>
+  Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
@@ -33,10 +34,10 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
     ...(entry.subEntry
       ? { subEntry: applyLocaleAndSetActive(entry.subEntry) }
       : {}),
-  }));
+  }))
 
-const navigation = applyLocaleAndSetActive(config.navigation);
-const title = getTitle(config.title, props.title);
+const navigation = applyLocaleAndSetActive(config.navigation)
+const title = getTitle(config.title, props.title)
 ---
 
 <html>

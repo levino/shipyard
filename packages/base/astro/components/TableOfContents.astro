@@ -1,15 +1,15 @@
 ---
 interface Link {
-  depth: number;
-  text: string;
-  slug: string;
+  depth: number
+  text: string
+  slug: string
 }
 
 interface TableOfContentsProps {
-  links: Link[];
+  links: Link[]
 }
 
-const { links } = Astro.props as TableOfContentsProps;
+const { links } = Astro.props as TableOfContentsProps
 ---
 
 <div class="fixed right-0 h-full lg:h-auto lg:overflow-y-visible">

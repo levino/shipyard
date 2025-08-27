@@ -27,8 +27,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     shipyard({
-      locales: ['en'],
-      defaultLocale: 'en',
       navigation: {
         docs: {
           label: 'Documentation',

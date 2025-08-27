@@ -1,10 +1,10 @@
 ---
-import type { Config } from "../../src/schemas/config";
-import { cn } from "../../src/tools/cn";
+import type { Config } from '../../src/schemas/config'
+import { cn } from '../../src/tools/cn'
 
-type Props = Pick<Config, "brand" | "navigation"> & { showBrand: boolean };
+type Props = Pick<Config, 'brand' | 'navigation'> & { showBrand: boolean }
 
-const { brand, navigation, showBrand = false } = Astro.props as Props;
+const { brand, navigation, showBrand = false } = Astro.props as Props
 ---
 
 <div class="navbar z-10 bg-base-100">

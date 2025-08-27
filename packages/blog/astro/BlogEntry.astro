@@ -1,25 +1,25 @@
 ---
-import Layout from "./Layout.astro";
-import { TableOfContents } from "@levino/shipyard-base/components";
-import { render, getCollection } from "astro:content";
+import Layout from './Layout.astro'
+import { TableOfContents } from '@levino/shipyard-base/components'
+import { render, getCollection } from 'astro:content'
 
 export const getStaticPaths = async () => {
   const getParams = (slug: string) => {
-    const [locale, ...rest] = slug.split("/");
+    const [locale, ...rest] = slug.split('/')
     return {
-      slug: rest.join("/"),
+      slug: rest.join('/'),
       locale,
-    };
-  };
-  const blogPosts = await getCollection("blog");
+    }
+  }
+  const blogPosts = await getCollection('blog')
   return blogPosts.map((entry) => ({
     params: getParams(entry.id),
     props: { entry },
-  }));
-};
+  }))
+}
 
-const { entry } = Astro.props;
-const { Content, headings } = await render(entry);
+const { entry } = Astro.props
+const { Content, headings } = await render(entry)
 ---
 
 <Layout title={entry.data.title}>

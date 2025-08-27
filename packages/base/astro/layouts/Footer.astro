@@ -1,11 +1,11 @@
 ---
-import { Footer as FooterComponent } from "../components";
-import config from "virtual:shipyard/config";
+import { Footer as FooterComponent } from '../components'
+import config from 'virtual:shipyard/config'
 
-const locale = Astro.currentLocale || config.defaultLocale;
+const locale = Astro.currentLocale || config.defaultLocale
 
 const withLocale = (path: string) =>
-  locale === config.defaultLocale ? path : `/${locale}${path}`;
+  locale === config.defaultLocale ? path : `/${locale}${path}`
 ---
 
 <FooterComponent

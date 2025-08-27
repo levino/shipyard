@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Page Title Integration Tests', () => {
-  test('about page shows site title only when no page title is defined', async ({ page }) => {
+  test('about page shows site title only when no page title is defined', async ({
+    page,
+  }) => {
     await page.goto('/en/about')
     await expect(page).toHaveTitle('Shipyard Demo')
   })
@@ -16,7 +18,9 @@ test.describe('Page Title Integration Tests', () => {
     await expect(page).toHaveTitle('Shipyard Demo - First Blog Post')
   })
 
-  test('page with defined title shows site title with page title', async ({ page }) => {
+  test('page with defined title shows site title with page title', async ({
+    page,
+  }) => {
     await page.goto('/')
     // The index page has title: "Startseite" in frontmatter
     await expect(page).toHaveTitle('Shipyard Demo - Startseite')

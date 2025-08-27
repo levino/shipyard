@@ -1,7 +1,9 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Single Locale Page Title Tests', () => {
-  test('about page shows site title only when no page title is defined', async ({ page }) => {
+  test('about page shows site title only when no page title is defined', async ({
+    page,
+  }) => {
     await page.goto('/about')
     await expect(page).toHaveTitle('Single Locale Demo')
   })

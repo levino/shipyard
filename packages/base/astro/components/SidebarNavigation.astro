@@ -1,20 +1,21 @@
 ---
-import { cn } from "../../src/tools/cn";
-import SidebarElement from "./SidebarElement.astro";
-import type { Entry } from "./types";
-import config from "virtual:shipyard/config";
+import { cn } from '../../src/tools/cn'
+import SidebarElement from './SidebarElement.astro'
+import type { Entry } from './types'
+import config from 'virtual:shipyard/config'
 
 interface Props {
-  local: Entry | undefined;
-  global: Entry;
-  brand: string;
+  local: Entry | undefined
+  global: Entry
+  brand: string
 }
 
-const { local, global, brand } = Astro.props;
+const { local, global, brand } = Astro.props
 
 // Only prefix with locale when i18n is configured AND we have a currentLocale from Astro
-const currentLocale = Astro.currentLocale || config.defaultLocale;
-const withLocale = (path: string) => Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path;
+const currentLocale = Astro.currentLocale || config.defaultLocale
+const withLocale = (path: string) =>
+  Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
 
 <ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })}>
