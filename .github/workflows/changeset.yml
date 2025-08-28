@@ -28,6 +28,7 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: npx changeset publish
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
