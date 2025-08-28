@@ -20,9 +20,9 @@
     "@levino/shipyard-base": "^0.5.1"
   },
   "peerDependencies": {
-    "astro": "^5"
+    "astro": "^5.7"
   },
   "devDependencies": {
-    "astro": "^5"
+    "astro": "^5.7"
   }
 }
