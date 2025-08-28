@@ -1,11 +1,14 @@
 ---
-import { getCollection } from 'astro:content'
 import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
-export const getStaticPaths = (() =>
-  i18n.locales.map((locale) => {
+export const getStaticPaths = (() => {
+  if (!i18n) {
+    throw new Error('Shipyard requires i18n to be enabled.')
+  }
+  return i18n.locales.map((locale) => {
     if (typeof locale !== 'string') {
       throw new Error('Shipyard does only support strings as locales.')
     }
@@ -14,7 +17,8 @@ export const getStaticPaths = (() =>
         locale,
       },
     }
-  })) satisfies GetStaticPaths
+  })
+}) satisfies GetStaticPaths
 
 const { locale } = Astro.params
 
