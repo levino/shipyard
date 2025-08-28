@@ -16,12 +16,8 @@ export const docsSchema = z.object({
 export default (docsPaths: string[]): AstroIntegration => ({
   name: 'shipyard-docs',
   hooks: {
-    'astro:config:setup': ({ injectRoute }) => {
+    'astro:config:setup': ({ injectRoute, config }) => {
       docsPaths.forEach((path) => {
-        injectRoute({
-          pattern: `/${path}/[...slug]`,
-          entrypoint: `@levino/shipyard-docs/astro/DefaultLocaleDocsEntry.astro`,
-        })
         injectRoute({
           pattern: `/[locale]/${path}/[...slug]`,
           entrypoint: `@levino/shipyard-docs/astro/DocsEntry.astro`,

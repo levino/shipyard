@@ -5,20 +5,31 @@ import { getCollection } from 'astro:content'
 import config from 'virtual:shipyard/config'
 
 export const getStaticPaths = (() =>
-  config.locales.map((locale) => ({
-    params: {
-      locale,
-    },
-  }))) satisfies GetStaticPaths
+  config.i18n.locales.map((locale) => {
+    if (typeof locale !== 'string') {
+      throw new Error('Shipyard does only support strings as locales.')
+    }
+    return {
+      params: {
+        locale,
+      },
+    }
+  })) satisfies GetStaticPaths
+
+const { locale } = Astro.params
 
 const entries = await getCollection('blog').then((posts) =>
-  posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+  posts
+    .filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === locale
+    })
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
 )
 
 const getBlogPostLink = (id: string, locale: string) =>
   id.replace(`${locale}/`, `${locale}/blog/`)
 
-const { locale } = Astro.params
 const formatDate = new Intl.DateTimeFormat(locale).format
 ---
 

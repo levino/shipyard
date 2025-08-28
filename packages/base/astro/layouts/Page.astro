@@ -19,13 +19,10 @@ type Props = {
   sidebarNavigation?: NavigationTree
 }
 
-const currentLocale = Astro.currentLocale || config.defaultLocale
 const currentPath = Astro.url.pathname
 const props = Astro.props.frontmatter || Astro.props
 
-// Only prefix with locale when i18n is configured AND we have a currentLocale from Astro
-const withLocale = (path: string) =>
-  Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
+const withLocale = (path: string) => `/${Astro.currentLocale}${path}`
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,

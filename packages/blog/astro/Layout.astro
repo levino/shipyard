@@ -1,19 +1,22 @@
 ---
 import { getCollection } from 'astro:content'
 import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
+import type { NavigationTree } from '@levino/shipyard-base'
 
 type Props = {
-  title?: string
+  title: string
 }
 
 const locale = Astro.currentLocale
 const { title } = Astro.props
-const entry = await getCollection('blog')
-  .then((posts) =>
-    posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
-  )
-  .then((collection) =>
-    collection.reduce(
+const entry = await getCollection('blog').then((posts) =>
+  posts
+    .filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === locale
+    })
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .reduce(
       (acc, { id, data: { title } }, key) => ({
         ...acc,
         [key]: {
@@ -21,9 +24,9 @@ const entry = await getCollection('blog')
           label: title,
         },
       }),
-      {},
+      {} as NavigationTree,
     ),
-  )
+)
 ---
 
 <BaseLayout title={title} sidebarNavigation={entry}>
