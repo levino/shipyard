@@ -52,7 +52,7 @@ documentation sites with blogs.
 ## CI/CD
 
 - Uses GitHub Actions for linting, formatting, unit tests, and e2e tests
-- Deno for linting and formatting
+- Biome for linting and formatting
 - Node.js for building and testing
 
 ## Common Patterns

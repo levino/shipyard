@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'vitest'
 import { toSidebarEntries } from './sidebarEntries'
+
 describe('Sidebar subEntry helpers', () => {
   test.each([
     [

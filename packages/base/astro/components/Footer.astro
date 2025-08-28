@@ -1,17 +1,17 @@
 ---
 interface FooterProps {
   links: {
-    label: string;
-    href: string;
-  }[];
+    label: string
+    href: string
+  }[]
   copyright: {
-    label: string;
-    href: string;
-    year: number;
-  };
+    label: string
+    href: string
+    year: number
+  }
 }
 
-const { links, copyright } = Astro.props as FooterProps;
+const { links, copyright } = Astro.props as FooterProps
 ---
 
 <footer class="flex w-full items-center justify-between px-6 py-4 text-sm font-medium">

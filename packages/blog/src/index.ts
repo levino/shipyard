@@ -1,5 +1,5 @@
-import { z } from 'astro/zod'
 import type { AstroIntegration } from 'astro'
+import { z } from 'astro/zod'
 
 export const blogSchema = z.object({
   date: z.date(),
