@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.0
+
+### Minor Changes
+
+- a73a9cb: Dropped support for non-i18n pages.
+
 ## 0.4.1
 
 ### Patch Changes
