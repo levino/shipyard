@@ -1,12 +1,12 @@
 ---
-import SidebarElement from "./SidebarElement.astro";
-import type { Entry } from "./types";
+import SidebarElement from './SidebarElement.astro'
+import type { Entry } from './types'
 
 interface SidebarProps {
-  entry: Entry;
+  entry: Entry
 }
 
-const { entry } = Astro.props as SidebarProps;
+const { entry } = Astro.props as SidebarProps
 ---
 
 <SidebarElement entry={entry} />

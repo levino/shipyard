@@ -1,9 +1,9 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
 
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
+import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../packages/blog/src/index.ts'
 
 // https://astro.build/config
@@ -15,7 +15,6 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en'],
     routing: {
-      redirectToDefaultLocale: false,
       prefixDefaultLocale: true,
       strategy: 'pathname',
     },
@@ -25,8 +24,6 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
     shipyard({
-      locales: ['en'],
-      defaultLocale: 'en',
       navigation: {
         docs: {
           label: 'Documentation',

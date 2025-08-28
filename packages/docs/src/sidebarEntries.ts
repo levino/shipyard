@@ -1,5 +1,6 @@
 import type { Entry } from '@levino/shipyard-base'
 import { mergeDeepLeft } from 'ramda'
+
 interface DocsData {
   title: string
   path: string

@@ -1,3 +1,5 @@
+import type { AstroConfig } from 'astro'
+
 export interface NavigationEntry {
   label?: string
   href?: string
@@ -7,11 +9,13 @@ export interface NavigationEntry {
 
 export type NavigationTree = Record<string, NavigationEntry>
 
-export type Config = {
+export interface Config {
   brand: string
   navigation: NavigationTree
   title: string
   tagline: string
-  locales: string[]
-  defaultLocale: string
+}
+
+export interface FinalConfig extends Config {
+  i18n: NonNullable<AstroConfig['i18n']>
 }

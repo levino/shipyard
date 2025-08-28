@@ -1,29 +1,29 @@
 ---
-import { getCollection } from "astro:content";
-import { Page as BaseLayout } from "@levino/shipyard-base/layouts";
+import { getCollection } from 'astro:content'
+import type { NavigationTree } from '@levino/shipyard-base'
+import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
 
 type Props = {
-  title?: string;
-};
+  title: string
+}
 
-const locale = Astro.currentLocale;
-const { title } = Astro.props;
-const entry = await getCollection("blog")
-  .then((posts) =>
-    posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
-  )
-  .then((collection) =>
-    collection.reduce(
-      (acc, { id, data: { title } }, key) => ({
-        ...acc,
-        [key]: {
-          href: `/${locale}/blog/${id.slice(3)}`,
-          label: title,
-        },
-      }),
-      {},
-    ),
-  );
+const locale = Astro.currentLocale
+const { title } = Astro.props
+const entry = await getCollection('blog').then((posts) =>
+  posts
+    .filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === locale
+    })
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .reduce((acc, { id, data: { title } }, key) => {
+      acc[key] = {
+        href: `/${locale}/blog/${id.slice(3)}`,
+        label: title,
+      }
+      return acc
+    }, {} as NavigationTree),
+)
 ---
 
 <BaseLayout title={title} sidebarNavigation={entry}>

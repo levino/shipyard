@@ -1,12 +1,11 @@
 ---
-import type { Entry } from './types';
-
+import type { Entry } from './types'
 
 interface Props {
-  entry: Entry;
+  entry: Entry
 }
 
-const { entry } = Astro.props;
+const { entry } = Astro.props
 ---
 
 {Object.entries(entry).map(([key, entry]) => {
