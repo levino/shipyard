@@ -12,12 +12,14 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
       - uses: actions/create-github-app-token@v1
         id: generate-token
         with:
           app-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate-token.outputs.token }}
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
@@ -28,7 +30,6 @@ jobs:
         uses: changesets/action@v1
         with:
           publish: npx changeset publish
-          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
