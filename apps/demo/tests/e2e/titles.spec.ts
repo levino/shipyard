@@ -1,9 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Page Title Integration Tests', () => {
-  test('about page shows site title with page title', async ({
-    page,
-  }) => {
+  test('about page shows site title with page title', async ({ page }) => {
     await page.goto('/en/about')
     await expect(page).toHaveTitle('Metro Gardens - About Metro Gardens')
   })
@@ -15,7 +13,9 @@ test.describe('Page Title Integration Tests', () => {
 
   test('blog post shows site title with post title', async ({ page }) => {
     await page.goto('/en/blog/2024-01-10-blog-post-1')
-    await expect(page).toHaveTitle('Metro Gardens - Spring Planting Day Success!')
+    await expect(page).toHaveTitle(
+      'Metro Gardens - Spring Planting Day Success!',
+    )
   })
 
   test('page with defined title shows site title with page title', async ({
@@ -23,7 +23,9 @@ test.describe('Page Title Integration Tests', () => {
   }) => {
     await page.goto('/')
     // The index page has title: "Metro Gardens Community Club" in frontmatter
-    await expect(page).toHaveTitle('Metro Gardens - Metro Gardens Community Club')
+    await expect(page).toHaveTitle(
+      'Metro Gardens - Metro Gardens Community Club',
+    )
   })
 })
 
