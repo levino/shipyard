@@ -1,11 +1,7 @@
 ---
-import config from 'virtual:shipyard/config'
 import { Footer as FooterComponent } from '../components'
 
-const locale = Astro.currentLocale || config.defaultLocale
-
-const withLocale = (path: string) =>
-  locale === config.defaultLocale ? path : `/${locale}${path}`
+const withLocale = (path: string) => `/${Astro.currentLocale}${path}`
 ---
 
 <FooterComponent
@@ -13,6 +9,6 @@ const withLocale = (path: string) =>
   copyright={{
     href: "https://github.com/levino",
     label: "Levin Keller",
-    year: 2023,
+    year: 2025,
   }}
 />

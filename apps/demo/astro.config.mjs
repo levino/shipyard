@@ -8,7 +8,7 @@ import shipyardBlog from '../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
   redirects: {
-    '/': '/de',
+    '/': '/en',
   },
   i18n: {
     defaultLocale: 'en',
@@ -40,9 +40,9 @@ export default defineConfig({
           href: '/about',
         },
       },
-      title: 'Shipyard Demo',
-      tagline: 'A website to demonstrate the Shipyard capabilities.',
-      brand: 'Shipyard',
+      title: 'Metro Gardens',
+      tagline: 'Growing community, one plant at a time.',
+      brand: 'Metro Gardens',
     }),
     shipyardDocs(['docs']),
     shipyardBlog(['blog']),

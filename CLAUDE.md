@@ -21,7 +21,7 @@ This is a monorepo for Shipyard, a general-purpose page builder for Astro. This 
 │   ├── blog/           # Blog-specific components
 │   └── docs/           # Documentation-specific components
 ├── package.json        # Root package.json with workspaces config
-├── deno.json          # Deno formatting and linting config
+├── biome.json         # Biome formatting and linting config
 └── README.md          # Basic project information
 ```
 
@@ -32,15 +32,14 @@ This is a monorepo for Shipyard, a general-purpose page builder for Astro. This 
 - **Language**: TypeScript (strict mode)
 - **Package Manager**: npm with workspaces
 - **Testing**: Playwright (E2E)
-- **Formatting**: Deno (semiColons: false, singleQuote: true)
-- **Git Hooks**: Husky with lint-staged
+- **Formatting & Linting**: Biome (semiColons: asNeeded, singleQuote: true)
+- **Git Hooks**: Husky with pre-commit biome check
 
 ## Development Workflow
 
 ### Prerequisites
 Before working with this codebase, ensure you have:
 - Node.js and npm installed
-- Deno installed (for formatting)
 
 ### Common Commands
 
@@ -65,14 +64,21 @@ npm run test:e2e
 
 # Run E2E tests with UI
 npm run test:e2e:ui
+
+# Check and fix linting/formatting issues
+npx biome check --fix
+
+# Check linting/formatting without fixing
+npx biome check
 ```
 
 ### Code Style Guidelines
 
-1. **Formatting**: Use Deno's built-in formatter (configured in `deno.json`)
-   - No semicolons
-   - Single quotes
-   - Exclude `.astro` files and build directories from formatting
+1. **Formatting & Linting**: Use Biome (configured in `biome.json`)
+   - Semicolons as needed  
+   - Single quotes for JavaScript
+   - Import organization enabled
+   - Special rules for `.astro`, `.svelte`, and `.vue` files
 
 2. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
 
@@ -118,7 +124,7 @@ Documentation features:
 
 5. **Changesets**: The project uses `@changesets/cli` for version management.
 
-6. **Git Hooks**: Husky is configured with lint-staged for pre-commit hooks.
+6. **Git Hooks**: Husky is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
 ## Working with Components
 
