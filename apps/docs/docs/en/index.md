@@ -25,23 +25,29 @@ Stop wrestling with complex configurations and start creating. Shipyard gives yo
 - **@levino/shipyard-docs** – Documentation-specific features and smart navigation
 - **@levino/shipyard-blog** – Complete blogging functionality with layouts
 
-## See It In Action
+## 🌟 See It In Action
 
-Experience Shipyard firsthand with our [live demo](https://shipyard-demo.levinkeller.de) – see how elegant and functional your site can be.
+**[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
+
+Experience Shipyard firsthand – see how elegant and functional your site can be with responsive layouts, internationalization, and seamless navigation.
 
 ---
 
-## Ready to Get Started?
+## 🚀 Ready to Get Started?
 
 Transform your idea into a professional website in just a few steps. Our comprehensive guide covers everything from installation to advanced configuration.
 
-**[📖 Get Started with the Documentation →](./feature)**
+### 📖 Next Steps
+
+- Learn about [getting started and configuration](./feature)
+- Explore available components and layouts *(coming soon)*
+- Set up your content structure *(coming soon)*
 
 *Perfect for developers, content creators, and anyone who wants a beautiful, fast website without the complexity.*
 
 ---
 
-### Quick Preview
+### ⚡ Quick Preview
 
 Here's what you'll be up and running with in minutes:
 
@@ -67,4 +73,4 @@ export default defineConfig({
 });
 ```
 
-**[Start Building Now →](./feature)**
+**[📖 Start Building Now →](./feature)**
