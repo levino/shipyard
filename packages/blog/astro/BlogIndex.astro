@@ -1,11 +1,11 @@
 ---
 import { getCollection } from 'astro:content'
-import config from 'virtual:shipyard/config'
+import { i18n } from 'astro:config/server'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (() =>
-  config.i18n.locales.map((locale) => {
+  i18n.locales.map((locale) => {
     if (typeof locale !== 'string') {
       throw new Error('Shipyard does only support strings as locales.')
     }
