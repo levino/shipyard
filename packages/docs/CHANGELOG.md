@@ -1,5 +1,13 @@
 # @levino/shipyard-docs
 
+## 0.4.1
+
+### Patch Changes
+
+- f5592db: last release failed, bumping
+- Updated dependencies [f5592db]
+  - @levino/shipyard-base@0.5.1
+
 ## 0.4.0
 
 ### Minor Changes

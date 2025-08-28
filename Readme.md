@@ -44,7 +44,7 @@ export default defineConfig({
 
 ## 📖 Documentation
 
-**[📚 Read the Full Documentation →](https://shipyard-docs-levino.vercel.app)**
+**[📚 Read the Full Documentation →](https://shipyard.levinkeller.de)**
 
 Learn everything from installation to advanced customization with our comprehensive guides.
 

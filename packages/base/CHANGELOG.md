@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.1
+
+### Patch Changes
+
+- f5592db: last release failed, bumping
+
 ## 0.5.0
 
 ### Minor Changes
