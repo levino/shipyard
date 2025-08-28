@@ -3,113 +3,68 @@ title: Shipyard Documentation
 slug: 'en'
 ---
 
-# Shipyard
+# Build Beautiful Websites with Shipyard
 
-**Shipyard** is a general-purpose page builder for [Astro](https://astro.build) that provides a complete toolkit for building documentation sites, blogs, and other content-focused websites.
+**Shipyard** is your complete toolkit for building stunning documentation sites, blogs, and content-focused websites with [Astro](https://astro.build). 
 
-## What is Shipyard?
+Stop wrestling with complex configurations and start creating. Shipyard gives you everything you need: responsive design, intelligent navigation, internationalization, and modular components that work together seamlessly.
 
-Shipyard is a modular collection of Astro integrations and components designed to make it easy to build beautiful, functional websites. It consists of several packages:
+## Why Choose Shipyard?
 
-- **@levino/shipyard-base**: Core components, layouts, and styling
-- **@levino/shipyard-docs**: Documentation-specific features and layouts
-- **@levino/shipyard-blog**: Blog functionality and layouts
+🚀 **Ready to Launch** – Get your site running in minutes, not hours  
+📱 **Mobile-First** – Beautiful on every device with Tailwind CSS and DaisyUI  
+🌍 **Global Ready** – Built-in internationalization with locale-based routing  
+🧩 **Modular Design** – Use only what you need, extend as you grow  
+📝 **Content-Focused** – Automated organization and collection for your content  
 
-## Key Features
+## What's Included
 
-- **Modular Architecture**: Use only the packages you need
-- **Built-in Navigation**: Configurable navigation menus and sidebar generation
-- **Responsive Design**: Mobile-first design with Tailwind CSS and DaisyUI
-- **Content Management**: Automated content collection and organization
-- **Internationalization Ready**: Full i18n support with locale-based routing
+**Three powerful packages work together:**
 
-## Requirements
+- **@levino/shipyard-base** – Core components, layouts, and styling foundation
+- **@levino/shipyard-docs** – Documentation-specific features and smart navigation
+- **@levino/shipyard-blog** – Complete blogging functionality with layouts
 
-### Internationalization (i18n)
+## See It In Action
 
-**⚠️ Important: Shipyard requires i18n configuration to function properly.**
+Experience Shipyard firsthand with our [live demo](https://shipyard-demo.levinkeller.de) – see how elegant and functional your site can be.
 
-Shipyard cannot be used without Astro's i18n feature. You must configure at least one locale in your `astro.config.mjs`:
+---
+
+## Ready to Get Started?
+
+Transform your idea into a professional website in just a few steps. Our comprehensive guide covers everything from installation to advanced configuration.
+
+**[📖 Get Started with the Documentation →](./feature)**
+
+*Perfect for developers, content creators, and anyone who wants a beautiful, fast website without the complexity.*
+
+---
+
+### Quick Preview
+
+Here's what you'll be up and running with in minutes:
 
 ```javascript
+// Your complete Astro configuration
 export default defineConfig({
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'], // At least one locale is required
-    routing: {
-      prefixDefaultLocale: true,
-    },
+    locales: ['en'],
   },
-  // ... other config
+  integrations: [
+    shipyard({
+      title: 'Your Awesome Site',
+      tagline: 'Built with Shipyard',
+      navigation: {
+        docs: { label: 'Docs', href: '/docs' },
+        blog: { label: 'Blog', href: '/blog' },
+      },
+    }),
+    shipyardDocs(['docs']),
+    shipyardBlog(['blog']),
+  ],
 });
 ```
 
-### Locale Requirements
-
-- **At least one locale must be configured** in your Astro i18n settings
-- **Only string-based locales are supported** (e.g., `'en'`, `'de'`, `'fr'`)
-- Object-based locale configurations are not supported
-
-Example of supported locale configuration:
-```javascript
-// ✅ Supported
-locales: ['en', 'de', 'fr']
-
-// ❌ Not supported
-locales: [
-  { path: 'en', codes: ['en'] },
-  { path: 'de', codes: ['de'] }
-]
-```
-
-## Quick Start
-
-1. **Install Shipyard packages:**
-   ```bash
-   npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
-   ```
-
-2. **Configure your `astro.config.mjs`:**
-   ```javascript
-   import { defineConfig } from 'astro/config';
-   import tailwind from '@astrojs/tailwind';
-   import shipyard from '@levino/shipyard-base';
-   import shipyardDocs from '@levino/shipyard-docs';
-   import shipyardBlog from '@levino/shipyard-blog';
-
-   export default defineConfig({
-     i18n: {
-       defaultLocale: 'en',
-       locales: ['en'],
-       routing: {
-         prefixDefaultLocale: true,
-       },
-     },
-     integrations: [
-       tailwind({ applyBaseStyles: false }),
-       shipyard({
-         navigation: {
-           docs: { label: 'Documentation', href: '/docs' },
-           blog: { label: 'Blog', href: '/blog' },
-         },
-         title: 'My Site',
-         tagline: 'Built with Shipyard',
-         brand: 'My Brand',
-       }),
-       shipyardDocs(['docs']),
-       shipyardBlog(['blog']),
-     ],
-   });
-   ```
-
-3. **Start building your content** in the appropriate directories with proper locale structure.
-
-## Demo
-
-Check out the [live demo](https://shipyard-demo.levinkeller.de) to see Shipyard in action.
-
-## Next Steps
-
-- Learn about [configuring navigation and themes](./configuration)
-- Explore [available components and layouts](./components)
-- Set up your [content structure](./content-structure)
+**[Start Building Now →](./feature)**
