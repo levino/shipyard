@@ -1,29 +1,29 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Page Title Integration Tests', () => {
-  test('about page shows site title only when no page title is defined', async ({
+  test('about page shows site title with page title', async ({
     page,
   }) => {
     await page.goto('/en/about')
-    await expect(page).toHaveTitle('Shipyard Demo')
+    await expect(page).toHaveTitle('Metro Gardens - About Metro Gardens')
   })
 
   test('blog index shows site title with Blog', async ({ page }) => {
     await page.goto('/en/blog')
-    await expect(page).toHaveTitle('Shipyard Demo - Blog')
+    await expect(page).toHaveTitle('Metro Gardens - Blog')
   })
 
   test('blog post shows site title with post title', async ({ page }) => {
     await page.goto('/en/blog/2024-01-10-blog-post-1')
-    await expect(page).toHaveTitle('Shipyard Demo - First Blog Post')
+    await expect(page).toHaveTitle('Metro Gardens - Spring Planting Day Success!')
   })
 
   test('page with defined title shows site title with page title', async ({
     page,
   }) => {
     await page.goto('/')
-    // The index page has title: "Startseite" in frontmatter
-    await expect(page).toHaveTitle('Shipyard Demo - Startseite')
+    // The index page has title: "Metro Gardens Community Club" in frontmatter
+    await expect(page).toHaveTitle('Metro Gardens - Metro Gardens Community Club')
   })
 })
 
