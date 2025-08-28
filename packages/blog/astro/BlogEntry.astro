@@ -1,7 +1,7 @@
 ---
-import Layout from './Layout.astro'
+import { getCollection, render } from 'astro:content'
 import { TableOfContents } from '@levino/shipyard-base/components'
-import { render, getCollection } from 'astro:content'
+import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
   const getParams = (slug: string) => {

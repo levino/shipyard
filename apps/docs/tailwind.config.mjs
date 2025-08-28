@@ -1,6 +1,7 @@
-import daisyui from 'daisyui'
 import typography from '@tailwindcss/typography'
-const path = require('path')
+import daisyui from 'daisyui'
+
+const path = require('node:path')
 
 console.log(
   path.join(

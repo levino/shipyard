@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
-import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
 import type { NavigationTree } from '@levino/shipyard-base'
+import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
 
 type Props = {
   title: string
@@ -16,16 +16,13 @@ const entry = await getCollection('blog').then((posts) =>
       return postLocale === locale
     })
     .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-    .reduce(
-      (acc, { id, data: { title } }, key) => ({
-        ...acc,
-        [key]: {
-          href: `/${locale}/blog/${id.slice(3)}`,
-          label: title,
-        },
-      }),
-      {} as NavigationTree,
-    ),
+    .reduce((acc, { id, data: { title } }, key) => {
+      acc[key] = {
+        href: `/${locale}/blog/${id.slice(3)}`,
+        label: title,
+      }
+      return acc
+    }, {} as NavigationTree),
 )
 ---
 

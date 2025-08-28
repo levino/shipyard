@@ -126,5 +126,4 @@ dist
 build/
 .idea/
 
-.astro
 .vercel

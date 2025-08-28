@@ -16,7 +16,7 @@ export const docsSchema = z.object({
 export default (docsPaths: string[]): AstroIntegration => ({
   name: 'shipyard-docs',
   hooks: {
-    'astro:config:setup': ({ injectRoute, config }) => {
+    'astro:config:setup': ({ injectRoute }) => {
       docsPaths.forEach((path) => {
         injectRoute({
           pattern: `/[locale]/${path}/[...slug]`,

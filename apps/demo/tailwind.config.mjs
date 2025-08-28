@@ -1,6 +1,6 @@
-import daisyui from 'daisyui'
 import path from 'node:path'
 import typography from '@tailwindcss/typography'
+import daisyui from 'daisyui'
 
 /** @type {import('tailwindcss').Config} */
 export default {

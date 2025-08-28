@@ -1,8 +1,8 @@
 ---
-import type { GetStaticPaths } from 'astro'
-import Layout from './Layout.astro'
 import { getCollection } from 'astro:content'
 import config from 'virtual:shipyard/config'
+import type { GetStaticPaths } from 'astro'
+import Layout from './Layout.astro'
 
 export const getStaticPaths = (() =>
   config.i18n.locales.map((locale) => {

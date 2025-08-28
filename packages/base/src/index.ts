@@ -1,9 +1,11 @@
 import type { AstroIntegration } from 'astro'
 import type { Config, FinalConfig } from './schemas/config'
+
 export type { Entry } from '../astro/components/types'
-export * from './types'
 export type * from './schemas/config'
 export { getTitle } from './tools/title'
+export * from './types'
+
 const shipyardConfigId = 'virtual:shipyard/config'
 
 const resolveId: Record<string, string | undefined> = {

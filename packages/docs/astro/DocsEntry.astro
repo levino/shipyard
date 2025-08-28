@@ -1,6 +1,6 @@
 ---
-import Layout from './Layout.astro'
 import { getCollection, render } from 'astro:content'
+import Layout from './Layout.astro'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')

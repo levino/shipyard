@@ -2,7 +2,6 @@
 import { cn } from '../../src/tools/cn'
 import SidebarElement from './SidebarElement.astro'
 import type { Entry } from './types'
-import config from 'virtual:shipyard/config'
 
 interface Props {
   local: Entry | undefined
@@ -12,8 +11,6 @@ interface Props {
 
 const { local, global, brand } = Astro.props
 
-// Only prefix with locale when i18n is configured AND we have a currentLocale from Astro
-const currentLocale = Astro.currentLocale || config.defaultLocale
 const withLocale = (path: string) =>
   Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
