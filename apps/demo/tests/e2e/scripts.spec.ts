@@ -13,7 +13,6 @@ test.describe('Script Injection Tests', () => {
       'head script[src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"]',
     )
     await expect(simpleScript).toBeAttached()
-    
     // Verify it doesn't have async or defer attributes
     expect(await simpleScript.getAttribute('async')).toBeNull()
     expect(await simpleScript.getAttribute('defer')).toBeNull()
