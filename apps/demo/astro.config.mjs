@@ -43,6 +43,18 @@ export default defineConfig({
       title: 'Metro Gardens',
       tagline: 'Growing community, one plant at a time.',
       brand: 'Metro Gardens',
+      scripts: [
+        'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+        {
+          src: 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.5/dist/pocketbase.umd.js',
+          async: true,
+        },
+        {
+          src: 'https://cdn.skypack.dev/lodash-es',
+          defer: true,
+          type: 'module',
+        },
+      ],
     }),
     shipyardDocs(['docs']),
     shipyardBlog(['blog']),
