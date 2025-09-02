@@ -109,3 +109,171 @@ tailwind({
 ```
 
 This prevents conflicts with Shipyard's built-in styles.
+
+## Script Injection
+
+Shipyard allows you to inject external scripts into your site's HTML head, similar to Docusaurus. This is useful for adding analytics, chat widgets, CDN libraries, or any third-party scripts.
+
+### Basic Usage
+
+Scripts are configured in your `shipyard()` configuration using the `scripts` array:
+
+```javascript
+shipyard({
+  // ... other configuration
+  scripts: [
+    // Simple string format
+    'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+    
+    // Object format with attributes
+    {
+      src: 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.5/dist/pocketbase.umd.js',
+      async: true,
+    },
+  ],
+})
+```
+
+### Configuration Formats
+
+#### String Format
+
+For simple script injection without special attributes:
+
+```javascript
+scripts: [
+  'https://example.com/script.js',
+  'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
+]
+```
+
+#### Object Format
+
+For scripts that need special attributes or loading behavior:
+
+```javascript
+scripts: [
+  {
+    src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
+    async: true,
+  },
+  {
+    src: 'https://cdn.skypack.dev/lodash-es',
+    defer: true,
+    type: 'module',
+  },
+  {
+    src: 'https://cdn.example.com/secure-script.js',
+    integrity: 'sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC',
+    crossorigin: 'anonymous',
+  },
+]
+```
+
+### Supported Attributes
+
+All standard HTML script attributes are supported:
+
+- **`src`** (required): The URL of the script
+- **`async`**: Load script asynchronously without blocking HTML parsing
+- **`defer`**: Load script after HTML parsing is complete
+- **`type`**: Script MIME type (e.g., `'module'`, `'text/javascript'`)
+- **`crossorigin`**: CORS setting (`'anonymous'`, `'use-credentials'`)
+- **`integrity`**: Subresource Integrity hash for security
+- **`referrerpolicy`**: Referrer policy for the request
+
+You can also use any other valid HTML attributes:
+
+```javascript
+{
+  src: 'https://example.com/script.js',
+  'data-domain': 'yourdomain.com',
+  'data-api': '/api/event',
+}
+```
+
+### Loading Strategies
+
+#### Async Loading
+Best for scripts that don't depend on DOM content and can run independently:
+
+```javascript
+{
+  src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
+  async: true,
+}
+```
+
+#### Deferred Loading
+Best for scripts that need the DOM to be fully parsed:
+
+```javascript
+{
+  src: 'https://example.com/dom-dependent-script.js',
+  defer: true,
+}
+```
+
+#### ES Modules
+For modern JavaScript modules:
+
+```javascript
+{
+  src: 'https://cdn.skypack.dev/lodash-es',
+  type: 'module',
+  defer: true,
+}
+```
+
+### Common Use Cases
+
+#### Analytics
+```javascript
+scripts: [
+  {
+    src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
+    async: true,
+  },
+]
+```
+
+#### CDN Libraries
+```javascript
+scripts: [
+  'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
+]
+```
+
+#### Chat Widgets
+```javascript
+scripts: [
+  {
+    src: 'https://widget.intercom.io/widget/your-app-id',
+    async: true,
+  },
+]
+```
+
+### Important Notes
+
+- **Global injection**: Scripts are injected into every page of your site
+- **Load order**: Scripts are loaded in the order they appear in the configuration
+- **Performance**: Use `async` or `defer` attributes to avoid blocking page rendering
+- **Security**: Consider using `integrity` attributes for third-party CDN scripts
+- **Server-side rendering**: Scripts are injected during build time, not at runtime
+
+### Security Considerations
+
+When adding external scripts:
+
+1. **Use trusted sources**: Only include scripts from reputable CDNs and services
+2. **Subresource Integrity**: Use `integrity` hashes when possible:
+   ```javascript
+   {
+     src: 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
+     integrity: 'sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=',
+     crossorigin: 'anonymous',
+   }
+   ```
+3. **Content Security Policy**: Configure CSP headers if using strict security policies
