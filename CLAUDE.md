@@ -126,6 +126,23 @@ Documentation features:
 
 6. **Git Hooks**: Husky is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
+## Essential Claude Workflow
+
+### Before Making Commits
+**CRITICAL**: Always run the following command before committing changes:
+
+```bash
+npx biome check --fix
+```
+
+This ensures:
+- Code is properly formatted according to project standards
+- Linting issues are automatically resolved
+- Import statements are organized
+- Consistent code style across the codebase
+
+If biome makes any changes, make sure to stage and include them in your commit.
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories
