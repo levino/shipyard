@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.2
+
+### Patch Changes
+
+- 60679ed: Add script injection capability to allow adding script tags to the HTML head. Supports both string URLs and object configurations with attributes like async, defer, and type. See #40.
+
 ## 0.5.1
 
 ### Patch Changes
