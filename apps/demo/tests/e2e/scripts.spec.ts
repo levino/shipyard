@@ -9,7 +9,9 @@ test.describe('Script Injection Tests', () => {
     expect(scripts).toHaveLength(3)
 
     // Test simple string script (jQuery)
-    const simpleScript = page.locator('head script[src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"]')
+    const simpleScript = page.locator(
+      'head script[src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"]',
+    )
     await expect(simpleScript).toBeAttached()
     
     // Verify it doesn't have async or defer attributes
