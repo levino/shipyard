@@ -1,19 +1,17 @@
 {
   "scripts": {
-    "prepare": "husky install || true",
     "test:e2e": "cd apps/demo && npm run test:e2e",
     "test:e2e:ui": "cd apps/demo && npm run test:e2e:ui",
     "test:e2e:single-locale": "cd apps/single-locale-demo && npm run test:e2e",
     "test:e2e:single-locale:ui": "cd apps/single-locale-demo && npm run test:e2e:ui"
   },
-  "prepare": "husky",
   "keywords": [],
   "author": "",
   "private": true,
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "2.2.2",
-    "husky": "^8.0.3",
+    "lefthook": "^1.12.3",
     "lint-staged": "^15.2.0",
     "turbo": "^2.3.3",
     "typescript": "^5.3.3"
