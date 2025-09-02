@@ -8,21 +8,21 @@ test.describe('Script Injection Tests', () => {
     const scripts = await page.locator('head script').all()
     expect(scripts).toHaveLength(3)
 
-    // Test simple string script
-    const simpleScript = page.locator('head script[src="https://example.com/simple-script.js"]')
+    // Test simple string script (jQuery)
+    const simpleScript = page.locator('head script[src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"]')
     await expect(simpleScript).toBeAttached()
     
     // Verify it doesn't have async or defer attributes
     expect(await simpleScript.getAttribute('async')).toBeNull()
     expect(await simpleScript.getAttribute('defer')).toBeNull()
 
-    // Test script with async attribute
-    const asyncScript = page.locator('head script[src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"]')
+    // Test script with async attribute (PocketBase)
+    const asyncScript = page.locator('head script[src="https://cdn.jsdelivr.net/npm/pocketbase@0.21.5/dist/pocketbase.umd.js"]')
     await expect(asyncScript).toBeAttached()
     expect(await asyncScript.getAttribute('async')).toBe('')
 
-    // Test script with defer and type attributes
-    const deferredScript = page.locator('head script[src="https://example.com/deferred-script.js"]')
+    // Test script with defer and type attributes (Lodash ES)
+    const deferredScript = page.locator('head script[src="https://cdn.skypack.dev/lodash-es"]')
     await expect(deferredScript).toBeAttached()
     expect(await deferredScript.getAttribute('defer')).toBe('')
     expect(await deferredScript.getAttribute('type')).toBe('module')
@@ -48,20 +48,20 @@ test.describe('Script Injection Tests', () => {
   test('script attributes are correctly applied', async ({ page }) => {
     await page.goto('/en')
     
-    // Verify the clipboard.js script has the correct attributes
-    const clipboardScript = page.locator('head script[src*="clipboard.js"]')
-    await expect(clipboardScript).toBeAttached()
+    // Verify the PocketBase script has the correct attributes
+    const pocketbaseScript = page.locator('head script[src*="pocketbase"]')
+    await expect(pocketbaseScript).toBeAttached()
     
     // Check for async attribute
-    const isAsync = await clipboardScript.evaluate(script => script.hasAttribute('async'))
+    const isAsync = await pocketbaseScript.evaluate(script => script.hasAttribute('async'))
     expect(isAsync).toBe(true)
     
     // Check that defer is not set (should be null/false)
-    const hasDefer = await clipboardScript.evaluate(script => script.hasAttribute('defer'))
+    const hasDefer = await pocketbaseScript.evaluate(script => script.hasAttribute('defer'))
     expect(hasDefer).toBe(false)
     
-    // Verify the deferred script has correct attributes
-    const deferredScript = page.locator('head script[src*="deferred-script.js"]')
+    // Verify the Lodash ES script has correct attributes
+    const deferredScript = page.locator('head script[src*="lodash-es"]')
     await expect(deferredScript).toBeAttached()
     
     const isDefer = await deferredScript.evaluate(script => script.hasAttribute('defer'))
@@ -82,8 +82,8 @@ test.describe('Script Injection Tests', () => {
     )
     
     // Verify scripts appear in the same order as configured
-    expect(srcs[0]).toBe('https://example.com/simple-script.js')
-    expect(srcs[1]).toBe('https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js')
-    expect(srcs[2]).toBe('https://example.com/deferred-script.js')
+    expect(srcs[0]).toBe('https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js')
+    expect(srcs[1]).toBe('https://cdn.jsdelivr.net/npm/pocketbase@0.21.5/dist/pocketbase.umd.js')
+    expect(srcs[2]).toBe('https://cdn.skypack.dev/lodash-es')
   })
 })

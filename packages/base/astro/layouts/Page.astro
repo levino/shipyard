@@ -59,7 +59,7 @@ const renderScriptAttributes = (script: Script) => {
     
     {config.scripts?.map((script) => {
       const attrs = renderScriptAttributes(script)
-      return <script {...attrs}></script>
+      return <script is:inline {...attrs}></script>
     })}
   </head>
   <body>
