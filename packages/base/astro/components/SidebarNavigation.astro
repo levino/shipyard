@@ -13,6 +13,8 @@ const { local, global, brand } = Astro.props
 
 const withLocale = (path: string) =>
   Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
+
+console.log(local)
 ---
 
 <ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })}>
