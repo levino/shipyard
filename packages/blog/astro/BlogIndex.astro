@@ -1,6 +1,6 @@
 ---
-import config from 'virtual:shipyard/config'
 import { getCollection } from 'astro:content'
+import config from 'virtual:shipyard/config'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
@@ -35,7 +35,9 @@ const entries = await getCollection('blog').then((posts) => {
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
     // Without i18n: return all posts
-    return posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    return posts.toSorted(
+      (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+    )
   }
 })
 
