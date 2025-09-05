@@ -1,40 +1,53 @@
 ---
-import { i18n } from 'astro:config/server'
+import config from 'virtual:shipyard/config'
 import { getCollection } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (() => {
-  if (!i18n) {
-    throw new Error('Shipyard requires i18n to be enabled.')
+  if (config.i18n) {
+    return config.i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('Shipyard does only support strings as locales.')
+      }
+      return {
+        params: {
+          locale,
+        },
+      }
+    })
+  } else {
+    // For non-i18n, return a single path without locale
+    return [{ params: {} }]
   }
-  return i18n.locales.map((locale) => {
-    if (typeof locale !== 'string') {
-      throw new Error('Shipyard does only support strings as locales.')
-    }
-    return {
-      params: {
-        locale,
-      },
-    }
-  })
 }) satisfies GetStaticPaths
 
 const { locale } = Astro.params
 
-const entries = await getCollection('blog').then((posts) =>
-  posts
-    .filter(({ id }) => {
-      const [postLocale] = id.split('/')
-      return postLocale === locale
-    })
-    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime()),
-)
+const entries = await getCollection('blog').then((posts) => {
+  if (config.i18n && locale) {
+    // With i18n: filter by locale
+    return posts
+      .filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === locale
+      })
+      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  } else {
+    // Without i18n: return all posts
+    return posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  }
+})
 
-const getBlogPostLink = (id: string, locale: string) =>
-  id.replace(`${locale}/`, `${locale}/blog/`)
+const getBlogPostLink = (id: string, locale?: string) => {
+  if (config.i18n && locale) {
+    return id.replace(`${locale}/`, `${locale}/blog/`)
+  } else {
+    return `blog/${id}`
+  }
+}
 
-const formatDate = new Intl.DateTimeFormat(locale).format
+const formatDate = new Intl.DateTimeFormat(locale || 'en').format
 ---
 
 <Layout title="Blog">

@@ -4,15 +4,26 @@ import Layout from './Layout.astro'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')
-  const getParams = (slug: string) => {
-    const [locale, ...rest] = slug.split('/')
-    return {
-      slug: rest.length ? rest.join('/') : undefined,
-      locale,
+  const getParams = (slug: string, hasI18n: boolean) => {
+    if (hasI18n) {
+      const [locale, ...rest] = slug.split('/')
+      return {
+        slug: rest.length ? rest.join('/') : undefined,
+        locale,
+      }
+    } else {
+      // For non-i18n, treat the entire slug as the path
+      return {
+        slug: slug || undefined,
+      }
     }
   }
+  
+  // Check if i18n is configured by looking at the first entry
+  const hasI18n = docs.some(entry => entry.id.includes('/'))
+  
   return docs.map((entry) => ({
-    params: getParams(entry.id),
+    params: getParams(entry.id, hasI18n),
     props: { entry },
   }))
 }

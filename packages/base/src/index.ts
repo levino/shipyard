@@ -21,11 +21,6 @@ export default (config: Config): AstroIntegration => ({
   name: 'shipyard',
   hooks: {
     'astro:config:setup': ({ updateConfig, config: { i18n } }) => {
-      if (!i18n) {
-        throw new Error(
-          'Shipyard cannot be used without i18n. Please set at least one locale.',
-        )
-      }
       updateConfig({
         vite: {
           plugins: [
