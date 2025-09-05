@@ -79,7 +79,7 @@ shipyardBlog(['blog', 'news'])
 
 ## Internationalization
 
-Shipyard supports both single-language and multi-language websites. Internationalization (i18n) is now **optional** as of version 0.x.
+Shipyard supports both single-language and multi-language websites.
 
 ### Single-Language Sites
 
