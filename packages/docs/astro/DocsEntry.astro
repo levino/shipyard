@@ -1,9 +1,14 @@
 ---
 import { getCollection, render } from 'astro:content'
+import config from 'virtual:shipyard/config'
 import Layout from './Layout.astro'
 
 export async function getStaticPaths() {
   const docs = await getCollection('docs')
+  
+  // Check if i18n is configured using Shipyard's config
+  const hasI18n = Boolean(config.i18n)
+  
   const getParams = (slug: string, hasI18n: boolean) => {
     if (hasI18n) {
       const [locale, ...rest] = slug.split('/')
@@ -18,9 +23,6 @@ export async function getStaticPaths() {
       }
     }
   }
-  
-  // Check if i18n is configured by looking at the first entry
-  const hasI18n = docs.some(entry => entry.id.includes('/'))
   
   return docs.map((entry) => ({
     params: getParams(entry.id, hasI18n),
