@@ -8,7 +8,10 @@ import shipyardBlog from '../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
   redirects: {
-    '/': '/en',
+    '/': {
+      status: 302,
+      destination: 'en',
+    },
   },
   i18n: {
     defaultLocale: 'en',

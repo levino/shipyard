@@ -1,4 +1,5 @@
 ---
+import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import type { NavigationTree } from '@levino/shipyard-base'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
@@ -6,7 +7,8 @@ import { Array as EffectArray, Option } from 'effect'
 import { path } from 'ramda'
 import { toSidebarEntries } from '../src/sidebarEntries'
 
-const getPath = (id: string) => `/${Astro.currentLocale}/docs/${id.slice(3)}`
+const getPath = (id: string) =>
+  i18n ? `/${Astro.currentLocale}/docs/${id.slice(3)}` : `/docs/${id}`
 
 const docs = await getCollection('docs')
   .then(
@@ -36,9 +38,11 @@ const docs = await getCollection('docs')
   )
   .then((promises) => Promise.all(promises))
 
-const entries = path([Astro.currentLocale, 'subEntry', 'docs', 'subEntry'])(
-  toSidebarEntries(docs),
-) as NavigationTree
+const entries = path(
+  i18n
+    ? [Astro.currentLocale, 'subEntry', 'docs', 'subEntry']
+    : ['docs', 'subEntry'],
+)(toSidebarEntries(docs)) as NavigationTree
 ---
 
 <BaseLayout sidebarNavigation={entries}>

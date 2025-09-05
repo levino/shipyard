@@ -17,7 +17,7 @@ export default defineConfig({
       navigation: {
         docs: {
           label: 'Documentation',
-          href: '/docs',
+          href: '/docs/index',
         },
         blog: {
           label: 'Blog',

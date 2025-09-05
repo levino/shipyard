@@ -9,18 +9,7 @@ export interface NavigationEntry {
 
 export type NavigationTree = Record<string, NavigationEntry>
 
-export interface ScriptConfig {
-  src: string
-  async?: boolean
-  defer?: boolean
-  type?: string
-  crossorigin?: string
-  integrity?: string
-  referrerpolicy?: string
-  [key: string]: string | boolean | undefined
-}
-
-export type Script = string | ScriptConfig
+export type Script = string | astroHTML.JSX.IntrinsicElements['script']
 
 export interface Config {
   brand: string

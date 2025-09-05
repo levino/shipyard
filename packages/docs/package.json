@@ -12,12 +12,12 @@
   },
   "dependencies": {
     "effect": "^3.12.5",
-    "ramda": "^0.29.1",
+    "ramda": "^0.31",
     "@levino/shipyard-base": "^0.5.3"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
-    "@types/ramda": "^0.29.9",
+    "@types/ramda": "^0.31",
     "astro": "^5.7",
     "vitest": "^2.1.8"
   },
