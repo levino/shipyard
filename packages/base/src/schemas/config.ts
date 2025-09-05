@@ -31,5 +31,5 @@ export interface Config {
 }
 
 export interface FinalConfig extends Config {
-  i18n: NonNullable<AstroConfig['i18n']>
+  i18n?: AstroConfig['i18n']
 }
