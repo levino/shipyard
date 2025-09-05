@@ -66,7 +66,7 @@ npm run test:e2e
 npm run test:e2e:ui
 
 # Check and fix linting/formatting issues
-npx biome check --fix
+npx biome check --write
 
 # Check linting/formatting without fixing
 npx biome check
