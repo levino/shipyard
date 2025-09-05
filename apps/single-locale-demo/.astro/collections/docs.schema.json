@@ -1,0 +1,37 @@
+{
+  "$ref": "#/definitions/docs",
+  "definitions": {
+    "docs": {
+      "type": "object",
+      "properties": {
+        "sidebar": {
+          "type": "object",
+          "properties": {
+            "render": {
+              "type": "boolean",
+              "default": true
+            },
+            "label": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "default": {
+            "render": true
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
