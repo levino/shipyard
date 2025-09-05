@@ -77,9 +77,74 @@ Similarly, the `shipyardBlog` integration configures blog directories:
 shipyardBlog(['blog', 'news'])
 ```
 
+## Internationalization
+
+Shipyard supports both single-language and multi-language websites. Internationalization (i18n) is now **optional** as of version 0.x.
+
+### Single-Language Sites
+
+To create a single-language site, simply omit the `i18n` configuration from your `astro.config.mjs`:
+
+```javascript
+export default defineConfig({
+  // No i18n config needed for single-language sites
+  integrations: [
+    shipyard({
+      title: 'My Single-Language Site',
+      tagline: 'Built with Shipyard',
+      navigation: {
+        docs: { label: 'Docs', href: '/docs' },
+        blog: { label: 'Blog', href: '/blog' },
+      },
+    }),
+    shipyardDocs(['docs']),
+    shipyardBlog(['blog']),
+  ],
+});
+```
+
+Your URLs will be clean without language prefixes:
+- `/` - Homepage
+- `/docs/` - Documentation index  
+- `/docs/getting-started/` - Documentation pages
+- `/blog/` - Blog index
+- `/blog/welcome/` - Blog posts
+
+### Multi-Language Sites
+
+For internationalization, configure Astro's i18n options:
+
+```javascript
+export default defineConfig({
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de', 'fr'],
+    routing: {
+      prefixDefaultLocale: false, // Optional: removes /en/ prefix for default locale
+    },
+  },
+  integrations: [
+    shipyard({
+      title: 'My Multi-Language Site',
+      // ... rest of config
+    }),
+    shipyardDocs(['docs']),
+    shipyardBlog(['blog']),
+  ],
+});
+```
+
+URLs will include language prefixes:
+- `/` and `/en/` - English homepage
+- `/de/` - German homepage  
+- `/en/docs/`, `/de/docs/` - Localized documentation
+- `/en/blog/`, `/de/blog/` - Localized blog
+
 ## Content Structure
 
-Your content should be organized by locale:
+### Multi-Language Sites (with i18n)
+
+For sites with internationalization, organize your content by locale:
 
 ```
 src/
@@ -96,6 +161,32 @@ src/
         2024-01-01-welcome.md
       de/
         2024-01-01-willkommen.md
+```
+
+### Single-Language Sites (without i18n)
+
+For single-language sites, you can organize content directly without locale folders:
+
+```
+src/
+  content/
+    docs/
+      index.md
+      getting-started.md
+    blog/
+      2024-01-01-welcome.md
+      2024-02-01-another-post.md
+```
+
+Or in separate collections:
+
+```
+docs/
+  index.md
+  getting-started.md
+blog/
+  2024-01-01-welcome.md
+  2024-02-01-another-post.md
 ```
 
 ## Styling
