@@ -1,6 +1,7 @@
 ---
 title: Documentation Overview
 description: Complete guide to using Shipyard in single-language mode
+slug: '/'
 ---
 
 # Documentation Overview

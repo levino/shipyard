@@ -2,6 +2,7 @@
 import Footer from './Footer.astro'
 import '../../src/globals.css'
 import config from 'virtual:shipyard/config'
+import { i18n } from 'astro:config/server'
 import { mapObjIndexed } from 'ramda'
 import type {
   NavigationEntry,
@@ -26,7 +27,8 @@ type Props = {
 const currentPath = Astro.url.pathname
 const props = Astro.props.frontmatter || Astro.props
 
-const withLocale = (path: string) => `/${Astro.currentLocale}${path}`
+const withLocale = (path: string) =>
+  i18n ? `/${Astro.currentLocale}${path}` : path
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
