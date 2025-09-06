@@ -16,7 +16,7 @@ jobs:
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: 2.2.2 # TODO: Unpin! https://github.com/biomejs/biome/issues/7409
+          version: latest
       - name: Run Biome
         run: biome ci .
   test:
