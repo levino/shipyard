@@ -1,5 +1,17 @@
 # @levino/shipyard-base
 
+## 0.5.5
+
+### Patch Changes
+
+- 79a4e41: publishing packages with provenance to npmjs.org
+
+## 0.5.4
+
+### Patch Changes
+
+- ff37845: Fix navigation menu issues for single locale pages
+
 ## 0.5.3
 
 ### Patch Changes
