@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.6
+
+### Patch Changes
+
+- 9364be5: trigger release
+
 ## 0.5.5
 
 ### Patch Changes
