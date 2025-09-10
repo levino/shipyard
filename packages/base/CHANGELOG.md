@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.4
+
+### Patch Changes
+
+- ff37845: Fix navigation menu issues for single locale pages
+
 ## 0.5.3
 
 ### Patch Changes

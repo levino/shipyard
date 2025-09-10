@@ -1,5 +1,14 @@
 # @levino/shipyard-docs
 
+## 0.4.3
+
+### Patch Changes
+
+- ff37845: Fix navigation menu issues for single locale pages
+- ff37845: Disable configuration option which was ignored and misleading
+- Updated dependencies [ff37845]
+  - @levino/shipyard-base@0.5.4
+
 ## 0.4.2
 
 ### Patch Changes
