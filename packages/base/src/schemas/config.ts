@@ -1,5 +1,3 @@
-import type { AstroConfig } from 'astro'
-
 export interface NavigationEntry {
   label?: string
   href?: string
@@ -17,8 +15,4 @@ export interface Config {
   title: string
   tagline: string
   scripts?: Script[]
-}
-
-export interface FinalConfig extends Config {
-  i18n?: AstroConfig['i18n']
 }

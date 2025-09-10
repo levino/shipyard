@@ -1,12 +1,12 @@
 ---
+import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
-import config from 'virtual:shipyard/config'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (() => {
-  if (config.i18n) {
-    return config.i18n.locales.map((locale) => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
       if (typeof locale !== 'string') {
         throw new Error('Shipyard does only support strings as locales.')
       }
@@ -23,7 +23,7 @@ export const getStaticPaths = (() => {
 }) satisfies GetStaticPaths
 
 const entries = await getCollection('blog').then((posts) => {
-  if (config.i18n) {
+  if (i18n) {
     // With i18n: filter by locale
     return posts
       .filter(({ id }) => {
@@ -40,7 +40,7 @@ const entries = await getCollection('blog').then((posts) => {
 })
 
 const getBlogPostLink = (id: string, locale?: string) => {
-  if (config.i18n && locale) {
+  if (i18n && locale) {
     return id.replace(`${locale}/`, `${locale}/blog/`)
   } else {
     return `blog/${id}`
