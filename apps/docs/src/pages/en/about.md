@@ -3,12 +3,12 @@ layout: '@levino/shipyard-base/layouts/Splash.astro'
 title: Shipyard
 locale: en
 description:
-  Your orbital construction platform for Astro.
+  Assemble and launch your new Astro website in minutes.
 ---
 
-# Station Information 🛰️
+# About Shipyard 🚀
 
-Constructed and maintained by **Levin Keller**, Chief Architect  
-📍 Mission Control: Hohenzollerndamm 152, 14199 Berlin, Germany
+Built and maintained by **Levin Keller**  
+📍 Berlin, Germany
 
-*Building the future, one space station at a time.*
+*Assemble and launch your new Astro website in minutes.*

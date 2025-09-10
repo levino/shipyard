@@ -1,63 +1,63 @@
 ---
 layout: '@levino/shipyard-base/layouts/Splash.astro'
-title: 🛰️ Shipyard
+title: 🚀 Shipyard
 locale: en
 description:
-  Your orbital construction platform for assembling stunning websites with Astro - beautiful design system, i18n support, smart documentation, and powerful blogging.
+  Assemble and launch your new Astro website in minutes - beautiful design system, i18n support, smart documentation, and powerful blogging.
 ---
 
-# Your Orbital Construction Platform for Astro
+# Assemble and Launch Your New Astro Website in Minutes
 
-Launch your next mission with confidence. Whether you're assembling documentation sites, blogs, or content-focused websites, Shipyard provides all the modules you need to construct and deploy beautiful, fast websites in minutes.
+Build your next project with confidence. Whether you're creating documentation sites, blogs, or content-focused websites, Shipyard provides all the components you need to build and deploy beautiful, fast websites quickly.
 
-## 🚀 Why Launch with Shipyard?
+## 🚀 Why Build with Shipyard?
 
-**Shipyard** is your orbital construction facility—a comprehensive collection of Astro integrations that provides all the components you need for your mission:
+**Shipyard** is a comprehensive collection of Astro integrations that provides all the components you need for your project:
 
-### 🎨 **Mission-Ready Design System**
-Modern, responsive layouts with Tailwind CSS + DaisyUI ready for deployment. No more orbital mechanics with CSS—just beautiful designs that work across all sectors.
+### 🎨 **Ready-to-Use Design System**
+Modern, responsive layouts with Tailwind CSS + DaisyUI ready for deployment. No complex setup—just beautiful designs that work everywhere.
 
-### 🌍 **Universal Communication** 
-Built-in i18n support with locale-based routing. Broadcast to audiences across all star systems without the complexity.
+### 🌍 **Multi-language Support** 
+Built-in i18n support with locale-based routing. Reach global audiences without the complexity.
 
-### 📡 **Intelligent Navigation**
-Automated content organization and routing. Your documentation assembles itself into a beautiful, searchable command center.
+### 📡 **Smart Navigation**
+Automated content organization and routing. Your documentation builds itself into a beautiful, searchable site.
 
-### 📝 **Mission Logs & Updates**
-Complete blogging functionality with layouts and collections. From simple status updates to comprehensive mission reports.
+### 📝 **Blogging Made Easy**
+Complete blogging functionality with layouts and collections. From simple posts to comprehensive articles.
 
-### 🛠️ **Modular Assembly**
-Use what you need, expand as your operations grow. Three specialized modules that work perfectly together or independently.
+### 🛠️ **Modular Design**
+Use what you need, expand as your project grows. Three specialized packages that work perfectly together or independently.
 
-## ⚡ Launch Sequence Initiated
+## ⚡ Quick Start
 
 ```bash
-# Install the modules you need for your mission
+# Install the packages you need
 npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
-# Configure your astro.config.mjs and prepare for launch!
+# Configure your astro.config.mjs and you're ready to go!
 ```
 
-## 📖 Mission Briefings
+## 📖 Documentation
 
-Ready for your deep space mission? Our comprehensive documentation covers everything from initial assembly to advanced customization:
+Ready to get started? Our comprehensive documentation covers everything from initial setup to advanced customization:
 
-- **[🚀 Launch Protocol](/en/docs/)** - Get your station operational in 5 minutes
-- **[🎨 Design Systems](/en/docs/feature)** - Customize your station's interface  
-- **[🌍 Universal Translation](/en/docs/)** - Communicate across all sectors
-- **[📡 Command Center Features](/en/docs/)** - Build incredible navigation systems
-- **[📝 Mission Logs](/en/docs/)** - Document your discoveries
+- **[🚀 Quick Start](/en/docs/)** - Get up and running in 5 minutes
+- **[🎨 Design System](/en/docs/feature)** - Customize your site's appearance  
+- **[🌍 Internationalization](/en/docs/)** - Add multi-language support
+- **[📡 Navigation Features](/en/docs/)** - Build great navigation
+- **[📝 Blogging](/en/docs/)** - Set up your blog
 
-## 🌟 Live Station Tour
+## 🌟 Live Demo
 
-**[🛰️ Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
+**[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
 
-Take a tour of a fully operational Shipyard station showcasing:
-- Responsive command interfaces
-- Multi-sector communication logs
-- Intelligent navigation and content organization
-- Mobile-compatible design that performs across all devices
+See a fully working Shipyard site showcasing:
+- Responsive design
+- Multi-language content
+- Smart navigation and content organization
+- Mobile-friendly interface
 
 ---
 
-**Ready to construct something extraordinary?** Begin with our [Launch Protocol](/en/docs/) or take the [Station Tour](https://shipyard-demo.levinkeller.de) to see what's possible.
+**Ready to build something great?** Begin with our [Quick Start Guide](/en/docs/) or check out the [Live Demo](https://shipyard-demo.levinkeller.de) to see what's possible.
