@@ -9,21 +9,23 @@ slug: 'en'
 
 Stop wrestling with complex configurations and start creating. Shipyard gives you everything you need: responsive design, intelligent navigation, internationalization, and modular components that work together seamlessly.
 
+🛸 *Assemble your digital projects and deploy them across the galaxy.*
+
 ## Why Choose Shipyard?
 
 🚀 **Ready to Launch** – Get your site running in minutes, not hours  
 📱 **Mobile-First** – Beautiful on every device with Tailwind CSS and DaisyUI  
-🌍 **Global Ready** – Optional internationalization with locale-based routing  
-🧩 **Modular Design** – Use only what you need, extend as you grow  
-📝 **Content-Focused** – Automated organization and collection for your content  
+🌌 **Universe Ready** – Optional internationalization with locale-based routing  
+🛰️ **Modular Design** – Use only what you need, extend as you grow  
+📡 **Content-Focused** – Automated organization and collection for your content  
 
 ## What's Included
 
-**Three powerful packages work together:**
+**Three powerful modules work together:**
 
-- **@levino/shipyard-base** – Core components, layouts, and styling foundation
-- **@levino/shipyard-docs** – Documentation-specific features and smart navigation
-- **@levino/shipyard-blog** – Complete blogging functionality with layouts
+- **@levino/shipyard-base** – Core components, layouts, and stellar styling foundation
+- **@levino/shipyard-docs** – Documentation-specific features and navigation systems
+- **@levino/shipyard-blog** – Complete blogging functionality with orbital layouts
 
 ## 🌟 See It In Action
 
@@ -35,7 +37,7 @@ Experience Shipyard firsthand – see how elegant and functional your site can b
 
 ## 🚀 Ready to Get Started?
 
-Transform your idea into a professional website in just a few steps. Our comprehensive guide covers everything from installation to advanced configuration.
+Transform your idea into a professional website in just a few steps. Our comprehensive guide covers everything from initial assembly to advanced orbital configuration.
 
 ### 📖 Next Steps
 
@@ -43,11 +45,11 @@ Transform your idea into a professional website in just a few steps. Our compreh
 - Explore available components and layouts *(coming soon)*
 - Set up your content structure *(coming soon)*
 
-*Perfect for developers, content creators, and anyone who wants a beautiful, fast website without the complexity.*
+*Perfect for developers, content creators, and anyone who wants a beautiful, fast website without the complexity of navigating asteroid fields.*
 
 ---
 
-### ⚡ Quick Preview
+### ⚡ Quick Launch Preview
 
 Here's what you'll be up and running with in minutes:
 
