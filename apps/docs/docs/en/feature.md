@@ -4,11 +4,13 @@ title: Configuration
 
 # Configuration
 
-Shipyard is highly configurable and can be customized to fit your project's needs.
+Shipyard is highly configurable and can be customized to fit your mission requirements.
+
+🛰️ *Configure your orbital platform for optimal performance across all deployment zones.*
 
 ## Basic Configuration
 
-The main configuration happens in your `astro.config.mjs` file when you initialize the Shipyard integration:
+The main configuration happens in your `astro.config.mjs` file when you initialize the Shipyard platform:
 
 ```javascript
 shipyard({

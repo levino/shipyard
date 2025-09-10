@@ -41,7 +41,7 @@ export default defineConfig({
         },
       },
       title: 'Shipyard',
-      tagline: 'A universal page builder for astro',
+      tagline: 'Orbital assembly platform for stellar websites',
       brand: 'Shipyard',
     }),
     shipyardDocs(),
