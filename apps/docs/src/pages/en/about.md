@@ -3,7 +3,7 @@ layout: '@levino/shipyard-base/layouts/Splash.astro'
 title: Shipyard
 locale: en
 description:
-  Assemble and launch your new Astro website in minutes.
+  Your orbital construction platform for assembling stunning websites with Astro.
 ---
 
 # About Shipyard 🚀
@@ -11,4 +11,4 @@ description:
 Built and maintained by **Levin Keller**  
 📍 Berlin, Germany
 
-*Assemble and launch your new Astro website in minutes.*
+*Your orbital construction platform for assembling stunning websites with Astro.*

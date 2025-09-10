@@ -19,7 +19,7 @@ Assemble and launch your new Astro website in minutes. Shipyard provides all the
 
 ## What's Included
 
-**Three packages work together perfectly:**
+**Three specialized packages work in perfect coordination:**
 
 - **@levino/shipyard-base** – Core components, layouts, and design foundation
 - **@levino/shipyard-docs** – Documentation features and smart navigation
@@ -29,13 +29,13 @@ Assemble and launch your new Astro website in minutes. Shipyard provides all the
 
 **[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
 
-See how elegant and functional your site can be with responsive design, multi-language support, and seamless navigation.
+Take a tour of our operational facility – see how elegant and functional your platform can be with responsive design, multi-language support, and seamless navigation.
 
 ---
 
 ## 🚀 Ready to Start?
 
-Transform your vision into a professional website in just a few steps. Our comprehensive guide covers everything from initial setup to advanced configuration.
+Transform your vision into a professional space station in just a few steps. Our comprehensive mission guide covers everything from initial assembly to advanced configuration.
 
 ### 📖 Getting Started
 
@@ -43,7 +43,7 @@ Transform your vision into a professional website in just a few steps. Our compr
 - Explore available packages and layouts *(coming soon)*
 - Set up your content organization *(coming soon)*
 
-*Perfect for developers, content creators, and anyone who wants a beautiful, fast website without the complexity.*
+*Perfect for developers, content creators, and anyone who wants a beautiful, fast station without the orbital complexity.*
 
 ---
 
@@ -52,19 +52,19 @@ Transform your vision into a professional website in just a few steps. Our compr
 Here's what you'll have running in minutes:
 
 ```javascript
-// Your complete Astro site configuration
+// Your complete Astro station configuration
 export default defineConfig({
-  // i18n is optional! Remove for single-language sites
+  // Universal communication is optional! Remove for single-sector operations
   i18n: {
     defaultLocale: 'en',
     locales: ['en', 'de'],
   },
   integrations: [
     shipyard({
-      title: 'Your Site Name',
-      tagline: 'Built with Shipyard',
+      title: 'Your Station Name',
+      tagline: 'Constructed with Shipyard',
       navigation: {
-        docs: { label: 'Docs', href: '/docs' },
+        docs: { label: 'Documentation', href: '/docs' },
         blog: { label: 'Blog', href: '/blog' },
       },
     }),
@@ -74,4 +74,4 @@ export default defineConfig({
 });
 ```
 
-**[📖 Get Started Now →](./feature)**
+**[📖 Begin Construction Now →](./feature)**

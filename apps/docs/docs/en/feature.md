@@ -2,24 +2,24 @@
 title: Configuration
 ---
 
-# Configuration
+# Station Configuration
 
-Shipyard is highly configurable and can be customized to fit your project requirements.
+Shipyard is highly configurable and can be customized to fit your mission requirements.
 
-## Basic Configuration
+## Core Systems Configuration
 
-The primary configuration occurs in your `astro.config.mjs` file when you set up Shipyard:
+The primary configuration occurs in your `astro.config.mjs` file when you initialize the Shipyard platform:
 
 ```javascript
 shipyard({
   navigation: {
-    docs: { label: 'Docs', href: '/docs' },
+    docs: { label: 'Documentation', href: '/docs' },
     blog: { label: 'Blog', href: '/blog' },
-    about: { label: 'About', href: '/about' },
+    about: { label: 'Station Info', href: '/about' },
   },
-  title: 'My Website',
-  tagline: 'A description of my site',
-  brand: 'My Brand',
+  title: 'My Space Station',
+  tagline: 'A description of my orbital facility',
+  brand: 'My Station Brand',
 })
 ```
 
@@ -27,19 +27,19 @@ shipyard({
 
 ### Required Fields
 
-- **`title`**: The main title of your site
-- **`brand`**: Your brand name (displayed in navigation)
-- **`tagline`**: A brief description of your site
-- **`navigation`**: Navigation structure
+- **`title`**: The main designation of your station
+- **`brand`**: Your facility's call sign (displayed in navigation)
+- **`tagline`**: A brief description of your orbital operations
+- **`navigation`**: Command interface structure
 
 ### Navigation Configuration
 
-The navigation object defines your site's navigation structure. Each key creates a navigation item:
+The navigation object defines your station's interface structure. Each key creates a command interface item:
 
 ```javascript
 navigation: {
   docs: {
-    label: 'Documentation',      // Text displayed in navigation
+    label: 'Documentation',      // Text displayed in interface
     href: '/docs',               // Navigation destination
   },
   blog: {
@@ -48,10 +48,10 @@ navigation: {
   },
   // Nested navigation example
   resources: {
-    label: 'Resources',
+    label: 'Operations',
     subEntry: {
-      guides: { label: 'Guides', href: '/guides' },
-      examples: { label: 'Examples', href: '/examples' },
+      guides: { label: 'Protocols', href: '/guides' },
+      examples: { label: 'Missions', href: '/examples' },
     }
   }
 }
@@ -67,7 +67,7 @@ The `shipyardDocs` integration accepts an array of content directories:
 shipyardDocs(['docs', 'guides'])
 ```
 
-This configures Shipyard to handle documentation content in the `docs/` and `guides/` directories.
+This configures Shipyard to monitor documentation content in the `docs/` and `guides/` directories.
 
 ### Blog Package
 
@@ -79,21 +79,21 @@ shipyardBlog(['blog', 'news'])
 
 ## Internationalization
 
-Shipyard supports both single-language and multi-language sites.
+Shipyard supports both single-sector and multi-sector communication protocols.
 
-### Single Language
+### Single-Sector Operations
 
-To create a single-language site, simply omit the `i18n` configuration from your `astro.config.mjs`:
+To create a single-sector station, simply omit the `i18n` configuration from your `astro.config.mjs`:
 
 ```javascript
 export default defineConfig({
-  // No i18n config needed for single-language sites
+  // No i18n config needed for single-sector operations
   integrations: [
     shipyard({
-      title: 'My Website',
-      tagline: 'Built with Shipyard',
+      title: 'My Station Alpha',
+      tagline: 'Constructed with Shipyard',
       navigation: {
-        docs: { label: 'Docs', href: '/docs' },
+        docs: { label: 'Documentation', href: '/docs' },
         blog: { label: 'Blog', href: '/blog' },
       },
     }),
@@ -110,9 +110,9 @@ Your URLs will be clean without language prefixes:
 - `/blog/` - Blog index
 - `/blog/welcome/` - Blog posts
 
-### Multi-language
+### Multi-Sector Communication
 
-For multi-language support, configure Astro's i18n options:
+For multi-sector communication support, configure Astro's i18n options:
 
 ```javascript
 export default defineConfig({
@@ -125,7 +125,7 @@ export default defineConfig({
   },
   integrations: [
     shipyard({
-      title: 'My Multi-language Site',
+      title: 'My Multi-Sector Station',
       // ... rest of config
     }),
     shipyardDocs(['docs']),
