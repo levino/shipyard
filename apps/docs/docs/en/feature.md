@@ -2,24 +2,24 @@
 title: Configuration
 ---
 
-# Configuration
+# Station Configuration
 
-Shipyard is highly configurable and can be customized to fit your project's needs.
+Shipyard is highly configurable and can be customized to fit your mission requirements.
 
-## Basic Configuration
+## Core Systems Configuration
 
-The main configuration happens in your `astro.config.mjs` file when you initialize the Shipyard integration:
+The primary configuration occurs in your `astro.config.mjs` file when you initialize the Shipyard platform:
 
 ```javascript
 shipyard({
   navigation: {
-    docs: { label: 'Documentation', href: '/docs' },
-    blog: { label: 'Blog', href: '/blog' },
-    about: { label: 'About', href: '/about' },
+    docs: { label: 'Command Center', href: '/docs' },
+    blog: { label: 'Mission Logs', href: '/blog' },
+    about: { label: 'Station Info', href: '/about' },
   },
-  title: 'My Website',
-  tagline: 'A description of my website',
-  brand: 'My Brand',
+  title: 'My Space Station',
+  tagline: 'A description of my orbital facility',
+  brand: 'My Station Brand',
 })
 ```
 
@@ -27,31 +27,31 @@ shipyard({
 
 ### Required Fields
 
-- **`title`**: The main title of your website
-- **`brand`**: Your brand name (displayed in navigation)
-- **`tagline`**: A short description of your website
-- **`navigation`**: Navigation menu structure
+- **`title`**: The main designation of your station
+- **`brand`**: Your facility's call sign (displayed in navigation)
+- **`tagline`**: A brief description of your orbital operations
+- **`navigation`**: Command interface structure
 
 ### Navigation Configuration
 
-The navigation object defines your site's menu structure. Each key creates a navigation item:
+The navigation object defines your station's interface structure. Each key creates a command interface item:
 
 ```javascript
 navigation: {
   docs: {
-    label: 'Documentation',  // Text displayed in menu
-    href: '/docs',           // Link destination
+    label: 'Command Center',     // Text displayed in interface
+    href: '/docs',               // Navigation destination
   },
   blog: {
-    label: 'Blog',
+    label: 'Mission Logs',
     href: '/blog',
   },
   // Nested navigation example
   resources: {
-    label: 'Resources',
+    label: 'Operations',
     subEntry: {
-      guides: { label: 'Guides', href: '/guides' },
-      examples: { label: 'Examples', href: '/examples' },
+      guides: { label: 'Protocols', href: '/guides' },
+      examples: { label: 'Missions', href: '/examples' },
     }
   }
 }
@@ -59,7 +59,7 @@ navigation: {
 
 ## Package-Specific Configuration
 
-### Docs Package
+### Command Center Module
 
 The `shipyardDocs` integration accepts an array of content directories:
 
@@ -67,11 +67,11 @@ The `shipyardDocs` integration accepts an array of content directories:
 shipyardDocs(['docs', 'guides'])
 ```
 
-This tells Shipyard to look for documentation content in the `docs/` and `guides/` directories.
+This configures Shipyard to monitor command center content in the `docs/` and `guides/` directories.
 
-### Blog Package
+### Mission Log Module
 
-Similarly, the `shipyardBlog` integration configures blog directories:
+Similarly, the `shipyardBlog` integration configures mission log directories:
 
 ```javascript
 shipyardBlog(['blog', 'news'])
@@ -79,22 +79,22 @@ shipyardBlog(['blog', 'news'])
 
 ## Internationalization
 
-Shipyard supports both single-language and multi-language websites.
+Shipyard supports both single-sector and multi-sector communication protocols.
 
-### Single-Language Sites
+### Single-Sector Operations
 
-To create a single-language site, simply omit the `i18n` configuration from your `astro.config.mjs`:
+To create a single-sector station, simply omit the `i18n` configuration from your `astro.config.mjs`:
 
 ```javascript
 export default defineConfig({
-  // No i18n config needed for single-language sites
+  // No i18n config needed for single-sector operations
   integrations: [
     shipyard({
-      title: 'My Single-Language Site',
-      tagline: 'Built with Shipyard',
+      title: 'My Station Alpha',
+      tagline: 'Constructed with Shipyard',
       navigation: {
-        docs: { label: 'Docs', href: '/docs' },
-        blog: { label: 'Blog', href: '/blog' },
+        docs: { label: 'Command Center', href: '/docs' },
+        blog: { label: 'Mission Logs', href: '/blog' },
       },
     }),
     shipyardDocs(['docs']),
@@ -104,15 +104,15 @@ export default defineConfig({
 ```
 
 Your URLs will be clean without language prefixes:
-- `/` - Homepage
-- `/docs/` - Documentation index  
-- `/docs/getting-started/` - Documentation pages
-- `/blog/` - Blog index
-- `/blog/welcome/` - Blog posts
+- `/` - Station Hub
+- `/docs/` - Command Center index  
+- `/docs/getting-started/` - Command Center protocols
+- `/blog/` - Mission Logs index
+- `/blog/welcome/` - Mission Log entries
 
-### Multi-Language Sites
+### Multi-Sector Operations
 
-For internationalization, configure Astro's i18n options:
+For universal communication across sectors, configure Astro's i18n options:
 
 ```javascript
 export default defineConfig({
@@ -120,12 +120,12 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en', 'de', 'fr'],
     routing: {
-      prefixDefaultLocale: false, // Optional: removes /en/ prefix for default locale
+      prefixDefaultLocale: false, // Optional: removes /en/ prefix for primary sector
     },
   },
   integrations: [
     shipyard({
-      title: 'My Multi-Language Site',
+      title: 'My Multi-Sector Station',
       // ... rest of config
     }),
     shipyardDocs(['docs']),
@@ -134,17 +134,17 @@ export default defineConfig({
 });
 ```
 
-URLs will include language prefixes:
-- `/` and `/en/` - English homepage
-- `/de/` - German homepage  
-- `/en/docs/`, `/de/docs/` - Localized documentation
-- `/en/blog/`, `/de/blog/` - Localized blog
+URLs will include sector prefixes:
+- `/` and `/en/` - Primary sector hub
+- `/de/` - German sector hub  
+- `/en/docs/`, `/de/docs/` - Sector-specific command centers
+- `/en/blog/`, `/de/blog/` - Sector-specific mission logs
 
 ## Content Structure
 
-### Multi-Language Sites (with i18n)
+### Multi-Sector Operations (with i18n)
 
-For sites with internationalization, organize your content by locale:
+For stations with universal communication, organize your content by sector:
 
 ```
 src/
@@ -163,9 +163,9 @@ src/
         2024-01-01-willkommen.md
 ```
 
-### Single-Language Sites (without i18n)
+### Single-Sector Operations (without i18n)
 
-For single-language sites, you can organize content directly without locale folders:
+For single-sector stations, you can organize content directly without sector folders:
 
 ```
 src/
@@ -203,11 +203,11 @@ This prevents conflicts with Shipyard's built-in styles.
 
 ## Script Injection
 
-Shipyard allows you to inject external scripts into your site's HTML head, similar to Docusaurus. This is useful for adding analytics, chat widgets, CDN libraries, or any third-party scripts.
+Shipyard allows you to inject external systems into your station's interface, similar to Docusaurus. This is useful for adding analytics, communication widgets, CDN libraries, or any third-party systems.
 
 ### Basic Usage
 
-Scripts are configured in your `shipyard()` configuration using the `scripts` array:
+External systems are configured in your `shipyard()` configuration using the `scripts` array:
 
 ```javascript
 shipyard({
@@ -229,7 +229,7 @@ shipyard({
 
 #### String Format
 
-For simple script injection without special attributes:
+For simple system integration without special attributes:
 
 ```javascript
 scripts: [
@@ -240,7 +240,7 @@ scripts: [
 
 #### Object Format
 
-For scripts that need special attributes or loading behavior:
+For systems that need special attributes or loading behavior:
 
 ```javascript
 scripts: [
@@ -348,17 +348,17 @@ scripts: [
 
 ### Important Notes
 
-- **Global injection**: Scripts are injected into every page of your site
-- **Load order**: Scripts are loaded in the order they appear in the configuration
-- **Performance**: Use `async` or `defer` attributes to avoid blocking page rendering
-- **Security**: Consider using `integrity` attributes for third-party CDN scripts
-- **Server-side rendering**: Scripts are injected during build time, not at runtime
+- **Station-wide integration**: Systems are integrated into every interface of your station
+- **Load sequence**: Systems are loaded in the order they appear in the configuration
+- **Performance**: Use `async` or `defer` attributes to avoid blocking interface rendering
+- **Security**: Consider using `integrity` attributes for third-party CDN systems
+- **Build-time integration**: Systems are integrated during construction, not at runtime
 
 ### Security Considerations
 
-When adding external scripts:
+When integrating external systems:
 
-1. **Use trusted sources**: Only include scripts from reputable CDNs and services
+1. **Use trusted sources**: Only integrate systems from reputable CDNs and services
 2. **Subresource Integrity**: Use `integrity` hashes when possible:
    ```javascript
    {
