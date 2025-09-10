@@ -32,7 +32,7 @@ export default defineConfig({
       tagline: 'Shipyard without internationalization',
       brand: 'Single Lang Demo',
     }),
-    shipyardDocs(['docs']),
-    shipyardBlog(['blog']),
+    shipyardDocs(),
+    shipyardBlog(),
   ],
 })

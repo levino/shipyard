@@ -22,15 +22,13 @@ export const getStaticPaths = (() => {
   }
 }) satisfies GetStaticPaths
 
-const { locale } = Astro.params
-
 const entries = await getCollection('blog').then((posts) => {
-  if (config.i18n && locale) {
+  if (config.i18n) {
     // With i18n: filter by locale
     return posts
       .filter(({ id }) => {
         const [postLocale] = id.split('/')
-        return postLocale === locale
+        return postLocale === Astro.currentLocale
       })
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
@@ -49,14 +47,14 @@ const getBlogPostLink = (id: string, locale?: string) => {
   }
 }
 
-const formatDate = new Intl.DateTimeFormat(locale || 'en').format
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
 ---
 
 <Layout title="Blog">
   <div class="mx-auto max-w-prose px-8">
     {
       entries.map(async (entry) => (
-        <a class="block my-8" href={`/${getBlogPostLink(entry.id, locale)}`}>
+        <a class="block my-8" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
           <div class="prose">
             <div class="text-sm">{formatDate(entry.data.date)}</div>
             <h2 class="my-0">{entry.data.title}</h2>
