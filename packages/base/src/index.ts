@@ -1,5 +1,5 @@
 import type { AstroIntegration } from 'astro'
-import type { Config, FinalConfig } from './schemas/config'
+import type { Config } from './schemas/config'
 
 export type { Entry } from '../astro/components/types'
 export type * from './schemas/config'
@@ -12,7 +12,7 @@ const resolveId: Record<string, string | undefined> = {
   [shipyardConfigId]: `${shipyardConfigId}`,
 }
 
-const load = (config: FinalConfig) =>
+const load = (config: Config) =>
   ({
     [shipyardConfigId]: `export default ${JSON.stringify(config)}`,
   }) as Record<string, string | undefined>
@@ -20,14 +20,14 @@ const load = (config: FinalConfig) =>
 export default (config: Config): AstroIntegration => ({
   name: 'shipyard',
   hooks: {
-    'astro:config:setup': ({ updateConfig, config: { i18n } }) => {
+    'astro:config:setup': ({ updateConfig }) => {
       updateConfig({
         vite: {
           plugins: [
             {
               name: 'shipyard',
               resolveId: (id: string) => resolveId[id],
-              load: (id: string) => load({ i18n, ...config })[id],
+              load: (id: string) => load(config)[id],
             },
           ],
         },

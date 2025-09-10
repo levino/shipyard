@@ -17,7 +17,7 @@ export default defineConfig({
       navigation: {
         docs: {
           label: 'Documentation',
-          href: '/docs',
+          href: '/docs/index',
         },
         blog: {
           label: 'Blog',
@@ -32,7 +32,7 @@ export default defineConfig({
       tagline: 'Shipyard without internationalization',
       brand: 'Single Lang Demo',
     }),
-    shipyardDocs(['docs']),
-    shipyardBlog(['blog']),
+    shipyardDocs(),
+    shipyardBlog(),
   ],
 })

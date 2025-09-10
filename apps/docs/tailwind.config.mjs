@@ -3,12 +3,6 @@ import daisyui from 'daisyui'
 
 const path = require('node:path')
 
-console.log(
-  path.join(
-    path.dirname(require.resolve('@levino/shipyard-base')),
-    '/layouts/**/*.{tsx,astro}',
-  ),
-)
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
