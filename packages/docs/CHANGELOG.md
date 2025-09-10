@@ -1,5 +1,13 @@
 # @levino/shipyard-docs
 
+## 0.4.5
+
+### Patch Changes
+
+- 9364be5: trigger release
+- Updated dependencies [9364be5]
+  - @levino/shipyard-base@0.5.6
+
 ## 0.4.4
 
 ### Patch Changes
