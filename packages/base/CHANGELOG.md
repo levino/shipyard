@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.5.7
+
+### Patch Changes
+
+- 0eb9037: Fix footer links to work without i18n. The footer's withLocale function now checks if Astro.currentLocale exists before adding a locale prefix, fixing broken links (like /imprint) when i18n is not configured.
+
 ## 0.5.6
 
 ### Patch Changes
