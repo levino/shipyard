@@ -1,18 +1,20 @@
 # 🚢 Shipyard
 
-**The complete toolkit for building stunning websites with Astro**
+**The complete orbital toolkit for building stunning websites with Astro**
 
 Shipyard transforms the way you create documentation sites, blogs, and content-focused websites. Stop wrestling with complex configurations and start building beautiful, fast websites in minutes.
+
+🛸 *Your modular assembly platform for launching digital projects across the web.*
 
 ## ✨ What is Shipyard?
 
 Shipyard is a comprehensive collection of Astro integrations that provides:
 
 - **🎨 Beautiful Design System** – Modern, responsive layouts with Tailwind CSS + DaisyUI
-- **🌍 Internationalization** – Built-in i18n support with locale-based routing
-- **📚 Smart Documentation** – Automated navigation and content organization
-- **📝 Powerful Blogging** – Complete blog functionality with layouts and collections
-- **🧩 Modular Architecture** – Use what you need, extend as you grow
+- **🌌 Interstellar Routing** – Built-in i18n support with locale-based navigation
+- **📚 Smart Documentation** – Automated navigation and content organization systems
+- **📝 Powerful Blogging** – Complete blog functionality with orbital layouts
+- **🛰️ Modular Architecture** – Use what you need, extend as you grow
 
 ## 🚀 Quick Start
 
@@ -58,13 +60,13 @@ See Shipyard in action! The demo showcases all features including:
 - Navigation and content organization
 - Mobile-first design
 
-## 🏗️ Architecture
+## 🏗️ Assembly Architecture
 
-Shipyard consists of three main packages:
+Shipyard consists of three main modules:
 
-- **`@levino/shipyard-base`** – Core components, layouts, and styling foundation
-- **`@levino/shipyard-docs`** – Documentation-specific features and smart navigation  
-- **`@levino/shipyard-blog`** – Complete blogging functionality with layouts
+- **`@levino/shipyard-base`** – Core components, layouts, and stellar styling foundation
+- **`@levino/shipyard-docs`** – Documentation-specific features and navigation systems  
+- **`@levino/shipyard-blog`** – Complete blogging functionality with orbital layouts
 
 ## 🤝 Contributing
 
