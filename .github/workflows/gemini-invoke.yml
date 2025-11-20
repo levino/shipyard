@@ -21,7 +21,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     timeout-minutes: 15
     permissions:
-      contents: 'read'
+      contents: 'write'
       id-token: 'write'
       issues: 'write'
       pull-requests: 'write'
@@ -34,7 +34,7 @@ jobs:
         with:
           app-id: '${{ vars.APP_ID }}'
           private-key: '${{ secrets.APP_PRIVATE_KEY }}'
-          permission-contents: 'read'
+          permission-contents: 'write'
           permission-issues: 'write'
           permission-pull-requests: 'write'
 
@@ -254,39 +254,26 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ steps.mint_identity_token.outputs.token || secrets.GITHUB_TOKEN || github.token }}'
           ISSUE_NUMBER: '${{ github.event.pull_request.number || github.event.issue.number }}'
-          ERROR_OUTPUT: '${{ steps.run_gemini.outputs.error }}'
-          SUMMARY_OUTPUT: '${{ steps.run_gemini.outputs.summary }}'
+          MESSAGE: |-
+            🤖 I encountered an error while processing your request.
+
+            **Possible causes:**
+            - Missing or invalid API credentials (GEMINI_API_KEY or GOOGLE_API_KEY)
+            - Missing required configuration variables (GEMINI_MODEL, GEMINI_CLI_VERSION)
+            - Network or API connectivity issues
+            - The request exceeded the timeout limit
+
+            Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
+
+            **Required GitHub Secrets:**
+            - `GEMINI_API_KEY` or `GOOGLE_API_KEY` (at least one)
+            - `APP_PRIVATE_KEY` (if using GitHub App)
+
+            **Required GitHub Variables:**
+            - `GEMINI_MODEL` (e.g., "gemini-2.0-flash-exp")
+            - `GEMINI_CLI_VERSION` (e.g., "0.16.0")
           REPOSITORY: '${{ github.repository }}'
         run: |-
-          # Build error message
-          MESSAGE="🤖 I encountered an error while processing your request.
-
-          "
-
-          # Add actual error if available
-          if [[ -n "${ERROR_OUTPUT}" ]]; then
-            MESSAGE+="**Error:**
-          \`\`\`
-          ${ERROR_OUTPUT}
-          \`\`\`
-
-          "
-          fi
-
-          # Add summary if available and different from error
-          if [[ -n "${SUMMARY_OUTPUT}" && "${SUMMARY_OUTPUT}" != "${ERROR_OUTPUT}" ]]; then
-            MESSAGE+="**Summary:**
-          ${SUMMARY_OUTPUT}
-
-          "
-          fi
-
-          MESSAGE+="Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
-
-          **Configuration:**
-          - [Gemini CLI Setup Guide](.github/GEMINI_SETUP.md)
-          - [Official Documentation](https://github.com/google-github-actions/run-gemini-cli)"
-
           gh issue comment "${ISSUE_NUMBER}" \
             --body "${MESSAGE}" \
             --repo "${REPOSITORY}"

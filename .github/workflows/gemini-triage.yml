@@ -23,8 +23,6 @@ jobs:
     outputs:
       available_labels: '${{ steps.get_labels.outputs.available_labels }}'
       selected_labels: '${{ env.SELECTED_LABELS }}'
-      error: '${{ steps.gemini_analysis.outputs.error }}'
-      summary: '${{ steps.gemini_analysis.outputs.summary }}'
     permissions:
       contents: 'read'
       id-token: 'write'
@@ -232,39 +230,19 @@ jobs:
         env:
           GITHUB_TOKEN: '${{ steps.mint_identity_token.outputs.token || secrets.GITHUB_TOKEN || github.token }}'
           ISSUE_NUMBER: '${{ github.event.issue.number }}'
-          ERROR_OUTPUT: '${{ needs.triage.outputs.error }}'
-          SUMMARY_OUTPUT: '${{ needs.triage.outputs.summary }}'
+          MESSAGE: |-
+            🤖 I encountered an error while triaging this issue.
+
+            **Possible causes:**
+            - Missing or invalid API credentials (GEMINI_API_KEY or GOOGLE_API_KEY)
+            - Missing required configuration variables (GEMINI_MODEL, GEMINI_CLI_VERSION)
+            - Network or API connectivity issues
+            - No labels available in the repository
+            - The request exceeded the 7-minute timeout limit
+
+            Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
           REPOSITORY: '${{ github.repository }}'
         run: |-
-          # Build error message
-          MESSAGE="🤖 I encountered an error while triaging this issue.
-
-          "
-
-          # Add actual error if available
-          if [[ -n "${ERROR_OUTPUT}" ]]; then
-            MESSAGE+="**Error:**
-          \`\`\`
-          ${ERROR_OUTPUT}
-          \`\`\`
-
-          "
-          fi
-
-          # Add summary if available and different from error
-          if [[ -n "${SUMMARY_OUTPUT}" && "${SUMMARY_OUTPUT}" != "${ERROR_OUTPUT}" ]]; then
-            MESSAGE+="**Summary:**
-          ${SUMMARY_OUTPUT}
-
-          "
-          fi
-
-          MESSAGE+="Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
-
-          **Configuration:**
-          - [Gemini CLI Setup Guide](.github/GEMINI_SETUP.md)
-          - [Official Documentation](https://github.com/google-github-actions/run-gemini-cli)"
-
           gh issue comment "${ISSUE_NUMBER}" \
             --body "${MESSAGE}" \
             --repo "${REPOSITORY}"
