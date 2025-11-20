@@ -202,3 +202,47 @@ jobs:
             } else {
               core.info(`Failed to determine labels to set. There may not be enough information in the issue or pull request.`)
             }
+
+  report_failure:
+    runs-on: 'ubuntu-latest'
+    needs:
+      - 'triage'
+    if: |-
+      ${{ failure() }}
+    permissions:
+      contents: 'read'
+      issues: 'write'
+      pull-requests: 'write'
+    steps:
+      - name: 'Mint identity token'
+        id: 'mint_identity_token'
+        if: |-
+          ${{ vars.APP_ID }}
+        uses: 'actions/create-github-app-token@a8d616148505b5069dccd32f177bb87d7f39123b' # ratchet:actions/create-github-app-token@v2
+        with:
+          app-id: '${{ vars.APP_ID }}'
+          private-key: '${{ secrets.APP_PRIVATE_KEY }}'
+          permission-contents: 'read'
+          permission-issues: 'write'
+          permission-pull-requests: 'write'
+
+      - name: 'Report Gemini triage failure'
+        env:
+          GITHUB_TOKEN: '${{ steps.mint_identity_token.outputs.token || secrets.GITHUB_TOKEN || github.token }}'
+          ISSUE_NUMBER: '${{ github.event.issue.number }}'
+          MESSAGE: |-
+            🤖 I encountered an error while triaging this issue.
+
+            **Possible causes:**
+            - Missing or invalid API credentials (GEMINI_API_KEY or GOOGLE_API_KEY)
+            - Missing required configuration variables (GEMINI_MODEL, GEMINI_CLI_VERSION)
+            - Network or API connectivity issues
+            - No labels available in the repository
+            - The request exceeded the 7-minute timeout limit
+
+            Please check the [workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
+          REPOSITORY: '${{ github.repository }}'
+        run: |-
+          gh issue comment "${ISSUE_NUMBER}" \
+            --body "${MESSAGE}" \
+            --repo "${REPOSITORY}"
