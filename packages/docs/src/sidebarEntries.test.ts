@@ -1,205 +1,132 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { toSidebarEntries } from './sidebarEntries'
+import type { DocsData, CategoryMap } from './sidebarEntries'
 
-describe('Sidebar subEntry helpers', () => {
-  test.each([
-    [
-      [
-        {
-          title: 'foo',
-          path: '/foo',
-        },
-      ],
-      {
-        foo: {
-          label: 'foo',
-          href: '/foo',
-        },
+describe('toSidebarEntries', () => {
+  it('should create a basic sidebar structure from flat docs', () => {
+    const docs: DocsData[] = [
+      { id: 'guide/intro.md', title: 'Introduction', path: '/docs/guide/intro' },
+      { id: 'guide/advanced/topic.md', title: 'Topic', path: '/docs/guide/advanced/topic' },
+      { id: 'api.md', title: 'API', path: '/docs/api' },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    expect(entries).toMatchObject({
+      guide: {
+        label: 'guide',
+        subEntry: {
+          intro: { label: 'Introduction', href: '/docs/guide/intro' },
+          advanced: {
+            label: 'advanced',
+            subEntry: {
+              topic: { label: 'Topic', href: '/docs/guide/advanced/topic' }
+            }
+          }
+        }
       },
-    ],
-    [
-      [
-        {
-          title: 'foo',
-          path: '/foo',
-        },
-        {
-          title: 'bar',
-          path: '/bar',
-        },
-      ],
-      {
-        foo: {
-          label: 'foo',
-          href: '/foo',
-        },
-        bar: {
-          label: 'bar',
-          href: '/bar',
-        },
+      api: { label: 'API', href: '/docs/api' }
+    })
+  })
+
+  it('should respect sidebar_label', () => {
+    const docs: DocsData[] = [
+      { 
+        id: 'guide/intro.md', 
+        title: 'Introduction', 
+        path: '/docs/guide/intro',
+        sidebarLabel: 'Intro'
       },
-    ],
-    [
-      [
-        {
-          title: 'foo baz',
-          path: '/baz/foo',
-        },
-        {
-          title: 'bar baz',
-          path: '/baz/bar',
-        },
-      ],
-      {
-        baz: {
-          subEntry: {
-            foo: {
-              label: 'foo baz',
-              href: '/baz/foo',
-            },
-            bar: {
-              label: 'bar baz',
-              href: '/baz/bar',
-            },
-          },
-        },
+    ]
+
+    const entries = toSidebarEntries(docs)
+    expect(entries.guide.subEntry?.intro.label).toBe('Intro')
+  })
+
+  it('should respect sidebar_position', () => {
+    const docs: DocsData[] = [
+      { 
+        id: 'guide/b.md', 
+        title: 'B', 
+        path: '/docs/guide/b',
+        sidebarPosition: 2
       },
-    ],
-    [
-      [
-        {
-          title: 'foo',
-          path: '/foo',
-        },
-        {
-          title: 'bar',
-          path: '/bar',
-        },
-        {
-          title: 'foo baz',
-          path: '/baz/foo',
-        },
-        {
-          title: 'bar baz',
-          path: '/baz/bar',
-        },
-      ],
-      {
-        foo: {
-          label: 'foo',
-          href: '/foo',
-        },
-        bar: {
-          label: 'bar',
-          href: '/bar',
-        },
-        baz: {
-          subEntry: {
-            foo: {
-              label: 'foo baz',
-              href: '/baz/foo',
-            },
-            bar: {
-              label: 'bar baz',
-              href: '/baz/bar',
-            },
-          },
-        },
+      { 
+        id: 'guide/a.md', 
+        title: 'A', 
+        path: '/docs/guide/a',
+        sidebarPosition: 1
       },
-    ],
-    [
-      [
-        {
-          title: 'foo',
-          path: '/foo',
-        },
-        {
-          title: 'bar',
-          path: '/bar',
-        },
-        { title: 'baz', path: '/baz' },
-        {
-          title: 'foo baz',
-          path: '/baz/foo',
-        },
-        {
-          title: 'bar baz',
-          path: '/baz/bar',
-        },
-      ],
-      {
-        foo: {
-          label: 'foo',
-          href: '/foo',
-        },
-        bar: {
-          label: 'bar',
-          href: '/bar',
-        },
-        baz: {
-          label: 'baz',
-          href: '/baz',
-          subEntry: {
-            foo: {
-              label: 'foo baz',
-              href: '/baz/foo',
-            },
-            bar: {
-              label: 'bar baz',
-              href: '/baz/bar',
-            },
-          },
-        },
+      { 
+        id: 'guide/c.md', 
+        title: 'C', 
+        path: '/docs/guide/c' 
+        // default position 0
       },
-    ],
-    [
-      [
-        {
-          title: 'foo',
-          path: '/foo',
-        },
-        {
-          title: 'bar',
-          path: '/bar',
-        },
-        { title: 'baz', path: '/baz', link: false },
-        {
-          title: 'foo baz',
-          path: '/baz/foo',
-        },
-        {
-          title: 'bar baz',
-          path: '/baz/bar',
-        },
-      ],
-      {
-        foo: {
-          label: 'foo',
-          href: '/foo',
-        },
-        bar: {
-          label: 'bar',
-          href: '/bar',
-        },
-        baz: {
-          label: 'baz',
-          subEntry: {
-            foo: {
-              label: 'foo baz',
-              href: '/baz/foo',
-            },
-            bar: {
-              label: 'bar baz',
-              href: '/baz/bar',
-            },
-          },
-        },
+    ]
+
+    const entries = toSidebarEntries(docs)
+    const guideSub = entries.guide.subEntry
+    const keys = Object.keys(guideSub || {})
+    
+    // Expected order: C (0), A (1), B (2)
+    expect(keys).toEqual(['c', 'a', 'b'])
+  })
+
+  it('should apply category metadata from map', () => {
+    const docs: DocsData[] = [
+      { id: 'guide/intro.md', title: 'Introduction', path: '/docs/guide/intro' },
+    ]
+
+    const categoryMap: CategoryMap = {
+      'guide': {
+        label: 'User Guide',
+        className: 'guide-section'
+      }
+    }
+
+    const entries = toSidebarEntries(docs, categoryMap)
+    expect(entries.guide.label).toBe('User Guide')
+    expect(entries.guide.className).toBe('guide-section')
+  })
+
+  it('should apply sidebar_class_name and sidebar_custom_props', () => {
+    const docs: DocsData[] = [
+      { 
+        id: 'page.md', 
+        title: 'Page', 
+        path: '/docs/page',
+        sidebarClassName: 'special-page',
+        sidebarCustomProps: { icon: 'star' }
       },
-    ],
-  ])(
-    'transforms a list of doc sites into a list of sidebar subEntry',
-    (input, expected) => {
-      expect(toSidebarEntries(input)).toEqual(expected)
-    },
-  )
+    ]
+
+    const entries = toSidebarEntries(docs)
+    expect(entries.page.className).toBe('special-page')
+    expect(entries.page.customProps).toEqual({ icon: 'star' })
+  })
+  
+  it('should handle index files correctly', () => {
+     const docs: DocsData[] = [
+      { id: 'guide/index.md', title: 'Guide Index', path: '/docs/guide' },
+      { id: 'guide/other.md', title: 'Other', path: '/docs/guide/other' },
+    ]
+    
+    const entries = toSidebarEntries(docs)
+    // 'guide' should be a link now because of index.md
+    expect(entries.guide.href).toBe('/docs/guide')
+    expect(entries.guide.label).toBe('Guide Index')
+    expect(entries.guide.subEntry).toBeDefined()
+    expect(entries.guide.subEntry?.other).toBeDefined()
+  })
+
+  it('should sort alphabetically when positions match', () => {
+     const docs: DocsData[] = [
+      { id: 'z.md', title: 'Zebra', path: '/z' },
+      { id: 'a.md', title: 'Apple', path: '/a' },
+    ]
+    const entries = toSidebarEntries(docs)
+    const keys = Object.keys(entries)
+    expect(keys).toEqual(['a', 'z'])
+  })
 })
