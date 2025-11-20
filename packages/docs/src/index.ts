@@ -11,6 +11,10 @@ export const docsSchema = z.object({
     .default({ render: true }),
   title: z.string().optional(),
   description: z.string().optional(),
+  sidebar_position: z.number().optional(),
+  sidebar_label: z.string().optional(),
+  sidebar_class_name: z.string().optional(),
+  sidebar_custom_props: z.record(z.any()).optional(),
 })
 
 export default (): AstroIntegration => ({
