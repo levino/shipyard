@@ -5,5 +5,7 @@ export type Entry = Record<
     href?: string
     subEntry?: Entry
     active?: boolean
+    className?: string
+    customProps?: Record<string, any>
   }
 >
