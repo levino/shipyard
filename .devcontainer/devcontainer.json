@@ -4,7 +4,7 @@
   "features": {
     "ghcr.io/devcontainers/features/common-utils:2": {}
   },
-  "postCreateCommand": "npm install",
+  "updateContentCommand": "npm install",
   "customizations": {
     "vscode": {
       "extensions": [

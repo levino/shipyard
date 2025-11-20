@@ -127,3 +127,6 @@ build/
 .idea/
 
 .vercel
+
+.gemini/
+gha-creds-*.json
