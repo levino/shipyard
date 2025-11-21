@@ -31,6 +31,15 @@ jobs:
       - run: npm run test --workspaces --if-present
   test-e2e:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        demo:
+          - name: i18n
+            workspace: demo
+            path: apps/demos/i18n
+          - name: single-language
+            workspace: single-locale-demo
+            path: apps/demos/single-language
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
@@ -38,7 +47,9 @@ jobs:
           node-version: 20
           cache: 'npm'
       - run: npm ci
-      - run: npm run build --workspace=demo
+      - run: npm run build --workspace=${{ matrix.demo.workspace }}
       - run: npx playwright install --with-deps
-        working-directory: ./apps/demo
-      - run: npm run test:e2e
+        working-directory: ./${{ matrix.demo.path }}
+      - name: Run E2E tests
+        run: npm run test:e2e
+        working-directory: ./${{ matrix.demo.path }}
