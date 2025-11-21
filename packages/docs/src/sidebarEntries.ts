@@ -54,7 +54,7 @@ const nodeToEntry = (node: TreeNode): Entry[string] => {
   }
   if (node.customProps) {
     // Casting to Record<string, any> as Entry likely expects looser types
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: Match Entry type
     item.customProps = node.customProps as Record<string, any>
   }
 
@@ -75,25 +75,27 @@ const insertDoc = (
   pathParts: string[],
   doc: DocsData,
   categoryMap: CategoryMap,
-  currentPath: string = ''
+  currentPath: string = '',
 ): Record<string, TreeNode> => {
   if (pathParts.length === 0) return root
 
   const [head, ...tail] = pathParts
   const nodePath = currentPath ? `${currentPath}/${head}` : head
-  
+
   const existingNode = root[head]
   const meta = categoryMap[nodePath]
 
   // Create new node or copy existing one (immutable)
-  const node: TreeNode = existingNode ? { ...existingNode } : {
-    key: head,
-    label: meta?.label ?? head,
-    position: meta?.position ?? DEFAULT_POSITION,
-    className: meta?.className,
-    customProps: meta?.customProps,
-    children: {}
-  }
+  const node: TreeNode = existingNode
+    ? { ...existingNode }
+    : {
+        key: head,
+        label: meta?.label ?? head,
+        position: meta?.position ?? DEFAULT_POSITION,
+        className: meta?.className,
+        customProps: meta?.customProps,
+        children: {},
+      }
 
   // If leaf (doc)
   if (tail.length === 0) {
@@ -103,10 +105,13 @@ const insertDoc = (
         ...node,
         label: doc.sidebarLabel ?? doc.title ?? node.label,
         href: doc.link ? doc.path : undefined,
-        position: doc.sidebarPosition !== undefined ? doc.sidebarPosition : node.position,
+        position:
+          doc.sidebarPosition !== undefined
+            ? doc.sidebarPosition
+            : node.position,
         className: doc.sidebarClassName ?? node.className,
         customProps: doc.sidebarCustomProps ?? node.customProps,
-      }
+      },
     }
   }
 
@@ -115,14 +120,14 @@ const insertDoc = (
     ...root,
     [head]: {
       ...node,
-      children: insertDoc(node.children, tail, doc, categoryMap, nodePath)
-    }
+      children: insertDoc(node.children, tail, doc, categoryMap, nodePath),
+    },
   }
 }
 
 export const toSidebarEntries = (
   docs: DocsData[],
-  categoryMap: CategoryMap = {}
+  categoryMap: CategoryMap = {},
 ): Entry => {
   const rootTree = docs.reduce<Record<string, TreeNode>>((acc, doc) => {
     const cleanId = doc.id.replace(/\.[^/.]+$/, '')
@@ -130,7 +135,7 @@ export const toSidebarEntries = (
     const filename = parts[parts.length - 1]
     const isIndex = filename === 'index'
     const pathParts = isIndex ? parts.slice(0, -1) : parts
-    
+
     return insertDoc(acc, pathParts, doc, categoryMap)
   }, {})
 

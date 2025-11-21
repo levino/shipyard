@@ -6,6 +6,7 @@ export type Entry = Record<
     subEntry?: Entry
     active?: boolean
     className?: string
+    // biome-ignore lint/suspicious/noExplicitAny: Allow any props
     customProps?: Record<string, any>
   }
 >

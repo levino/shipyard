@@ -27,7 +27,7 @@ const safeReadJson = <T>(p: string): T | undefined => {
     const content = fs.readFileSync(p, 'utf-8')
     return JSON.parse(content) as T
   } catch (e) {
-    // eslint-disable-next-line no-console
+    // biome-ignore lint/suspicious/noConsole: Log parsing errors
     console.warn(`Failed to parse ${p}`, e)
     return undefined
   }
@@ -58,7 +58,7 @@ export const loadCategoryMetadata = (rootDir: string): CategoryMap => {
       const currentMeta: CategoryMap = data ? { [newRelative]: data } : {}
 
       const childrenMeta = traverse(fullPath, newRelative)
-      return { ...acc, ...currentMeta, ...childrenMeta }
+      return Object.assign(acc, currentMeta, childrenMeta)
     }, {})
   }
 

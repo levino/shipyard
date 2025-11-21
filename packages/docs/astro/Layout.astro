@@ -1,13 +1,13 @@
 ---
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
+import fs from 'node:fs'
+import path from 'node:path'
 import type { NavigationTree } from '@levino/shipyard-base'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
-import { toSidebarEntries } from '../src/sidebarEntries'
 import { loadCategoryMetadata } from '../src/category'
-import fs from 'node:fs'
-import path from 'node:path'
+import { toSidebarEntries } from '../src/sidebarEntries'
 
 const getPath = (id: string) =>
   i18n ? `/${Astro.currentLocale}/docs/${id.slice(3)}` : `/docs/${id}`
@@ -18,7 +18,11 @@ const getPath = (id: string) =>
 const contentDir = path.join(process.cwd(), 'src', 'content', 'docs')
 const legacyContentDir = path.join(process.cwd(), 'docs')
 // Fallback to current directory if explicit docs folders don't exist (unlikely for standard apps)
-const finalContentDir = fs.existsSync(contentDir) ? contentDir : (fs.existsSync(legacyContentDir) ? legacyContentDir : process.cwd())
+const finalContentDir = fs.existsSync(contentDir)
+  ? contentDir
+  : fs.existsSync(legacyContentDir)
+    ? legacyContentDir
+    : process.cwd()
 
 const categoryMap = loadCategoryMetadata(finalContentDir)
 
@@ -33,7 +37,7 @@ const docs = await getCollection('docs')
           sidebar_position,
           sidebar_label,
           sidebar_class_name,
-          sidebar_custom_props
+          sidebar_custom_props,
         },
       } = doc
       return {
@@ -69,7 +73,7 @@ if (i18n && Astro.currentLocale) {
   // We want the subEntry of the current locale
   const localeEntry = fullTree[Astro.currentLocale]
   entries = localeEntry?.subEntry ?? {}
-} 
+}
 
 // Note: Previous implementation expected 'docs' in the path because it parsed the URL.
 // The new implementation parses the ID (file path).
