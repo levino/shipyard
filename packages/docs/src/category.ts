@@ -8,7 +8,30 @@ const IGNORED_DIRS = new Set([
   '.gemini',
   'dist',
   'build',
+  '.astro',
+  '.next',
+  'coverage',
 ])
+
+const safeStat = (p: string) => {
+  try {
+    return fs.statSync(p)
+  } catch {
+    return undefined
+  }
+}
+
+const safeReadJson = <T>(p: string): T | undefined => {
+  if (!fs.existsSync(p)) return undefined
+  try {
+    const content = fs.readFileSync(p, 'utf-8')
+    return JSON.parse(content) as T
+  } catch (e) {
+    // eslint-disable-next-line no-console
+    console.warn(`Failed to parse ${p}`, e)
+    return undefined
+  }
+}
 
 export const loadCategoryMetadata = (rootDir: string): CategoryMap => {
   const traverse = (dir: string, relativePath: string): CategoryMap => {
@@ -19,34 +42,20 @@ export const loadCategoryMetadata = (rootDir: string): CategoryMap => {
     const files = fs.readdirSync(dir)
 
     return files.reduce<CategoryMap>((acc, file) => {
-      const fullPath = path.join(dir, file)
-      let stat
-      try {
-        stat = fs.statSync(fullPath)
-      } catch {
-        // Ignore files we can't stat
-        return acc
-      }
+      if (IGNORED_DIRS.has(file)) return acc
 
-      if (!stat.isDirectory() || IGNORED_DIRS.has(file)) {
+      const fullPath = path.join(dir, file)
+      const stat = safeStat(fullPath)
+
+      if (!stat || !stat.isDirectory()) {
         return acc
       }
 
       const newRelative = relativePath ? `${relativePath}/${file}` : file
       const categoryFile = path.join(fullPath, '_category_.json')
 
-      let currentMeta: CategoryMap = {}
-
-      if (fs.existsSync(categoryFile)) {
-        try {
-          const content = fs.readFileSync(categoryFile, 'utf-8')
-          const data = JSON.parse(content) as CategoryMetadata
-          currentMeta = { [newRelative]: data }
-        } catch (e) {
-          // eslint-disable-next-line no-console
-          console.warn(`Failed to parse ${categoryFile}`, e)
-        }
-      }
+      const data = safeReadJson<CategoryMetadata>(categoryFile)
+      const currentMeta: CategoryMap = data ? { [newRelative]: data } : {}
 
       const childrenMeta = traverse(fullPath, newRelative)
       return { ...acc, ...currentMeta, ...childrenMeta }
