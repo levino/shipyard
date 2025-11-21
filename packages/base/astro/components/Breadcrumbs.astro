@@ -1,0 +1,63 @@
+---
+import type { Entry } from './types'
+
+interface BreadcrumbItem {
+  label: string
+  href?: string
+}
+
+interface Props {
+  navigation: Entry
+  currentPath?: string
+}
+
+const { navigation, currentPath = Astro.url.pathname } = Astro.props
+
+// Normalize path by removing trailing slash for comparison
+const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
+
+// Find the path to the current page in the navigation tree
+const findBreadcrumbs = (
+  entry: Entry,
+  targetPath: string,
+  path: BreadcrumbItem[] = [],
+): BreadcrumbItem[] | null => {
+  for (const [key, item] of Object.entries(entry)) {
+    const label = item.label ?? key
+    const currentItem: BreadcrumbItem = { label, href: item.href }
+
+    if (item.href && normalizePath(item.href) === normalizePath(targetPath)) {
+      return [...path, currentItem]
+    }
+
+    if (item.subEntry) {
+      const result = findBreadcrumbs(item.subEntry, targetPath, [
+        ...path,
+        currentItem,
+      ])
+      if (result) return result
+    }
+  }
+  return null
+}
+
+const breadcrumbs = findBreadcrumbs(navigation, currentPath) ?? []
+---
+
+{
+  breadcrumbs.length > 0 && (
+    <div class="breadcrumbs text-sm">
+      <ul>
+        {breadcrumbs.map((item, index) => (
+          <li>
+            {item.href && index < breadcrumbs.length - 1 ? (
+              <a href={item.href}>{item.label}</a>
+            ) : (
+              <span>{item.label}</span>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}

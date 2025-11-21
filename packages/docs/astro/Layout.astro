@@ -2,9 +2,16 @@
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import type { NavigationTree } from '@levino/shipyard-base'
+import { Breadcrumbs, TableOfContents } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
 import { toSidebarEntries } from '../src/sidebarEntries'
+
+interface Props {
+  headings?: { depth: number; text: string; slug: string }[]
+}
+
+const { headings = [] } = Astro.props
 
 const getPath = (id: string) =>
   i18n ? `/${Astro.currentLocale}/docs/${id.slice(3)}` : `/docs/${id}`
@@ -55,7 +62,18 @@ const entries: NavigationTree =
 ---
 
 <BaseLayout sidebarNavigation={entries}>
-  <div class="prose mx-auto">
-    <slot />
+  <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
+    <div class="col-span-12 xl:col-span-9">
+      <div class="prose max-w-none">
+        <Breadcrumbs navigation={entries} />
+        <TableOfContents links={headings} class="xl:hidden" />
+        <slot />
+      </div>
+    </div>
+    <div class="hidden xl:block col-span-3">
+      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <TableOfContents links={headings} desktopOnly />
+      </div>
+    </div>
   </div>
 </BaseLayout>

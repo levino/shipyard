@@ -75,18 +75,23 @@ npx biome check
 ### Code Style Guidelines
 
 1. **Formatting & Linting**: Use Biome (configured in `biome.json`)
-   - Semicolons as needed  
+   - Semicolons as needed
    - Single quotes for JavaScript
    - Import organization enabled
    - Special rules for `.astro`, `.svelte`, and `.vue` files
 
-2. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
+2. **Variable Naming**: Always use descriptive, full-word variable names
+   - Never use single letters or abbreviations like `e`, `i`, `arr`, `obj`
+   - Use meaningful names that describe the purpose: `entryValue`, `index`, `itemList`, `configObject`
+   - Exception: Standard conventions like `i`/`j` in simple loop counters are acceptable only when context is obvious
 
-3. **Astro Components**: Follow Astro's component conventions
+3. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
+
+4. **Astro Components**: Follow Astro's component conventions
    - Use `.astro` extension for Astro components
    - TypeScript for logic, CSS for styling within components
 
-4. **Package Structure**: Each package in `packages/` exports:
+5. **Package Structure**: Each package in `packages/` exports:
    - Main entry point (`src/index.ts`)
    - Astro-specific exports (`src/astro.ts`)
    - Component and layout exports
@@ -139,13 +144,14 @@ Documentation features:
 2. **Cross-Package Impact**: Consider how changes in base packages affect apps
 3. **Type Safety**: Maintain strict TypeScript compliance
 4. **Component Design**: Follow existing patterns for consistency
-5. **Documentation**: Update relevant README files when adding features
-6. **Documentation Updates**: Always update the docs package (apps/docs) when:
+5. **Lint Before Pushing**: Always run `npx biome check --write` before pushing changes to ensure code passes linting and formatting checks
+6. **Documentation**: Update relevant README files when adding features
+7. **Documentation Updates**: Always update the docs package (apps/docs) when:
    - Adding new features or components
    - Changing configuration schemas or APIs
    - Modifying existing functionality that affects users
    - The docs app contains the actual Shipyard documentation, not just demos
-7. **Changesets**: Create a changeset using `npx changeset` when making changes that affect packages:
+8. **Changesets**: Create a changeset using `npx changeset` when making changes that affect packages:
    - Use patch version for bug fixes and minor improvements (especially in 0.x.y versions)
    - Use minor version for new features (when above 1.0.0)
    - Use major version for breaking changes (when above 1.0.0)
