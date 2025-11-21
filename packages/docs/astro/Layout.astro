@@ -1,30 +1,13 @@
 ---
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
-import fs from 'node:fs'
-import path from 'node:path'
 import type { NavigationTree } from '@levino/shipyard-base'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
-import { loadCategoryMetadata } from '../src/category'
 import { toSidebarEntries } from '../src/sidebarEntries'
 
 const getPath = (id: string) =>
   i18n ? `/${Astro.currentLocale}/docs/${id.slice(3)}` : `/docs/${id}`
-
-// Attempt to find content dir
-// We assume standard Astro structure: src/content/docs
-// If running in a monorepo or different structure, this might need adjustment or configuration
-const contentDir = path.join(process.cwd(), 'src', 'content', 'docs')
-const legacyContentDir = path.join(process.cwd(), 'docs')
-// Fallback to current directory if explicit docs folders don't exist (unlikely for standard apps)
-const finalContentDir = fs.existsSync(contentDir)
-  ? contentDir
-  : fs.existsSync(legacyContentDir)
-    ? legacyContentDir
-    : process.cwd()
-
-const categoryMap = loadCategoryMetadata(finalContentDir)
 
 const docs = await getCollection('docs')
   .then(
@@ -63,22 +46,12 @@ const docs = await getCollection('docs')
   )
   .then((promises) => Promise.all(promises))
 
-const fullTree = toSidebarEntries(docs, categoryMap)
+const fullTree = toSidebarEntries(docs)
 
-// Extract the relevant subtree based on locale
-let entries: NavigationTree = fullTree
-
-if (i18n && Astro.currentLocale) {
-  // If i18n is enabled, the root keys are locales (e.g., 'en', 'fr')
-  // We want the subEntry of the current locale
-  const localeEntry = fullTree[Astro.currentLocale]
-  entries = localeEntry?.subEntry ?? {}
-}
-
-// Note: Previous implementation expected 'docs' in the path because it parsed the URL.
-// The new implementation parses the ID (file path).
-// If IDs don't have 'docs' prefix, we don't need to drill down into 'docs'.
-// Standard content collection IDs are relative to the collection folder.
+const entries: NavigationTree =
+  i18n && Astro.currentLocale
+    ? (fullTree[Astro.currentLocale]?.subEntry ?? {})
+    : fullTree
 ---
 
 <BaseLayout sidebarNavigation={entries}>

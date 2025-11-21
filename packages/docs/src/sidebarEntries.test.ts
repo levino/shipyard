@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import type { CategoryMap, DocsData } from './sidebarEntries'
+import type { DocsData } from './sidebarEntries'
 import { toSidebarEntries } from './sidebarEntries'
 
 describe('toSidebarEntries', () => {
@@ -69,7 +69,6 @@ describe('toSidebarEntries', () => {
         id: 'guide/c.md',
         title: 'C',
         path: '/docs/guide/c',
-        // default position 0
       },
     ]
 
@@ -77,29 +76,7 @@ describe('toSidebarEntries', () => {
     const guideSub = entries.guide.subEntry
     const keys = Object.keys(guideSub || {})
 
-    // Expected order: C (0), A (1), B (2)
     expect(keys).toEqual(['c', 'a', 'b'])
-  })
-
-  it('should apply category metadata from map', () => {
-    const docs: DocsData[] = [
-      {
-        id: 'guide/intro.md',
-        title: 'Introduction',
-        path: '/docs/guide/intro',
-      },
-    ]
-
-    const categoryMap: CategoryMap = {
-      guide: {
-        label: 'User Guide',
-        className: 'guide-section',
-      },
-    }
-
-    const entries = toSidebarEntries(docs, categoryMap)
-    expect(entries.guide.label).toBe('User Guide')
-    expect(entries.guide.className).toBe('guide-section')
   })
 
   it('should apply sidebar_class_name and sidebar_custom_props', () => {
@@ -125,7 +102,6 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    // 'guide' should be a link now because of index.md
     expect(entries.guide.href).toBe('/docs/guide')
     expect(entries.guide.label).toBe('Guide Index')
     expect(entries.guide.subEntry).toBeDefined()
