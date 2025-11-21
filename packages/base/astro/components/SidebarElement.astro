@@ -14,7 +14,10 @@ const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
 
 // Check if entry or any of its children are active
 const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
-  if (entryValue.href && normalizePath(entryValue.href) === normalizePath(currentPath))
+  if (
+    entryValue.href &&
+    normalizePath(entryValue.href) === normalizePath(currentPath)
+  )
     return true
   if (entryValue.subEntry) {
     return Object.values(entryValue.subEntry).some(isActiveOrHasActiveChild)
