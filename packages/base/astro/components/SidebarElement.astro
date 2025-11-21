@@ -13,28 +13,28 @@ const { entry, currentPath = Astro.url.pathname } = Astro.props
 const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
 
 // Check if entry or any of its children are active
-const isActiveOrHasActiveChild = (e: Entry[string]): boolean => {
-  if (e.href && normalizePath(e.href) === normalizePath(currentPath))
+const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
+  if (entryValue.href && normalizePath(entryValue.href) === normalizePath(currentPath))
     return true
-  if (e.subEntry) {
-    return Object.values(e.subEntry).some(isActiveOrHasActiveChild)
+  if (entryValue.subEntry) {
+    return Object.values(entryValue.subEntry).some(isActiveOrHasActiveChild)
   }
   return false
 }
 ---
 
-{Object.entries(entry).map(([key, e]) => {
-  const label = e.label ?? key;
-  const isActive = e.href && normalizePath(e.href) === normalizePath(currentPath);
-  const hasActiveChild = e.subEntry && Object.values(e.subEntry).some(isActiveOrHasActiveChild);
+{Object.entries(entry).map(([key, entryValue]) => {
+  const label = entryValue.label ?? key;
+  const isActive = entryValue.href && normalizePath(entryValue.href) === normalizePath(currentPath);
+  const hasActiveChild = entryValue.subEntry && Object.values(entryValue.subEntry).some(isActiveOrHasActiveChild);
   return (
-    <li class={e.className}>
-      {e.href
-        ? <a href={e.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+    <li class={entryValue.className}>
+      {entryValue.href
+        ? <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
         : <span class='menu-title text-xs uppercase tracking-wider opacity-60'>{label}</span>}
-      {e.subEntry ? (
+      {entryValue.subEntry ? (
         <ul>
-          <Astro.self entry={e.subEntry} currentPath={currentPath} />
+          <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
         </ul>
       ) : null}
     </li>
