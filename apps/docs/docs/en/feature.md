@@ -189,6 +189,91 @@ blog/
   2024-02-01-another-post.md
 ```
 
+## Sidebar Configuration
+
+Shipyard's docs package automatically generates a sidebar based on your documentation structure. You can customize the sidebar appearance and ordering using Docusaurus-compatible frontmatter options.
+
+### Available Frontmatter Options
+
+Add these fields to the frontmatter of any documentation page:
+
+```yaml
+---
+title: My Documentation Page
+sidebar_position: 10
+sidebar_label: Custom Label
+sidebar_class_name: font-bold text-primary
+---
+```
+
+#### `sidebar_position`
+
+Controls the order of items in the sidebar. Items are sorted by position first, then alphabetically by label.
+
+- Items with explicit positions appear before items without positions
+- Lower numbers appear first (e.g., `0` before `10`)
+- Items without a position default to appearing after positioned items
+
+```yaml
+---
+sidebar_position: 0  # Appears first
+---
+```
+
+#### `sidebar_label`
+
+Overrides the display label in the sidebar. By default, the page's `title` is used.
+
+```yaml
+---
+title: Getting Started with Shipyard Documentation
+sidebar_label: Getting Started  # Shorter label for the sidebar
+---
+```
+
+#### `sidebar_class_name`
+
+Adds custom CSS classes to the sidebar item. You can use any Tailwind CSS or DaisyUI utility classes.
+
+```yaml
+---
+sidebar_class_name: font-bold text-warning  # Bold text with warning color
+---
+```
+
+**Note:** For Tailwind to include these classes in the build, make sure your documentation files are included in your `tailwind.config.mjs` content array:
+
+```javascript
+export default {
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './docs/**/*.{md,mdx}',  // Include your docs folder
+  ],
+  // ...
+}
+```
+
+### Category Ordering with index.md
+
+The `sidebar_position` in an `index.md` file affects the entire category (folder) in the sidebar. This is useful for controlling the order of documentation sections.
+
+```
+docs/
+  getting-started/
+    index.md          # sidebar_position: 0 makes this section appear first
+    installation.md
+    configuration.md
+  advanced/
+    index.md          # sidebar_position: 10 makes this section appear second
+    plugins.md
+```
+
+### Why No `sidebar_custom_props`?
+
+Unlike Docusaurus, Shipyard does not currently support `sidebar_custom_props`. This feature in Docusaurus allows metadata like badges ("New", "Beta") to be passed to custom sidebar components.
+
+Since Shipyard uses a standard sidebar component, custom props would have no effect. For visual customization, use `sidebar_class_name` with Tailwind/DaisyUI classes instead.
+
 ## Styling
 
 Shipyard uses Tailwind CSS and DaisyUI for styling. Make sure to disable Astro's base styles:
