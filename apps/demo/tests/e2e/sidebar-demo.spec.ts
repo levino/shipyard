@@ -1,6 +1,57 @@
 import { expect, test } from '@playwright/test'
 
 test.describe('Sidebar Demo - Docusaurus-like Features', () => {
+  test.describe('Category-level Sidebar Position', () => {
+    test('category with sidebar_position in index.md appears first in top-level navigation', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/')
+
+      // The sidebar-demo/index.md has sidebar_position: 0
+      // Other top-level items (garden-beds, harvesting, vegetables, feature) have no position (default Infinity)
+      // So sidebar-demo should appear FIRST in the top-level navigation
+
+      const sidebarMenu = page.locator('.drawer-side ul.menu')
+      await expect(sidebarMenu).toBeAttached()
+
+      // Get all top-level sidebar items (direct children of the menu)
+      // These are <li> elements that contain either direct links or nested <ul> for categories
+      const topLevelItems = page.locator('.drawer-side ul.menu > li')
+
+      // The first item should be the sidebar-demo category
+      // (contains a link to /en/docs/sidebar-demo/ or text "Sidebar Demo")
+      const firstItem = topLevelItems.first()
+      const firstItemText = await firstItem.textContent()
+
+      // sidebar-demo should be first (has position 0)
+      expect(firstItemText).toContain('Sidebar Demo')
+    })
+
+    test('categories without explicit position come after positioned ones', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/')
+
+      const sidebarMenu = page.locator('.drawer-side ul.menu')
+      await expect(sidebarMenu).toBeAttached()
+
+      // Get text content of all top-level items
+      const topLevelItems = page.locator('.drawer-side ul.menu > li')
+      const count = await topLevelItems.count()
+      const itemTexts: string[] = []
+      for (let i = 0; i < count; i++) {
+        const text = await topLevelItems.nth(i).textContent()
+        if (text) itemTexts.push(text.trim().split('\n')[0].trim())
+      }
+
+      // Sidebar Demo (position 0) should be before other items (position Infinity)
+      const sidebarDemoIndex = itemTexts.findIndex((t) =>
+        t.includes('Sidebar Demo'),
+      )
+      expect(sidebarDemoIndex).toBe(0)
+    })
+  })
+
   test.describe('Sidebar Position Ordering', () => {
     test('items are ordered by sidebar_position, not alphabetically', async ({
       page,

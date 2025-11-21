@@ -76,7 +76,8 @@ describe('toSidebarEntries', () => {
     const guideSub = entries.guide.subEntry
     const keys = Object.keys(guideSub || {})
 
-    expect(keys).toEqual(['c', 'a', 'b'])
+    // Items with explicit positions come first (1, 2), then items without position (Infinity) are sorted alphabetically
+    expect(keys).toEqual(['a', 'b', 'c'])
   })
 
   it('should apply sidebar_class_name and sidebar_custom_props', () => {
@@ -116,5 +117,59 @@ describe('toSidebarEntries', () => {
     const entries = toSidebarEntries(docs)
     const keys = Object.keys(entries)
     expect(keys).toEqual(['a', 'z'])
+  })
+
+  it('should apply index.md sidebar_position to parent category for top-level sorting', () => {
+    const docs: DocsData[] = [
+      // "zebra" folder with index.md that has sidebar_position: 1
+      {
+        id: 'zebra/index.md',
+        title: 'Zebra Section',
+        path: '/docs/zebra',
+        sidebarPosition: 1,
+      },
+      { id: 'zebra/page.md', title: 'Zebra Page', path: '/docs/zebra/page' },
+      // "apple" folder with no explicit position (defaults to Infinity)
+      {
+        id: 'apple/index.md',
+        title: 'Apple Section',
+        path: '/docs/apple',
+      },
+      { id: 'apple/page.md', title: 'Apple Page', path: '/docs/apple/page' },
+    ]
+
+    const entries = toSidebarEntries(docs)
+    const keys = Object.keys(entries)
+
+    // zebra has explicit position 1, apple defaults to Infinity
+    // So zebra (position 1) comes before apple (Infinity)
+    expect(keys).toEqual(['zebra', 'apple'])
+  })
+
+  it('should position category first when index.md has explicit sidebar_position', () => {
+    const docs: DocsData[] = [
+      // A category with index.md having sidebar_position: 0
+      {
+        id: 'sidebar-demo/index.md',
+        title: 'Sidebar Demo',
+        path: '/docs/sidebar-demo',
+        sidebarPosition: 0,
+      },
+      {
+        id: 'sidebar-demo/custom-class.md',
+        title: 'Custom Class',
+        path: '/docs/sidebar-demo/custom-class',
+      },
+      // Other top-level items with no position (default Infinity)
+      { id: 'garden-beds.md', title: 'Garden Beds', path: '/docs/garden-beds' },
+      { id: 'harvesting.md', title: 'Harvesting', path: '/docs/harvesting' },
+    ]
+
+    const entries = toSidebarEntries(docs)
+    const keys = Object.keys(entries)
+
+    // sidebar-demo has explicit position 0, others default to Infinity
+    // So sidebar-demo comes first, then others alphabetically
+    expect(keys).toEqual(['sidebar-demo', 'garden-beds', 'harvesting'])
   })
 })

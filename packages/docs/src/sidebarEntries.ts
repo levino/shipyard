@@ -21,7 +21,7 @@ interface TreeNode {
   readonly children: Readonly<Record<string, TreeNode>>
 }
 
-const DEFAULT_POSITION = 0
+const DEFAULT_POSITION = Number.POSITIVE_INFINITY
 
 const createLeafNode = (key: string, doc: DocsData): TreeNode => ({
   key,
