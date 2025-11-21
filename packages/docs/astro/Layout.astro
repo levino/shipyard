@@ -62,9 +62,18 @@ const entries: NavigationTree =
 ---
 
 <BaseLayout sidebarNavigation={entries}>
-  <div class="prose mx-auto xl:mr-72">
-    <Breadcrumbs navigation={entries} />
-    <TableOfContents links={headings} />
-    <slot />
+  <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
+    <div class="col-span-12 xl:col-span-9">
+      <div class="prose max-w-none">
+        <Breadcrumbs navigation={entries} />
+        <TableOfContents links={headings} class="xl:hidden" />
+        <slot />
+      </div>
+    </div>
+    <div class="hidden xl:block col-span-3">
+      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <TableOfContents links={headings} desktopOnly />
+      </div>
+    </div>
   </div>
 </BaseLayout>

@@ -1,501 +1,82 @@
 ---
-title: Configuration
+title: Garden Guide & Documentation
+sidebar_position: 2
 ---
 
-# Configuration
-
-Shipyard is highly configurable and can be customized to fit your project's needs.
-
-## Basic Configuration
-
-The main configuration happens in your `astro.config.mjs` file when you initialize the Shipyard integration:
-
-```javascript
-shipyard({
-  navigation: {
-    docs: { label: 'Documentation', href: '/docs' },
-    blog: { label: 'Blog', href: '/blog' },
-    about: { label: 'About', href: '/about' },
-  },
-  title: 'My Website',
-  tagline: 'A description of my website',
-  brand: 'My Brand',
-})
-```
-
-## Configuration Options
-
-### Required Fields
-
-- **`title`**: The main title of your website
-- **`brand`**: Your brand name (displayed in navigation)
-- **`tagline`**: A short description of your website
-- **`navigation`**: Navigation menu structure
-
-### Navigation Configuration
-
-The navigation object defines your site's menu structure. Each key creates a navigation item:
-
-```javascript
-navigation: {
-  docs: {
-    label: 'Documentation',  // Text displayed in menu
-    href: '/docs',           // Link destination
-  },
-  blog: {
-    label: 'Blog',
-    href: '/blog',
-  },
-  // Nested navigation example
-  resources: {
-    label: 'Resources',
-    subEntry: {
-      guides: { label: 'Guides', href: '/guides' },
-      examples: { label: 'Examples', href: '/examples' },
-    }
-  }
-}
-```
-
-## Package-Specific Configuration
-
-### Docs Package
-
-The `shipyardDocs` integration accepts an array of content directories:
-
-```javascript
-shipyardDocs(['docs', 'guides'])
-```
-
-This tells Shipyard to look for documentation content in the `docs/` and `guides/` directories.
-
-### Blog Package
-
-Similarly, the `shipyardBlog` integration configures blog directories:
-
-```javascript
-shipyardBlog(['blog', 'news'])
-```
-
-## Internationalization
-
-Shipyard supports both single-language and multi-language websites.
-
-### Single-Language Sites
-
-To create a single-language site, simply omit the `i18n` configuration from your `astro.config.mjs`:
-
-```javascript
-export default defineConfig({
-  // No i18n config needed for single-language sites
-  integrations: [
-    shipyard({
-      title: 'My Single-Language Site',
-      tagline: 'Built with Shipyard',
-      navigation: {
-        docs: { label: 'Docs', href: '/docs' },
-        blog: { label: 'Blog', href: '/blog' },
-      },
-    }),
-    shipyardDocs(['docs']),
-    shipyardBlog(['blog']),
-  ],
-});
-```
-
-Your URLs will be clean without language prefixes:
-- `/` - Homepage
-- `/docs/` - Documentation index  
-- `/docs/getting-started/` - Documentation pages
-- `/blog/` - Blog index
-- `/blog/welcome/` - Blog posts
-
-### Multi-Language Sites
-
-For internationalization, configure Astro's i18n options:
-
-```javascript
-export default defineConfig({
-  i18n: {
-    defaultLocale: 'en',
-    locales: ['en', 'de', 'fr'],
-    routing: {
-      prefixDefaultLocale: false, // Optional: removes /en/ prefix for default locale
-    },
-  },
-  integrations: [
-    shipyard({
-      title: 'My Multi-Language Site',
-      // ... rest of config
-    }),
-    shipyardDocs(['docs']),
-    shipyardBlog(['blog']),
-  ],
-});
-```
-
-URLs will include language prefixes:
-- `/` and `/en/` - English homepage
-- `/de/` - German homepage  
-- `/en/docs/`, `/de/docs/` - Localized documentation
-- `/en/blog/`, `/de/blog/` - Localized blog
-
-## Content Structure
-
-### Multi-Language Sites (with i18n)
-
-For sites with internationalization, organize your content by locale:
-
-```
-src/
-  content/
-    docs/
-      en/
-        index.md
-        getting-started.md
-      de/
-        index.md
-        getting-started.md
-    blog/
-      en/
-        2024-01-01-welcome.md
-      de/
-        2024-01-01-willkommen.md
-```
-
-### Single-Language Sites (without i18n)
-
-For single-language sites, you can organize content directly without locale folders:
-
-```
-src/
-  content/
-    docs/
-      index.md
-      getting-started.md
-    blog/
-      2024-01-01-welcome.md
-      2024-02-01-another-post.md
-```
-
-Or in separate collections:
-
-```
-docs/
-  index.md
-  getting-started.md
-blog/
-  2024-01-01-welcome.md
-  2024-02-01-another-post.md
-```
-
-## Sidebar Configuration
-
-Shipyard's docs package automatically generates a sidebar based on your documentation structure. You can customize the sidebar appearance and ordering using Docusaurus-compatible frontmatter options.
-
-### Available Frontmatter Options
-
-Add these fields to the frontmatter of any documentation page:
-
-```yaml
----
-title: My Documentation Page
-sidebar_position: 10
-sidebar_label: Custom Label
-sidebar_class_name: font-bold text-primary
----
-```
-
-#### `sidebar_position`
-
-Controls the order of items in the sidebar. Items are sorted by position first, then alphabetically by label.
-
-- Items with explicit positions appear before items without positions
-- Lower numbers appear first (e.g., `0` before `10`)
-- Items without a position default to appearing after positioned items
-
-```yaml
----
-sidebar_position: 0  # Appears first
----
-```
-
-#### `sidebar_label`
-
-Overrides the display label in the sidebar. By default, the page's `title` is used.
-
-```yaml
----
-title: Getting Started with Shipyard Documentation
-sidebar_label: Getting Started  # Shorter label for the sidebar
----
-```
-
-#### `sidebar_class_name`
-
-Adds custom CSS classes to the sidebar item. You can use any Tailwind CSS or DaisyUI utility classes.
-
-```yaml
----
-sidebar_class_name: font-bold text-warning  # Bold text with warning color
----
-```
-
-**Note:** For Tailwind to include these classes in the build, make sure your documentation files are included in your `tailwind.config.mjs` content array:
-
-```javascript
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    './docs/**/*.{md,mdx}',  // Include your docs folder
-  ],
-  // ...
-}
-```
-
-### Category Ordering with index.md
-
-The `sidebar_position` in an `index.md` file affects the entire category (folder) in the sidebar. This is useful for controlling the order of documentation sections.
-
-```
-docs/
-  getting-started/
-    index.md          # sidebar_position: 0 makes this section appear first
-    installation.md
-    configuration.md
-  advanced/
-    index.md          # sidebar_position: 10 makes this section appear second
-    plugins.md
-```
-
-### Why No `sidebar_custom_props`?
-
-Unlike Docusaurus, Shipyard does not currently support `sidebar_custom_props`. This feature in Docusaurus allows metadata like badges ("New", "Beta") to be passed to custom sidebar components.
-
-Since Shipyard uses a standard sidebar component, custom props would have no effect. For visual customization, use `sidebar_class_name` with Tailwind/DaisyUI classes instead.
-
-## Styling
-
-Shipyard uses Tailwind CSS and DaisyUI for styling. Make sure to disable Astro's base styles:
-
-```javascript
-tailwind({
-  applyBaseStyles: false,
-})
-```
-
-This prevents conflicts with Shipyard's built-in styles.
-
-## Script Injection
-
-Shipyard allows you to inject external scripts into your site's HTML head, similar to Docusaurus. This is useful for adding analytics, chat widgets, CDN libraries, or any third-party scripts.
-
-### Basic Usage
-
-Scripts are configured in your `shipyard()` configuration using the `scripts` array:
-
-```javascript
-shipyard({
-  // ... other configuration
-  scripts: [
-    // Simple string format
-    'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
-    
-    // Object format with attributes
-    {
-      src: 'https://cdn.jsdelivr.net/npm/pocketbase@0.21.5/dist/pocketbase.umd.js',
-      async: true,
-    },
-  ],
-})
-```
-
-### Configuration Formats
-
-#### String Format
-
-For simple script injection without special attributes:
-
-```javascript
-scripts: [
-  'https://example.com/script.js',
-  'https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js',
-]
-```
-
-#### Object Format
-
-For scripts that need special attributes or loading behavior:
-
-```javascript
-scripts: [
-  {
-    src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-    async: true,
-  },
-  {
-    src: 'https://cdn.skypack.dev/lodash-es',
-    defer: true,
-    type: 'module',
-  },
-  {
-    src: 'https://cdn.example.com/secure-script.js',
-    integrity: 'sha384-oqVuAfXRKap7fdgcCY5uykM6+R9GqQ8K/uxy9rx7HNQlGYl1kPzQho1wx4JwY8wC',
-    crossorigin: 'anonymous',
-  },
-]
-```
-
-### Supported Attributes
-
-All standard HTML script attributes are supported:
-
-- **`src`** (required): The URL of the script
-- **`async`**: Load script asynchronously without blocking HTML parsing
-- **`defer`**: Load script after HTML parsing is complete
-- **`type`**: Script MIME type (e.g., `'module'`, `'text/javascript'`)
-- **`crossorigin`**: CORS setting (`'anonymous'`, `'use-credentials'`)
-- **`integrity`**: Subresource Integrity hash for security
-- **`referrerpolicy`**: Referrer policy for the request
-
-You can also use any other valid HTML attributes:
-
-```javascript
-{
-  src: 'https://example.com/script.js',
-  'data-domain': 'yourdomain.com',
-  'data-api': '/api/event',
-}
-```
-
-### Loading Strategies
-
-#### Async Loading
-Best for scripts that don't depend on DOM content and can run independently:
-
-```javascript
-{
-  src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-  async: true,
-}
-```
-
-#### Deferred Loading
-Best for scripts that need the DOM to be fully parsed:
-
-```javascript
-{
-  src: 'https://example.com/dom-dependent-script.js',
-  defer: true,
-}
-```
-
-#### ES Modules
-For modern JavaScript modules:
-
-```javascript
-{
-  src: 'https://cdn.skypack.dev/lodash-es',
-  type: 'module',
-  defer: true,
-}
-```
-
-### Common Use Cases
-
-#### Analytics
-```javascript
-scripts: [
-  {
-    src: 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-    async: true,
-  },
-]
-```
-
-#### CDN Libraries
-```javascript
-scripts: [
-  'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
-  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
-]
-```
-
-#### Chat Widgets
-```javascript
-scripts: [
-  {
-    src: 'https://widget.intercom.io/widget/your-app-id',
-    async: true,
-  },
-]
-```
-
-### Important Notes
-
-- **Global injection**: Scripts are injected into every page of your site
-- **Load order**: Scripts are loaded in the order they appear in the configuration
-- **Performance**: Use `async` or `defer` attributes to avoid blocking page rendering
-- **Security**: Consider using `integrity` attributes for third-party CDN scripts
-- **Server-side rendering**: Scripts are injected during build time, not at runtime
-
-### Security Considerations
-
-When adding external scripts:
-
-1. **Use trusted sources**: Only include scripts from reputable CDNs and services
-2. **Subresource Integrity**: Use `integrity` hashes when possible:
-   ```javascript
-   {
-     src: 'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
-     integrity: 'sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=',
-     crossorigin: 'anonymous',
-   }
-   ```
-3. **Content Security Policy**: Configure CSP headers if using strict security policies
-
-## Navigation Features
-
-Shipyard includes several Docusaurus-like navigation features to enhance the user experience.
-
-### Active Sidebar Highlighting
-
-The currently active page is automatically highlighted in the sidebar with a background color and bold text. This helps users quickly identify their current location in the documentation.
-
-The active state is determined by matching the current URL path against the navigation tree. No additional configuration is required.
-
-### Breadcrumbs
-
-Breadcrumbs are automatically displayed above the content on documentation pages, showing the navigation path to the current page. This helps users understand the document structure and navigate back to parent sections.
-
-The breadcrumbs component uses DaisyUI styling and is integrated automatically in the docs layout. Features:
-
-- Automatically generated from the sidebar navigation structure
-- Clickable links to parent sections (except the current page)
-- Clean, minimal styling that matches your theme
-
-### Table of Contents
-
-Documentation pages automatically display a table of contents with links to headings (h2 and h3) in the current page. The display adapts to screen size:
-
-**Desktop (xl breakpoint and above):**
-- Fixed sidebar on the right side of the content
-- Always visible while scrolling
-- Shows heading hierarchy with indentation
-
-**Mobile (below xl breakpoint):**
-- Collapsible dropdown labeled "On this page"
-- Expands to show all headings when clicked
-- Space-efficient design
-
-The table of contents is generated from the markdown headings in your content. No additional configuration is required - just write your documentation with clear heading structure.
-
-#### Customizing the Table of Contents Label
-
-You can customize the "On this page" label in your layout if needed:
-
-```astro
-<TableOfContents links={headings} label="In this article" />
-```
-
-See the [custom TableOfContents example](https://shipyard-demo.levinkeller.de/docs/custom-toc-example) in the demo app for a working implementation.
+# Metro Gardens Community Club - Garden Guide
+
+Welcome to our comprehensive garden documentation! Here you'll find everything you need to know about our community garden, from plot management to harvest guidelines.
+
+## Getting Started
+
+### Plot Rental Information
+- **Plot sizes**: Small (4x8 ft) $50/season, Large (8x12 ft) $80/season
+- **Season**: April 1st - November 30th
+- **Deposit**: $25 refundable security deposit required
+- **What's included**: Water access, basic tools, compost, mulch
+
+### Garden Rules & Etiquette
+- Organic practices only - no chemical pesticides or fertilizers
+- Keep plots weeded and maintained
+- Harvest regularly to prevent over-ripening
+- Share surplus produce at the community table
+- Participate in 2 community work days per season
+
+## Our Garden Areas
+
+### The Heritage Vegetable Garden
+Our main growing area featuring traditional vegetable varieties and heirloom seeds. Perfect for:
+- Tomatoes, peppers, and eggplant
+- Root vegetables like carrots, beets, and radishes
+- Leafy greens and brassicas
+- Beans, peas, and other legumes
+
+### The Herb Spiral
+A beautiful permaculture design featuring culinary and medicinal herbs arranged by water and sun requirements:
+- **Top/Dry area**: Rosemary, thyme, oregano, sage
+- **Middle slope**: Lavender, mint, basil, cilantro
+- **Bottom/Moist area**: Parsley, chives, watercress
+
+### Children's Discovery Garden
+Designed for our youngest gardeners with:
+- Fast-growing plants like radishes and lettuce
+- Fun varieties like purple carrots and striped tomatoes
+- Sensory plants with interesting textures and scents
+- Child-height raised beds and seating areas
+
+### Native Plant Sanctuary
+Supporting local ecosystem with:
+- Native wildflowers for pollinators
+- Bird-friendly berry bushes
+- Butterfly garden with host plants
+- Rain garden for water management
+
+## Quick Reference Guides
+
+- **Garden Beds & Layout** - Detailed information about each growing area
+- **Vegetable Growing Guide** - What to grow and when to plant
+- **Harvest Guidelines** - When and how to harvest your crops
+
+## Seasonal Calendar
+
+- **Spring (March-May)**: Plot preparation, cool season planting, seedling care
+- **Summer (June-August)**: Maintenance, watering, pest management, harvest
+- **Fall (September-November)**: Fall planting, preservation, plot cleanup
+- **Winter (December-February)**: Planning, seed ordering, tool maintenance
+
+## Community Resources
+
+- **Tool Library**: Located in the shed - check out tools with your member key
+- **Seed Library**: Exchange seeds with fellow gardeners
+- **Compost System**: Three-bin system for community use
+- **Water Collection**: Rain barrels throughout the garden
+- **Notice Board**: Check for announcements and volunteer opportunities
+
+## Need Help?
+
+- **Garden Manager**: Sarah Chen - available Saturdays 10AM-12PM
+- **Email**: info@metrogardens.community
+- **Emergency Contact**: 555-GARDEN (555-427-3368)
+- **Online Forum**: community.metrogardens.org
+
+Happy gardening!

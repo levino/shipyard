@@ -10,9 +10,16 @@ interface Link {
 interface Props {
   links: Link[]
   label?: string
+  class?: string
+  desktopOnly?: boolean
 }
 
-const { links, label = 'On this page' } = Astro.props
+const {
+  links,
+  label = 'On this page',
+  class: className,
+  desktopOnly = false,
+} = Astro.props
 
 // Filter to only include h2 and h3 headings (depth 2 and 3)
 const filteredLinks = links.filter((link) => link.depth >= 2 && link.depth <= 3)
@@ -20,45 +27,47 @@ const filteredLinks = links.filter((link) => link.depth >= 2 && link.depth <= 3)
 
 {
   filteredLinks.length > 0 && (
-    <>
+    <div class={className}>
       {/* Mobile: Collapsible dropdown */}
-      <div class="xl:hidden mb-4">
-        <details class="collapse collapse-arrow bg-base-200">
-          <summary class="collapse-title min-h-0 py-2 font-medium">
-            {label}
-          </summary>
-          <div class="collapse-content">
-            <ul class="menu menu-sm">
-              {filteredLinks.map((link) => (
-                <li>
-                  <a
-                    href={`#${link.slug}`}
-                    class={cn({
-                      'pl-4': link.depth === 2,
-                      'pl-8': link.depth === 3,
-                    })}
-                  >
-                    {link.text}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </details>
-      </div>
+      {!desktopOnly && (
+        <div class="xl:hidden mb-4">
+          <details class="collapse collapse-arrow bg-base-200">
+            <summary class="collapse-title min-h-0 py-2 font-medium">
+              {label}
+            </summary>
+            <div class="collapse-content">
+              <ul class="menu menu-sm">
+                {filteredLinks.map((link) => (
+                  <li>
+                    <a
+                      href={`#${link.slug}`}
+                      class={cn({
+                        'pl-4': link.depth === 2,
+                        'pl-8': link.depth === 3,
+                      })}
+                    >
+                      {link.text}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </details>
+        </div>
+      )}
 
-      {/* Desktop: Fixed sidebar on the right */}
-      <div class="hidden xl:block fixed right-4 top-20 w-64 max-h-[calc(100vh-6rem)] overflow-y-auto">
+      {/* Desktop: Sidebar within the grid column */}
+      {desktopOnly && (
         <div class="border-l border-base-300 pl-4">
-          <h4 class="font-semibold text-sm mb-2 text-base-content/70">
+          <h4 class="font-medium text-sm mb-2 text-base-content/60">
             {label}
           </h4>
-          <ul class="menu menu-sm p-0">
+          <ul class="menu menu-xs p-0">
             {filteredLinks.map((link) => (
               <li>
                 <a
                   href={`#${link.slug}`}
-                  class={cn('hover:text-primary', {
+                  class={cn('text-base-content/70 hover:text-primary', {
                     'pl-0': link.depth === 2,
                     'pl-4': link.depth === 3,
                   })}
@@ -69,7 +78,7 @@ const filteredLinks = links.filter((link) => link.depth >= 2 && link.depth <= 3)
             ))}
           </ul>
         </div>
-      </div>
-    </>
+      )}
+    </div>
   )
 }

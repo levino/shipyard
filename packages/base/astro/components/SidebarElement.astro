@@ -26,8 +26,8 @@ const isActiveOrHasActiveChild = (e: Entry[string]): boolean => {
   return (
     <li class={e.className}>
       {e.href
-        ? <a href={e.href} class={cn({ 'bg-base-200 font-semibold': isActive })}>{label}</a>
-        : <span class='menu-title'>{label}</span>}
+        ? <a href={e.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+        : <span class='menu-title text-xs uppercase tracking-wider opacity-60'>{label}</span>}
       {e.subEntry ? (
         <ul>
           <Astro.self entry={e.subEntry} currentPath={currentPath} />
