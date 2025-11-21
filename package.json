@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "test:e2e": "cd apps/demo && npm run test:e2e",
-    "test:e2e:ui": "cd apps/demo && npm run test:e2e:ui",
-    "test:e2e:single-locale": "cd apps/single-locale-demo && npm run test:e2e",
-    "test:e2e:single-locale:ui": "cd apps/single-locale-demo && npm run test:e2e:ui"
+    "test:e2e": "cd apps/demos/i18n && npm run test:e2e",
+    "test:e2e:ui": "cd apps/demos/i18n && npm run test:e2e:ui",
+    "test:e2e:single-locale": "cd apps/demos/single-language && npm run test:e2e",
+    "test:e2e:single-locale:ui": "cd apps/demos/single-language && npm run test:e2e:ui"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +18,8 @@
   },
   "workspaces": [
     "packages/*",
-    "apps/*"
+    "apps/*",
+    "apps/demos/*"
   ],
   "dependencies": {
     "@changesets/cli": "^2.27.11"
