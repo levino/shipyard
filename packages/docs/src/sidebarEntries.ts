@@ -8,7 +8,6 @@ export interface DocsData {
   sidebarPosition?: number
   sidebarLabel?: string
   sidebarClassName?: string
-  sidebarCustomProps?: Record<string, unknown>
 }
 
 interface TreeNode {
@@ -17,7 +16,6 @@ interface TreeNode {
   readonly href?: string
   readonly position: number
   readonly className?: string
-  readonly customProps?: Record<string, unknown>
   readonly children: Readonly<Record<string, TreeNode>>
 }
 
@@ -29,7 +27,6 @@ const createLeafNode = (key: string, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : undefined,
   position: doc.sidebarPosition ?? DEFAULT_POSITION,
   className: doc.sidebarClassName,
-  customProps: doc.sidebarCustomProps,
   children: {},
 })
 
@@ -46,7 +43,6 @@ const mergeNodeWithDoc = (node: TreeNode, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : node.href,
   position: doc.sidebarPosition ?? node.position,
   className: doc.sidebarClassName ?? node.className,
-  customProps: doc.sidebarCustomProps ?? node.customProps,
 })
 
 const insertAtPath = (
@@ -99,7 +95,6 @@ const treeNodeToEntry = (node: TreeNode): Entry[string] => {
     label: node.label,
     ...(node.href && { href: node.href }),
     ...(node.className && { className: node.className }),
-    ...(node.customProps && { customProps: node.customProps }),
     ...(subEntry && { subEntry }),
   }
 }

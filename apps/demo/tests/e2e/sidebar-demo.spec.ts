@@ -64,7 +64,7 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
       await expect(sidebarMenu).toBeAttached()
 
       // Find all links to sidebar-demo subpages in the sidebar
-      // These should be ordered by sidebar_position: custom-class (10), custom-props (20), custom-label (30)
+      // These should be ordered by sidebar_position: custom-class (10), custom-label (30)
       const sidebarDemoLinks = page.locator(
         '.drawer-side a[href*="/en/docs/sidebar-demo/"]',
       )
@@ -79,13 +79,12 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
         }
       }
 
-      expect(hrefs.length).toBe(3)
+      expect(hrefs.length).toBe(2)
 
-      // Expected order by sidebar_position: custom-class (10), custom-props (20), custom-label (30)
-      // NOT alphabetical order: custom-class, custom-label, custom-props
+      // Expected order by sidebar_position: custom-class (10), custom-label (30)
+      // NOT alphabetical order: custom-class, custom-label
       expect(hrefs[0]).toContain('custom-class')
-      expect(hrefs[1]).toContain('custom-props')
-      expect(hrefs[2]).toContain('custom-label')
+      expect(hrefs[1]).toContain('custom-label')
     })
 
     test('lower sidebar_position appears first', async ({ page }) => {
@@ -206,18 +205,13 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
   })
 
   test.describe('Combined Features', () => {
-    test('all three demo pages are visible in sidebar', async ({ page }) => {
+    test('all demo pages are visible in sidebar', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
       // Verify all demo pages are present in the sidebar
       await expect(
         page.locator(
           '.drawer-side a[href*="/en/docs/sidebar-demo/custom-class"]',
-        ),
-      ).toBeAttached()
-      await expect(
-        page.locator(
-          '.drawer-side a[href*="/en/docs/sidebar-demo/custom-props"]',
         ),
       ).toBeAttached()
       // custom-label shows as "Fancy Label ✨"
@@ -234,12 +228,6 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
         .locator('.drawer-side a[href*="/en/docs/sidebar-demo/custom-class"]')
         .click({ force: true })
       await expect(page).toHaveURL(/custom-class/)
-
-      // Navigate to custom-props
-      await page
-        .locator('.drawer-side a[href*="/en/docs/sidebar-demo/custom-props"]')
-        .click({ force: true })
-      await expect(page).toHaveURL(/custom-props/)
 
       // Navigate to custom-label via its custom label
       await page

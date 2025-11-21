@@ -14,7 +14,6 @@ export const docsSchema = z.object({
   sidebar_position: z.number().optional(),
   sidebar_label: z.string().optional(),
   sidebar_class_name: z.string().optional(),
-  sidebar_custom_props: z.record(z.any()).optional(),
 })
 
 export default (): AstroIntegration => ({

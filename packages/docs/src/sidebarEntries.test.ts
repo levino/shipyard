@@ -80,20 +80,18 @@ describe('toSidebarEntries', () => {
     expect(keys).toEqual(['a', 'b', 'c'])
   })
 
-  it('should apply sidebar_class_name and sidebar_custom_props', () => {
+  it('should apply sidebar_class_name', () => {
     const docs: DocsData[] = [
       {
         id: 'page.md',
         title: 'Page',
         path: '/docs/page',
         sidebarClassName: 'special-page',
-        sidebarCustomProps: { icon: 'star' },
       },
     ]
 
     const entries = toSidebarEntries(docs)
     expect(entries.page.className).toBe('special-page')
-    expect(entries.page.customProps).toEqual({ icon: 'star' })
   })
 
   it('should handle index files correctly', () => {
