@@ -7,6 +7,16 @@ sidebar_position: 0
 
 Welcome to the sidebar demo section. This section demonstrates the Docusaurus-like sidebar frontmatter options.
 
+## Reordering Demo
+
+Notice that the sidebar items below appear in this order:
+
+1. **Custom Class** (position 10) - alphabetically second, displayed first
+2. **Custom Props** (position 20) - alphabetically third, displayed second
+3. **Fancy Label ✨** (position 30) - alphabetically first, displayed third
+
+This demonstrates that `sidebar_position` controls the order, regardless of file names!
+
 ## Available Frontmatter Options
 
 - `sidebar_position` - Control the order of items in the sidebar
