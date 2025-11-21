@@ -8,7 +8,7 @@ sidebar_position: 30
 
 This item has a custom sidebar label defined in frontmatter.
 
-Despite being alphabetically first (`custom-label.md`), this page appears **third** in the sidebar because `sidebar_position: 30` is the highest value.
+Despite being alphabetically first (`custom-label.md`), this page appears **second** in the sidebar because it has a higher `sidebar_position` value (30) than Custom Class (10).
 
 ```yaml
 sidebar_label: Fancy Label ✨
