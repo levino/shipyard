@@ -1,19 +1,75 @@
 ---
+import { cn } from '../../src/tools/cn'
+
 interface Link {
   depth: number
   text: string
   slug: string
 }
 
-interface TableOfContentsProps {
+interface Props {
   links: Link[]
+  label?: string
 }
 
-const { links } = Astro.props as TableOfContentsProps
+const { links, label = 'On this page' } = Astro.props
+
+// Filter to only include h2 and h3 headings (depth 2 and 3)
+const filteredLinks = links.filter((link) => link.depth >= 2 && link.depth <= 3)
 ---
 
-<div class="fixed right-0 h-full lg:h-auto lg:overflow-y-visible">
-  <div class="w-128 sticky" aria-label="Auf dieser Seite">
-    {links.map((link) => <a href={`#${link.slug}`}>{link.text}</a>)}
-  </div>
-</div>
+{
+  filteredLinks.length > 0 && (
+    <>
+      {/* Mobile: Collapsible dropdown */}
+      <div class="xl:hidden mb-4">
+        <details class="collapse collapse-arrow bg-base-200">
+          <summary class="collapse-title min-h-0 py-2 font-medium">
+            {label}
+          </summary>
+          <div class="collapse-content">
+            <ul class="menu menu-sm">
+              {filteredLinks.map((link) => (
+                <li>
+                  <a
+                    href={`#${link.slug}`}
+                    class={cn({
+                      'pl-4': link.depth === 2,
+                      'pl-8': link.depth === 3,
+                    })}
+                  >
+                    {link.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      {/* Desktop: Fixed sidebar on the right */}
+      <div class="hidden xl:block fixed right-4 top-20 w-64 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <div class="border-l border-base-300 pl-4">
+          <h4 class="font-semibold text-sm mb-2 text-base-content/70">
+            {label}
+          </h4>
+          <ul class="menu menu-sm p-0">
+            {filteredLinks.map((link) => (
+              <li>
+                <a
+                  href={`#${link.slug}`}
+                  class={cn('hover:text-primary', {
+                    'pl-0': link.depth === 2,
+                    'pl-4': link.depth === 3,
+                  })}
+                >
+                  {link.text}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </>
+  )
+}

@@ -1,23 +1,36 @@
 ---
+import { cn } from '../../src/tools/cn'
 import type { Entry } from './types'
 
 interface Props {
   entry: Entry
+  currentPath?: string
 }
 
-const { entry } = Astro.props
+const { entry, currentPath = Astro.url.pathname } = Astro.props
+
+// Check if entry or any of its children are active
+const isActiveOrHasActiveChild = (e: Entry[string]): boolean => {
+  if (e.href === currentPath) return true
+  if (e.subEntry) {
+    return Object.values(e.subEntry).some(isActiveOrHasActiveChild)
+  }
+  return false
+}
 ---
 
-{Object.entries(entry).map(([key, entry]) => {
-  const label = entry.label ?? key;
+{Object.entries(entry).map(([key, e]) => {
+  const label = e.label ?? key;
+  const isActive = e.href === currentPath;
+  const hasActiveChild = e.subEntry && Object.values(e.subEntry).some(isActiveOrHasActiveChild);
   return (
-    <li class={entry.className}>
-      {entry.href
-        ? <a href={entry.href}>{label}</a>
+    <li class={e.className}>
+      {e.href
+        ? <a href={e.href} class={cn({ 'bg-base-200 font-semibold': isActive })}>{label}</a>
         : <span class='menu-title'>{label}</span>}
-      {entry.subEntry ? (
+      {e.subEntry ? (
         <ul>
-          <Astro.self entry={entry.subEntry} />
+          <Astro.self entry={e.subEntry} currentPath={currentPath} />
         </ul>
       ) : null}
     </li>

@@ -453,3 +453,47 @@ When adding external scripts:
    }
    ```
 3. **Content Security Policy**: Configure CSP headers if using strict security policies
+
+## Navigation Features
+
+Shipyard includes several Docusaurus-like navigation features to enhance the user experience.
+
+### Active Sidebar Highlighting
+
+The currently active page is automatically highlighted in the sidebar with a background color and bold text. This helps users quickly identify their current location in the documentation.
+
+The active state is determined by matching the current URL path against the navigation tree. No additional configuration is required.
+
+### Breadcrumbs
+
+Breadcrumbs are automatically displayed above the content on documentation pages, showing the navigation path to the current page. This helps users understand the document structure and navigate back to parent sections.
+
+The breadcrumbs component uses DaisyUI styling and is integrated automatically in the docs layout. Features:
+
+- Automatically generated from the sidebar navigation structure
+- Clickable links to parent sections (except the current page)
+- Clean, minimal styling that matches your theme
+
+### Table of Contents
+
+Documentation pages automatically display a table of contents with links to headings (h2 and h3) in the current page. The display adapts to screen size:
+
+**Desktop (xl breakpoint and above):**
+- Fixed sidebar on the right side of the content
+- Always visible while scrolling
+- Shows heading hierarchy with indentation
+
+**Mobile (below xl breakpoint):**
+- Collapsible dropdown labeled "On this page"
+- Expands to show all headings when clicked
+- Space-efficient design
+
+The table of contents is generated from the markdown headings in your content. No additional configuration is required - just write your documentation with clear heading structure.
+
+#### Customizing the Table of Contents Label
+
+You can customize the "On this page" label in your layout if needed:
+
+```astro
+<TableOfContents links={headings} label="In this article" />
+```
