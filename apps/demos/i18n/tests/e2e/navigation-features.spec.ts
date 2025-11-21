@@ -2,14 +2,14 @@ import { expect, test } from '@playwright/test'
 
 test.describe('Navigation Features', () => {
   test.describe('Active Sidebar Highlighting', () => {
-    test('current page is highlighted in sidebar with background and bold text', async ({
+    test('current page is highlighted in sidebar with background and medium font', async ({
       page,
     }) => {
       await page.goto('/en/docs/garden-beds')
 
-      // The active link should have bg-base-200 and font-semibold classes
+      // The active link should have bg-base-200/50 and font-medium classes
       const activeLink = page.locator(
-        '.drawer-side a[href="/en/docs/garden-beds"].bg-base-200.font-semibold',
+        '.drawer-side a[href="/en/docs/garden-beds"].font-medium.text-primary',
       )
       await expect(activeLink).toBeAttached()
       await expect(activeLink).toContainText('Garden Beds')
@@ -18,13 +18,13 @@ test.describe('Navigation Features', () => {
     test('other sidebar items are not highlighted', async ({ page }) => {
       await page.goto('/en/docs/garden-beds')
 
-      // Other links should NOT have the bg-base-200 font-semibold classes
+      // Other links should NOT have the font-medium text-primary classes
       const vegetablesLink = page.locator(
         '.drawer-side a[href="/en/docs/vegetables"]',
       )
       await expect(vegetablesLink).toBeAttached()
-      await expect(vegetablesLink).not.toHaveClass(/bg-base-200/)
-      await expect(vegetablesLink).not.toHaveClass(/font-semibold/)
+      await expect(vegetablesLink).not.toHaveClass(/font-medium/)
+      await expect(vegetablesLink).not.toHaveClass(/text-primary/)
     })
 
     test('navigating to different page updates active highlighting', async ({
@@ -36,7 +36,7 @@ test.describe('Navigation Features', () => {
       const gardenBedsLink = page.locator(
         '.drawer-side a[href="/en/docs/garden-beds"]',
       )
-      await expect(gardenBedsLink).toHaveClass(/bg-base-200/)
+      await expect(gardenBedsLink).toHaveClass(/font-medium/)
 
       // Navigate to vegetables
       await page.locator('.drawer-side a[href="/en/docs/vegetables"]').click()
@@ -46,13 +46,13 @@ test.describe('Navigation Features', () => {
       const vegetablesLink = page.locator(
         '.drawer-side a[href="/en/docs/vegetables"]',
       )
-      await expect(vegetablesLink).toHaveClass(/bg-base-200/)
-      await expect(vegetablesLink).toHaveClass(/font-semibold/)
+      await expect(vegetablesLink).toHaveClass(/font-medium/)
+      await expect(vegetablesLink).toHaveClass(/text-primary/)
 
       const gardenBedsLinkAfter = page.locator(
         '.drawer-side a[href="/en/docs/garden-beds"]',
       )
-      await expect(gardenBedsLinkAfter).not.toHaveClass(/bg-base-200/)
+      await expect(gardenBedsLinkAfter).not.toHaveClass(/font-medium/)
     })
 
     test('nested page active state works correctly', async ({ page }) => {
@@ -60,7 +60,7 @@ test.describe('Navigation Features', () => {
 
       // The custom-class link should be active
       const customClassLink = page.locator(
-        '.drawer-side a[href="/en/docs/sidebar-demo/custom-class"].bg-base-200.font-semibold',
+        '.drawer-side a[href="/en/docs/sidebar-demo/custom-class"].font-medium.text-primary',
       )
       await expect(customClassLink).toBeAttached()
 
@@ -68,7 +68,7 @@ test.describe('Navigation Features', () => {
       const parentLink = page.locator(
         '.drawer-side a[href="/en/docs/sidebar-demo"]',
       )
-      await expect(parentLink).not.toHaveClass(/bg-base-200/)
+      await expect(parentLink).not.toHaveClass(/font-medium/)
     })
 
     test('active highlighting has correct styles computed', async ({
@@ -81,11 +81,11 @@ test.describe('Navigation Features', () => {
       )
       await expect(activeLink).toBeAttached()
 
-      // Check font-weight is bold (700)
+      // Check font-weight is medium (500)
       const fontWeight = await activeLink.evaluate(
         (el) => window.getComputedStyle(el).fontWeight,
       )
-      expect(Number.parseInt(fontWeight, 10)).toBeGreaterThanOrEqual(600)
+      expect(Number.parseInt(fontWeight, 10)).toBeGreaterThanOrEqual(500)
     })
   })
 
@@ -206,28 +206,28 @@ test.describe('Navigation Features', () => {
       })
     })
 
-    test.describe('Desktop TOC (Fixed Sidebar)', () => {
+    test.describe('Desktop TOC (Sidebar in Grid)', () => {
       test.use({ viewport: { width: 1440, height: 900 } })
 
       test('desktop TOC is visible on large screens', async ({ page }) => {
         await page.goto('/en/docs/garden-beds')
 
-        // Desktop TOC should be visible (hidden xl:block)
-        const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+        // Desktop TOC should be visible (hidden xl:block in grid column)
+        const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
         await expect(desktopToc).toBeVisible()
       })
 
       test('desktop TOC shows "On this page" header', async ({ page }) => {
         await page.goto('/en/docs/garden-beds')
 
-        const tocHeader = page.locator('.hidden.xl\\:block h4')
+        const tocHeader = page.locator('.hidden.xl\\:block.col-span-3 h4')
         await expect(tocHeader).toContainText('On this page')
       })
 
       test('desktop TOC shows page headings', async ({ page }) => {
         await page.goto('/en/docs/garden-beds')
 
-        const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+        const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
         const links = desktopToc.locator('a')
 
         // Should have heading links
@@ -240,7 +240,7 @@ test.describe('Navigation Features', () => {
       }) => {
         await page.goto('/en/docs/garden-beds')
 
-        const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+        const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
         const firstLink = desktopToc.locator('a').first()
         const href = await firstLink.getAttribute('href')
 
@@ -253,7 +253,7 @@ test.describe('Navigation Features', () => {
       }) => {
         await page.goto('/en/docs/garden-beds')
 
-        const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+        const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
 
         // h3 headings should have pl-4 class for indentation
         const h3Links = desktopToc.locator('a.pl-4')
@@ -266,7 +266,7 @@ test.describe('Navigation Features', () => {
       test('clicking TOC link scrolls to section', async ({ page }) => {
         await page.goto('/en/docs/garden-beds')
 
-        const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+        const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
         const firstLink = desktopToc.locator('a').first()
 
         await firstLink.click()
@@ -283,7 +283,7 @@ test.describe('Navigation Features', () => {
         await page.goto('/docs/custom-toc-example')
 
         // Check for custom label text
-        const tocHeader = page.locator('.hidden.xl\\:block h4')
+        const tocHeader = page.locator('.hidden.xl\\:block.col-span-3 h4')
         if ((await tocHeader.count()) > 0) {
           const text = await tocHeader.textContent()
           // Should show custom label if one was set
@@ -304,7 +304,7 @@ test.describe('Navigation Features', () => {
 
       // Active sidebar highlighting works
       const activeLink = page.locator(
-        '.drawer-side a[href="/en/docs/garden-beds"].bg-base-200.font-semibold',
+        '.drawer-side a[href="/en/docs/garden-beds"].font-medium.text-primary',
       )
       await expect(activeLink).toBeAttached()
 
@@ -313,7 +313,7 @@ test.describe('Navigation Features', () => {
       await expect(breadcrumbs).toBeAttached()
 
       // Desktop TOC works (garden-beds has h2/h3 headings)
-      const desktopToc = page.locator('.hidden.xl\\:block.fixed')
+      const desktopToc = page.locator('.hidden.xl\\:block.col-span-3')
       await expect(desktopToc).toBeVisible()
     })
   })
