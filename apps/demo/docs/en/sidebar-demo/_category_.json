@@ -1,0 +1,8 @@
+{
+  "label": "Sidebar Demo",
+  "position": 10,
+  "className": "sidebar-demo-category",
+  "customProps": {
+    "icon": "🧪"
+  }
+}
