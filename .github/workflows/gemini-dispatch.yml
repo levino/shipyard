@@ -124,8 +124,15 @@ jobs:
                 issue_number: context.issue.number,
                 content: 'eyes'
               });
-            } else if (eventName === 'issue_comment' || eventName === 'pull_request_review_comment') {
+            } else if (eventName === 'issue_comment') {
               await github.rest.reactions.createForIssueComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: context.payload.comment.id,
+                content: 'eyes'
+              });
+            } else if (eventName === 'pull_request_review_comment') {
+              await github.rest.reactions.createForPullRequestReviewComment({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 comment_id: context.payload.comment.id,
