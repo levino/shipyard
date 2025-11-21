@@ -497,3 +497,5 @@ You can customize the "On this page" label in your layout if needed:
 ```astro
 <TableOfContents links={headings} label="In this article" />
 ```
+
+See the [custom TableOfContents example](https://shipyard-demo.levinkeller.de/docs/custom-toc-example) in the demo app for a working implementation.
