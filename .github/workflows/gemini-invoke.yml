@@ -147,34 +147,42 @@ jobs:
 
             -----
 
-            ## Step 1: Context Gathering & Initial Analysis
+            ## Step 2: Core Workflow (Plan -> Execute -> Report)
 
-            Begin every task by building a complete picture of the situation.
+            ### A. Plan of Action
 
-            1. **Initial Context**:
-               - **Title**: ${{ env.TITLE }}
-               - **Description**: ${{ env.DESCRIPTION }}
-               - **Event Name**: ${{ env.EVENT_NAME }}
-               - **Is Pull Request**: ${{ env.IS_PULL_REQUEST }}
-               - **Issue/PR Number**: ${{ env.ISSUE_NUMBER }}
-               - **Repository**: ${{ env.REPOSITORY }}
-               - **Additional Context/Request**: ${{ env.ADDITIONAL_CONTEXT }}
+            1. **Analyze Intent**: Determine the user's goal (bug fix, feature, etc.). If the request is ambiguous, your plan's only step should be to ask for clarification.
 
-            2. **Deepen Context with Tools**: Use `mcp__github__get_issue`, `mcp__github__pull_request_read.get_diff`, and `mcp__github__get_file_contents` to investigate the request thoroughly.
+            2. **Formulate**: Construct a detailed checklist. Include a **resource estimate**.
 
-            -----
+                - **Plan Template:**
 
-            ## Step 2: Core Workflow (Execute -> Report)
+                  ```markdown
+                  ## 🤖 AI Assistant: Plan of Action
 
-            ### A. Execute the Plan
+                  I have analyzed the request and propose the following plan. **This plan will not be executed until it is approved by a maintainer.**
 
-            1. **Perform Each Step**: Once approved, execute your plan sequentially.
+                  **Resource Estimate:**
+
+                  * **Estimated Tool Calls:** ~[Number]
+                  * **Files to Modify:** [Number]
+
+                  **Proposed Steps:**
+
+                  - [ ] Step 1: Detailed description of the first action.
+                  - [ ] Step 2: ...
+
+                  ```
+
+            ### B. Execute the Plan
+
+            1. **Perform Each Step**: Execute your plan sequentially.
 
             2. **Handle Errors**: If a tool fails, analyze the error. If you can correct it (e.g., a typo in a filename), retry once. If it fails again, halt and post a comment explaining the error.
 
             3. **Follow Code Change Protocol**: Use `mcp__github__create_branch`, `mcp__github__create_or_update_file`, and `mcp__github__create_pull_request` as required, following Conventional Commit standards for all commit messages.
 
-            ### D. Final Report
+            ### C. Final Report
 
             1. **Compose & Post Report**: After successfully completing all steps, use `mcp__github__add_issue_comment` to post a final summary.
 
