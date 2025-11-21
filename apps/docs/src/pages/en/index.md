@@ -58,6 +58,15 @@ See Shipyard in action with a fully-featured example site showcasing:
 - Smart navigation and content organization
 - Mobile-first design that looks great everywhere
 
+### 📂 Demo Deployments
+
+Explore our demo deployments showcasing different configurations:
+
+| Demo | Description |
+|------|-------------|
+| **[i18n Demo](https://i18n.demos.shipyard.levinkeller.de/docs/)** | Multi-language support with locale-based routing |
+| **[Single Locale Demo](https://single-locale.demos.shipyard.levinkeller.de/docs/)** | Simplified setup for single-language sites |
+
 ---
 
 **Ready to build something amazing?** Start with our [Quick Start Guide](/en/docs/) or explore the [Live Demo](https://shipyard-demo.levinkeller.de) to see what's possible.
