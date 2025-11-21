@@ -150,6 +150,46 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
       await expect(itemWithWarning).toBeAttached()
     })
 
+    test('custom class CSS is actually applied (font-bold)', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/sidebar-demo/')
+
+      // Verify that the font-bold class actually results in bold text
+      const itemWithClass = page.locator('.drawer-side li.font-bold')
+      await expect(itemWithClass).toBeAttached()
+
+      // Check computed style to verify CSS is applied
+      const fontWeight = await itemWithClass.evaluate(
+        (el) => window.getComputedStyle(el).fontWeight,
+      )
+
+      // font-bold in Tailwind = font-weight: 700
+      // Normal text is typically 400
+      expect(Number.parseInt(fontWeight, 10)).toBeGreaterThanOrEqual(700)
+    })
+
+    test('custom class CSS is actually applied (text-warning color)', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/sidebar-demo/')
+
+      // Verify that the text-warning class actually changes the color
+      const itemWithClass = page.locator('.drawer-side li.text-warning')
+      await expect(itemWithClass).toBeAttached()
+
+      // Check computed style to verify CSS is applied
+      const color = await itemWithClass.evaluate(
+        (el) => window.getComputedStyle(el).color,
+      )
+
+      // text-warning should NOT be the default text color (usually black/white)
+      // DaisyUI warning color is typically yellow/orange (rgb values vary by theme)
+      // Default text color in most themes is something like rgb(0, 0, 0) or rgb(255, 255, 255)
+      expect(color).not.toBe('rgb(0, 0, 0)')
+      expect(color).not.toBe('rgb(255, 255, 255)')
+    })
+
     test('item with custom class contains the correct link', async ({
       page,
     }) => {

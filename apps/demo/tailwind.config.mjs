@@ -6,6 +6,7 @@ import daisyui from 'daisyui'
 export default {
   content: [
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './docs/**/*.{md,mdx}',
     path.join(
       path.dirname(require.resolve('@levino/shipyard-base')),
       '../astro/**/*.astro',
