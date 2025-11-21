@@ -12,8 +12,8 @@ const sidebars: SidebarsConfig = {
       label: 'Sidebar Demo',
       items: [
         'sidebar-demo/index',
-        'sidebar-demo/custom-label',
         'sidebar-demo/custom-class',
+        'sidebar-demo/custom-label',
       ],
     },
   ],

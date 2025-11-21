@@ -66,6 +66,13 @@ Shipyard consists of three main packages:
 - **`@levino/shipyard-docs`** – Documentation-specific features and smart navigation  
 - **`@levino/shipyard-blog`** – Complete blogging functionality with layouts
 
+## 🔬 Docusaurus Comparison Demos
+
+For development and comparison purposes, we maintain Docusaurus equivalents of our demos:
+
+- **[i18n Docusaurus Demo](https://docusaurus.i18n.demos.shipyard.levinkeller.de/docs/)** - Multi-language Docusaurus setup
+- **[Single Locale Docusaurus Demo](https://docusaurus.single-locale.demos.shipyard.levinkeller.de/docs/)** - Single-language Docusaurus setup
+
 ## 🤝 Contributing
 
 We welcome contributions! This is a monorepo managed with npm workspaces.

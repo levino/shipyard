@@ -21,3 +21,11 @@ This demonstrates that `sidebar_position` controls the order, regardless of file
 - `sidebar_position` - Control the order of items in the sidebar
 - `sidebar_label` - Override the display label in the sidebar
 - `sidebar_class_name` - Add custom CSS classes to the sidebar item
+
+## Why No `sidebar_custom_props`?
+
+Unlike Docusaurus, Shipyard does not currently support `sidebar_custom_props`. In Docusaurus, custom props are used for features like badges ("New", "Beta", "Deprecated") or other metadata that can be rendered by custom sidebar components.
+
+Since Shipyard uses a standard sidebar component that doesn't consume custom props, supporting this feature would require users to create their own sidebar component. We may add this feature in a future version when we have a clearer use case and implementation plan.
+
+For now, you can achieve similar visual effects using `sidebar_class_name` with Tailwind/DaisyUI utility classes.
