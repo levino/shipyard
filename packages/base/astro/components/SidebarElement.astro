@@ -9,9 +9,13 @@ interface Props {
 
 const { entry, currentPath = Astro.url.pathname } = Astro.props
 
+// Normalize path by removing trailing slash for comparison
+const normalizePath = (path: string) => path.replace(/\/$/, '') || '/'
+
 // Check if entry or any of its children are active
 const isActiveOrHasActiveChild = (e: Entry[string]): boolean => {
-  if (e.href === currentPath) return true
+  if (e.href && normalizePath(e.href) === normalizePath(currentPath))
+    return true
   if (e.subEntry) {
     return Object.values(e.subEntry).some(isActiveOrHasActiveChild)
   }
@@ -21,7 +25,7 @@ const isActiveOrHasActiveChild = (e: Entry[string]): boolean => {
 
 {Object.entries(entry).map(([key, e]) => {
   const label = e.label ?? key;
-  const isActive = e.href === currentPath;
+  const isActive = e.href && normalizePath(e.href) === normalizePath(currentPath);
   const hasActiveChild = e.subEntry && Object.values(e.subEntry).some(isActiveOrHasActiveChild);
   return (
     <li class={e.className}>
