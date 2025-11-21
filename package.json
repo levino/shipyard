@@ -11,7 +11,6 @@
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "2.2.3",
-    "@google/gemini-cli": "^0.16.0",
     "lefthook": "^1.12.3",
     "lint-staged": "^15.2.0",
     "turbo": "^2.3.3",
