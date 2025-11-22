@@ -46,7 +46,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 
 - [x] `title` - Document title
 - [x] `description` - Meta description for SEO
-- [x] `slug` - Custom URL slug
+- [ ] `slug` - Custom URL slug
 - [x] `sidebar_label` - Custom sidebar label
 - [x] `sidebar_position` - Position in sidebar
 - [x] `sidebar_class_name` - Custom CSS class for sidebar item
@@ -167,7 +167,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [ ] `draft` - Mark as draft
 - [ ] `unlisted` - Unlisted post
 - [ ] `last_update` - Last update info
-- [ ] `slug` - Custom URL slug
+- [ ] `slug` - Custom URL slug (routing based on file path)
 
 ### Author Features
 

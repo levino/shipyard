@@ -1,6 +1,5 @@
 ---
 title: Shipyard Documentation
-slug: 'en'
 ---
 
 # Build Beautiful Websites with Shipyard
