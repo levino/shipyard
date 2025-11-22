@@ -4,7 +4,15 @@ on:
   push:
     branches:
       - main
-      - changeset-release/main
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type'
+        required: true
+        default: 'rc'
+        type: choice
+        options:
+          - rc
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -12,7 +20,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.event_name == 'push'
     permissions:
       id-token: write
     steps:
@@ -43,7 +51,7 @@ jobs:
   release-candidate:
     name: Release Candidate
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/changeset-release/main'
+    if: github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
       id-token: write
@@ -55,8 +63,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
         run: npm ci
-      - name: Add RC identifier to versions
-        run: sed -i "s/\"version\": \"\([^\"]*\)\"/\"version\": \"\1-rc.$(git rev-parse --short HEAD)\"/" packages/*/package.json
+      - name: Create RC versions
+        run: npx changeset version --snapshot rc
       - name: Publish RC to npm
         run: npx changeset publish --tag rc --no-git-tag
         env:
