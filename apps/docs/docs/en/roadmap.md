@@ -50,7 +50,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] `sidebar_label` - Custom sidebar label
 - [x] `sidebar_position` - Position in sidebar
 - [x] `sidebar_class_name` - Custom CSS class for sidebar item
-- [ ] `sidebar_custom_props` - Custom properties for sidebar item (schema exists, not rendered)
+- [ ] `sidebar_custom_props` - Custom properties for sidebar item
 - [ ] `id` - Document ID for referencing
 - [ ] `hide_title` - Hide the title heading
 - [ ] `hide_table_of_contents` - Hide TOC sidebar
@@ -59,7 +59,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [ ] `pagination_next` - Custom next page
 - [ ] `pagination_prev` - Custom previous page
 - [ ] `pagination_label` - Custom pagination label
-- [x] `keywords` - Keywords for SEO (via Astro)
+- [ ] `keywords` - Keywords for SEO
 - [ ] `image` - Social media preview image
 - [ ] `tags` - Document tags
 - [ ] `draft` - Mark as draft (excluded from production)
@@ -112,7 +112,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] Meta description from frontmatter
 - [x] OpenGraph tags (`og:title`, `og:description`)
 - [ ] Custom canonical URLs
-- [x] Keywords support (via Astro)
+- [ ] Keywords support
 - [ ] Custom meta tags via frontmatter
 - [ ] Social card images
 - [x] Sitemap generation (via Astro sitemap integration)
@@ -126,7 +126,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] Blog post management from Markdown/MDX files
 - [x] Blog listing page with posts
 - [x] Individual blog post pages
-- [x] Author management
+- [ ] Author management
 - [ ] Tag system for blog posts
 - [ ] RSS/Atom feed generation
 - [ ] Archive page
@@ -142,7 +142,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [ ] Posts per page (pagination)
 - [ ] Custom blog list component (partial - uses Astro)
 - [ ] Custom blog post component (partial - uses Astro)
-- [x] Authors map file support
+- [ ] Authors map file support
 - [ ] Show reading time
 - [ ] Custom reading time calculation
 - [ ] "Edit this page" links
@@ -157,7 +157,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] `title` - Post title
 - [x] `description` - Post description/excerpt
 - [x] `date` - Publication date
-- [x] `authors` - Post author(s) with name and role
+- [ ] `authors` - Post author(s)
 - [ ] `tags` - Post tags
 - [ ] `image` - Social card image
 - [ ] `keywords` - SEO keywords
@@ -171,14 +171,14 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 
 ### Author Features
 
-- [x] Author name
-- [x] Author role/title
+- [ ] Author name
+- [ ] Author role/title
 - [ ] Author URL/website
 - [ ] Author avatar image
 - [ ] Author email
 - [ ] Generated author pages
-- [x] Multiple authors per post
-- [x] Inline author definition in frontmatter
+- [ ] Multiple authors per post
+- [ ] Inline author definition in frontmatter
 
 ### Tag Features
 
@@ -358,8 +358,8 @@ We welcome contributions to help reach feature parity with Docusaurus! If you'd 
 
 1. Check the [GitHub Issues](https://github.com/levino/shipyard/issues) for existing discussions
 2. Open a new issue to discuss your proposed implementation
-3. Submit a pull request following the [contribution guidelines](https://github.com/levino/shipyard)
+3. Submit a pull request
 
 ---
 
-*Last updated: November 2024*
+*Last updated: November 2025*
