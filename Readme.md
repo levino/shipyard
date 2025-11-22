@@ -50,7 +50,7 @@ Learn everything from installation to advanced customization with our comprehens
 
 ## 🌟 Live Demo
 
-**[🚀 Explore the Demo →](https://shipyard-demo.levinkeller.de)**
+**[🚀 Explore the Demo →](https://i18n.demos.shipyard.levinkeller.de)**
 
 See Shipyard in action! The demo showcases all features including:
 - Responsive documentation layouts
