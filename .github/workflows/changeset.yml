@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - changeset-release/main
 
 concurrency: ${{ github.workflow }}-${{ github.ref }}
 
@@ -11,6 +12,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
     permissions:
       id-token: write
     steps:
@@ -25,6 +27,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+          registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
         run: npm ci
       - name: Create Release Pull Request or Publish to npm
@@ -35,4 +38,23 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  release-candidate:
+    name: Release Candidate
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/changeset-release/main'
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          registry-url: 'https://registry.npmjs.org'
+      - name: Install Dependencies
+        run: npm ci
+      - name: Publish RC to npm
+        run: npx changeset publish --tag rc
+        env:
           NPM_CONFIG_PROVENANCE: true
