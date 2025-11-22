@@ -1,92 +1,189 @@
-# Copilot Instructions for Shipyard
+# Shipyard - GitHub Copilot Instructions
 
-## Project Overview
+Always follow these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
-Shipyard is an Astro-based documentation and blog framework built with
-TypeScript. It provides reusable layouts, components, and utilities for building
-documentation sites with blogs.
+## Working Effectively
 
-## Key Architecture
+### Bootstrap, Build, and Test the Repository
+Run commands in this exact sequence from the repository root:
 
-- **Monorepo structure**: Uses npm workspaces with packages and apps
-- **Packages**:
-  - `@levino/shipyard-base`: Core layouts, components, and utilities
-  - `@levino/shipyard-blog`: Blog-specific functionality
-  - `@levino/shipyard-docs`: Documentation-specific functionality
-- **Apps**:
-  - `demo`: Example implementation showcasing the framework
-  - `docs`: Documentation for the framework itself
+- `npm ci` -- installs all dependencies. Takes ~25 seconds. NEVER CANCEL.
+- `npx biome ci .` -- runs linting checks. Takes <1 second.
+- `npm run test --workspaces --if-present` -- runs all unit tests. Takes <2 seconds total.
+- `npm run build --workspace=demo` -- builds demo app. Takes ~4 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
+- `npm run build --workspace=docs` -- builds docs app. Takes ~4 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
 
-## Code Style Guidelines
+### Run Unit Tests
+Unit tests use Vitest and are located in individual packages:
+- `cd packages/docs && npx vitest run` -- runs docs package tests (~1 second)
+- `cd packages/base && npx vitest run` -- runs base package tests (~1 second)
 
-- **Functions**: Prefer functional programming style over OOP
-- **Comments**: Should be minimal and only used when necessary (comments should
-  be apologies)
-- **File organization**: Group related functionality in appropriate directories
-  (e.g., utilities in `tools/`)
-- **Naming**: Use clear, concise names (e.g., `getTitle` instead of
-  `constructPageTitle`)
+### Run the Applications
+Both demo and docs apps can run in development or preview mode:
 
-## Testing Strategy
+**Development mode** (with hot reload):
+- Demo: `cd apps/demo && npm run dev` -- starts at http://localhost:4321/, takes ~1 second to start
+- Docs: `cd apps/docs && npm run dev` -- starts at http://localhost:4321/, takes ~1 second to start
 
-- **Unit tests**: For isolated utility functions using Vitest
-- **Integration tests**: Using Playwright for end-to-end testing of the demo app
-- **Regression tests**: Ensure fixes don't break in the future
+**Preview mode** (production build):
+- Demo: `cd apps/demo && npm run preview` -- requires build first, starts at http://localhost:4321/
+- Docs: `cd apps/docs && npm run preview` -- requires build first, starts at http://localhost:4321/
 
-## Development Workflow
+### E2E Testing with Playwright
+E2E tests are located in `apps/demo/tests/e2e/`:
+- `cd apps/demo && npx playwright install --with-deps` -- installs browsers. Takes 5-15 minutes. NEVER CANCEL. Set timeout to 1200+ seconds. May fail in some environments due to download restrictions.
+- `npm run test:e2e` -- runs E2E tests. Takes ~30 seconds if browsers are installed. NEVER CANCEL. Set timeout to 300+ seconds.
+- `npm run test:e2e:ui` -- runs E2E tests with UI for debugging
 
-1. Make minimal, surgical changes to address specific issues
-2. Test changes early and iteratively
-3. Use existing tools and frameworks rather than reinventing
-4. Validate with both unit and integration tests
-5. **Always add changeset information** using `npx changeset add` for any
-   changes that affect packages
+Note: If Playwright browser installation fails, document it as "E2E tests require Playwright browsers which may fail to install in restricted environments."
 
-## Pull Request Workflow
+## Validation
+Always validate changes by running through complete end-to-end scenarios:
 
-- **Open PRs as "ready for review"** by default rather than draft status
-- Only use draft status for PRs with significant blocking issues that need
-  resolution before review
-- Avoid unnecessary friction in the review process
+### Manual Validation Scenarios
+After making any changes, ALWAYS test these scenarios:
 
-## CI/CD
+1. **Build Validation**: Run both demo and docs builds successfully
+2. **Navigation Testing**: 
+   - Start demo app: `cd apps/demo && npm run dev`
+   - Visit http://localhost:4321/ (redirects to locale-specific URL)
+   - Test navigation between Blog, About pages
+   - Verify internationalization works by visiting `/en/blog` and `/de/blog`
+   - Confirm navigation links include locale prefixes correctly
+3. **Content Validation**:
+   - Verify blog posts load correctly
+   - Check that titles display properly (format: "Site Title - Page Title")
+   - Ensure styling with Tailwind CSS + DaisyUI works
 
-- Uses GitHub Actions for linting, formatting, unit tests, and e2e tests
-- Biome for linting and formatting
-- Node.js for building and testing
+### Pre-commit Validation
+Always run these commands before committing changes or the CI (.github/workflows/checks.yml) will fail:
+- `npx biome format --write .` -- formats code
+- `npx biome ci .` -- validates formatting and linting
 
-## Common Patterns
+### Changeset Management
+ALWAYS create changeset files for any package changes:
+- `npx changeset add` -- creates a changeset for versioning and release notes
+- Use appropriate semver levels: `patch` for bug fixes, `minor` for features, `major` for breaking changes
+- Write user-focused descriptions (not implementation details)
 
-- **Title handling**: Use `getTitle(siteTitle, pageTitle)` from `tools/title.ts`
-- **Layouts**: Extend base layouts for consistent structure
-- **Navigation**: Use configuration-driven navigation system
+## Repository Structure
 
-## When Working on Issues
+### Monorepo Layout
+```
+shipyard/
+├── packages/
+│   ├── base/          # @levino/shipyard-base - Core components and layouts
+│   ├── docs/          # @levino/shipyard-docs - Documentation features
+│   └── blog/          # @levino/shipyard-blog - Blog functionality
+├── apps/
+│   ├── demo/          # Demo application showcasing all features
+│   └── docs/          # Documentation site for the framework
+├── .github/workflows/ # CI/CD with linting, unit tests, and E2E tests
+└── .changeset/        # Version management and release notes
+```
 
-1. Understand the current implementation first
-2. Look for existing patterns to follow
-3. Make the smallest possible change that fixes the issue
-4. Add appropriate tests (both unit and integration when applicable)
-5. Update documentation if changes affect public APIs
+### Key Technology Stack
+- **Framework**: Astro 5.x with TypeScript (strict mode)
+- **Styling**: Tailwind CSS with DaisyUI components
+- **Package Manager**: npm with workspaces
+- **Testing**: Vitest (unit tests), Playwright (E2E tests)
+- **Linting/Formatting**: Biome (replaces ESLint + Prettier)
+- **Internationalization**: Built-in i18n with EN/DE locales
+- **Git Hooks**: Husky with pre-commit formatting
 
-## Playwright Testing
+### Package Dependencies
+Each package uses peer dependencies for core frameworks:
+- `astro: ^5` (Astro framework)
+- `tailwindcss: ^3` (CSS framework) 
+- `daisyui: ^4` (Component library)
+- `@tailwindcss/typography: ^0.5.10` (Typography plugin)
 
-- Tests are in `apps/demo/tests/` directory (moved from root level)
-- Tests run against the demo app production build using `npm run preview`
-- Focus on testing user-facing functionality and regression prevention
-- Include tests for title handling, navigation, and core features
+## Common Tasks
 
-## Changesets
+### Frequently Used Commands and Outputs
 
-- **Always create changeset files** for any package changes using
-  `npx changeset add`
-- Changeset files document changes for versioning and release notes
-- Use appropriate semver levels: `patch` for bug fixes, `minor` for features,
-  `major` for breaking changes
-- **User-focused descriptions**: Write changeset descriptions for users of the
-  Shipyard framework, not developers
-- Keep descriptions concise (one line preferred) and focus on user-facing
-  benefits or fixes
-- Avoid mentioning internal file structure, testing details, or implementation
-  specifics
-- Specify which packages are affected by the changes
+#### Repository Root Contents
+```bash
+ls -la
+```
+```
+.changeset/     # Changeset configuration for versioning
+.github/        # GitHub workflows and configurations
+apps/           # Demo and docs applications
+packages/       # Core Shipyard packages
+biome.json      # Biome linting/formatting config
+package.json    # Root workspace configuration
+tailwind.config.js  # Tailwind CSS configuration
+tsconfig.json   # TypeScript configuration (extends Astro strictest)
+```
+
+#### Package Scripts Reference
+Root package.json scripts:
+- `test:e2e` -- runs E2E tests in demo app
+- `test:e2e:ui` -- runs E2E tests with UI
+- `prepare` -- installs git hooks with Husky
+
+Demo app scripts (`apps/demo/package.json`):
+- `dev` -- development server with hot reload
+- `build` -- production build
+- `preview` -- preview production build
+- `test:e2e` -- Playwright E2E tests
+
+### Navigation Patterns
+The Shipyard framework uses configuration-driven navigation:
+```javascript
+navigation: {
+  docs: { label: 'Documentation', href: '/docs' },
+  blog: { label: 'Blog', href: '/blog' },
+  about: { label: 'About', href: '/about' }
+}
+```
+
+### Content Organization
+Content is organized by locale:
+```
+src/content/
+├── docs/
+│   ├── en/ # English documentation
+│   └── de/ # German documentation  
+└── blog/
+    ├── en/ # English blog posts
+    └── de/ # German blog posts
+```
+
+### Title Handling
+Use the `getTitle(siteTitle, pageTitle)` utility from `packages/base/src/tools/title.ts` for consistent page titles.
+
+## Troubleshooting
+
+### Common Issues and Solutions
+
+**Build fails**: Check that all peer dependencies are properly installed by running `npm ci` in the root directory.
+
+**Styling issues**: Verify Tailwind CSS and DaisyUI are properly configured. Check that `tailwind({ applyBaseStyles: false })` is set in Astro config to avoid conflicts.
+
+**E2E tests fail**: Ensure Playwright browsers are installed with `npx playwright install --with-deps`. Tests may fail in restricted environments due to browser download limitations.
+
+**Git hooks not working**: Run `npm run prepare` to reinstall Husky git hooks.
+
+**Missing changesets**: Always run `npx changeset add` after making changes to packages to ensure proper versioning.
+
+### Performance Expectations
+- Dependency installation: ~25 seconds
+- Linting: <1 second  
+- Unit tests: <1 second per package
+- App builds: ~4 seconds each
+- Development server startup: ~1 second
+- E2E test suite: ~30 seconds (if browsers installed)
+
+### Development Workflow
+1. Make changes to packages or apps
+2. Test changes: `cd apps/demo && npm run dev`
+3. Run unit tests: `npm run test --workspaces --if-present`
+4. Build applications: `npm run build --workspace=demo`
+5. Format code: `npx biome format --write .`
+6. Validate: `npx biome ci .`
+7. Create changeset: `npx changeset add` (for package changes)
+8. Commit changes
+
+Always use the demo app as a testing ground for package changes and verify that internationalization features work correctly across both English and German locales.
