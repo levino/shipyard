@@ -44,9 +44,9 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 
 ### Frontmatter Support
 
-- [x] `title` - Document title
-- [x] `description` - Meta description for SEO
-- [x] `slug` - Custom URL slug
+- [x] `title` - Document title (used in sidebar, not yet in page `<title>` tag)
+- [x] `description` - Meta description for SEO (schema exists, not yet rendered in docs)
+- [ ] `slug` - Custom URL slug (routes are generated from file paths)
 - [x] `sidebar_label` - Custom sidebar label
 - [x] `sidebar_position` - Position in sidebar
 - [x] `sidebar_class_name` - Custom CSS class for sidebar item
