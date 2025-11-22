@@ -55,6 +55,13 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - name: Install Dependencies
         run: npm ci
+      - name: Add RC identifier to versions
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          for pkg in packages/*/package.json; do
+            VERSION=$(jq -r '.version' "$pkg")
+            jq --arg v "${VERSION}-rc.${SHORT_SHA}" '.version = $v' "$pkg" > tmp.json && mv tmp.json "$pkg"
+          done
       - name: Publish RC to npm
         run: npx changeset publish --tag rc --no-git-tag
         env:
