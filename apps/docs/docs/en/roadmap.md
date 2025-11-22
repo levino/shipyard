@@ -167,7 +167,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [ ] `draft` - Mark as draft
 - [ ] `unlisted` - Unlisted post
 - [ ] `last_update` - Last update info
-- [ ] `slug` - Custom URL slug (routing based on file path)
+- [ ] `slug` - Custom URL slug (currently routing is based on file path only)
 
 ### Author Features
 
