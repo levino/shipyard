@@ -94,4 +94,4 @@ MIT - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Ready to build something amazing?** [🚀 Get Started](https://shipyard-docs-levino.vercel.app) | [🌟 View Demo](https://shipyard-demo.levinkeller.de)
+**Ready to build something amazing?** [🚀 Get Started](https://shipyard.levinkeller.de) | [🌟 View Demo](https://i18n.demos.shipyard.levinkeller.de)
