@@ -2,9 +2,11 @@
 '@levino/shipyard-blog': patch
 ---
 
-Add customizable blog sidebar options
+Add customizable blog sidebar and pagination options
 
-You can now configure how blog posts appear in the sidebar:
+## Sidebar Configuration
+
+Configure how blog posts appear in the sidebar:
 
 - **blogSidebarCount**: Control the number of posts shown (default: 5)
   - Set to a number to limit displayed posts
@@ -12,7 +14,16 @@ You can now configure how blog posts appear in the sidebar:
 
 - **blogSidebarTitle**: Customize the sidebar section title (default: 'Recent posts')
 
-When posts exceed the configured limit, a "View all posts" link automatically appears.
+When posts exceed the configured limit, a "View all posts" link appears at the same level as the sidebar title for easy navigation.
+
+## Pagination
+
+The blog index page now supports pagination with DaisyUI-styled navigation:
+
+- **postsPerPage**: Number of posts per page (default: 10)
+- Pages are accessible at `/blog` (page 1) and `/blog/page/2`, `/blog/page/3`, etc.
+- Pagination includes previous/next buttons and page number links
+- Full support for i18n localized blog pages
 
 Example configuration:
 ```js
@@ -24,6 +35,7 @@ export default defineConfig({
     shipyardBlog({
       blogSidebarCount: 5,
       blogSidebarTitle: 'Recent posts',
+      postsPerPage: 10,
     }),
   ],
 })

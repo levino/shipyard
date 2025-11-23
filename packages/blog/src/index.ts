@@ -21,6 +21,11 @@ export const blogConfigSchema = z.object({
    * @default 'Recent posts'
    */
   blogSidebarTitle: z.string().default('Recent posts'),
+  /**
+   * Number of posts to show per page on the blog index.
+   * @default 10
+   */
+  postsPerPage: z.number().int().positive().default(10),
 })
 
 export type BlogConfig = z.infer<typeof blogConfigSchema>
@@ -64,6 +69,10 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
             entrypoint: `@levino/shipyard-blog/astro/BlogIndex.astro`,
           })
           injectRoute({
+            pattern: `/[locale]/blog/page/[page]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
+          })
+          injectRoute({
             pattern: `/[locale]/blog/[...slug]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
           })
@@ -72,6 +81,10 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
           injectRoute({
             pattern: `/blog`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndex.astro`,
+          })
+          injectRoute({
+            pattern: `/blog/page/[page]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
           })
           injectRoute({
             pattern: `/blog/[...slug]`,

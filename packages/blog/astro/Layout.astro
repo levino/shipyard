@@ -48,20 +48,20 @@ const postsEntry = displayPosts.reduce(
   {} as NavigationTree,
 )
 
-// Add "View all posts" link if there are more posts
-if (hasMorePosts) {
-  postsEntry['view-all'] = {
-    href: blogIndexPath,
-    label: 'View all posts',
-  }
-}
-
-// Wrap posts in a section with the sidebar title
+// Build navigation tree with posts section and optional "View all" link at same level
 const entry: NavigationTree = {
   posts: {
     label: blogSidebarTitle,
     subEntry: postsEntry,
   },
+}
+
+// Add "View all posts" link at the same level as the posts section
+if (hasMorePosts) {
+  entry['view-all'] = {
+    href: blogIndexPath,
+    label: 'View all posts',
+  }
 }
 ---
 

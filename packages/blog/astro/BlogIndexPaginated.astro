@@ -7,30 +7,50 @@ import Layout from './Layout.astro'
 
 const { postsPerPage } = blogConfig
 
-export const getStaticPaths = (() => {
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection('blog')
+
   if (i18n) {
-    return i18n.locales.map((locale) => {
+    const paths: Array<{ params: { locale: string; page: string } }> = []
+
+    for (const locale of i18n.locales) {
       if (typeof locale !== 'string') {
         throw new Error('Shipyard does only support strings as locales.')
       }
-      return {
-        params: {
-          locale,
-        },
+
+      const localePosts = allPosts.filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === locale
+      })
+
+      const totalPages = Math.ceil(localePosts.length / blogConfig.postsPerPage)
+
+      // Generate pages 2+ only (page 1 is handled by BlogIndex.astro)
+      for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+        paths.push({ params: { locale, page: String(pageNum) } })
       }
-    })
+    }
+
+    return paths
   } else {
-    // For non-i18n, return a single path without locale
-    return [{ params: {} }]
+    const totalPages = Math.ceil(allPosts.length / blogConfig.postsPerPage)
+    const paths: Array<{ params: { page: string } }> = []
+
+    // Generate pages 2+ only
+    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+      paths.push({ params: { page: String(pageNum) } })
+    }
+
+    return paths
   }
 }) satisfies GetStaticPaths
 
-// Page 1 is always the index page (no page param)
-const currentPage = 1
+// Get current page from URL params
+const pageParam = Astro.params.page
+const currentPage = parseInt(pageParam, 10)
 
 const entries = await getCollection('blog').then((posts) => {
   if (i18n) {
-    // With i18n: filter by locale
     return posts
       .filter(({ id }) => {
         const [postLocale] = id.split('/')
@@ -38,7 +58,6 @@ const entries = await getCollection('blog').then((posts) => {
       })
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
-    // Without i18n: return all posts
     return posts.toSorted(
       (a, b) => b.data.date.getTime() - a.data.date.getTime(),
     )
