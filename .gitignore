@@ -130,3 +130,7 @@ build/
 
 .gemini/
 gha-creds-*.json
+
+# Playwright
+playwright-report/
+test-results/
