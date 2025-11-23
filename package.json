@@ -3,7 +3,10 @@
     "test:e2e": "cd apps/demos/i18n && npm run test:e2e",
     "test:e2e:ui": "cd apps/demos/i18n && npm run test:e2e:ui",
     "test:e2e:single-locale": "cd apps/demos/single-language && npm run test:e2e",
-    "test:e2e:single-locale:ui": "cd apps/demos/single-language && npm run test:e2e:ui"
+    "test:e2e:single-locale:ui": "cd apps/demos/single-language && npm run test:e2e:ui",
+    "test:e2e:multi-docs": "cd apps/demos/multi-docs && npm run test:e2e",
+    "test:e2e:multi-docs:ui": "cd apps/demos/multi-docs && npm run test:e2e:ui",
+    "test:unit": "cd packages/docs && npx vitest run"
   },
   "keywords": [],
   "author": "",

@@ -156,6 +156,11 @@ Documentation features:
    - Use minor version for new features (when above 1.0.0)
    - Use major version for breaking changes (when above 1.0.0)
    - Include a clear description of what changed and why
+9. **Testing Requirements**: All new features require extensive testing:
+   - Add Playwright E2E tests for user-facing features (in `apps/demos/*/tests/e2e/`)
+   - Add unit tests with Vitest when appropriate for utility functions and business logic
+   - Tests should cover both happy paths and edge cases
+   - Run `npm run test:e2e` to verify all tests pass before submitting changes
 
 ## Troubleshooting
 

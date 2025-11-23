@@ -86,8 +86,14 @@ export const createDocsCollection = (
 export default (config: DocsConfig = {}): AstroIntegration => {
   const { routeBasePath = 'docs' } = config
 
-  // Normalize the route base path (remove leading/trailing slashes)
-  const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
+  // Normalize the route base path (remove leading/trailing slashes safely)
+  let normalizedBasePath = routeBasePath
+  while (normalizedBasePath.startsWith('/')) {
+    normalizedBasePath = normalizedBasePath.slice(1)
+  }
+  while (normalizedBasePath.endsWith('/')) {
+    normalizedBasePath = normalizedBasePath.slice(0, -1)
+  }
 
   return {
     name: `shipyard-docs${normalizedBasePath !== 'docs' ? `-${normalizedBasePath}` : ''}`,

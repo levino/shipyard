@@ -52,7 +52,14 @@ export const getDocPath = (
   hasI18n: boolean,
   currentLocale?: string,
 ) => {
-  const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
+  // Remove leading and trailing slashes safely (avoid polynomial regex)
+  let normalizedBasePath = routeBasePath
+  while (normalizedBasePath.startsWith('/')) {
+    normalizedBasePath = normalizedBasePath.slice(1)
+  }
+  while (normalizedBasePath.endsWith('/')) {
+    normalizedBasePath = normalizedBasePath.slice(0, -1)
+  }
 
   if (hasI18n && currentLocale) {
     // Remove locale prefix from id (e.g., 'en/guide/intro' -> 'guide/intro')
