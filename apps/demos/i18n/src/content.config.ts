@@ -12,6 +12,10 @@ const docs = defineCollection({
   schema: docsSchema,
   loader: glob({ pattern: '**/*.md', base: './docs' }),
 })
+const guides = defineCollection({
+  schema: docsSchema,
+  loader: glob({ pattern: '**/*.md', base: './guides' }),
+})
 
 // 4. Export a single `collections` object to register your collection(s)
-export const collections = { blog, docs }
+export const collections = { blog, docs, guides }

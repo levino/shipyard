@@ -37,6 +37,18 @@ const config: Config = {
     ],
   ],
 
+  plugins: [
+    [
+      '@docusaurus/plugin-content-docs',
+      {
+        id: 'guides',
+        path: 'guides',
+        routeBasePath: 'guides',
+        sidebarPath: './sidebars.ts',
+      },
+    ],
+  ],
+
   themeConfig: {
     navbar: {
       title: 'Metro Gardens',
@@ -46,6 +58,13 @@ const config: Config = {
           sidebarId: 'docsSidebar',
           position: 'left',
           label: 'Documentation',
+        },
+        {
+          type: 'docSidebar',
+          sidebarId: 'guidesSidebar',
+          docsPluginId: 'guides',
+          position: 'left',
+          label: 'Guides',
         },
         { to: '/blog', label: 'Blog', position: 'left' },
         {
