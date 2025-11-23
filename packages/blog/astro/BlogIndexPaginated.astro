@@ -118,18 +118,18 @@ const visiblePages = getVisiblePages()
 ---
 
 <Layout title="Blog">
-  <div class="mx-auto max-w-prose px-8">
-    {
-      paginatedEntries.map(async (entry) => (
-        <a class="block my-8" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
-          <div class="prose">
+  <div class="max-w-7xl mx-auto">
+    <div class="prose max-w-none">
+      {
+        paginatedEntries.map(async (entry) => (
+          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
             <div class="text-sm">{formatDate(entry.data.date)}</div>
             <h2 class="my-0">{entry.data.title}</h2>
             <p>{entry.data.description}</p>
-          </div>
-        </a>
-      ))
-    }
+          </a>
+        ))
+      }
+    </div>
 
     {totalPages > 1 && (
       <div class="join flex justify-center my-8" data-testid="pagination">

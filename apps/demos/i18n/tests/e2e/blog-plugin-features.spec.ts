@@ -248,8 +248,8 @@ test.describe('Blog Plugin Features', () => {
     test('first page shows 10 posts (postsPerPage)', async ({ page }) => {
       await page.goto('/en/blog')
 
-      // Count blog posts on the page (excluding sidebar)
-      const blogPosts = page.locator('.mx-auto.max-w-prose > a')
+      // Count blog posts on the page (within main content area)
+      const blogPosts = page.locator('.max-w-7xl.mx-auto .prose a.block')
       const count = await blogPosts.count()
 
       // Should have exactly 10 posts per page
@@ -262,7 +262,7 @@ test.describe('Blog Plugin Features', () => {
 
       // German has 10+ posts (we created 10 German posts)
       // With postsPerPage: 10, we should have exactly 10 posts on first page
-      const blogPosts = page.locator('.mx-auto.max-w-prose > a')
+      const blogPosts = page.locator('.max-w-7xl.mx-auto .prose a.block')
       const count = await blogPosts.count()
       expect(count).toBe(10)
     })
