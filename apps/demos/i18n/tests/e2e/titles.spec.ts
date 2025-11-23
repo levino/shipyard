@@ -44,7 +44,7 @@ test.describe('Basic Site Functionality', () => {
     await expect(page.locator('body')).toBeVisible()
 
     // Check that blog post link works (first post on the page)
-    const firstPostLink = page.locator('.mx-auto.max-w-prose > a').first()
+    const firstPostLink = page.locator('.max-w-7xl .prose a').first()
     await firstPostLink.click()
     await expect(page).toHaveURL(/\/en\/blog\/\d{4}-\d{2}-\d{2}/)
   })
