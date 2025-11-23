@@ -51,7 +51,7 @@ npm install
 cd apps/demo
 npm run dev
 
-# Run docs app in development mode  
+# Run docs app in development mode
 cd apps/docs
 npm run dev
 
@@ -106,14 +106,14 @@ Core package providing:
 - Global CSS
 - Configuration schemas
 
-### @levino/shipyard-blog  
+### @levino/shipyard-blog
 Blog functionality:
 - BlogEntry and BlogIndex components
 - Blog-specific layouts
 
 ### @levino/shipyard-docs
 Documentation features:
-- DocsEntry components  
+- DocsEntry components
 - Documentation layouts
 - Sidebar navigation utilities
 
@@ -155,7 +155,10 @@ Documentation features:
    - Use patch version for bug fixes and minor improvements (especially in 0.x.y versions)
    - Use minor version for new features (when above 1.0.0)
    - Use major version for breaking changes (when above 1.0.0)
-   - Include a clear description of what changed and why
+   - **Write user-centric descriptions**: Focus on what users can now do, not what code was changed
+     - ✅ Good: "You can now host multiple documentation sections with custom URL paths"
+     - ❌ Bad: "Added `DocsConfig` interface with `routeBasePath` option"
+   - Explain the benefit and use case, not the implementation details
 9. **Testing Requirements**: All new features require extensive testing:
    - Add Playwright E2E tests for user-facing features (in `apps/demos/*/tests/e2e/`)
    - Add unit tests with Vitest when appropriate for utility functions and business logic

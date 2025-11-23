@@ -2,11 +2,8 @@
 "@levino/shipyard-docs": patch
 ---
 
-Add support for multiple documentation instances with configurable route mounting
+Add support for multiple documentation instances
 
-- Added `DocsConfig` interface with `routeBasePath` option to mount docs at custom paths
-- Added `createDocsCollection()` helper function for defining docs content collections
-- Added `getDocPath()` and `getRouteParams()` utility functions for custom route generation
-- Updated `DocsLayout` component to accept `routeBasePath` and `docsData` props for advanced usage
-- Exported `DocsLayout` component from `@levino/shipyard-docs/astro`
-- Exported `DocsData` type and `toSidebarEntries` function for building custom sidebars
+You can now host multiple independent documentation sections within a single Astro site. This is useful for separating user guides, API references, tutorials, or any other content that needs its own navigation and URL structure.
+
+Each documentation instance can be mounted at a custom path (e.g., `/guides/`, `/api-docs/`) and maintains its own sidebar navigation. See the multi-docs documentation for setup instructions.
