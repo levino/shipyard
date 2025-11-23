@@ -108,15 +108,15 @@ test.describe('Blog Plugin Features', () => {
 
       // With blogSidebarCount: 2 configured in astro.config.mjs,
       // and 3 English posts available, only 2 should be shown in sidebar
-      // (plus the "View all posts" link)
-      // The sidebar contains post links (limited to 2) plus "View all posts"
-      const allSidebarLinks = page.locator(
-        '.drawer-side .menu a[href*="/en/blog"]',
+      // Get only blog post links (those with dates in the URL, e.g., /en/blog/2024-...)
+      // This excludes the global navigation "Blog" link
+      const blogPostLinks = page.locator(
+        '.drawer-side .menu a[href*="/en/blog/2"]',
       )
-      const count = await allSidebarLinks.count()
+      const postCount = await blogPostLinks.count()
 
-      // Should have max 2 posts + 1 "View all posts" link = 3 links
-      expect(count).toBeLessThanOrEqual(3)
+      // Should have exactly 2 posts (the configured blogSidebarCount)
+      expect(postCount).toBe(2)
     })
 
     test('shows "View all posts" link when posts exceed limit', async ({
