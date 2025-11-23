@@ -1,6 +1,7 @@
 ---
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
 import type { NavigationTree } from '@levino/shipyard-base'
 import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
 
@@ -10,33 +11,58 @@ type Props = {
 
 const locale = Astro.currentLocale
 const { title } = Astro.props
-const entry = await getCollection('blog').then((posts) => {
-  if (i18n) {
-    return posts
-      .filter(({ id }) => {
-        const [postLocale] = id.split('/')
-        return postLocale === locale
-      })
-      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-      .reduce((acc, { id, data: { title } }, key) => {
-        acc[key] = {
-          href: `/${locale}/blog/${id.slice(3)}`,
-          label: title,
-        }
-        return acc
-      }, {} as NavigationTree)
-  } else {
-    return posts
-      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-      .reduce((acc, { id, data: { title } }, key) => {
-        acc[key] = {
-          href: `/blog/${id}`,
-          label: title,
-        }
-        return acc
-      }, {} as NavigationTree)
+const { blogSidebarCount, blogSidebarTitle } = blogConfig
+
+// Get and filter posts by locale
+const allPosts = await getCollection('blog')
+const filteredPosts = i18n
+  ? allPosts.filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === locale
+    })
+  : allPosts
+
+// Sort by date (newest first)
+const sortedPosts = filteredPosts.toSorted(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)
+
+// Apply sidebar count limit
+const totalPosts = sortedPosts.length
+const displayPosts =
+  blogSidebarCount === 'ALL'
+    ? sortedPosts
+    : sortedPosts.slice(0, blogSidebarCount)
+const hasMorePosts = blogSidebarCount !== 'ALL' && totalPosts > blogSidebarCount
+
+// Build navigation tree with title as section header
+const blogIndexPath = i18n ? `/${locale}/blog` : '/blog'
+const postsEntry = displayPosts.reduce(
+  (acc, { id, data: { title: postTitle } }, key) => {
+    acc[key] = {
+      href: i18n ? `/${locale}/blog/${id.slice(3)}` : `/blog/${id}`,
+      label: postTitle,
+    }
+    return acc
+  },
+  {} as NavigationTree,
+)
+
+// Build navigation tree with posts section and optional "View all" link at same level
+const entry: NavigationTree = {
+  posts: {
+    label: blogSidebarTitle,
+    subEntry: postsEntry,
+  },
+}
+
+// Add "View all posts" link at the same level as the posts section
+if (hasMorePosts) {
+  entry['view-all'] = {
+    href: blogIndexPath,
+    label: 'View all posts',
   }
-})
+}
 ---
 
 <BaseLayout title={title} sidebarNavigation={entry}>

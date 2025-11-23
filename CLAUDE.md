@@ -131,6 +131,8 @@ Documentation features:
 
 6. **Git Hooks**: Husky is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
+7. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories

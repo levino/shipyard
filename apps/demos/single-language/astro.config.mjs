@@ -33,6 +33,9 @@ export default defineConfig({
       brand: 'Single Lang Demo',
     }),
     shipyardDocs(),
-    shipyardBlog(),
+    shipyardBlog({
+      blogSidebarCount: 'ALL',
+      blogSidebarTitle: 'All posts',
+    }),
   ],
 })

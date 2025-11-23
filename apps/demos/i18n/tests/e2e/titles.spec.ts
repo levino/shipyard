@@ -12,9 +12,9 @@ test.describe('Page Title Integration Tests', () => {
   })
 
   test('blog post shows site title with post title', async ({ page }) => {
-    await page.goto('/en/blog/2024-01-10-blog-post-1')
+    await page.goto('/en/blog/2023-10-30-week-200')
     await expect(page).toHaveTitle(
-      'Metro Gardens - Spring Planting Day Success!',
+      'Metro Gardens - Weekly Harvest Report - Week 200',
     )
   })
 
@@ -43,8 +43,9 @@ test.describe('Basic Site Functionality', () => {
     // Check that blog page loads
     await expect(page.locator('body')).toBeVisible()
 
-    // Check that blog post link works
-    await page.click('a[href="/en/blog/2024-01-10-blog-post-1"]')
-    await expect(page).toHaveURL('/en/blog/2024-01-10-blog-post-1')
+    // Check that blog post link works (first post on the page)
+    const firstPostLink = page.locator('.max-w-7xl .prose a').first()
+    await firstPostLink.click()
+    await expect(page).toHaveURL(/\/en\/blog\/\d{4}-\d{2}-\d{2}/)
   })
 })
