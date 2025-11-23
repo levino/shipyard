@@ -93,4 +93,93 @@ test.describe('Blog Plugin Features', () => {
       await expect(page.locator('body')).toBeVisible()
     })
   })
+
+  test.describe('Sidebar Configuration', () => {
+    test('sidebar shows configured title', async ({ page }) => {
+      await page.goto('/en/blog')
+
+      // The sidebar should show "Recent posts" as the section title
+      const sidebarTitle = page.locator('.drawer-side .menu-title')
+      await expect(sidebarTitle).toHaveText('Recent posts')
+    })
+
+    test('sidebar respects blogSidebarCount limit', async ({ page }) => {
+      await page.goto('/en/blog')
+
+      // With blogSidebarCount: 2 configured in astro.config.mjs,
+      // and 3 English posts available, only 2 should be shown in sidebar
+      // (plus the "View all posts" link)
+      // The sidebar contains post links (limited to 2) plus "View all posts"
+      const allSidebarLinks = page.locator(
+        '.drawer-side .menu a[href*="/en/blog"]',
+      )
+      const count = await allSidebarLinks.count()
+
+      // Should have max 2 posts + 1 "View all posts" link = 3 links
+      expect(count).toBeLessThanOrEqual(3)
+    })
+
+    test('shows "View all posts" link when posts exceed limit', async ({
+      page,
+    }) => {
+      await page.goto('/en/blog')
+
+      // With 3 English posts and blogSidebarCount: 2,
+      // "View all posts" link should be visible
+      const viewAllLink = page.locator(
+        '.drawer-side a:has-text("View all posts")',
+      )
+      await expect(viewAllLink).toBeVisible()
+      await expect(viewAllLink).toHaveAttribute('href', '/en/blog')
+    })
+
+    test('sidebar filters posts by locale (i18n aware)', async ({ page }) => {
+      // English blog should only show English posts
+      await page.goto('/en/blog')
+      const enSidebarLinks = page.locator('.drawer-side a[href*="/en/blog/"]')
+      const enCount = await enSidebarLinks.count()
+      expect(enCount).toBeGreaterThan(0)
+
+      // German blog should only show German posts
+      await page.goto('/de/blog')
+      const deSidebarLinks = page.locator('.drawer-side a[href*="/de/blog/"]')
+      const deCount = await deSidebarLinks.count()
+      expect(deCount).toBeGreaterThan(0)
+
+      // German sidebar should not contain English links
+      const enLinksInDeSidebar = page.locator(
+        '.drawer-side a[href*="/en/blog/"]',
+      )
+      await expect(enLinksInDeSidebar).toHaveCount(0)
+    })
+
+    test('sidebar posts are sorted by date (newest first)', async ({
+      page,
+    }) => {
+      await page.goto('/en/blog')
+
+      // Get all blog post links from sidebar
+      const sidebarLinks = page.locator('.drawer-side a[href*="/en/blog/2"]')
+      const hrefs: string[] = []
+      const count = await sidebarLinks.count()
+
+      for (let index = 0; index < count; index++) {
+        const href = await sidebarLinks.nth(index).getAttribute('href')
+        if (href && !href.includes('View')) hrefs.push(href)
+      }
+
+      // Extract dates from URLs
+      const dates = hrefs
+        .map((href) => {
+          const match = href.match(/(\d{4}-\d{2}-\d{2})/)
+          return match ? match[1] : null
+        })
+        .filter(Boolean) as string[]
+
+      // Verify dates are in descending order
+      for (let index = 0; index < dates.length - 1; index++) {
+        expect(dates[index] >= dates[index + 1]).toBe(true)
+      }
+    })
+  })
 })

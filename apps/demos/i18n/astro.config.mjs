@@ -65,6 +65,9 @@ export default defineConfig({
     }),
     shipyardDocs(),
     // Note: guides docs use custom route file at src/pages/[locale]/guides/[...slug].astro
-    shipyardBlog(),
+    shipyardBlog({
+      blogSidebarCount: 2,
+      blogSidebarTitle: 'Recent posts',
+    }),
   ],
 })
