@@ -34,6 +34,10 @@ export default defineConfig({
           label: 'Documentation',
           href: '/docs',
         },
+        guides: {
+          label: 'Guides',
+          href: '/guides',
+        },
         blog: {
           label: 'Blog',
           href: '/blog',
@@ -60,6 +64,7 @@ export default defineConfig({
       ],
     }),
     shipyardDocs(),
+    // Note: guides docs use custom route file at src/pages/[locale]/guides/[...slug].astro
     shipyardBlog(),
   ],
 })

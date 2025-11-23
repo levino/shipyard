@@ -22,7 +22,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] Render documentation pages from Markdown/MDX files
 - [x] Generate documentation routes automatically
 - [x] Documentation sidebar navigation
-- [ ] Multiple documentation instances (multi-instance docs)
+- [x] Multiple documentation instances (multi-instance docs)
 - [ ] Documentation versioning
 
 ### Configuration Options
@@ -345,7 +345,7 @@ The following Docusaurus features are **not applicable** because Astro handles t
 ### Lower Priority (Advanced Features)
 
 1. **Documentation versioning** - Complex feature for mature projects
-2. **Multi-instance docs/blogs** - Edge case for most users
+2. ~~**Multi-instance docs/blogs**~~ - ✅ Implemented for docs
 3. **Custom sidebar items** (HTML, links) - Power user feature
 4. **Author pages** - Nice to have for multi-author blogs
 5. **Social card images** - Automated OG images
