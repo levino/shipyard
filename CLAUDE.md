@@ -164,6 +164,11 @@ Documentation features:
    - Add unit tests with Vitest when appropriate for utility functions and business logic
    - Tests should cover both happy paths and edge cases
    - Run `npm run test:e2e` to verify all tests pass before submitting changes
+10. **Docusaurus Counterpart Demos**: All Shipyard demos have a corresponding Docusaurus counterpart:
+    - Docusaurus demos contain the same content as Shipyard demos
+    - They are used to compare the output/behavior of Docusaurus vs Shipyard for identical data
+    - When updating a Shipyard demo, always update the corresponding Docusaurus demo to keep them in sync
+    - This ensures accurate framework comparison and helps identify feature parity gaps
 
 ## Troubleshooting
 
