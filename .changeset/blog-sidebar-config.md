@@ -22,7 +22,8 @@ The blog index page now supports pagination with DaisyUI-styled navigation:
 
 - **postsPerPage**: Number of posts per page (default: 10)
 - Pages are accessible at `/blog` (page 1) and `/blog/page/2`, `/blog/page/3`, etc.
-- Pagination includes previous/next buttons and page number links
+- Pagination displays: `prev | first | ... | 7 | 8 (active) | 9 | ... | last | next`
+- Adjacent page numbers shown around current page with ellipsis for gaps
 - Full support for i18n localized blog pages
 
 Example configuration:

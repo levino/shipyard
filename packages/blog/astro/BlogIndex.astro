@@ -1,8 +1,8 @@
 ---
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
-import type { GetStaticPaths } from 'astro'
 import blogConfig from 'virtual:shipyard-blog/config'
+import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
 const { postsPerPage } = blogConfig
@@ -70,32 +70,26 @@ const getPageLink = (page: number) => {
 
 const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
 
-// Generate page numbers to display (show max 5 pages around current)
-const getVisiblePages = () => {
+// Generate page numbers to display (3 adjacent pages around current)
+const getAdjacentPages = () => {
   const pages: number[] = []
-  const maxVisible = 5
+  const adjacentCount = 1 // Show 1 page before and after current
 
-  if (totalPages <= maxVisible) {
-    for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-      pages.push(pageNum)
-    }
-  } else {
-    let start = Math.max(1, currentPage - 2)
-    let end = Math.min(totalPages, start + maxVisible - 1)
+  const start = Math.max(2, currentPage - adjacentCount)
+  const end = Math.min(totalPages - 1, currentPage + adjacentCount)
 
-    if (end - start < maxVisible - 1) {
-      start = Math.max(1, end - maxVisible + 1)
-    }
-
-    for (let pageNum = start; pageNum <= end; pageNum++) {
-      pages.push(pageNum)
-    }
+  for (let pageNum = start; pageNum <= end; pageNum++) {
+    pages.push(pageNum)
   }
 
   return pages
 }
 
-const visiblePages = getVisiblePages()
+const adjacentPages = getAdjacentPages()
+const showLeftEllipsis = adjacentPages.length > 0 && adjacentPages[0] > 2
+const showRightEllipsis =
+  adjacentPages.length > 0 &&
+  adjacentPages[adjacentPages.length - 1] < totalPages - 1
 ---
 
 <Layout title="Blog">
@@ -114,22 +108,30 @@ const visiblePages = getVisiblePages()
 
     {totalPages > 1 && (
       <div class="join flex justify-center my-8" data-testid="pagination">
+        {/* Prev button */}
         <a
           class:list={['join-item', 'btn', { 'btn-disabled': currentPage === 1 }]}
           href={currentPage > 1 ? getPageLink(currentPage - 1) : undefined}
           aria-label="Previous page"
+          data-testid="pagination-prev"
         >
-          «
+          prev
         </a>
 
-        {visiblePages[0] > 1 && (
-          <>
-            <a class="join-item btn" href={getPageLink(1)}>1</a>
-            {visiblePages[0] > 2 && <span class="join-item btn btn-disabled">…</span>}
-          </>
-        )}
+        {/* First page */}
+        <a
+          class:list={['join-item', 'btn', { 'btn-active': currentPage === 1 }]}
+          href={getPageLink(1)}
+          data-testid="pagination-first"
+        >
+          first
+        </a>
 
-        {visiblePages.map((page) => (
+        {/* Left ellipsis */}
+        {showLeftEllipsis && <span class="join-item btn btn-disabled">…</span>}
+
+        {/* Adjacent pages (not including first and last) */}
+        {adjacentPages.map((page) => (
           <a
             class:list={['join-item', 'btn', { 'btn-active': page === currentPage }]}
             href={getPageLink(page)}
@@ -138,21 +140,28 @@ const visiblePages = getVisiblePages()
           </a>
         ))}
 
-        {visiblePages[visiblePages.length - 1] < totalPages && (
-          <>
-            {visiblePages[visiblePages.length - 1] < totalPages - 1 && (
-              <span class="join-item btn btn-disabled">…</span>
-            )}
-            <a class="join-item btn" href={getPageLink(totalPages)}>{totalPages}</a>
-          </>
+        {/* Right ellipsis */}
+        {showRightEllipsis && <span class="join-item btn btn-disabled">…</span>}
+
+        {/* Last page (only if more than 1 page) */}
+        {totalPages > 1 && (
+          <a
+            class:list={['join-item', 'btn', { 'btn-active': currentPage === totalPages }]}
+            href={getPageLink(totalPages)}
+            data-testid="pagination-last"
+          >
+            last
+          </a>
         )}
 
+        {/* Next button */}
         <a
           class:list={['join-item', 'btn', { 'btn-disabled': currentPage === totalPages }]}
           href={currentPage < totalPages ? getPageLink(currentPage + 1) : undefined}
           aria-label="Next page"
+          data-testid="pagination-next"
         >
-          »
+          next
         </a>
       </div>
     )}

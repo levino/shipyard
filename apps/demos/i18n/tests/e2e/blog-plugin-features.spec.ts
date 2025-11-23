@@ -17,7 +17,7 @@ test.describe('Blog Plugin Features', () => {
     })
 
     test('individual blog post pages render', async ({ page }) => {
-      await page.goto('/en/blog/2024-01-10-blog-post-1')
+      await page.goto('/en/blog/2023-10-30-week-200')
 
       // Blog posts render content (may not have h1 if markdown doesn't include one)
       await expect(page.locator('.prose')).toBeVisible()
@@ -54,12 +54,12 @@ test.describe('Blog Plugin Features', () => {
 
   test.describe('Frontmatter Support', () => {
     test('title frontmatter sets blog post title', async ({ page }) => {
-      await page.goto('/en/blog/2024-01-10-blog-post-1')
-      await expect(page).toHaveTitle(/Spring Planting Day/)
+      await page.goto('/en/blog/2023-10-30-week-200')
+      await expect(page).toHaveTitle(/Weekly Harvest Report - Week 200/)
     })
 
     test('description frontmatter is present in schema', async ({ page }) => {
-      await page.goto('/en/blog/2024-01-10-blog-post-1')
+      await page.goto('/en/blog/2023-10-30-week-200')
 
       // Meta description tag exists (content may be empty if not passed through)
       const metaDescription = page.locator('meta[name="description"]')
@@ -67,8 +67,7 @@ test.describe('Blog Plugin Features', () => {
     })
 
     test('date frontmatter affects URL', async ({ page }) => {
-      // Blog post with date: 2024-04-13 (but URL uses 2024-01-10 from filename)
-      const response = await page.goto('/en/blog/2024-01-10-blog-post-1')
+      const response = await page.goto('/en/blog/2023-10-30-week-200')
       expect(response?.status()).toBe(200)
     })
   })
@@ -217,25 +216,54 @@ test.describe('Blog Plugin Features', () => {
     test('pagination shows correct page buttons', async ({ page }) => {
       await page.goto('/en/blog')
 
-      // Should show page 1 as active
+      // Should show "first" as active on page 1
       const activePage = page.locator('[data-testid="pagination"] .btn-active')
-      await expect(activePage).toHaveText('1')
+      await expect(activePage).toHaveText('first')
 
-      // Should show next page button
-      const nextButton = page.locator(
-        '[data-testid="pagination"] a[aria-label="Next page"]',
-      )
-      await expect(nextButton).toBeVisible()
+      // Should show prev, first, last, next buttons
+      await expect(
+        page.locator('[data-testid="pagination-prev"]'),
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-testid="pagination-first"]'),
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-testid="pagination-last"]'),
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-testid="pagination-next"]'),
+      ).toBeVisible()
     })
 
-    test('clicking page 2 navigates to second page', async ({ page }) => {
+    test('pagination shows ellipsis on middle pages', async ({ page }) => {
+      // Navigate to a middle page (e.g., page 10)
+      await page.goto('/en/blog/page/10')
+
+      // Should show ellipsis (…) indicators
+      const ellipsis = page.locator(
+        '[data-testid="pagination"] .btn-disabled:has-text("…")',
+      )
+      // Should have two ellipsis (left and right)
+      await expect(ellipsis).toHaveCount(2)
+
+      // Should show adjacent page numbers (9, 10, 11)
+      await expect(
+        page.locator('[data-testid="pagination"] a:has-text("9")'),
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-testid="pagination"] .btn-active:has-text("10")'),
+      ).toBeVisible()
+      await expect(
+        page.locator('[data-testid="pagination"] a:has-text("11")'),
+      ).toBeVisible()
+    })
+
+    test('clicking next navigates to second page', async ({ page }) => {
       await page.goto('/en/blog')
 
-      // Click on page 2
-      const page2Link = page.locator(
-        '[data-testid="pagination"] a:has-text("2")',
-      )
-      await page2Link.click()
+      // Click on next button
+      const nextLink = page.locator('[data-testid="pagination-next"]')
+      await nextLink.click()
 
       // URL should be /en/blog/page/2
       await expect(page).toHaveURL(/\/en\/blog\/page\/2/)
@@ -277,8 +305,8 @@ test.describe('Blog Plugin Features', () => {
     })
 
     test('navigating to last page disables next button', async ({ page }) => {
-      // Navigate to last page (50+ posts / 10 per page = 6 pages)
-      await page.goto('/en/blog/page/6')
+      // Navigate to last page (200 posts / 10 per page = 20 pages)
+      await page.goto('/en/blog/page/20')
 
       const nextButton = page.locator(
         '[data-testid="pagination"] a[aria-label="Next page"]',
