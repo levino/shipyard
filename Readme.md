@@ -50,7 +50,7 @@ Learn everything from installation to advanced customization with our comprehens
 
 ## 🌟 Live Demo
 
-**[🚀 Explore the Demo →](https://shipyard-demo.levinkeller.de)**
+**[🚀 Explore the Demo →](https://i18n.demos.shipyard.levinkeller.de)**
 
 See Shipyard in action! The demo showcases all features including:
 - Responsive documentation layouts
@@ -94,4 +94,4 @@ MIT - see [LICENSE](LICENSE) for details.
 
 ---
 
-**Ready to build something amazing?** [🚀 Get Started](https://shipyard-docs-levino.vercel.app) | [🌟 View Demo](https://shipyard-demo.levinkeller.de)
+**Ready to build something amazing?** [🚀 Get Started](https://shipyard.levinkeller.de) | [🌟 View Demo](https://i18n.demos.shipyard.levinkeller.de)
