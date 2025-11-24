@@ -7,6 +7,7 @@ import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
 import type { DocsData } from '../src/sidebarEntries'
 import { toSidebarEntries } from '../src/sidebarEntries'
+import DocMetadata from './DocMetadata.astro'
 
 interface Props {
   headings?: { depth: number; text: string; slug: string }[]
@@ -21,9 +22,28 @@ interface Props {
    * Use this when you have multiple docs instances with different collections.
    */
   docsData?: DocsData[]
+  /**
+   * URL to edit this page in the repository.
+   */
+  editUrl?: string
+  /**
+   * The date when this page was last updated.
+   */
+  lastUpdated?: Date
+  /**
+   * The name of the author who last updated this page.
+   */
+  lastAuthor?: string
 }
 
-const { headings = [], routeBasePath = 'docs', docsData } = Astro.props
+const {
+  headings = [],
+  routeBasePath = 'docs',
+  docsData,
+  editUrl,
+  lastUpdated,
+  lastAuthor,
+} = Astro.props
 
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
@@ -88,6 +108,7 @@ const entries: NavigationTree =
         <Breadcrumbs navigation={entries} />
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
+        <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
       </div>
     </div>
     <div class="hidden xl:block col-span-3">

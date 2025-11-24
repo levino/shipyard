@@ -2,6 +2,9 @@ import type { AstroIntegration } from 'astro'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
+// Re-export git metadata utilities
+export type { GitMetadata } from './gitMetadata'
+export { getEditUrl, getGitMetadata } from './gitMetadata'
 export type { DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
 export { getDocPath, getRouteParams } from './routeHelpers'
@@ -21,6 +24,21 @@ export const docsSchema = z.object({
   sidebar_position: z.number().optional(),
   sidebar_label: z.string().optional(),
   sidebar_class_name: z.string().optional(),
+  /**
+   * Override the last update author for this specific page.
+   * Set to false to hide the author for this page.
+   */
+  last_update_author: z.union([z.string(), z.literal(false)]).optional(),
+  /**
+   * Override the last update timestamp for this specific page.
+   * Set to false to hide the timestamp for this page.
+   */
+  last_update_time: z.union([z.coerce.date(), z.literal(false)]).optional(),
+  /**
+   * Custom edit URL for this specific page.
+   * Set to null to disable edit link for this page.
+   */
+  custom_edit_url: z.string().nullable().optional(),
 })
 
 /**
@@ -33,6 +51,24 @@ export interface DocsConfig {
    * @example 'guides' will mount docs at /guides/[...slug]
    */
   routeBasePath?: string
+  /**
+   * The base URL for "Edit this page" links.
+   * This should point to the directory containing your docs in your repository.
+   * @example 'https://github.com/user/repo/edit/main/docs'
+   */
+  editUrl?: string
+  /**
+   * Whether to show the last update timestamp on each page.
+   * Uses git history to determine when the file was last modified.
+   * @default false
+   */
+  showLastUpdateTime?: boolean
+  /**
+   * Whether to show the last update author on each page.
+   * Uses git history to determine who last modified the file.
+   * @default false
+   */
+  showLastUpdateAuthor?: boolean
 }
 
 /**
@@ -83,8 +119,16 @@ export const createDocsCollection = (
  * shipyardDocs({ routeBasePath: 'guides' })
  * ```
  */
+const VIRTUAL_MODULE_ID = 'virtual:shipyard-docs-config'
+const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
+
 export default (config: DocsConfig = {}): AstroIntegration => {
-  const { routeBasePath = 'docs' } = config
+  const {
+    routeBasePath = 'docs',
+    editUrl,
+    showLastUpdateTime = false,
+    showLastUpdateAuthor = false,
+  } = config
 
   // Normalize the route base path (remove leading/trailing slashes safely)
   let normalizedBasePath = routeBasePath
@@ -98,7 +142,37 @@ export default (config: DocsConfig = {}): AstroIntegration => {
   return {
     name: `shipyard-docs${normalizedBasePath !== 'docs' ? `-${normalizedBasePath}` : ''}`,
     hooks: {
-      'astro:config:setup': ({ injectRoute, config: astroConfig }) => {
+      'astro:config:setup': ({
+        injectRoute,
+        config: astroConfig,
+        updateConfig,
+      }) => {
+        // Create a virtual module to expose the configuration
+        updateConfig({
+          vite: {
+            plugins: [
+              {
+                name: 'shipyard-docs-config',
+                resolveId(id) {
+                  if (id === VIRTUAL_MODULE_ID) {
+                    return RESOLVED_VIRTUAL_MODULE_ID
+                  }
+                },
+                load(id) {
+                  if (id === RESOLVED_VIRTUAL_MODULE_ID) {
+                    return `export const docsConfig = ${JSON.stringify({
+                      editUrl,
+                      showLastUpdateTime,
+                      showLastUpdateAuthor,
+                      routeBasePath: normalizedBasePath,
+                    })};`
+                  }
+                },
+              },
+            ],
+          },
+        })
+
         if (astroConfig.i18n) {
           // With i18n: use locale prefix
           injectRoute({

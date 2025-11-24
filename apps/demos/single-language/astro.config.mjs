@@ -32,7 +32,11 @@ export default defineConfig({
       tagline: 'Shipyard without internationalization',
       brand: 'Single Lang Demo',
     }),
-    shipyardDocs(),
+    shipyardDocs({
+      editUrl: 'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/docs',
+      showLastUpdateTime: true,
+      showLastUpdateAuthor: true,
+    }),
     shipyardBlog({
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All posts',

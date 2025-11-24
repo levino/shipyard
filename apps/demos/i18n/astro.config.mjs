@@ -63,7 +63,12 @@ export default defineConfig({
         },
       ],
     }),
-    shipyardDocs(),
+    shipyardDocs({
+      editUrl:
+        'https://github.com/levino/shipyard/edit/main/apps/demos/i18n/docs',
+      showLastUpdateTime: true,
+      showLastUpdateAuthor: true,
+    }),
     // Note: guides docs use custom route file at src/pages/[locale]/guides/[...slug].astro
     shipyardBlog({
       blogSidebarCount: 5,

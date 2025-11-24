@@ -206,6 +206,67 @@ test.describe('Documentation Plugin Features', () => {
     })
   })
 
+  test.describe('Doc Metadata Features', () => {
+    test('shows "Edit this page" link when editUrl is configured', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/garden-beds')
+
+      const editLink = page.locator('a.edit-link')
+      await expect(editLink).toBeAttached()
+      await expect(editLink).toContainText('Edit this page')
+
+      // Check the link points to GitHub
+      const href = await editLink.getAttribute('href')
+      expect(href).toContain('github.com')
+      expect(href).toContain('/edit/')
+    })
+
+    test('shows last updated timestamp when showLastUpdateTime is enabled', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/garden-beds')
+
+      const lastUpdated = page.locator('.last-updated')
+      await expect(lastUpdated).toBeAttached()
+      await expect(lastUpdated).toContainText('Last updated:')
+
+      // Check for time element with datetime attribute
+      const timeElement = lastUpdated.locator('time')
+      await expect(timeElement).toBeAttached()
+      const datetime = await timeElement.getAttribute('datetime')
+      expect(datetime).toBeTruthy()
+    })
+
+    test('shows last author when showLastUpdateAuthor is enabled', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/garden-beds')
+
+      const lastAuthor = page.locator('.last-author')
+      await expect(lastAuthor).toBeAttached()
+      await expect(lastAuthor).toContainText('by')
+    })
+
+    test('doc metadata section is styled correctly', async ({ page }) => {
+      await page.goto('/en/docs/garden-beds')
+
+      const metadata = page.locator('.doc-metadata')
+      await expect(metadata).toBeAttached()
+
+      // Should have border-top styling (indicates separation from content)
+      await expect(metadata).toHaveClass(/border-t/)
+    })
+
+    test('edit link opens in new tab', async ({ page }) => {
+      await page.goto('/en/docs/garden-beds')
+
+      const editLink = page.locator('a.edit-link')
+      await expect(editLink).toHaveAttribute('target', '_blank')
+      await expect(editLink).toHaveAttribute('rel', /noopener/)
+    })
+  })
+
   test.describe('SEO Features', () => {
     test('meta description from frontmatter', async ({ page }) => {
       await page.goto('/en/docs/')
