@@ -127,3 +127,10 @@ build/
 .idea/
 
 .vercel
+
+.gemini/
+gha-creds-*.json
+
+# Playwright
+playwright-report/
+test-results/

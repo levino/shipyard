@@ -1,0 +1,188 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import type { GetStaticPaths } from 'astro'
+import Layout from './Layout.astro'
+
+const { postsPerPage } = blogConfig
+
+export const getStaticPaths = (async () => {
+  const allPosts = await getCollection('blog')
+
+  if (i18n) {
+    const paths: Array<{ params: { locale: string; page: string } }> = []
+
+    for (const locale of i18n.locales) {
+      if (typeof locale !== 'string') {
+        throw new Error('Shipyard does only support strings as locales.')
+      }
+
+      const localePosts = allPosts.filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === locale
+      })
+
+      const totalPages = Math.ceil(localePosts.length / blogConfig.postsPerPage)
+
+      // Generate pages 2+ only (page 1 is handled by BlogIndex.astro)
+      for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+        paths.push({ params: { locale, page: String(pageNum) } })
+      }
+    }
+
+    return paths
+  } else {
+    const totalPages = Math.ceil(allPosts.length / blogConfig.postsPerPage)
+    const paths: Array<{ params: { page: string } }> = []
+
+    // Generate pages 2+ only
+    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
+      paths.push({ params: { page: String(pageNum) } })
+    }
+
+    return paths
+  }
+}) satisfies GetStaticPaths
+
+// Get current page from URL params
+const pageParam = Astro.params.page
+const currentPage = parseInt(pageParam, 10)
+
+const entries = await getCollection('blog').then((posts) => {
+  if (i18n) {
+    return posts
+      .filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === Astro.currentLocale
+      })
+      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  } else {
+    return posts.toSorted(
+      (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+    )
+  }
+})
+
+// Calculate pagination
+const totalPosts = entries.length
+const totalPages = Math.ceil(totalPosts / postsPerPage)
+const startIndex = (currentPage - 1) * postsPerPage
+const endIndex = startIndex + postsPerPage
+const paginatedEntries = entries.slice(startIndex, endIndex)
+
+const getBlogPostLink = (id: string, locale?: string) => {
+  if (i18n && locale) {
+    return id.replace(`${locale}/`, `${locale}/blog/`)
+  } else {
+    return `blog/${id}`
+  }
+}
+
+const getPageLink = (page: number) => {
+  const basePath = i18n ? `/${Astro.currentLocale}/blog` : '/blog'
+  if (page === 1) {
+    return basePath
+  }
+  return `${basePath}/page/${page}`
+}
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
+
+// Generate page numbers to display (3 adjacent pages around current)
+const getAdjacentPages = () => {
+  const pages: number[] = []
+  const adjacentCount = 1 // Show 1 page before and after current
+
+  const start = Math.max(2, currentPage - adjacentCount)
+  const end = Math.min(totalPages - 1, currentPage + adjacentCount)
+
+  for (let pageNum = start; pageNum <= end; pageNum++) {
+    pages.push(pageNum)
+  }
+
+  return pages
+}
+
+const adjacentPages = getAdjacentPages()
+const showLeftEllipsis = adjacentPages.length > 0 && adjacentPages[0] > 2
+const showRightEllipsis =
+  adjacentPages.length > 0 &&
+  adjacentPages[adjacentPages.length - 1] < totalPages - 1
+---
+
+<Layout title="Blog">
+  <div class="max-w-7xl mx-auto">
+    <div class="prose max-w-none">
+      {
+        paginatedEntries.map(async (entry) => (
+          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+            <div class="text-sm">{formatDate(entry.data.date)}</div>
+            <h2 class="my-0">{entry.data.title}</h2>
+            <p>{entry.data.description}</p>
+          </a>
+        ))
+      }
+    </div>
+
+    {totalPages > 1 && (
+      <div class="join flex justify-center my-8" data-testid="pagination">
+        {/* Prev button */}
+        <a
+          class:list={['join-item', 'btn', { 'btn-disabled': currentPage === 1 }]}
+          href={currentPage > 1 ? getPageLink(currentPage - 1) : undefined}
+          aria-label="Previous page"
+          data-testid="pagination-prev"
+        >
+          prev
+        </a>
+
+        {/* First page */}
+        <a
+          class:list={['join-item', 'btn', { 'btn-active': currentPage === 1 }]}
+          href={getPageLink(1)}
+          data-testid="pagination-first"
+        >
+          first
+        </a>
+
+        {/* Left ellipsis */}
+        {showLeftEllipsis && <span class="join-item btn btn-disabled">…</span>}
+
+        {/* Adjacent pages (not including first and last) */}
+        {adjacentPages.map((page) => (
+          <a
+            class:list={['join-item', 'btn', { 'btn-active': page === currentPage }]}
+            href={getPageLink(page)}
+          >
+            {page}
+          </a>
+        ))}
+
+        {/* Right ellipsis */}
+        {showRightEllipsis && <span class="join-item btn btn-disabled">…</span>}
+
+        {/* Last page (only if more than 1 page) */}
+        {totalPages > 1 && (
+          <a
+            class:list={['join-item', 'btn', { 'btn-active': currentPage === totalPages }]}
+            href={getPageLink(totalPages)}
+            data-testid="pagination-last"
+          >
+            last
+          </a>
+        )}
+
+        {/* Next button */}
+        <a
+          class:list={['join-item', 'btn', { 'btn-disabled': currentPage === totalPages }]}
+          href={currentPage < totalPages ? getPageLink(currentPage + 1) : undefined}
+          aria-label="Next page"
+          data-testid="pagination-next"
+        >
+          next
+        </a>
+      </div>
+    )}
+  </div>
+</Layout>

@@ -1,10 +1,7 @@
 {
   "name": "Node.js & TypeScript",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-  "features": {
-    "ghcr.io/devcontainers/features/common-utils:2": {}
-  },
-  "postCreateCommand": "npm install",
+  "updateContentCommand": "npm install",
   "customizations": {
     "vscode": {
       "extensions": [

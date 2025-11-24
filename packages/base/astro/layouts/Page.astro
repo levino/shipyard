@@ -1,9 +1,14 @@
 ---
 import Footer from './Footer.astro'
 import '../../src/globals.css'
+import { i18n } from 'astro:config/server'
 import config from 'virtual:shipyard/config'
 import { mapObjIndexed } from 'ramda'
-import type { NavigationEntry, NavigationTree } from '../../src/schemas/config'
+import type {
+  NavigationEntry,
+  NavigationTree,
+  Script,
+} from '../../src/schemas/config'
 import { getTitle } from '../../src/tools/title'
 import { GlobalDesktopNavigation, SidebarNavigation } from '../components'
 
@@ -22,7 +27,8 @@ type Props = {
 const currentPath = Astro.url.pathname
 const props = Astro.props.frontmatter || Astro.props
 
-const withLocale = (path: string) => `/${Astro.currentLocale}${path}`
+const withLocale = (path: string) =>
+  i18n ? `/${Astro.currentLocale}${path}` : path
 const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
@@ -35,6 +41,14 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
 
 const navigation = applyLocaleAndSetActive(config.navigation)
 const title = getTitle(config.title, props.title)
+
+// Helper function to render script attributes
+const renderScriptAttributes = (script: Script) => {
+  if (typeof script === 'string') {
+    return { src: script }
+  }
+  return script
+}
 ---
 
 <html>
@@ -48,6 +62,11 @@ const title = getTitle(config.title, props.title)
     <meta name="description" content={props.description} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={props.description} />
+    
+    {config.scripts?.map((script) => {
+      const attrs = renderScriptAttributes(script)
+      return <script is:inline {...attrs}></script>
+    })}
   </head>
   <body>
     <div class="drawer lg:drawer-open">

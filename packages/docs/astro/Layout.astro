@@ -1,48 +1,99 @@
 ---
+import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import type { NavigationTree } from '@levino/shipyard-base'
+import { Breadcrumbs, TableOfContents } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
-import { path } from 'ramda'
+import type { DocsData } from '../src/sidebarEntries'
 import { toSidebarEntries } from '../src/sidebarEntries'
 
-const getPath = (id: string) => `/${Astro.currentLocale}/docs/${id.slice(3)}`
+interface Props {
+  headings?: { depth: number; text: string; slug: string }[]
+  /**
+   * The base path for generating doc URLs.
+   * @default 'docs'
+   */
+  routeBasePath?: string
+  /**
+   * Pre-computed docs data for the sidebar. If provided, this will be used
+   * instead of fetching from the default 'docs' collection.
+   * Use this when you have multiple docs instances with different collections.
+   */
+  docsData?: DocsData[]
+}
 
-const docs = await getCollection('docs')
-  .then(
-    EffectArray.map(async (doc) => {
-      const {
-        id,
-        data: {
-          title,
-          sidebar: { render: shouldBeRendered, label },
-        },
-      } = doc
-      return {
-        path: getPath(id),
-        title:
-          label ??
-          title ??
-          Option.getOrUndefined(
-            EffectArray.findFirst(
-              (await render(doc)).headings,
-              ({ depth }) => depth === 1,
-            ),
-          )?.text ??
+const { headings = [], routeBasePath = 'docs', docsData } = Astro.props
+
+// Normalize the route base path
+const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
+
+const getPath = (id: string) =>
+  i18n
+    ? `/${Astro.currentLocale}/${normalizedBasePath}/${id.slice(3)}`
+    : `/${normalizedBasePath}/${id}`
+
+// Use provided docsData or fetch from the default 'docs' collection
+const docs =
+  docsData ??
+  (await getCollection('docs')
+    .then(
+      EffectArray.map(async (doc) => {
+        const {
           id,
-        link: shouldBeRendered,
-      }
-    }),
-  )
-  .then((promises) => Promise.all(promises))
+          data: {
+            title,
+            sidebar: { render: shouldBeRendered, label },
+            sidebar_position,
+            sidebar_label,
+            sidebar_class_name,
+            sidebar_custom_props,
+          },
+        } = doc
+        return {
+          id,
+          path: getPath(id),
+          title:
+            label ??
+            title ??
+            Option.getOrUndefined(
+              EffectArray.findFirst(
+                (await render(doc)).headings,
+                ({ depth }) => depth === 1,
+              ),
+            )?.text ??
+            id,
+          link: shouldBeRendered,
+          sidebarPosition: sidebar_position,
+          sidebarLabel: sidebar_label,
+          sidebarClassName: sidebar_class_name,
+          sidebarCustomProps: sidebar_custom_props,
+        }
+      }),
+    )
+    .then((promises) => Promise.all(promises)))
 
-const entries = path([Astro.currentLocale, 'subEntry', 'docs', 'subEntry'])(
-  toSidebarEntries(docs),
-) as NavigationTree
+const fullTree = toSidebarEntries(docs)
+
+const entries: NavigationTree =
+  i18n && Astro.currentLocale
+    ? (fullTree[Astro.currentLocale]?.subEntry ?? {})
+    : fullTree
 ---
 
 <BaseLayout sidebarNavigation={entries}>
-  <div class="prose mx-auto">
-    <slot />
+  <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
+    <div class="col-span-12 xl:col-span-9">
+      <div class="prose max-w-none">
+        <Breadcrumbs navigation={entries} />
+        <TableOfContents links={headings} class="xl:hidden" />
+        <slot />
+      </div>
+    </div>
+    <div class="hidden xl:block col-span-3">
+      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <TableOfContents links={headings} desktopOnly />
+      </div>
+    </div>
   </div>
 </BaseLayout>

@@ -51,7 +51,7 @@ npm install
 cd apps/demo
 npm run dev
 
-# Run docs app in development mode  
+# Run docs app in development mode
 cd apps/docs
 npm run dev
 
@@ -66,7 +66,7 @@ npm run test:e2e
 npm run test:e2e:ui
 
 # Check and fix linting/formatting issues
-npx biome check --fix
+npx biome check --write
 
 # Check linting/formatting without fixing
 npx biome check
@@ -75,18 +75,23 @@ npx biome check
 ### Code Style Guidelines
 
 1. **Formatting & Linting**: Use Biome (configured in `biome.json`)
-   - Semicolons as needed  
+   - Semicolons as needed
    - Single quotes for JavaScript
    - Import organization enabled
    - Special rules for `.astro`, `.svelte`, and `.vue` files
 
-2. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
+2. **Variable Naming**: Always use descriptive, full-word variable names
+   - Never use single letters or abbreviations like `e`, `i`, `arr`, `obj`
+   - Use meaningful names that describe the purpose: `entryValue`, `index`, `itemList`, `configObject`
+   - Exception: Standard conventions like `i`/`j` in simple loop counters are acceptable only when context is obvious
 
-3. **Astro Components**: Follow Astro's component conventions
+3. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
+
+4. **Astro Components**: Follow Astro's component conventions
    - Use `.astro` extension for Astro components
    - TypeScript for logic, CSS for styling within components
 
-4. **Package Structure**: Each package in `packages/` exports:
+5. **Package Structure**: Each package in `packages/` exports:
    - Main entry point (`src/index.ts`)
    - Astro-specific exports (`src/astro.ts`)
    - Component and layout exports
@@ -101,14 +106,14 @@ Core package providing:
 - Global CSS
 - Configuration schemas
 
-### @levino/shipyard-blog  
+### @levino/shipyard-blog
 Blog functionality:
 - BlogEntry and BlogIndex components
 - Blog-specific layouts
 
 ### @levino/shipyard-docs
 Documentation features:
-- DocsEntry components  
+- DocsEntry components
 - Documentation layouts
 - Sidebar navigation utilities
 
@@ -126,6 +131,8 @@ Documentation features:
 
 6. **Git Hooks**: Husky is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
+7. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories
@@ -139,7 +146,31 @@ Documentation features:
 2. **Cross-Package Impact**: Consider how changes in base packages affect apps
 3. **Type Safety**: Maintain strict TypeScript compliance
 4. **Component Design**: Follow existing patterns for consistency
-5. **Documentation**: Update relevant README files when adding features
+5. **Lint Before Pushing**: Always run `npx biome check --write` before pushing changes to ensure code passes linting and formatting checks
+6. **Documentation**: Update relevant README files when adding features
+7. **Documentation Updates**: Always update the docs package (apps/docs) when:
+   - Adding new features or components
+   - Changing configuration schemas or APIs
+   - Modifying existing functionality that affects users
+   - The docs app contains the actual Shipyard documentation, not just demos
+8. **Changesets**: Create a changeset using `npx changeset` when making changes that affect packages:
+   - Use patch version for bug fixes and minor improvements (especially in 0.x.y versions)
+   - Use minor version for new features (when above 1.0.0)
+   - Use major version for breaking changes (when above 1.0.0)
+   - **Write user-centric descriptions**: Focus on what users can now do, not what code was changed
+     - ✅ Good: "You can now host multiple documentation sections with custom URL paths"
+     - ❌ Bad: "Added `DocsConfig` interface with `routeBasePath` option"
+   - Explain the benefit and use case, not the implementation details
+9. **Testing Requirements**: All new features require extensive testing:
+   - Add Playwright E2E tests for user-facing features (in `apps/demos/*/tests/e2e/`)
+   - Add unit tests with Vitest when appropriate for utility functions and business logic
+   - Tests should cover both happy paths and edge cases
+   - Run `npm run test:e2e` to verify all tests pass before submitting changes
+10. **Docusaurus Counterpart Demos**: All Shipyard demos have a corresponding Docusaurus counterpart:
+    - Docusaurus demos contain the same content as Shipyard demos
+    - They are used to compare the output/behavior of Docusaurus vs Shipyard for identical data
+    - When updating a Shipyard demo, always update the corresponding Docusaurus demo to keep them in sync
+    - This ensures accurate framework comparison and helps identify feature parity gaps
 
 ## Troubleshooting
 

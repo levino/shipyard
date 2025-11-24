@@ -1,17 +1,26 @@
 ---
+import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
+  const blogPosts = await getCollection('blog')
   const getParams = (slug: string) => {
-    const [locale, ...rest] = slug.split('/')
-    return {
-      slug: rest.join('/'),
-      locale,
+    if (i18n) {
+      const [locale, ...rest] = slug.split('/')
+      return {
+        slug: rest.join('/'),
+        locale,
+      }
+    } else {
+      // For non-i18n, treat the entire slug as the path
+      return {
+        slug: slug,
+      }
     }
   }
-  const blogPosts = await getCollection('blog')
+
   return blogPosts.map((entry) => ({
     params: getParams(entry.id),
     props: { entry },
@@ -23,10 +32,17 @@ const { Content, headings } = await render(entry)
 ---
 
 <Layout title={entry.data.title}>
-  <div>
-    <div class="prose mx-auto w-full px-8">
-      <Content />
+  <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
+    <div class="col-span-12 xl:col-span-9">
+      <div class="prose max-w-none">
+        <Content />
+      </div>
     </div>
-    <TableOfContents links={headings} />
+    <div class="hidden xl:block col-span-3">
+      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <TableOfContents links={headings} desktopOnly />
+      </div>
+    </div>
   </div>
+  <TableOfContents links={headings} class="xl:hidden" />
 </Layout>

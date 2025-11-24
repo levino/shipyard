@@ -1,3 +1,4 @@
+export { default as Breadcrumbs } from './Breadcrumbs.astro'
 export { default as Footer } from './Footer.astro'
 export { default as GlobalDesktopNavigation } from './GlobalDesktopNavigation.astro'
 export { default as LocalNavigation } from './LocalNavigation.astro'

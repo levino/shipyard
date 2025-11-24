@@ -13,7 +13,7 @@ Stop wrestling with complex configurations and start creating. Shipyard gives yo
 
 🚀 **Ready to Launch** – Get your site running in minutes, not hours  
 📱 **Mobile-First** – Beautiful on every device with Tailwind CSS and DaisyUI  
-🌍 **Global Ready** – Built-in internationalization with locale-based routing  
+🌍 **Global Ready** – Optional internationalization with locale-based routing  
 🧩 **Modular Design** – Use only what you need, extend as you grow  
 📝 **Content-Focused** – Automated organization and collection for your content  
 
@@ -54,9 +54,10 @@ Here's what you'll be up and running with in minutes:
 ```javascript
 // Your complete Astro configuration
 export default defineConfig({
+  // i18n is now optional! Remove for single-language sites
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'de'],
   },
   integrations: [
     shipyard({
