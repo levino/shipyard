@@ -1,4 +1,4 @@
-import { execSync } from 'node:child_process'
+import { execFileSync } from 'node:child_process'
 
 export interface GitMetadata {
   lastUpdated?: Date
@@ -15,16 +15,18 @@ export interface GitMetadata {
 export function getGitMetadata(filePath: string): GitMetadata {
   try {
     // Get the last commit date for the file
-    const dateOutput = execSync(`git log -1 --format=%cI -- "${filePath}"`, {
-      encoding: 'utf-8',
-      stdio: ['pipe', 'pipe', 'pipe'],
-    }).trim()
+    const dateOutput = execFileSync(
+      'git',
+      ['log', '-1', '--format=%cI', '--', filePath],
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim()
 
     // Get the last commit author for the file
-    const authorOutput = execSync(`git log -1 --format=%an -- "${filePath}"`, {
-      encoding: 'utf-8',
-      stdio: ['pipe', 'pipe', 'pipe'],
-    }).trim()
+    const authorOutput = execFileSync(
+      'git',
+      ['log', '-1', '--format=%an', '--', filePath],
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+    ).trim()
 
     return {
       lastUpdated: dateOutput ? new Date(dateOutput) : undefined,
