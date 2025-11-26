@@ -1,0 +1,97 @@
+---
+import type { PaginationLink } from '../src/pagination'
+
+interface Props {
+  prev?: PaginationLink
+  next?: PaginationLink
+  prevLabel?: string
+  nextLabel?: string
+}
+
+const { prev, next, prevLabel = 'Previous', nextLabel = 'Next' } = Astro.props
+
+// Only render if there's at least one link
+const shouldRender = prev || next
+---
+
+{
+  shouldRender && (
+    <nav
+      class="pagination-nav mt-8 border-t border-base-300 pt-6"
+      aria-label="Docs navigation"
+    >
+      {prev ? (
+        <a
+          href={prev.href}
+          class="pagination-nav__link pagination-nav__link--prev"
+          rel="prev"
+        >
+          <span class="pagination-nav__sublabel">{prevLabel}</span>
+          <span class="pagination-nav__label">{prev.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+
+      {next ? (
+        <a
+          href={next.href}
+          class="pagination-nav__link pagination-nav__link--next"
+          rel="next"
+        >
+          <span class="pagination-nav__sublabel">{nextLabel}</span>
+          <span class="pagination-nav__label">{next.title}</span>
+        </a>
+      ) : (
+        <span />
+      )}
+    </nav>
+  )
+}
+
+<style>
+  .pagination-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .pagination-nav__link {
+    display: block;
+    padding: 1rem;
+    border: 1px solid oklch(var(--bc) / 0.2);
+    border-radius: var(--rounded-box, 1rem);
+    transition: border-color 0.2s;
+    line-height: 1.25;
+  }
+
+  .pagination-nav__link:hover {
+    border-color: oklch(var(--p));
+    text-decoration: none;
+  }
+
+  .pagination-nav__link--next {
+    text-align: right;
+  }
+
+  .pagination-nav__sublabel {
+    display: block;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-bottom: 0.25rem;
+  }
+
+  .pagination-nav__label {
+    display: block;
+    font-weight: 600;
+    word-break: break-word;
+  }
+
+  .pagination-nav__link--prev .pagination-nav__label::before {
+    content: '« ';
+  }
+
+  .pagination-nav__link--next .pagination-nav__label::after {
+    content: ' »';
+  }
+</style>

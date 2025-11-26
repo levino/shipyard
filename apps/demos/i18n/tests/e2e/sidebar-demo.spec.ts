@@ -79,12 +79,13 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
         }
       }
 
-      expect(hrefs.length).toBe(2)
+      expect(hrefs.length).toBe(3)
 
-      // Expected order by sidebar_position: custom-class (10), custom-label (30)
-      // NOT alphabetical order: custom-class, custom-label
+      // Expected order by sidebar_position: custom-class (10), custom-label (30), pagination-demo (40)
+      // NOT alphabetical order: custom-class, custom-label, pagination-demo
       expect(hrefs[0]).toContain('custom-class')
       expect(hrefs[1]).toContain('custom-label')
+      expect(hrefs[2]).toContain('pagination-demo')
     })
 
     test('lower sidebar_position appears first', async ({ page }) => {

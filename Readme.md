@@ -78,8 +78,8 @@ For development and comparison purposes, we maintain Docusaurus equivalents of o
 We welcome contributions! This is a monorepo managed with npm workspaces.
 
 ```bash
-# Install dependencies
-npm install
+# Install dependencies and run allowed lifecycle scripts
+npm run setup
 
 # Run tests
 npm run test:e2e
@@ -87,6 +87,8 @@ npm run test:e2e
 # Format code
 npx biome format --write .
 ```
+
+> **Note:** This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to properly initialize the project.
 
 ## 📄 License
 

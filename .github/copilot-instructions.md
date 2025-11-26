@@ -7,7 +7,7 @@ Always follow these instructions first and fallback to search or bash commands o
 ### Bootstrap, Build, and Test the Repository
 Run commands in this exact sequence from the repository root:
 
-- `npm ci` -- installs all dependencies. Takes ~25 seconds. NEVER CANCEL.
+- `npm run setup` -- installs all dependencies and runs allowed lifecycle scripts. Takes ~25 seconds. NEVER CANCEL. This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security.
 - `npx biome ci .` -- runs linting checks. Takes <1 second.
 - `npm run test --workspaces --if-present` -- runs all unit tests. Takes <2 seconds total.
 - `npm run build --workspace=demo` -- builds demo app. Takes ~4 seconds. NEVER CANCEL. Set timeout to 120+ seconds.
@@ -89,7 +89,7 @@ shipyard/
 - **Testing**: Vitest (unit tests), Playwright (E2E tests)
 - **Linting/Formatting**: Biome (replaces ESLint + Prettier)
 - **Internationalization**: Built-in i18n with EN/DE locales
-- **Git Hooks**: Husky with pre-commit formatting
+- **Git Hooks**: Lefthook with pre-commit formatting
 
 ### Package Dependencies
 Each package uses peer dependencies for core frameworks:
@@ -158,13 +158,13 @@ Use the `getTitle(siteTitle, pageTitle)` utility from `packages/base/src/tools/t
 
 ### Common Issues and Solutions
 
-**Build fails**: Check that all peer dependencies are properly installed by running `npm ci` in the root directory.
+**Build fails**: Check that all peer dependencies are properly installed by running `npm run setup` in the root directory.
 
 **Styling issues**: Verify Tailwind CSS and DaisyUI are properly configured. Check that `tailwind({ applyBaseStyles: false })` is set in Astro config to avoid conflicts.
 
 **E2E tests fail**: Ensure Playwright browsers are installed with `npx playwright install --with-deps`. Tests may fail in restricted environments due to browser download limitations.
 
-**Git hooks not working**: Run `npm run prepare` to reinstall Husky git hooks.
+**Git hooks not working**: Run `npm run setup` to reinstall Lefthook git hooks.
 
 **Missing changesets**: Always run `npx changeset add` after making changes to packages to ensure proper versioning.
 

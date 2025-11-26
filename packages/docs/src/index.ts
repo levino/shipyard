@@ -7,6 +7,9 @@ import { z } from 'astro/zod'
 // Re-export git metadata utilities
 export type { GitMetadata } from './gitMetadata'
 export { getEditUrl, getGitMetadata } from './gitMetadata'
+// Re-export pagination types and utilities
+export type { PaginationInfo, PaginationLink } from './pagination'
+export { getPaginationInfo } from './pagination'
 export type { DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
 export { getDocPath, getRouteParams } from './routeHelpers'
@@ -26,6 +29,9 @@ export const docsSchema = z.object({
   sidebar_position: z.number().optional(),
   sidebar_label: z.string().optional(),
   sidebar_class_name: z.string().optional(),
+  sidebar_custom_props: z.record(z.any()).optional(),
+  pagination_next: z.string().nullable().optional(),
+  pagination_prev: z.string().nullable().optional(),
   /**
    * Override the last update author for this specific page.
    * Set to false to hide the author for this page.
