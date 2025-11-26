@@ -8,6 +8,8 @@ export interface DocsData {
   sidebarPosition?: number
   sidebarLabel?: string
   sidebarClassName?: string
+  pagination_next?: string | null
+  pagination_prev?: string | null
 }
 
 interface TreeNode {

@@ -5,8 +5,10 @@ import type { NavigationTree } from '@levino/shipyard-base'
 import { Breadcrumbs, TableOfContents } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { Array as EffectArray, Option } from 'effect'
+import { getPaginationInfo } from '../src/pagination'
 import type { DocsData } from '../src/sidebarEntries'
 import { toSidebarEntries } from '../src/sidebarEntries'
+import DocPagination from './DocPagination.astro'
 
 interface Props {
   headings?: { depth: number; text: string; slug: string }[]
@@ -28,10 +30,21 @@ const { headings = [], routeBasePath = 'docs', docsData } = Astro.props
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
 
-const getPath = (id: string) =>
-  i18n
-    ? `/${Astro.currentLocale}/${normalizedBasePath}/${id.slice(3)}`
-    : `/${normalizedBasePath}/${id}`
+const getPath = (id: string) => {
+  // Remove the .md extension if present and handle index pages
+  const cleanId = id.replace(/\.md$/, '')
+  const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
+
+  if (i18n) {
+    // For i18n, slice off the locale prefix (e.g., 'en/')
+    const pathPart = cleanId.slice(3)
+    const finalPath = isIndex ? pathPart.replace(/\/?index$/, '') : pathPart
+    return `/${Astro.currentLocale}/${normalizedBasePath}/${finalPath}`
+  }
+
+  const finalPath = isIndex ? cleanId.replace(/\/?index$/, '') : cleanId
+  return `/${normalizedBasePath}/${finalPath}`
+}
 
 // Use provided docsData or fetch from the default 'docs' collection
 const docs =
@@ -48,6 +61,8 @@ const docs =
             sidebar_label,
             sidebar_class_name,
             sidebar_custom_props,
+            pagination_next,
+            pagination_prev,
           },
         } = doc
         return {
@@ -68,6 +83,8 @@ const docs =
           sidebarLabel: sidebar_label,
           sidebarClassName: sidebar_class_name,
           sidebarCustomProps: sidebar_custom_props,
+          pagination_next,
+          pagination_prev,
         }
       }),
     )
@@ -79,6 +96,9 @@ const entries: NavigationTree =
   i18n && Astro.currentLocale
     ? (fullTree[Astro.currentLocale]?.subEntry ?? {})
     : fullTree
+
+// Compute pagination info for the current page
+const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
 ---
 
 <BaseLayout sidebarNavigation={entries}>
@@ -88,6 +108,7 @@ const entries: NavigationTree =
         <Breadcrumbs navigation={entries} />
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
+        <DocPagination prev={pagination.prev} next={pagination.next} />
       </div>
     </div>
     <div class="hidden xl:block col-span-3">

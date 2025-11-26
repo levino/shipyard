@@ -2,6 +2,9 @@ import type { AstroIntegration } from 'astro'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
+// Re-export pagination types and utilities
+export type { PaginationInfo, PaginationLink } from './pagination'
+export { getPaginationInfo } from './pagination'
 export type { DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
 export { getDocPath, getRouteParams } from './routeHelpers'
@@ -21,6 +24,8 @@ export const docsSchema = z.object({
   sidebar_position: z.number().optional(),
   sidebar_label: z.string().optional(),
   sidebar_class_name: z.string().optional(),
+  pagination_next: z.string().nullable().optional(),
+  pagination_prev: z.string().nullable().optional(),
 })
 
 /**
