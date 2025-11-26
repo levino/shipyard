@@ -44,8 +44,8 @@ Before working with this codebase, ensure you have:
 ### Common Commands
 
 ```bash
-# Install dependencies (run from root)
-npm install
+# Install dependencies and run allowed lifecycle scripts (run from root)
+npm run setup
 
 # Run demo app in development mode
 cd apps/demo
@@ -129,9 +129,11 @@ Documentation features:
 
 5. **Changesets**: The project uses `@changesets/cli` for version management.
 
-6. **Git Hooks**: Husky is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
+6. **Git Hooks**: Lefthook is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
 7. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
+
+8. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`.
 
 ## Working with Components
 

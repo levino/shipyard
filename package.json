@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "setup": "npm install && npm exec @lavamoat/allow-scripts",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "test:unit": "npm run test:unit --workspaces --if-present"
   },
@@ -27,7 +28,11 @@
   "lavamoat": {
     "allowScripts": {
       "@lavamoat/preinstall-always-fail": false,
-      "lefthook": true
+      "core-js": false,
+      "core-js-pure": false,
+      "esbuild": true,
+      "lefthook": true,
+      "sharp": true
     }
   }
 }
