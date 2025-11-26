@@ -52,6 +52,12 @@ export interface DocsConfig {
    */
   routeBasePath?: string
   /**
+   * The name of the content collection to use.
+   * Must match a collection defined in your content.config.ts.
+   * @default Same as routeBasePath (e.g., 'docs' or 'guides')
+   */
+  collectionName?: string
+  /**
    * The base URL for "Edit this page" links.
    * This should point to the directory containing your docs in your repository.
    * @example 'https://github.com/user/repo/edit/main/docs'
@@ -119,12 +125,27 @@ export const createDocsCollection = (
  * shipyardDocs({ routeBasePath: 'guides' })
  * ```
  */
-const VIRTUAL_MODULE_ID = 'virtual:shipyard-docs-config'
+// Store all docs configurations keyed by routeBasePath
+// This allows DocsEntry.astro to look up config based on the current route
+const VIRTUAL_MODULE_ID = 'virtual:shipyard-docs-configs'
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
+
+// Global registry to collect configs from multiple docs plugin instances
+const docsConfigs: Record<
+  string,
+  {
+    editUrl?: string
+    showLastUpdateTime: boolean
+    showLastUpdateAuthor: boolean
+    routeBasePath: string
+    collectionName: string
+  }
+> = {}
 
 export default (config: DocsConfig = {}): AstroIntegration => {
   const {
     routeBasePath = 'docs',
+    collectionName,
     editUrl,
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
@@ -139,6 +160,18 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     normalizedBasePath = normalizedBasePath.slice(0, -1)
   }
 
+  // Collection name defaults to the route base path
+  const resolvedCollectionName = collectionName ?? normalizedBasePath
+
+  // Register this config in the global registry
+  docsConfigs[normalizedBasePath] = {
+    editUrl,
+    showLastUpdateTime,
+    showLastUpdateAuthor,
+    routeBasePath: normalizedBasePath,
+    collectionName: resolvedCollectionName,
+  }
+
   return {
     name: `shipyard-docs${normalizedBasePath !== 'docs' ? `-${normalizedBasePath}` : ''}`,
     hooks: {
@@ -147,12 +180,12 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         config: astroConfig,
         updateConfig,
       }) => {
-        // Create a virtual module to expose the configuration
+        // Create a virtual module to expose all docs configurations
         updateConfig({
           vite: {
             plugins: [
               {
-                name: 'shipyard-docs-config',
+                name: `shipyard-docs-config-${normalizedBasePath}`,
                 resolveId(id) {
                   if (id === VIRTUAL_MODULE_ID) {
                     return RESOLVED_VIRTUAL_MODULE_ID
@@ -160,12 +193,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
                 },
                 load(id) {
                   if (id === RESOLVED_VIRTUAL_MODULE_ID) {
-                    return `export const docsConfig = ${JSON.stringify({
-                      editUrl,
-                      showLastUpdateTime,
-                      showLastUpdateAuthor,
-                      routeBasePath: normalizedBasePath,
-                    })};`
+                    return `export const docsConfigs = ${JSON.stringify(docsConfigs)};`
                   }
                 },
               },

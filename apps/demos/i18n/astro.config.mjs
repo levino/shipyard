@@ -69,11 +69,21 @@ export default defineConfig({
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
     }),
-    // Note: guides docs use custom route file at src/pages/[locale]/guides/[...slug].astro
+    shipyardDocs({
+      routeBasePath: 'guides',
+      editUrl:
+        'https://github.com/levino/shipyard/edit/main/apps/demos/i18n/guides',
+      showLastUpdateTime: true,
+      showLastUpdateAuthor: true,
+    }),
     shipyardBlog({
       blogSidebarCount: 5,
       blogSidebarTitle: 'Recent posts',
       postsPerPage: 10,
+      editUrl:
+        'https://github.com/levino/shipyard/edit/main/apps/demos/i18n/blog',
+      showLastUpdateTime: true,
+      showLastUpdateAuthor: true,
     }),
   ],
 })

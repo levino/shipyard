@@ -41,6 +41,10 @@ export default defineConfig({
     shipyardBlog({
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All posts',
+      editUrl:
+        'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/blog',
+      showLastUpdateTime: true,
+      showLastUpdateAuthor: true,
     }),
   ],
 })

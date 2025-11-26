@@ -5,6 +5,21 @@ export const blogSchema = z.object({
   date: z.date(),
   title: z.string(),
   description: z.string(),
+  /**
+   * Override the last update author for this specific post.
+   * Set to false to hide the author for this post.
+   */
+  last_update_author: z.union([z.string(), z.literal(false)]).optional(),
+  /**
+   * Override the last update timestamp for this specific post.
+   * Set to false to hide the timestamp for this post.
+   */
+  last_update_time: z.union([z.coerce.date(), z.literal(false)]).optional(),
+  /**
+   * Custom edit URL for this specific post.
+   * Set to null to disable edit link for this post.
+   */
+  custom_edit_url: z.string().nullable().optional(),
 })
 
 export const blogConfigSchema = z.object({
@@ -26,6 +41,24 @@ export const blogConfigSchema = z.object({
    * @default 10
    */
   postsPerPage: z.number().int().positive().default(10),
+  /**
+   * The base URL for "Edit this page" links.
+   * This should point to the directory containing your blog posts in your repository.
+   * @example 'https://github.com/user/repo/edit/main/blog'
+   */
+  editUrl: z.string().optional(),
+  /**
+   * Whether to show the last update timestamp on each post.
+   * Uses git history to determine when the file was last modified.
+   * @default false
+   */
+  showLastUpdateTime: z.boolean().default(false),
+  /**
+   * Whether to show the last update author on each post.
+   * Uses git history to determine who last modified the file.
+   * @default false
+   */
+  showLastUpdateAuthor: z.boolean().default(false),
 })
 
 export type BlogConfig = z.infer<typeof blogConfigSchema>
