@@ -30,10 +30,21 @@ const { headings = [], routeBasePath = 'docs', docsData } = Astro.props
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
 
-const getPath = (id: string) =>
-  i18n
-    ? `/${Astro.currentLocale}/${normalizedBasePath}/${id.slice(3)}`
-    : `/${normalizedBasePath}/${id}`
+const getPath = (id: string) => {
+  // Remove the .md extension if present and handle index pages
+  const cleanId = id.replace(/\.md$/, '')
+  const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
+
+  if (i18n) {
+    // For i18n, slice off the locale prefix (e.g., 'en/')
+    const pathPart = cleanId.slice(3)
+    const finalPath = isIndex ? pathPart.replace(/\/?index$/, '') : pathPart
+    return `/${Astro.currentLocale}/${normalizedBasePath}/${finalPath}`
+  }
+
+  const finalPath = isIndex ? cleanId.replace(/\/?index$/, '') : cleanId
+  return `/${normalizedBasePath}/${finalPath}`
+}
 
 // Use provided docsData or fetch from the default 'docs' collection
 const docs =
