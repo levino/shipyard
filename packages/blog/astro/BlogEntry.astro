@@ -1,11 +1,18 @@
 ---
 import { i18n } from 'astro:config/server'
-import { getCollection, render } from 'astro:content'
+import { type CollectionEntry, getCollection, render } from 'astro:content'
 import { TableOfContents } from '@levino/shipyard-base/components'
+import BlogPostPagination from './BlogPostPagination.astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
   const blogPosts = await getCollection('blog')
+
+  // Sort posts by date (newest first)
+  const sortedPosts = blogPosts.toSorted(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  )
+
   const getParams = (slug: string) => {
     if (i18n) {
       const [locale, ...rest] = slug.split('/')
@@ -21,13 +28,50 @@ export const getStaticPaths = async () => {
     }
   }
 
-  return blogPosts.map((entry) => ({
-    params: getParams(entry.id),
-    props: { entry },
-  }))
+  const getPostUrl = (post: CollectionEntry<'blog'>) => {
+    if (i18n) {
+      const [locale, ...rest] = post.id.split('/')
+      return `/${locale}/blog/${rest.join('/')}`
+    }
+    return `/blog/${post.id}`
+  }
+
+  return sortedPosts.map((entry) => {
+    // Filter posts by locale for pagination
+    let localePosts = sortedPosts
+    if (i18n) {
+      const [locale] = entry.id.split('/')
+      localePosts = sortedPosts.filter((post) =>
+        post.id.startsWith(`${locale}/`),
+      )
+    }
+
+    // Find position within locale-filtered posts
+    const localeIndex = localePosts.findIndex((post) => post.id === entry.id)
+
+    // Newer is previous in the array (lower index), older is next (higher index)
+    const newerPost = localeIndex > 0 ? localePosts[localeIndex - 1] : undefined
+    const olderPost =
+      localeIndex < localePosts.length - 1
+        ? localePosts[localeIndex + 1]
+        : undefined
+
+    return {
+      params: getParams(entry.id),
+      props: {
+        entry,
+        older: olderPost
+          ? { href: getPostUrl(olderPost), title: olderPost.data.title }
+          : undefined,
+        newer: newerPost
+          ? { href: getPostUrl(newerPost), title: newerPost.data.title }
+          : undefined,
+      },
+    }
+  })
 }
 
-const { entry } = Astro.props
+const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 ---
 
@@ -37,6 +81,7 @@ const { Content, headings } = await render(entry)
       <div class="prose max-w-none">
         <Content />
       </div>
+      <BlogPostPagination older={older} newer={newer} />
     </div>
     <div class="hidden xl:block col-span-3">
       <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">

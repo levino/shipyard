@@ -1,46 +1,54 @@
 ---
-import type { PaginationLink } from '../src/pagination'
-
-interface Props {
-  prev?: PaginationLink
-  next?: PaginationLink
-  prevLabel?: string
-  nextLabel?: string
+interface PaginationLink {
+  href: string
+  title: string
 }
 
-const { prev, next, prevLabel = 'Previous', nextLabel = 'Next' } = Astro.props
+interface Props {
+  older?: PaginationLink
+  newer?: PaginationLink
+  olderLabel?: string
+  newerLabel?: string
+}
+
+const {
+  older,
+  newer,
+  olderLabel = 'Older Post',
+  newerLabel = 'Newer Post',
+} = Astro.props
 
 // Only render if there's at least one link
-const shouldRender = prev || next
+const shouldRender = older || newer
 ---
 
 {
   shouldRender && (
     <nav
       class="pagination-nav mt-8 border-t border-base-300 pt-6"
-      aria-label="Docs navigation"
+      aria-label="Blog post navigation"
     >
-      {prev ? (
+      {newer ? (
         <a
-          href={prev.href}
+          href={newer.href}
           class="pagination-nav__link pagination-nav__link--prev"
           rel="prev"
         >
-          <span class="pagination-nav__sublabel">{prevLabel}</span>
-          <span class="pagination-nav__label">{prev.title}</span>
+          <span class="pagination-nav__sublabel">{newerLabel}</span>
+          <span class="pagination-nav__label">{newer.title}</span>
         </a>
       ) : (
         <span />
       )}
 
-      {next ? (
+      {older ? (
         <a
-          href={next.href}
+          href={older.href}
           class="pagination-nav__link pagination-nav__link--next"
           rel="next"
         >
-          <span class="pagination-nav__sublabel">{nextLabel}</span>
-          <span class="pagination-nav__label">{next.title}</span>
+          <span class="pagination-nav__sublabel">{olderLabel}</span>
+          <span class="pagination-nav__label">{older.title}</span>
         </a>
       ) : (
         <span />

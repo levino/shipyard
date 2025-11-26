@@ -183,9 +183,9 @@ test.describe('Documentation Pagination', () => {
       const prevButton = page.locator('a[rel="prev"]')
       const nextButton = page.locator('a[rel="next"]')
 
-      // Both should have btn classes
-      await expect(prevButton).toHaveClass(/btn/)
-      await expect(nextButton).toHaveClass(/btn/)
+      // Both should have pagination-nav__link classes (Docusaurus-style)
+      await expect(prevButton).toHaveClass(/pagination-nav__link/)
+      await expect(nextButton).toHaveClass(/pagination-nav__link/)
     })
 
     test('pagination is responsive on mobile', async ({ page }) => {
