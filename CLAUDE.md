@@ -133,6 +133,8 @@ Documentation features:
 
 7. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
 
+8. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories

@@ -1,3 +1,5 @@
+import { existsSync, mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import type { AstroIntegration } from 'astro'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
@@ -172,6 +174,10 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     collectionName: resolvedCollectionName,
   }
 
+  // Virtual module for this specific route's config
+  const routeConfigVirtualId = `virtual:shipyard-docs-config-${normalizedBasePath}`
+  const resolvedRouteConfigVirtualId = `\0${routeConfigVirtualId}`
+
   return {
     name: `shipyard-docs${normalizedBasePath !== 'docs' ? `-${normalizedBasePath}` : ''}`,
     hooks: {
@@ -180,7 +186,115 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         config: astroConfig,
         updateConfig,
       }) => {
-        // Create a virtual module to expose all docs configurations
+        // Create a generated entry file for this specific docs instance
+        // This ensures each route has its own getStaticPaths that only returns its own paths
+        const generatedDir = join(
+          astroConfig.root?.pathname || process.cwd(),
+          'node_modules',
+          '.shipyard-docs',
+        )
+
+        if (!existsSync(generatedDir)) {
+          mkdirSync(generatedDir, { recursive: true })
+        }
+
+        const entryFileName = `DocsEntry-${normalizedBasePath}.astro`
+        const entryFilePath = join(generatedDir, entryFileName)
+
+        // Generate the entry file with the correct routeBasePath and collectionName
+        // Note: We inline the values directly in getStaticPaths because Astro's compiler
+        // hoists getStaticPaths to a separate module context where top-level constants aren't available
+        const entryFileContent = `---
+import { i18n } from 'astro:config/server'
+import { getCollection, render } from 'astro:content'
+import { docsConfigs } from 'virtual:shipyard-docs-configs'
+import { getEditUrl, getGitMetadata } from '@levino/shipyard-docs'
+import Layout from '@levino/shipyard-docs/astro/Layout.astro'
+
+export async function getStaticPaths() {
+  const collectionName = ${JSON.stringify(resolvedCollectionName)}
+  const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+  const docs = await getCollection(collectionName)
+
+  const getParams = (slug) => {
+    if (i18n) {
+      const [locale, ...rest] = slug.split('/')
+      return {
+        slug: rest.length ? rest.join('/') : undefined,
+        locale,
+      }
+    } else {
+      return {
+        slug: slug || undefined,
+      }
+    }
+  }
+
+  return docs.map((entry) => ({
+    params: getParams(entry.id),
+    props: { entry, routeBasePath },
+  }))
+}
+
+const { entry, routeBasePath } = Astro.props
+
+const docsConfig = docsConfigs[routeBasePath] ?? {
+  showLastUpdateTime: false,
+  showLastUpdateAuthor: false,
+  routeBasePath: 'docs',
+  collectionName: 'docs',
+}
+
+const { Content, headings } = await render(entry)
+
+const { custom_edit_url, last_update_author, last_update_time } = entry.data
+
+let editUrl
+if (custom_edit_url === null) {
+  editUrl = undefined
+} else if (custom_edit_url) {
+  editUrl = custom_edit_url
+} else {
+  editUrl = getEditUrl(docsConfig.editUrl, entry.id)
+}
+
+let lastUpdated
+let lastAuthor
+
+if (
+  (docsConfig.showLastUpdateTime && last_update_time !== false) ||
+  (docsConfig.showLastUpdateAuthor && last_update_author !== false)
+) {
+  const filePath = entry.filePath
+
+  if (filePath) {
+    const gitMetadata = getGitMetadata(filePath)
+
+    if (docsConfig.showLastUpdateTime && last_update_time !== false) {
+      lastUpdated =
+        last_update_time instanceof Date
+          ? last_update_time
+          : gitMetadata.lastUpdated
+    }
+
+    if (docsConfig.showLastUpdateAuthor && last_update_author !== false) {
+      lastAuthor =
+        typeof last_update_author === 'string'
+          ? last_update_author
+          : gitMetadata.lastAuthor
+    }
+  }
+}
+---
+
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor}>
+  <Content />
+</Layout>
+`
+
+        writeFileSync(entryFilePath, entryFileContent)
+
+        // Create virtual modules to expose docs configurations
         updateConfig({
           vite: {
             plugins: [
@@ -190,10 +304,16 @@ export default (config: DocsConfig = {}): AstroIntegration => {
                   if (id === VIRTUAL_MODULE_ID) {
                     return RESOLVED_VIRTUAL_MODULE_ID
                   }
+                  if (id === routeConfigVirtualId) {
+                    return resolvedRouteConfigVirtualId
+                  }
                 },
                 load(id) {
                   if (id === RESOLVED_VIRTUAL_MODULE_ID) {
                     return `export const docsConfigs = ${JSON.stringify(docsConfigs)};`
+                  }
+                  if (id === resolvedRouteConfigVirtualId) {
+                    return `export const routeBasePath = ${JSON.stringify(normalizedBasePath)};\nexport const collectionName = ${JSON.stringify(resolvedCollectionName)};`
                   }
                 },
               },
@@ -205,14 +325,14 @@ export default (config: DocsConfig = {}): AstroIntegration => {
           // With i18n: use locale prefix
           injectRoute({
             pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
-            entrypoint: `@levino/shipyard-docs/astro/DocsEntry.astro`,
+            entrypoint: entryFilePath,
             prerender: true,
           })
         } else {
           // Without i18n: direct path
           injectRoute({
             pattern: `/${normalizedBasePath}/[...slug]`,
-            entrypoint: `@levino/shipyard-docs/astro/DocsEntry.astro`,
+            entrypoint: entryFilePath,
             prerender: true,
           })
         }
