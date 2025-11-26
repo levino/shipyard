@@ -18,14 +18,14 @@ export function getGitMetadata(filePath: string): GitMetadata {
     const dateOutput = execFileSync(
       'git',
       ['log', '-1', '--format=%cI', '--', filePath],
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
     ).trim()
 
     // Get the last commit author for the file
     const authorOutput = execFileSync(
       'git',
       ['log', '-1', '--format=%an', '--', filePath],
-      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] }
+      { encoding: 'utf-8', stdio: ['pipe', 'pipe', 'pipe'] },
     ).trim()
 
     return {
@@ -52,8 +52,16 @@ export function getEditUrl(
   if (!editUrlBase) return undefined
 
   // Ensure the base URL doesn't end with a slash and the docId doesn't start with one
-  const normalizedBase = editUrlBase.replace(/\/+$/, '')
-  const normalizedDocId = docId.replace(/^\/+/, '')
+  // Use loops instead of regex to avoid polynomial ReDoS vulnerability
+  let normalizedBase = editUrlBase
+  while (normalizedBase.endsWith('/')) {
+    normalizedBase = normalizedBase.slice(0, -1)
+  }
+
+  let normalizedDocId = docId
+  while (normalizedDocId.startsWith('/')) {
+    normalizedDocId = normalizedDocId.slice(1)
+  }
 
   // Add .md extension if not present
   const fileId = normalizedDocId.endsWith('.md')
