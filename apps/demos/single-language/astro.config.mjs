@@ -33,7 +33,8 @@ export default defineConfig({
       brand: 'Single Lang Demo',
     }),
     shipyardDocs({
-      editUrl: 'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/docs',
+      editUrl:
+        'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/docs',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
     }),
