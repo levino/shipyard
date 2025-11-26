@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-docs",
-  "version": "0.4.6",
+  "version": "0.4.7",
   "description": "",
   "type": "module",
   "main": "src/index.ts",
