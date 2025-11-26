@@ -2,10 +2,17 @@
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import { TableOfContents } from '@levino/shipyard-base/components'
+import BlogPostPagination from './BlogPostPagination.astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
   const blogPosts = await getCollection('blog')
+
+  // Sort posts by date (newest first)
+  const sortedPosts = [...blogPosts].sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+  )
+
   const getParams = (slug: string) => {
     if (i18n) {
       const [locale, ...rest] = slug.split('/')
@@ -21,13 +28,57 @@ export const getStaticPaths = async () => {
     }
   }
 
-  return blogPosts.map((entry) => ({
-    params: getParams(entry.id),
-    props: { entry },
-  }))
+  const getLocale = (slug: string) => {
+    if (i18n) {
+      return slug.split('/')[0]
+    }
+    return null
+  }
+
+  const getHref = (slug: string) => {
+    if (i18n) {
+      const [locale, ...rest] = slug.split('/')
+      return `/${locale}/blog/${rest.join('/')}`
+    }
+    return `/blog/${slug}`
+  }
+
+  return sortedPosts.map((entry) => {
+    const currentLocale = getLocale(entry.id)
+
+    // Find older and newer posts (respecting locale boundaries for i18n)
+    const localePosts = currentLocale
+      ? sortedPosts.filter((post) => getLocale(post.id) === currentLocale)
+      : sortedPosts
+
+    const localeIndex = localePosts.findIndex((post) => post.id === entry.id)
+
+    // Newer post is the one before in the sorted array (more recent)
+    const newerPost =
+      localeIndex > 0
+        ? {
+            href: getHref(localePosts[localeIndex - 1].id),
+            title: localePosts[localeIndex - 1].data.title,
+          }
+        : undefined
+
+    // Older post is the one after in the sorted array (less recent)
+    const olderPost =
+      localeIndex < localePosts.length - 1
+        ? {
+            href: getHref(localePosts[localeIndex + 1].id),
+            title: localePosts[localeIndex + 1].data.title,
+          }
+        : undefined
+
+    return {
+      params: getParams(entry.id),
+      props: { entry, newerPost, olderPost },
+    }
+  })
 }
 
-const { entry } = Astro.props
+const { entry, newerPost, olderPost } = Astro.props
 const { Content, headings } = await render(entry)
 ---
 
@@ -37,6 +88,7 @@ const { Content, headings } = await render(entry)
       <div class="prose max-w-none">
         <Content />
       </div>
+      <BlogPostPagination newerPost={newerPost} olderPost={olderPost} />
     </div>
     <div class="hidden xl:block col-span-3">
       <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">

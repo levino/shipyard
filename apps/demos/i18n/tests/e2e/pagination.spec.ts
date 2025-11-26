@@ -28,7 +28,7 @@ test.describe('Documentation Pagination', () => {
       // Middle page should have both buttons
       const prevButton = page.locator('a[rel="prev"]')
       await expect(prevButton).toBeAttached()
-      await expect(prevButton).toContainText('Previous')
+      await expect(prevButton).toContainText('Prev')
 
       const nextButton = page.locator('a[rel="next"]')
       await expect(nextButton).toBeAttached()
@@ -60,7 +60,7 @@ test.describe('Documentation Pagination', () => {
       // Now we should be on the last page
       const prevButton = page.locator('a[rel="prev"]')
       await expect(prevButton).toBeAttached()
-      await expect(prevButton).toContainText('Previous')
+      await expect(prevButton).toContainText('Prev')
 
       const nextButton = page.locator('a[rel="next"]')
       await expect(nextButton).not.toBeAttached()

@@ -1,27 +1,29 @@
 ---
-import type { PaginationLink } from '../src/pagination'
-
 interface Props {
-  prev?: PaginationLink
-  next?: PaginationLink
-  prevLabel?: string
-  nextLabel?: string
+  newerPost?: {
+    href: string
+    title: string
+  }
+  olderPost?: {
+    href: string
+    title: string
+  }
 }
 
-const { prev, next, prevLabel = 'Prev', nextLabel = 'Next' } = Astro.props
+const { newerPost, olderPost } = Astro.props
 
 // Only render if there's at least one link
-const shouldRender = prev || next
+const shouldRender = newerPost || olderPost
 ---
 
 {
   shouldRender && (
-    <nav class="mt-8 border-t border-base-300 pt-6" aria-label="Docs navigation">
+    <nav class="mt-8 border-t border-base-300 pt-6" aria-label="Blog navigation">
       <div class="flex justify-between">
         <div>
-          {prev ? (
+          {newerPost ? (
             <a
-              href={prev.href}
+              href={newerPost.href}
               class="btn btn-sm md:btn-md gap-2 lg:gap-3"
               rel="prev"
             >
@@ -36,25 +38,25 @@ const shouldRender = prev || next
               </svg>
               <div class="flex flex-col items-start gap-0.5 leading-[1.1]">
                 <span class="text-base-content/50 hidden text-[0.5625rem] font-semibold tracking-wide md:block">
-                  {prevLabel}
+                  Newer
                 </span>
-                <span>{prev.title}</span>
+                <span>{newerPost.title}</span>
               </div>
             </a>
           ) : null}
         </div>
         <div>
-          {next ? (
+          {olderPost ? (
             <a
-              href={next.href}
+              href={olderPost.href}
               class="btn btn-neutral btn-sm md:btn-md gap-2 lg:gap-3"
               rel="next"
             >
               <div class="flex flex-col items-end gap-0.5 leading-[1.1]">
                 <span class="text-neutral-content/50 hidden text-[0.5625rem] font-semibold tracking-wide md:block">
-                  {nextLabel}
+                  Older
                 </span>
-                <span>{next.title}</span>
+                <span>{olderPost.title}</span>
               </div>
               <svg
                 class="h-6 w-6 fill-current md:h-8 md:w-8 rtl:rotate-180"
