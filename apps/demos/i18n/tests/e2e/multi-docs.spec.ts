@@ -217,4 +217,48 @@ test.describe('Multi-Docs Feature with i18n', () => {
       await expect(metaDescription).toBeAttached()
     })
   })
+
+  test.describe('Guides Metadata Features', () => {
+    test('guides shows "Edit this page" link when editUrl is configured', async ({
+      page,
+    }) => {
+      await page.goto('/en/guides/getting-started')
+
+      const editLink = page.locator('a.edit-link')
+      await expect(editLink).toBeAttached()
+      await expect(editLink).toContainText('Edit this page')
+
+      // Check the link points to GitHub
+      const href = await editLink.getAttribute('href')
+      expect(href).toContain('github.com')
+      expect(href).toContain('/edit/')
+      expect(href).toContain('/guides/')
+    })
+
+    test('guides shows last updated timestamp when showLastUpdateTime is enabled', async ({
+      page,
+    }) => {
+      await page.goto('/en/guides/getting-started')
+
+      const lastUpdated = page.locator('.last-updated')
+      await expect(lastUpdated).toBeAttached()
+      await expect(lastUpdated).toContainText('Last updated:')
+
+      // Check for time element with datetime attribute
+      const timeElement = lastUpdated.locator('time')
+      await expect(timeElement).toBeAttached()
+      const datetime = await timeElement.getAttribute('datetime')
+      expect(datetime).toBeTruthy()
+    })
+
+    test('guides shows last author when showLastUpdateAuthor is enabled', async ({
+      page,
+    }) => {
+      await page.goto('/en/guides/getting-started')
+
+      const lastAuthor = page.locator('.last-author')
+      await expect(lastAuthor).toBeAttached()
+      await expect(lastAuthor).toContainText('by')
+    })
+  })
 })

@@ -32,9 +32,9 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] Sidebar configuration path
 - [x] Collapsible sidebar categories (`sidebarCollapsible`)
 - [x] Sidebar categories start collapsed (`sidebarCollapsed`)
-- [ ] "Edit this page" links (`editUrl`)
-- [ ] Show last update timestamp (`showLastUpdateTime`)
-- [ ] Show last update author (`showLastUpdateAuthor`)
+- [x] "Edit this page" links (`editUrl`)
+- [x] Show last update timestamp (`showLastUpdateTime`)
+- [x] Show last update author (`showLastUpdateAuthor`)
 - [x] Breadcrumb navigation (`breadcrumbs`)
 - [x] Include/exclude glob patterns
 - [ ] Custom doc layout component (partial - uses Astro layouts)
@@ -336,8 +336,8 @@ The following Docusaurus features are **not applicable** because Astro handles t
 ### Medium Priority (Enhanced Features)
 
 1. **Search integration** - Critical for larger docs
-2. **"Edit this page" links** - Community contribution enabler
-3. **Last updated timestamps** - Trust signal for docs
+2. ~~**"Edit this page" links**~~ - ✅ Implemented
+3. ~~**Last updated timestamps**~~ - ✅ Implemented
 4. **Code block enhancements** - Line numbers, highlighting, titles
 5. **Tabs component** - Common docs pattern
 6. **Archive page for blog** - Better blog navigation

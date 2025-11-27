@@ -1,6 +1,7 @@
 ---
 import { i18n } from 'astro:config/server'
-import { getCollection, render } from 'astro:content'
+import { type CollectionKey, getCollection, render } from 'astro:content'
+import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import type { NavigationTree } from '@levino/shipyard-base'
 import { Breadcrumbs, TableOfContents } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
@@ -8,6 +9,7 @@ import { Array as EffectArray, Option } from 'effect'
 import { getPaginationInfo } from '../src/pagination'
 import type { DocsData } from '../src/sidebarEntries'
 import { toSidebarEntries } from '../src/sidebarEntries'
+import DocMetadata from './DocMetadata.astro'
 import DocPagination from './DocPagination.astro'
 
 interface Props {
@@ -23,12 +25,35 @@ interface Props {
    * Use this when you have multiple docs instances with different collections.
    */
   docsData?: DocsData[]
+  /**
+   * URL to edit this page in the repository.
+   */
+  editUrl?: string
+  /**
+   * The date when this page was last updated.
+   */
+  lastUpdated?: Date
+  /**
+   * The name of the author who last updated this page.
+   */
+  lastAuthor?: string
 }
 
-const { headings = [], routeBasePath = 'docs', docsData } = Astro.props
+const {
+  headings = [],
+  routeBasePath = 'docs',
+  docsData,
+  editUrl,
+  lastUpdated,
+  lastAuthor,
+} = Astro.props
 
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
+
+// Get the collection name from config, defaulting to the route base path
+const collectionName =
+  docsConfigs[normalizedBasePath]?.collectionName ?? normalizedBasePath
 
 const getPath = (id: string) => {
   // Remove the .md extension if present and handle index pages
@@ -46,10 +71,10 @@ const getPath = (id: string) => {
   return `/${normalizedBasePath}/${finalPath}`
 }
 
-// Use provided docsData or fetch from the default 'docs' collection
+// Use provided docsData or fetch from the configured collection
 const docs =
   docsData ??
-  (await getCollection('docs')
+  (await getCollection(collectionName as CollectionKey)
     .then(
       EffectArray.map(async (doc) => {
         const {
@@ -108,6 +133,7 @@ const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
         <Breadcrumbs navigation={entries} />
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
+        <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
         <DocPagination prev={pagination.prev} next={pagination.next} />
       </div>
     </div>
