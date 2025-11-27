@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "peerDependencies": {
-    "astro": "^5.7"
+    "astro": "^5.15"
   },
   "dependencies": {
     "effect": "^3.12.5",
@@ -21,7 +21,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
     "@types/ramda": "^0.31",
-    "astro": "^5.7",
+    "astro": "^5.15",
     "vitest": "^2.1.8"
   },
   "repository": {
