@@ -1,5 +1,13 @@
 # @levino/shipyard-blog
 
+## 0.5.1
+
+### Patch Changes
+
+- 6fac4cf: Each package now includes a README with installation instructions, basic usage examples, and links to the official documentation at shipyard.levinkeller.de.
+- Updated dependencies [6fac4cf]
+  - @levino/shipyard-base@0.5.9
+
 ## 0.5.0
 
 ### Minor Changes
