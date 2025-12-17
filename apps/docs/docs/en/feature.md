@@ -1,82 +1,226 @@
 ---
-title: Garden Guide & Documentation
+title: Getting Started
 sidebar_position: 2
+description: Learn how to install and configure Shipyard for your Astro project
 ---
 
-# Metro Gardens Community Club - Garden Guide
+# Getting Started with Shipyard
 
-Welcome to our comprehensive garden documentation! Here you'll find everything you need to know about our community garden, from plot management to harvest guidelines.
+This guide will help you set up Shipyard in your Astro project. By the end, you'll have a fully configured site with documentation, blog, and beautiful styling.
 
-## Getting Started
+## Prerequisites
 
-### Plot Rental Information
-- **Plot sizes**: Small (4x8 ft) $50/season, Large (8x12 ft) $80/season
-- **Season**: April 1st - November 30th
-- **Deposit**: $25 refundable security deposit required
-- **What's included**: Water access, basic tools, compost, mulch
+Before you begin, make sure you have:
 
-### Garden Rules & Etiquette
-- Organic practices only - no chemical pesticides or fertilizers
-- Keep plots weeded and maintained
-- Harvest regularly to prevent over-ripening
-- Share surplus produce at the community table
-- Participate in 2 community work days per season
+- **Node.js** 18 or later
+- **npm** (comes with Node.js)
+- An existing Astro project, or you can create one with `npm create astro@latest`
 
-## Our Garden Areas
+## Installation
 
-### The Heritage Vegetable Garden
-Our main growing area featuring traditional vegetable varieties and heirloom seeds. Perfect for:
-- Tomatoes, peppers, and eggplant
-- Root vegetables like carrots, beets, and radishes
-- Leafy greens and brassicas
-- Beans, peas, and other legumes
+Install the Shipyard packages you need:
 
-### The Herb Spiral
-A beautiful permaculture design featuring culinary and medicinal herbs arranged by water and sun requirements:
-- **Top/Dry area**: Rosemary, thyme, oregano, sage
-- **Middle slope**: Lavender, mint, basil, cilantro
-- **Bottom/Moist area**: Parsley, chives, watercress
+```bash
+# Install all three packages for a full-featured site
+npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
-### Children's Discovery Garden
-Designed for our youngest gardeners with:
-- Fast-growing plants like radishes and lettuce
-- Fun varieties like purple carrots and striped tomatoes
-- Sensory plants with interesting textures and scents
-- Child-height raised beds and seating areas
+# Or install only what you need
+npm install @levino/shipyard-base                    # Core components only
+npm install @levino/shipyard-base @levino/shipyard-docs   # Docs site
+npm install @levino/shipyard-base @levino/shipyard-blog   # Blog site
+```
 
-### Native Plant Sanctuary
-Supporting local ecosystem with:
-- Native wildflowers for pollinators
-- Bird-friendly berry bushes
-- Butterfly garden with host plants
-- Rain garden for water management
+### Peer Dependencies
 
-## Quick Reference Guides
+Shipyard requires the following peer dependencies:
 
-- **Garden Beds & Layout** - Detailed information about each growing area
-- **Vegetable Growing Guide** - What to grow and when to plant
-- **Harvest Guidelines** - When and how to harvest your crops
+```bash
+npm install tailwindcss daisyui @tailwindcss/typography
+```
 
-## Seasonal Calendar
+## Configuration
 
-- **Spring (March-May)**: Plot preparation, cool season planting, seedling care
-- **Summer (June-August)**: Maintenance, watering, pest management, harvest
-- **Fall (September-November)**: Fall planting, preservation, plot cleanup
-- **Winter (December-February)**: Planning, seed ordering, tool maintenance
+### 1. Configure Astro
 
-## Community Resources
+Update your `astro.config.mjs`:
 
-- **Tool Library**: Located in the shed - check out tools with your member key
-- **Seed Library**: Exchange seeds with fellow gardeners
-- **Compost System**: Three-bin system for community use
-- **Water Collection**: Rain barrels throughout the garden
-- **Notice Board**: Check for announcements and volunteer opportunities
+```javascript
+import tailwind from '@astrojs/tailwind'
+import shipyard from '@levino/shipyard-base'
+import shipyardDocs from '@levino/shipyard-docs'
+import shipyardBlog from '@levino/shipyard-blog'
+import { defineConfig } from 'astro/config'
+
+export default defineConfig({
+  integrations: [
+    tailwind({
+      applyBaseStyles: false,
+    }),
+    shipyard({
+      title: 'My Site',
+      tagline: 'Built with Shipyard',
+      brand: 'My Brand',
+      navigation: {
+        docs: { label: 'Docs', href: '/docs' },
+        blog: { label: 'Blog', href: '/blog' },
+      },
+    }),
+    shipyardDocs(),
+    shipyardBlog(),
+  ],
+})
+```
+
+### 2. Configure Tailwind
+
+Create or update your `tailwind.config.mjs`:
+
+```javascript
+import daisyui from 'daisyui'
+import typography from '@tailwindcss/typography'
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    './docs/**/*.md',
+    './blog/**/*.md',
+    'node_modules/@levino/shipyard-*/**/*.{astro,js,ts}',
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [typography, daisyui],
+}
+```
+
+### 3. Set Up Content Collections
+
+Create `src/content.config.ts`:
+
+```typescript
+import { defineCollection } from 'astro:content'
+import { createDocsCollection } from '@levino/shipyard-docs'
+import { createBlogCollection } from '@levino/shipyard-blog'
+
+const docs = defineCollection(createDocsCollection('./docs'))
+const blog = defineCollection(createBlogCollection('./blog'))
+
+export const collections = { docs, blog }
+```
+
+## Project Structure
+
+After setup, your project structure should look like this:
+
+```
+my-site/
+├── docs/                    # Documentation markdown files
+│   └── getting-started.md
+├── blog/                    # Blog post markdown files
+│   └── 2024-01-01-first-post.md
+├── src/
+│   ├── content.config.ts    # Content collection config
+│   └── pages/               # Additional pages
+├── astro.config.mjs
+├── tailwind.config.mjs
+└── package.json
+```
+
+## Creating Content
+
+### Documentation
+
+Create markdown files in the `docs/` directory:
+
+```markdown
+---
+title: My First Doc
+sidebar_position: 1
+---
+
+# Welcome to the Docs
+
+Your documentation content here...
+```
+
+### Blog Posts
+
+Create markdown files in the `blog/` directory with dates in the filename:
+
+```markdown
+---
+title: My First Post
+description: A brief description
+date: 2024-01-01
+---
+
+# Hello World
+
+Your blog post content here...
+```
+
+## Configuration Options
+
+### Shipyard Base Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `title` | `string` | Site title used in metadata |
+| `tagline` | `string` | Short description for the site |
+| `brand` | `string` | Brand name shown in navigation |
+| `navigation` | `object` | Navigation links configuration |
+
+### Shipyard Docs Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `routeBasePath` | `string` | `'docs'` | Base URL path for documentation |
+
+### Shipyard Blog Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `routeBasePath` | `string` | `'blog'` | Base URL path for blog |
+
+## Adding Internationalization
+
+Shipyard supports i18n out of the box. Update your Astro config:
+
+```javascript
+export default defineConfig({
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de', 'fr'],
+    routing: {
+      prefixDefaultLocale: true,
+    },
+  },
+  // ... rest of config
+})
+```
+
+Then organize your content by locale:
+
+```
+docs/
+├── en/
+│   └── getting-started.md
+├── de/
+│   └── getting-started.md
+└── fr/
+    └── getting-started.md
+```
+
+## Next Steps
+
+Now that you have Shipyard set up, explore these topics:
+
+- **[Multiple Documentation Instances](./multi-docs)** - Set up multiple doc sections
+- **[Documentation Pagination](./pagination)** - Customize navigation between pages
+- **[Feature Roadmap](./roadmap)** - See what features are coming next
 
 ## Need Help?
 
-- **Garden Manager**: Sarah Chen - available Saturdays 10AM-12PM
-- **Email**: info@metrogardens.community
-- **Emergency Contact**: 555-GARDEN (555-427-3368)
-- **Online Forum**: community.metrogardens.org
-
-Happy gardening!
+- Check the [GitHub repository](https://github.com/levino/shipyard) for issues and discussions
+- Explore the [live demo](https://shipyard-demo.levinkeller.de) for examples
