@@ -42,11 +42,10 @@ npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
 Ready to dive deeper? Our comprehensive documentation covers everything from basic setup to advanced customization:
 
-- **[🚀 Quick Start Guide](/en/docs/)** - Get up and running in 5 minutes
-- **[🎨 Design System](/en/docs/feature)** - Customize your site's look and feel  
-- **[🌍 Internationalization](/en/docs/)** - Support multiple languages
-- **[📚 Documentation Features](/en/docs/)** - Build amazing docs
-- **[📝 Blogging Guide](/en/docs/)** - Create engaging content
+- **[🚀 Getting Started](/en/docs/feature)** - Install and configure Shipyard
+- **[📚 Multiple Docs](/en/docs/multi-docs)** - Set up multiple documentation sections
+- **[📖 Pagination](/en/docs/pagination)** - Customize navigation between pages
+- **[🗺️ Roadmap](/en/docs/roadmap)** - See the feature roadmap
 
 ## 🌟 See It in Action
 
