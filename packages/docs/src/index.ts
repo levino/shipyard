@@ -113,7 +113,7 @@ export const createDocsCollection = (
 })
 
 /**
- * Shipyard Docs integration for Astro.
+ * shipyard Docs integration for Astro.
  *
  * Supports multiple documentation instances with configurable route mounting.
  *

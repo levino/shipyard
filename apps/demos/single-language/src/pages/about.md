@@ -1,6 +1,6 @@
 ---
 title: About Single Language Demo  
-description: Learn about this single-language Shipyard demonstration
+description: Learn about this single-language shipyard demonstration
 layout: '@levino/shipyard-base/layouts/Splash.astro'
 ---
 

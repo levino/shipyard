@@ -1,10 +1,10 @@
-# Shipyard - Claude Development Guide
+# shipyard - Claude Development Guide
 
-This is a monorepo for Shipyard, a general-purpose page builder for Astro. This guide provides Claude with essential information for working effectively with this codebase.
+This is a monorepo for shipyard, a general-purpose page builder for Astro. This guide provides Claude with essential information for working effectively with this codebase.
 
 ## Project Overview
 
-**Shipyard** is an Astro-based page builder that provides reusable components and layouts for creating documentation sites, blogs, and demo applications. It's built as a monorepo using npm workspaces.
+**shipyard** is an Astro-based page builder that provides reusable components and layouts for creating documentation sites, blogs, and demo applications. It's built as a monorepo using npm workspaces.
 
 - **Demo**: https://shipyard-demo.levinkeller.de
 - **License**: MIT
@@ -14,10 +14,10 @@ This is a monorepo for Shipyard, a general-purpose page builder for Astro. This 
 
 ```
 ├── apps/
-│   ├── demo/           # Demo application showcasing Shipyard features
+│   ├── demo/           # Demo application showcasing shipyard features
 │   └── docs/           # Documentation site
 ├── packages/
-│   ├── base/           # Core Shipyard components and layouts
+│   ├── base/           # Core shipyard components and layouts
 │   ├── blog/           # Blog-specific components
 │   └── docs/           # Documentation-specific components
 ├── package.json        # Root package.json with workspaces config
@@ -156,7 +156,7 @@ Documentation features:
    - Adding new features or components
    - Changing configuration schemas or APIs
    - Modifying existing functionality that affects users
-   - The docs app contains the actual Shipyard documentation, not just demos
+   - The docs app contains the actual shipyard documentation, not just demos
 8. **Changesets**: Create a changeset using `npx changeset` when making changes that affect packages:
    - Use patch version for bug fixes and minor improvements (especially in 0.x.y versions)
    - Use minor version for new features (when above 1.0.0)
@@ -170,10 +170,10 @@ Documentation features:
    - Add unit tests with Vitest when appropriate for utility functions and business logic
    - Tests should cover both happy paths and edge cases
    - Run `npm run test:e2e` to verify all tests pass before submitting changes
-10. **Docusaurus Counterpart Demos**: All Shipyard demos have a corresponding Docusaurus counterpart:
-    - Docusaurus demos contain the same content as Shipyard demos
-    - They are used to compare the output/behavior of Docusaurus vs Shipyard for identical data
-    - When updating a Shipyard demo, always update the corresponding Docusaurus demo to keep them in sync
+10. **Docusaurus Counterpart Demos**: All shipyard demos have a corresponding Docusaurus counterpart:
+    - Docusaurus demos contain the same content as shipyard demos
+    - They are used to compare the output/behavior of Docusaurus vs shipyard for identical data
+    - When updating a shipyard demo, always update the corresponding Docusaurus demo to keep them in sync
     - This ensures accurate framework comparison and helps identify feature parity gaps
 
 ## Troubleshooting
@@ -184,4 +184,4 @@ Documentation features:
 
 ---
 
-*This file helps Claude understand the Shipyard codebase structure and development workflow. Keep it updated as the project evolves.*
+*This file helps Claude understand the shipyard codebase structure and development workflow. Keep it updated as the project evolves.*

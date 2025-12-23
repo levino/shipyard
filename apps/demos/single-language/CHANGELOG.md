@@ -6,7 +6,7 @@
 
 - 20eddf6: feat: restore support for non-i18n pages
 
-  - Made i18n optional in Shipyard base configuration
+  - Made i18n optional in shipyard base configuration
   - Updated docs and blog integrations to handle both i18n and non-i18n cases
   - Added conditional route patterns based on i18n configuration
   - Maintained full backward compatibility with existing i18n projects

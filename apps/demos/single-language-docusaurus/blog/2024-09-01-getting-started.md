@@ -1,11 +1,11 @@
 ---
 title: Getting Started with Single-Language Sites
-description: Learn how to build single-language sites with Shipyard
+description: Learn how to build single-language sites with shipyard
 date: 2024-09-01
 tags: [getting-started, single-language, tutorial]
 ---
 
-Welcome to our first blog post! This post demonstrates how **Shipyard** works perfectly with single-language websites.
+Welcome to our first blog post! This post demonstrates how **shipyard** works perfectly with single-language websites.
 
 <!-- truncate -->
 
@@ -29,7 +29,7 @@ This blog demonstrates:
 
 ## Getting Started
 
-To create your own single-language Shipyard site:
+To create your own single-language shipyard site:
 
 ```javascript
 // astro.config.mjs

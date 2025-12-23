@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # Multiple Documentation Instances
 
-Shipyard supports mounting documentation at custom route paths, allowing you to have multiple documentation instances in your site.
+shipyard supports mounting documentation at custom route paths, allowing you to have multiple documentation instances in your site.
 
 ## Basic Usage
 

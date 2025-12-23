@@ -1,12 +1,12 @@
 ---
 title: Welcome to Single Language Demo
-description: A demonstration of Shipyard without internationalization
+description: A demonstration of shipyard without internationalization
 layout: '@levino/shipyard-base/layouts/Splash.astro'
 ---
 
 # Welcome to Single Language Demo
 
-This is a demonstration site showing how Shipyard works with **single-language sites** (no i18n configuration). 
+This is a demonstration site showing how shipyard works with **single-language sites** (no i18n configuration). 
 
 ## Features Demonstrated
 
@@ -22,4 +22,4 @@ Explore the site:
 - [Read the documentation](/docs) - Learn how to use our features
 - [About this demo](/about) - More information about this project
 
-This demonstrates that Shipyard can work perfectly fine without internationalization when you only need to support one language.
+This demonstrates that shipyard can work perfectly fine without internationalization when you only need to support one language.

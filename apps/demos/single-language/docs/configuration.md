@@ -1,11 +1,11 @@
 ---
 title: Configuration Guide  
-description: Detailed configuration options for single-language Shipyard sites
+description: Detailed configuration options for single-language shipyard sites
 ---
 
 # Configuration Guide
 
-This guide covers all configuration options for **single-language Shipyard sites**.
+This guide covers all configuration options for **single-language shipyard sites**.
 
 ## Basic Configuration
 
@@ -39,7 +39,7 @@ export default defineConfig({
 })
 ```
 
-## Shipyard Configuration Options
+## shipyard Configuration Options
 
 ### Core Settings
 
@@ -138,7 +138,7 @@ export const collections = { blog, docs }
 // astro.config.mjs
 integrations: [
   tailwind({
-    applyBaseStyles: false,  // Let Shipyard handle base styles
+    applyBaseStyles: false,  // Let shipyard handle base styles
     config: {
       // Custom Tailwind config
       theme: {
@@ -155,7 +155,7 @@ integrations: [
 
 ### DaisyUI Themes
 
-Shipyard uses DaisyUI for components. Configure themes in `tailwind.config.js`:
+shipyard uses DaisyUI for components. Configure themes in `tailwind.config.js`:
 
 ```javascript
 module.exports = {
@@ -261,4 +261,4 @@ export default defineConfig({
 })
 ```
 
-That covers the essential configuration options! For more advanced use cases, check the official Astro and Shipyard documentation.
+That covers the essential configuration options! For more advanced use cases, check the official Astro and shipyard documentation.

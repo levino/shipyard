@@ -1,12 +1,12 @@
 ---
 title: Configuration Guide
-description: Detailed configuration options for single-language Shipyard sites
+description: Detailed configuration options for single-language shipyard sites
 sidebar_position: 3
 ---
 
 # Configuration Guide
 
-This guide covers all configuration options for **single-language Shipyard sites**.
+This guide covers all configuration options for **single-language shipyard sites**.
 
 ## Basic Configuration
 
@@ -40,7 +40,7 @@ export default defineConfig({
 })
 ```
 
-## Shipyard Configuration Options
+## shipyard Configuration Options
 
 ### Core Settings
 
@@ -101,4 +101,4 @@ If you later need internationalization:
 
 The framework will handle the rest automatically!
 
-That covers the essential configuration options! For more advanced use cases, check the official Astro and Shipyard documentation.
+That covers the essential configuration options! For more advanced use cases, check the official Astro and shipyard documentation.

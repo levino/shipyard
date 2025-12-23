@@ -1,6 +1,6 @@
 ---
 title: Advanced Features in Single-Language Mode
-description: Explore advanced Shipyard features that work great with single-language sites
+description: Explore advanced shipyard features that work great with single-language sites
 date: 2024-09-05
 ---
 
@@ -10,7 +10,7 @@ Just because you're using a single language doesn't mean you have to sacrifice a
 
 ## Navigation & Routing
 
-Shipyard provides flexible navigation options:
+shipyard provides flexible navigation options:
 
 - **Clean URLs**: `/blog`, `/docs`, `/about` - no language prefixes
 - **Breadcrumb navigation**: Automatically generated
@@ -44,7 +44,7 @@ Single-language sites often perform better:
 
 ## Integration Capabilities
 
-Shipyard works great with:
+shipyard works great with:
 
 - **Analytics**: Google Analytics, Plausible, etc.
 - **Comments**: Giscus, Disqus integration
@@ -73,4 +73,4 @@ The migration path is smooth, and you won't lose any of these advanced features!
 
 ## Conclusion
 
-Single-language sites with Shipyard give you all the power you need while keeping things simple. Start simple, scale when needed! 🎯
+Single-language sites with shipyard give you all the power you need while keeping things simple. Start simple, scale when needed! 🎯

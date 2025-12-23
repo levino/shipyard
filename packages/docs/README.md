@@ -1,6 +1,6 @@
 # @levino/shipyard-docs
 
-Documentation plugin for [Shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
+Documentation plugin for [shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
 
 ## Installation
 

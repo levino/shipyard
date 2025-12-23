@@ -1,6 +1,6 @@
 # @levino/shipyard-base
 
-Core package for [Shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
+Core package for [shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
 
 ## Installation
 
