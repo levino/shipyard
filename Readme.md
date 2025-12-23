@@ -1,12 +1,12 @@
-# 🚢 Shipyard
+# 🚢 shipyard
 
 **The complete toolkit for building stunning websites with Astro**
 
-Shipyard transforms the way you create documentation sites, blogs, and content-focused websites. Stop wrestling with complex configurations and start building beautiful, fast websites in minutes.
+shipyard transforms the way you create documentation sites, blogs, and content-focused websites. Stop wrestling with complex configurations and start building beautiful, fast websites in minutes.
 
-## ✨ What is Shipyard?
+## ✨ What is shipyard?
 
-Shipyard is a comprehensive collection of Astro integrations that provides:
+shipyard is a comprehensive collection of Astro integrations that provides:
 
 - **🎨 Beautiful Design System** – Modern, responsive layouts with Tailwind CSS + DaisyUI
 - **🌍 Internationalization** – Built-in i18n support with locale-based routing
@@ -17,7 +17,7 @@ Shipyard is a comprehensive collection of Astro integrations that provides:
 ## 🚀 Quick Start
 
 ```bash
-# Install Shipyard packages
+# Install shipyard packages
 npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
 # Add to your astro.config.mjs
@@ -52,7 +52,7 @@ Learn everything from installation to advanced customization with our comprehens
 
 **[🚀 Explore the Demo →](https://i18n.demos.shipyard.levinkeller.de)**
 
-See Shipyard in action! The demo showcases all features including:
+See shipyard in action! The demo showcases all features including:
 - Responsive documentation layouts
 - Blog with internationalization
 - Navigation and content organization
@@ -60,7 +60,7 @@ See Shipyard in action! The demo showcases all features including:
 
 ## 🏗️ Architecture
 
-Shipyard consists of three main packages:
+shipyard consists of three main packages:
 
 - **`@levino/shipyard-base`** – Core components, layouts, and styling foundation
 - **`@levino/shipyard-docs`** – Documentation-specific features and smart navigation  

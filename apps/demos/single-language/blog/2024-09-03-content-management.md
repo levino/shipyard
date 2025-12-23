@@ -1,6 +1,6 @@
 ---
 title: Content Management Made Simple
-description: How to organize and manage content in single-language Shipyard sites
+description: How to organize and manage content in single-language shipyard sites
 date: 2024-09-03
 ---
 
@@ -60,7 +60,7 @@ This approach offers several advantages:
 
 ## Migration Path
 
-If you later need multilingual support, Shipyard makes it easy to migrate:
+If you later need multilingual support, shipyard makes it easy to migrate:
 
 1. Add i18n configuration to `astro.config.mjs`
 2. Move content into language directories

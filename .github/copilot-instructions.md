@@ -1,4 +1,4 @@
-# Shipyard - GitHub Copilot Instructions
+# shipyard - GitHub Copilot Instructions
 
 Always follow these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
@@ -110,7 +110,7 @@ ls -la
 .changeset/     # Changeset configuration for versioning
 .github/        # GitHub workflows and configurations
 apps/           # Demo and docs applications
-packages/       # Core Shipyard packages
+packages/       # Core shipyard packages
 biome.json      # Biome linting/formatting config
 package.json    # Root workspace configuration
 tailwind.config.js  # Tailwind CSS configuration
@@ -130,7 +130,7 @@ Demo app scripts (`apps/demo/package.json`):
 - `test:e2e` -- Playwright E2E tests
 
 ### Navigation Patterns
-The Shipyard framework uses configuration-driven navigation:
+The shipyard framework uses configuration-driven navigation:
 ```javascript
 navigation: {
   docs: { label: 'Documentation', href: '/docs' },

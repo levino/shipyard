@@ -1,17 +1,17 @@
 ---
 title: Docusaurus Feature Parity Roadmap
 sidebar_position: 100
-description: Detailed roadmap showing Docusaurus features that Shipyard supports or plans to support
+description: Detailed roadmap showing Docusaurus features that shipyard supports or plans to support
 ---
 
 # Docusaurus Feature Parity Roadmap
 
-This document tracks Shipyard's progress towards supporting features from Docusaurus's three main content plugins. Features are marked as:
+This document tracks shipyard's progress towards supporting features from Docusaurus's three main content plugins. Features are marked as:
 
-- ✅ **Supported** - Already implemented in Shipyard
+- ✅ **Supported** - Already implemented in shipyard
 - 🔄 **Partial** - Partially implemented or available through Astro
 - ⏳ **Planned** - On the roadmap for future implementation
-- ❌ **Not Applicable** - Not relevant for Shipyard (usually because Astro handles it natively)
+- ❌ **Not Applicable** - Not relevant for shipyard (usually because Astro handles it natively)
 
 ---
 
@@ -237,7 +237,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 #### Component Pages (Astro/React)
 
 - [x] Full component pages (`.astro`, `.tsx`)
-- [x] Access to Shipyard components and layouts
+- [x] Access to shipyard components and layouts
 - [x] Custom layouts
 - [x] Dynamic content
 - [x] Client-side interactivity (via Astro)
@@ -247,7 +247,7 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 - [x] Markdown pages with frontmatter
 - [x] MDX support (via Astro)
 - [x] Import components in MDX
-- [x] Use Shipyard components
+- [x] Use shipyard components
 
 ### Frontmatter Support (MDX Pages)
 
@@ -306,9 +306,9 @@ This document tracks Shipyard's progress towards supporting features from Docusa
 
 ---
 
-## Features Not Applicable to Shipyard
+## Features Not Applicable to shipyard
 
-The following Docusaurus features are **not applicable** because Astro handles them natively or they don't fit Shipyard's architecture:
+The following Docusaurus features are **not applicable** because Astro handles them natively or they don't fit shipyard's architecture:
 
 | Feature | Reason |
 |---------|--------|

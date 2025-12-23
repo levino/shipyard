@@ -15,7 +15,7 @@ export const getStaticPaths = (async () => {
 
     for (const locale of i18n.locales) {
       if (typeof locale !== 'string') {
-        throw new Error('Shipyard does only support strings as locales.')
+        throw new Error('shipyard does only support strings as locales.')
       }
 
       const localePosts = allPosts.filter(({ id }) => {

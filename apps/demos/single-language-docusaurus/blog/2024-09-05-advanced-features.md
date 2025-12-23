@@ -1,6 +1,6 @@
 ---
 title: Advanced Features
-description: Explore advanced features in single-language Shipyard sites
+description: Explore advanced features in single-language shipyard sites
 date: 2024-09-05
 tags: [advanced, features, customization]
 ---
@@ -38,7 +38,7 @@ module.exports = {
 
 ## SEO Optimization
 
-Shipyard automatically generates:
+shipyard automatically generates:
 
 - Meta tags for social sharing
 - Sitemap.xml for search engines
@@ -62,6 +62,6 @@ When you're ready for internationalization:
 3. Update internal links
 4. Deploy!
 
-Shipyard handles the transition smoothly.
+shipyard handles the transition smoothly.
 
 Happy building! 🚀

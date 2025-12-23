@@ -1,12 +1,12 @@
 ---
 title: Getting Started
 sidebar_position: 2
-description: Learn how to install and configure Shipyard for your Astro project
+description: Learn how to install and configure shipyard for your Astro project
 ---
 
-# Getting Started with Shipyard
+# Getting Started with shipyard
 
-This guide will help you set up Shipyard in your Astro project. By the end, you'll have a fully configured site with documentation, blog, and beautiful styling.
+This guide will help you set up shipyard in your Astro project. By the end, you'll have a fully configured site with documentation, blog, and beautiful styling.
 
 ## Prerequisites
 
@@ -18,7 +18,7 @@ Before you begin, make sure you have:
 
 ## Installation
 
-Install the Shipyard packages you need:
+Install the shipyard packages you need:
 
 ```bash
 # Install all three packages for a full-featured site
@@ -32,7 +32,7 @@ npm install @levino/shipyard-base @levino/shipyard-blog   # Blog site
 
 ### Peer Dependencies
 
-Shipyard requires the following peer dependencies:
+shipyard requires the following peer dependencies:
 
 ```bash
 npm install tailwindcss daisyui @tailwindcss/typography
@@ -58,7 +58,7 @@ export default defineConfig({
     }),
     shipyard({
       title: 'My Site',
-      tagline: 'Built with Shipyard',
+      tagline: 'Built with shipyard',
       brand: 'My Brand',
       navigation: {
         docs: { label: 'Docs', href: '/docs' },
@@ -162,7 +162,7 @@ Your blog post content here...
 
 ## Configuration Options
 
-### Shipyard Base Options
+### shipyard Base Options
 
 | Option | Type | Description |
 |--------|------|-------------|
@@ -171,13 +171,13 @@ Your blog post content here...
 | `brand` | `string` | Brand name shown in navigation |
 | `navigation` | `object` | Navigation links configuration |
 
-### Shipyard Docs Options
+### shipyard Docs Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `routeBasePath` | `string` | `'docs'` | Base URL path for documentation |
 
-### Shipyard Blog Options
+### shipyard Blog Options
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
@@ -185,7 +185,7 @@ Your blog post content here...
 
 ## Adding Internationalization
 
-Shipyard supports i18n out of the box. Update your Astro config:
+shipyard supports i18n out of the box. Update your Astro config:
 
 ```javascript
 export default defineConfig({
@@ -214,7 +214,7 @@ docs/
 
 ## Next Steps
 
-Now that you have Shipyard set up, explore these topics:
+Now that you have shipyard set up, explore these topics:
 
 - **[Multiple Documentation Instances](./multi-docs)** - Set up multiple doc sections
 - **[Documentation Pagination](./pagination)** - Customize navigation between pages

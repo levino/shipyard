@@ -1,20 +1,20 @@
 ---
 title: Documentation Overview
-description: Complete guide to using Shipyard in single-language mode
+description: Complete guide to using shipyard in single-language mode
 sidebar_position: 1
 slug: /
 ---
 
 # Documentation Overview
 
-Welcome to the **Single-Language Shipyard Documentation**! This guide covers everything you need to know about building single-language sites with Shipyard.
+Welcome to the **Single-Language shipyard Documentation**! This guide covers everything you need to know about building single-language sites with shipyard.
 
 ## Quick Start
 
 Get up and running in minutes:
 
 1. **Installation**: Set up your development environment
-2. **Configuration**: Configure Shipyard without i18n
+2. **Configuration**: Configure shipyard without i18n
 3. **Content Creation**: Add pages, blog posts, and documentation
 4. **Deployment**: Deploy your site to production
 

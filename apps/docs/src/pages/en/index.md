@@ -1,6 +1,6 @@
 ---
 layout: '@levino/shipyard-base/layouts/Splash.astro'
-title: 🚢 Shipyard
+title: 🚢 shipyard
 locale: en
 description:
   The complete toolkit for building stunning websites with Astro - beautiful design system, i18n support, smart documentation, and powerful blogging.
@@ -10,9 +10,9 @@ description:
 
 Transform the way you create documentation sites, blogs, and content-focused websites. Stop wrestling with complex configurations and start building beautiful, fast websites in minutes.
 
-## ✨ Why Choose Shipyard?
+## ✨ Why Choose shipyard?
 
-**Shipyard** is a comprehensive collection of Astro integrations that provides everything you need:
+**shipyard** is a comprehensive collection of Astro integrations that provides everything you need:
 
 ### 🎨 **Beautiful Design System**
 Modern, responsive layouts with Tailwind CSS + DaisyUI out of the box. No more fighting with CSS - just beautiful designs that work everywhere.
@@ -42,7 +42,7 @@ npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
 Ready to dive deeper? Our comprehensive documentation covers everything from basic setup to advanced customization:
 
-- **[🚀 Getting Started](/en/docs/feature)** - Install and configure Shipyard
+- **[🚀 Getting Started](/en/docs/feature)** - Install and configure shipyard
 - **[📚 Multiple Docs](/en/docs/multi-docs)** - Set up multiple documentation sections
 - **[📖 Pagination](/en/docs/pagination)** - Customize navigation between pages
 - **[🗺️ Roadmap](/en/docs/roadmap)** - See the feature roadmap
@@ -51,7 +51,7 @@ Ready to dive deeper? Our comprehensive documentation covers everything from bas
 
 **[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
 
-See Shipyard in action with a fully-featured example site showcasing:
+See shipyard in action with a fully-featured example site showcasing:
 - Responsive documentation layouts
 - Multi-language blog posts
 - Smart navigation and content organization

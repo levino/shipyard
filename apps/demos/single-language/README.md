@@ -1,6 +1,6 @@
 # Single-Language Demo
 
-This is a demonstration of **Shipyard** working in single-language mode (without internationalization).
+This is a demonstration of **shipyard** working in single-language mode (without internationalization).
 
 ## Features Demonstrated
 
@@ -55,7 +55,7 @@ This site can be easily upgraded to support multiple languages by:
 2. Moving content into language subdirectories
 3. Updating internal links to include language prefixes
 
-The Shipyard framework handles the rest automatically!
+The shipyard framework handles the rest automatically!
 
 ## Learn More
 

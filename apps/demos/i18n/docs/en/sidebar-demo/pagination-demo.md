@@ -5,11 +5,11 @@ sidebar_position: 40
 
 # Pagination Demo
 
-This page demonstrates the automatic pagination feature in Shipyard docs.
+This page demonstrates the automatic pagination feature in shipyard docs.
 
 ## What is Pagination?
 
-Similar to Docusaurus, Shipyard automatically adds "Previous" and "Next" navigation buttons at the bottom of each documentation page. These buttons help users navigate through your documentation in the order defined by your sidebar.
+Similar to Docusaurus, shipyard automatically adds "Previous" and "Next" navigation buttons at the bottom of each documentation page. These buttons help users navigate through your documentation in the order defined by your sidebar.
 
 ## How It Works
 

@@ -42,7 +42,7 @@ export default function Home(): JSX.Element {
   return (
     <Layout
       title={`Welcome to ${siteConfig.title}`}
-      description="Shipyard without internationalization"
+      description="shipyard without internationalization"
     >
       <HomepageHeader />
       <main style={{ padding: '4rem 0' }}>

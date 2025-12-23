@@ -5,7 +5,7 @@ sidebar_position: 3
 
 # @levino/shipyard-base
 
-The base package is the foundation of Shipyard. It provides the core configuration system, layouts, and components that all other Shipyard packages build upon.
+The base package is the foundation of shipyard. It provides the core configuration system, layouts, and components that all other shipyard packages build upon.
 
 ## Installation
 
@@ -35,7 +35,7 @@ export default defineConfig({
     shipyard({
       brand: 'My Site',
       title: 'My Awesome Site',
-      tagline: 'Built with Shipyard',
+      tagline: 'Built with shipyard',
       navigation: {
         docs: { label: 'Documentation', href: '/docs' },
         blog: { label: 'Blog', href: '/blog' },
@@ -337,7 +337,7 @@ export default defineConfig({
 
 ## Virtual Module
 
-The base package provides a virtual module `virtual:shipyard/config` that contains your Shipyard configuration. This is used internally by the layouts and components, but you can also access it directly:
+The base package provides a virtual module `virtual:shipyard/config` that contains your shipyard configuration. This is used internally by the layouts and components, but you can also access it directly:
 
 ```typescript
 import config from 'virtual:shipyard/config'

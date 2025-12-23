@@ -1,6 +1,6 @@
 # @levino/shipyard-blog
 
-Blog plugin for [Shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
+Blog plugin for [shipyard](https://shipyard.levinkeller.de), a general-purpose page builder for Astro.
 
 ## Installation
 

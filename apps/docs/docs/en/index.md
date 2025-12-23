@@ -1,15 +1,15 @@
 ---
-title: Shipyard Documentation
+title: shipyard Documentation
 slug: 'en'
 ---
 
-# Build Beautiful Websites with Shipyard
+# Build Beautiful Websites with shipyard
 
-**Shipyard** is your complete toolkit for building stunning documentation sites, blogs, and content-focused websites with [Astro](https://astro.build). 
+**shipyard** is your complete toolkit for building stunning documentation sites, blogs, and content-focused websites with [Astro](https://astro.build). 
 
-Stop wrestling with complex configurations and start creating. Shipyard gives you everything you need: responsive design, intelligent navigation, internationalization, and modular components that work together seamlessly.
+Stop wrestling with complex configurations and start creating. shipyard gives you everything you need: responsive design, intelligent navigation, internationalization, and modular components that work together seamlessly.
 
-## Why Choose Shipyard?
+## Why Choose shipyard?
 
 🚀 **Ready to Launch** – Get your site running in minutes, not hours  
 📱 **Mobile-First** – Beautiful on every device with Tailwind CSS and DaisyUI  
@@ -29,7 +29,7 @@ Stop wrestling with complex configurations and start creating. Shipyard gives yo
 
 **[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
 
-Experience Shipyard firsthand – see how elegant and functional your site can be with responsive layouts, internationalization, and seamless navigation.
+Experience shipyard firsthand – see how elegant and functional your site can be with responsive layouts, internationalization, and seamless navigation.
 
 ---
 
@@ -62,7 +62,7 @@ export default defineConfig({
   integrations: [
     shipyard({
       title: 'Your Awesome Site',
-      tagline: 'Built with Shipyard',
+      tagline: 'Built with shipyard',
       navigation: {
         docs: { label: 'Docs', href: '/docs' },
         blog: { label: 'Blog', href: '/blog' },

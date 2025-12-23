@@ -1,11 +1,11 @@
 ---
 title: Installation Guide
-description: How to install and set up Shipyard for single-language sites
+description: How to install and set up shipyard for single-language sites
 ---
 
 # Installation Guide
 
-This guide will help you set up a **single-language Shipyard site** from scratch.
+This guide will help you set up a **single-language shipyard site** from scratch.
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ npm init -y
 ### 2. Install Dependencies
 
 ```bash
-# Install Astro and Shipyard packages
+# Install Astro and shipyard packages
 npm install astro @astrojs/tailwind tailwindcss daisyui
 npm install @levino/shipyard-base @levino/shipyard-blog @levino/shipyard-docs
 
@@ -64,7 +64,7 @@ export default defineConfig({
         about: { label: 'About', href: '/about' },
       },
       title: 'My Site',
-      tagline: 'Single language site powered by Shipyard',
+      tagline: 'Single language site powered by shipyard',
       brand: 'My Brand',
     }),
     shipyardDocs(['docs']),

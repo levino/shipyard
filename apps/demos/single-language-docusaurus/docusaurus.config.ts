@@ -3,7 +3,7 @@ import type { Config } from '@docusaurus/types'
 
 const config: Config = {
   title: 'Single Language Demo',
-  tagline: 'Shipyard without internationalization',
+  tagline: 'shipyard without internationalization',
   favicon: 'img/favicon.svg',
 
   url: 'https://your-docusaurus-site.example.com',

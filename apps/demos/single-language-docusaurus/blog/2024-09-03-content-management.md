@@ -1,6 +1,6 @@
 ---
 title: Content Management Made Simple
-description: Learn about content organization in single-language Shipyard sites
+description: Learn about content organization in single-language shipyard sites
 date: 2024-09-03
 tags: [content, organization, tips]
 ---

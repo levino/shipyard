@@ -11,7 +11,7 @@ export const getStaticPaths = (() => {
   if (i18n) {
     return i18n.locales.map((locale) => {
       if (typeof locale !== 'string') {
-        throw new Error('Shipyard does only support strings as locales.')
+        throw new Error('shipyard does only support strings as locales.')
       }
       return {
         params: {
