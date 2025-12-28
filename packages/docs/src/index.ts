@@ -83,12 +83,6 @@ export interface DocsConfig {
    * @default false
    */
   showLastUpdateAuthor?: boolean
-  /**
-   * Whether to prerender docs pages at build time.
-   * Set to false for on-demand (SSR) rendering when using Astro's server mode.
-   * @default true
-   */
-  prerender?: boolean
 }
 
 /**
@@ -153,7 +147,6 @@ const docsConfigs: Record<
     showLastUpdateAuthor: boolean
     routeBasePath: string
     collectionName: string
-    prerender: boolean
   }
 > = {}
 
@@ -164,7 +157,6 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     editUrl,
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
-    prerender = true,
   } = config
 
   // Normalize the route base path (remove leading/trailing slashes safely)
@@ -186,7 +178,6 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateAuthor,
     routeBasePath: normalizedBasePath,
     collectionName: resolvedCollectionName,
-    prerender,
   }
 
   // Virtual module for this specific route's config
@@ -226,9 +217,6 @@ import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import { getEditUrl, getGitMetadata } from '@levino/shipyard-docs'
 import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 
-// Prerender configuration - set to false for on-demand SSR rendering
-export const prerender = ${JSON.stringify(prerender)}
-
 export async function getStaticPaths() {
   const collectionName = ${JSON.stringify(resolvedCollectionName)}
   const routeBasePath = ${JSON.stringify(normalizedBasePath)}
@@ -254,40 +242,16 @@ export async function getStaticPaths() {
   }))
 }
 
-// Configuration constants
-const COLLECTION_NAME = ${JSON.stringify(resolvedCollectionName)}
 const ROUTE_BASE_PATH = ${JSON.stringify(normalizedBasePath)}
 
-// Get entry from props (static mode) or look up dynamically (server mode)
-let entry = Astro.props.entry
+const { entry } = Astro.props
 const routeBasePath = Astro.props.routeBasePath ?? ROUTE_BASE_PATH
-
-if (!entry) {
-  // Server mode: look up entry from params
-  const docs = await getCollection(COLLECTION_NAME)
-  const { slug, locale } = Astro.params
-
-  // Reconstruct the entry ID from params
-  let entryId
-  if (i18n && locale) {
-    entryId = slug ? \`\${locale}/\${slug}\` : locale
-  } else {
-    entryId = slug || ''
-  }
-
-  entry = docs.find((doc) => doc.id === entryId)
-
-  if (!entry) {
-    return new Response(null, { status: 404, statusText: 'Not Found' })
-  }
-}
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,
   showLastUpdateAuthor: false,
   routeBasePath: 'docs',
   collectionName: 'docs',
-  prerender: true,
 }
 
 const { Content, headings } = await render(entry)
@@ -371,14 +335,12 @@ if (
           injectRoute({
             pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
-            prerender,
           })
         } else {
           // Without i18n: direct path
           injectRoute({
             pattern: `/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
-            prerender,
           })
         }
       },

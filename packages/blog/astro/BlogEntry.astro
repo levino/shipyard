@@ -8,9 +8,6 @@ import BlogMetadata from './BlogMetadata.astro'
 import BlogPostPagination from './BlogPostPagination.astro'
 import Layout from './Layout.astro'
 
-// Prerender configuration - set to false for on-demand SSR rendering
-export const prerender = blogConfig.prerender
-
 export const getStaticPaths = async () => {
   const blogPosts = await getCollection('blog')
 
@@ -77,66 +74,7 @@ export const getStaticPaths = async () => {
   })
 }
 
-// Helper to get post URL (shared between static and server modes)
-const getPostUrl = (post: CollectionEntry<'blog'>) => {
-  if (i18n) {
-    const [locale, ...rest] = post.id.split('/')
-    return `/${locale}/blog/${rest.join('/')}`
-  }
-  return `/blog/${post.id}`
-}
-
-// Get entry from props (static mode) or look up dynamically (server mode)
-let entry = Astro.props.entry as CollectionEntry<'blog'> | undefined
-let older = Astro.props.older as { href: string; title: string } | undefined
-let newer = Astro.props.newer as { href: string; title: string } | undefined
-
-if (!entry) {
-  // Server mode: look up entry from params
-  const blogPosts = await getCollection('blog')
-  const { slug, locale } = Astro.params
-
-  // Reconstruct the entry ID from params
-  let entryId: string
-  if (i18n && locale) {
-    entryId = `${locale}/${slug}`
-  } else {
-    entryId = slug || ''
-  }
-
-  entry = blogPosts.find((post) => post.id === entryId)
-
-  if (!entry) {
-    return new Response(null, { status: 404, statusText: 'Not Found' })
-  }
-
-  // Compute pagination in server mode
-  const sortedPosts = blogPosts.toSorted(
-    (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-  )
-
-  let localePosts = sortedPosts
-  if (i18n) {
-    const [postLocale] = entry.id.split('/')
-    localePosts = sortedPosts.filter((post) =>
-      post.id.startsWith(`${postLocale}/`),
-    )
-  }
-
-  const localeIndex = localePosts.findIndex((post) => post.id === entry.id)
-  const newerPost = localeIndex > 0 ? localePosts[localeIndex - 1] : undefined
-  const olderPost =
-    localeIndex < localePosts.length - 1
-      ? localePosts[localeIndex + 1]
-      : undefined
-
-  older = olderPost
-    ? { href: getPostUrl(olderPost), title: olderPost.data.title }
-    : undefined
-  newer = newerPost
-    ? { href: getPostUrl(newerPost), title: newerPost.data.title }
-    : undefined
-}
+const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-post overrides

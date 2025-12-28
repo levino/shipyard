@@ -7,9 +7,6 @@ import Layout from './Layout.astro'
 
 const { postsPerPage } = blogConfig
 
-// Prerender configuration - set to false for on-demand SSR rendering
-export const prerender = blogConfig.prerender
-
 export const getStaticPaths = (() => {
   if (i18n) {
     return i18n.locales.map((locale) => {
@@ -31,8 +28,7 @@ export const getStaticPaths = (() => {
 // Page 1 is always the index page (no page param)
 const currentPage = 1
 
-// Get locale from params (server mode) or Astro.currentLocale (static mode)
-const currentLocale = Astro.params.locale || Astro.currentLocale
+const currentLocale = Astro.currentLocale
 
 const entries = await getCollection('blog').then((posts) => {
   if (i18n) {
