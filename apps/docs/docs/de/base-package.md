@@ -117,7 +117,7 @@ shipyard bietet Layouts für deine Seiten.
 
 ### Page Layout
 
-Das Haupt-Layout für Inhaltsseiten. Enthält Navigationsleiste, optionale Sidebar und Footer.
+Das Basis-Layout für alle Seiten. Enthält Navigationsleiste, optionale Sidebar und Footer. Verwende es für eigene Astro-Komponenten.
 
 **Verwendung in Astro:**
 
@@ -131,25 +131,29 @@ import { Page } from '@levino/shipyard-base/layouts'
 </Page>
 ```
 
-**Verwendung in Markdown:**
-
-```markdown
----
-layout: '@levino/shipyard-base/layouts/Page.astro'
-title: Meine Seite
----
-
-# Seiteninhalt
-```
-
 | Prop | Typ | Beschreibung |
 |------|-----|--------------|
 | `title` | `string` | Seitentitel (kombiniert mit Seitentitel) |
 | `description` | `string` | Seitenbeschreibung für SEO |
 
+### Markdown Layout
+
+Ein Layout mit Tailwind Typography (prose) Styling. Verwende es für eigenständige Markdown-Seiten.
+
+```markdown
+---
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
+title: Meine Seite
+---
+
+# Meine Seite
+
+Dein Markdown-Inhalt mit schöner Typografie...
+```
+
 ### Splash Layout
 
-Ein Layout ohne Prose-Styling. Ideal für Landing Pages und Custom-Layouts.
+Ein Layout mit zentriertem Inhalt aber ohne Prose-Styling. Ideal für Landing Pages mit eigenem Styling.
 
 ```markdown
 ---
@@ -157,7 +161,9 @@ layout: '@levino/shipyard-base/layouts/Splash.astro'
 title: Willkommen
 ---
 
-# Willkommen auf meiner Seite
+<div class="hero">
+  <h1>Willkommen auf meiner Seite</h1>
+</div>
 ```
 
 ---
