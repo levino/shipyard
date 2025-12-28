@@ -41,7 +41,6 @@ export default defineConfig({
         'https://github.com/levino/shipyard/edit/main/apps/demos/server-mode/docs',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
-      prerender: false, // Disable prerendering for SSR
     }),
     shipyardBlog({
       blogSidebarCount: 'ALL',
@@ -50,7 +49,6 @@ export default defineConfig({
         'https://github.com/levino/shipyard/edit/main/apps/demos/server-mode/blog',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
-      prerender: false, // Disable prerendering for SSR
     }),
   ],
 })
