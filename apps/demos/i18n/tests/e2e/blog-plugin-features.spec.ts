@@ -76,8 +76,10 @@ test.describe('Blog Plugin Features', () => {
     test('blog has sidebar with posts', async ({ page }) => {
       await page.goto('/en/blog')
 
-      // Blog page has sidebar with blog post links
-      const sidebarLinks = page.locator('.drawer-side a[href*="/en/blog/"]')
+      // Blog page has sidebar with blog post links in the local nav section
+      const sidebarLinks = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href*="/en/blog/"]',
+      )
       const count = await sidebarLinks.count()
       expect(count).toBeGreaterThan(0)
     })
@@ -98,7 +100,9 @@ test.describe('Blog Plugin Features', () => {
       await page.goto('/en/blog')
 
       // The sidebar should show "Recent posts" as the section title
-      const sidebarTitle = page.locator('.drawer-side .menu-title')
+      const sidebarTitle = page.locator(
+        '[data-testid="sidebar-local-nav"] .menu-title',
+      )
       await expect(sidebarTitle).toHaveText('Recent posts')
     })
 
@@ -108,9 +112,8 @@ test.describe('Blog Plugin Features', () => {
       // With blogSidebarCount: 5 configured in astro.config.mjs,
       // and 50+ English posts available, only 5 should be shown in sidebar
       // Get only blog post links (those with dates in the URL, e.g., /en/blog/2024-...)
-      // This excludes the global navigation "Blog" link
       const blogPostLinks = page.locator(
-        '.drawer-side .menu a[href*="/en/blog/2"]',
+        '[data-testid="sidebar-local-nav"] a[href*="/en/blog/2"]',
       )
       const postCount = await blogPostLinks.count()
 
@@ -126,28 +129,33 @@ test.describe('Blog Plugin Features', () => {
       // With 3 English posts and blogSidebarCount: 2,
       // "View all posts" link should be visible
       const viewAllLink = page.locator(
-        '.drawer-side a:has-text("View all posts")',
+        '[data-testid="sidebar-local-nav"] a:has-text("View all posts")',
       )
       await expect(viewAllLink).toBeVisible()
       await expect(viewAllLink).toHaveAttribute('href', '/en/blog')
     })
 
     test('sidebar filters posts by locale (i18n aware)', async ({ page }) => {
-      // English blog should only show English posts
+      // English blog should only show English posts in the local nav section
       await page.goto('/en/blog')
-      const enSidebarLinks = page.locator('.drawer-side a[href*="/en/blog/"]')
+      const enSidebarLinks = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href*="/en/blog/"]',
+      )
       const enCount = await enSidebarLinks.count()
       expect(enCount).toBeGreaterThan(0)
 
-      // German blog should only show German posts
+      // German blog should only show German posts in the local nav section
       await page.goto('/de/blog')
-      const deSidebarLinks = page.locator('.drawer-side a[href*="/de/blog/"]')
+      const deSidebarLinks = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href*="/de/blog/"]',
+      )
       const deCount = await deSidebarLinks.count()
       expect(deCount).toBeGreaterThan(0)
 
-      // German sidebar should not contain English links
+      // German sidebar local nav should not contain English blog post links
+      // (Language switcher may contain /en/ links, which is expected)
       const enLinksInDeSidebar = page.locator(
-        '.drawer-side a[href*="/en/blog/"]',
+        '[data-testid="sidebar-local-nav"] a[href*="/en/blog/"]',
       )
       await expect(enLinksInDeSidebar).toHaveCount(0)
     })
@@ -157,8 +165,10 @@ test.describe('Blog Plugin Features', () => {
     }) => {
       await page.goto('/en/blog')
 
-      // Get all blog post links from sidebar
-      const sidebarLinks = page.locator('.drawer-side a[href*="/en/blog/2"]')
+      // Get all blog post links from sidebar local nav section
+      const sidebarLinks = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href*="/en/blog/2"]',
+      )
       const hrefs: string[] = []
       const count = await sidebarLinks.count()
 
@@ -188,7 +198,7 @@ test.describe('Blog Plugin Features', () => {
 
       // The "View all posts" link should be a sibling of the posts section,
       // not nested inside it
-      const menuItems = page.locator('.drawer-side .menu > li')
+      const menuItems = page.locator('[data-testid="sidebar-local-nav"] > li')
       const menuItemsCount = await menuItems.count()
 
       // Should have at least 2 top-level menu items (posts section + view all link)
@@ -196,7 +206,7 @@ test.describe('Blog Plugin Features', () => {
 
       // "View all posts" should be directly accessible at the top level
       const viewAllLink = page.locator(
-        '.drawer-side .menu > li > a:has-text("View all posts")',
+        '[data-testid="sidebar-local-nav"] > li > a:has-text("View all posts")',
       )
       await expect(viewAllLink).toBeVisible()
     })
