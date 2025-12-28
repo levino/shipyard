@@ -122,7 +122,12 @@ const entries: NavigationTree =
     ? (fullTree[Astro.currentLocale]?.subEntry ?? {})
     : fullTree
 
+// Compute pagination info for the current page BEFORE adding llms.txt
+// (llms.txt should not be part of pagination navigation)
+const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
+
 // Add llms.txt link to sidebar if enabled for this docs instance
+// This is added AFTER pagination computation so it doesn't affect prev/next navigation
 const docsConfig = docsConfigs[normalizedBasePath]
 if (docsConfig?.llmsTxtEnabled) {
   entries['llms.txt'] = {
@@ -131,15 +136,12 @@ if (docsConfig?.llmsTxtEnabled) {
     copyUrl: true,
   }
 }
-
-// Compute pagination info for the current page
-const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
 ---
 
 <BaseLayout sidebarNavigation={entries}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
-      <div class="prose max-w-none">
+      <div class="prose max-w-none overflow-x-auto">
         <Breadcrumbs navigation={entries} />
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
