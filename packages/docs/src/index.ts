@@ -242,10 +242,7 @@ export async function getStaticPaths() {
   }))
 }
 
-const ROUTE_BASE_PATH = ${JSON.stringify(normalizedBasePath)}
-
-const { entry } = Astro.props
-const routeBasePath = Astro.props.routeBasePath ?? ROUTE_BASE_PATH
+const { entry, routeBasePath } = Astro.props
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,
@@ -335,12 +332,14 @@ if (
           injectRoute({
             pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
+            prerender: true,
           })
         } else {
           // Without i18n: direct path
           injectRoute({
             pattern: `/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
+            prerender: true,
           })
         }
       },

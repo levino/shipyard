@@ -28,15 +28,13 @@ export const getStaticPaths = (() => {
 // Page 1 is always the index page (no page param)
 const currentPage = 1
 
-const currentLocale = Astro.currentLocale
-
 const entries = await getCollection('blog').then((posts) => {
   if (i18n) {
     // With i18n: filter by locale
     return posts
       .filter(({ id }) => {
         const [postLocale] = id.split('/')
-        return postLocale === currentLocale
+        return postLocale === Astro.currentLocale
       })
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
@@ -63,14 +61,14 @@ const getBlogPostLink = (id: string, locale?: string) => {
 }
 
 const getPageLink = (page: number) => {
-  const basePath = i18n ? `/${currentLocale}/blog` : '/blog'
+  const basePath = i18n ? `/${Astro.currentLocale}/blog` : '/blog'
   if (page === 1) {
     return basePath
   }
   return `${basePath}/page/${page}`
 }
 
-const formatDate = new Intl.DateTimeFormat(currentLocale || 'en').format
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
 
 // Generate page numbers to display (3 adjacent pages around current)
 const getAdjacentPages = () => {
@@ -99,7 +97,7 @@ const showRightEllipsis =
     <div class="prose max-w-none">
       {
         paginatedEntries.map(async (entry) => (
-          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, currentLocale)}`}>
+          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
             <div class="text-sm">{formatDate(entry.data.date)}</div>
             <h2 class="my-0">{entry.data.title}</h2>
             <p>{entry.data.description}</p>
