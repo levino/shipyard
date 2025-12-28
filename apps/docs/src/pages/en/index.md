@@ -1,5 +1,5 @@
 ---
-layout: '@levino/shipyard-base/layouts/Splash.astro'
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
 title: 🚢 shipyard
 locale: en
 description:
