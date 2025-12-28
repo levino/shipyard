@@ -100,8 +100,8 @@ npx biome check
 
 ### @levino/shipyard-base
 Core package providing:
-- Base layouts (Page, Splash, Footer)
-- Navigation components
+- Base layouts (Page, Splash, Markdown, Footer)
+- Navigation components (including LanguageSwitcher for i18n)
 - Utility functions
 - Global CSS
 - Configuration schemas

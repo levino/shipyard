@@ -1,0 +1,96 @@
+---
+/**
+ * Language switcher component that displays available locales.
+ * Reads locales from Astro's i18n config via virtual module.
+ */
+import { locales } from 'virtual:shipyard/locales'
+
+interface Props {
+  /** Additional CSS classes */
+  class?: string
+  /** Variant: 'dropdown' for navbar, 'list' for sidebar */
+  variant?: 'dropdown' | 'list'
+}
+
+const { class: className, variant = 'dropdown' } = Astro.props
+
+const currentLocale = Astro.currentLocale ?? locales[0]
+const currentPath = Astro.url.pathname
+
+// Build the path for other locales by replacing the current locale
+const getLocalePath = (locale: string) => {
+  if (!Astro.currentLocale) {
+    return `/${locale}${currentPath}`
+  }
+  return currentPath.replace(`/${currentLocale}`, `/${locale}`)
+}
+
+// Locale display names
+const localeNames: Record<string, string> = {
+  en: 'English',
+  de: 'Deutsch',
+  fr: 'Français',
+  es: 'Español',
+  it: 'Italiano',
+  pt: 'Português',
+  nl: 'Nederlands',
+  pl: 'Polski',
+  ru: 'Русский',
+  ja: '日本語',
+  zh: '中文',
+  ko: '한국어',
+}
+
+const hasMultipleLocales = locales.length > 1
+---
+
+{hasMultipleLocales && variant === 'dropdown' && (
+  <div class:list={["dropdown dropdown-end", className]}>
+    <div tabindex="0" role="button" class="btn btn-ghost gap-1">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+      </svg>
+      <span class="hidden sm:inline">{localeNames[currentLocale] ?? currentLocale}</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    <ul tabindex="0" class="dropdown-content menu rounded-box z-50 mt-3 w-40 bg-base-100 p-2 shadow">
+      {locales.map((locale) => (
+        <li>
+          <a
+            href={getLocalePath(locale)}
+            class:list={[{ "active": locale === currentLocale }]}
+          >
+            {localeNames[locale] ?? locale}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{hasMultipleLocales && variant === 'list' && (
+  <li class={className}>
+    <details>
+      <summary class="gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+        </svg>
+        {localeNames[currentLocale] ?? currentLocale}
+      </summary>
+      <ul>
+        {locales.map((locale) => (
+          <li>
+            <a
+              href={getLocalePath(locale)}
+              class:list={[{ "active": locale === currentLocale }]}
+            >
+              {localeNames[locale] ?? locale}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </details>
+  </li>
+)}

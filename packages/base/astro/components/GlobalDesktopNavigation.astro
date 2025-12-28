@@ -1,6 +1,7 @@
 ---
 import type { Config } from '../../src/schemas/config'
 import { cn } from '../../src/tools/cn'
+import LanguageSwitcher from './LanguageSwitcher.astro'
 
 type Props = Pick<Config, 'brand' | 'navigation'> & { showBrand: boolean }
 
@@ -68,5 +69,6 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
         )
       }
     </ul>
+    <LanguageSwitcher variant="dropdown" />
   </div>
 </div>

@@ -1,5 +1,6 @@
 ---
 import { cn } from '../../src/tools/cn'
+import LanguageSwitcher from './LanguageSwitcher.astro'
 import SidebarElement from './SidebarElement.astro'
 import type { Entry } from './types'
 
@@ -34,6 +35,7 @@ const withLocale = (path: string) =>
         )
       }
     </li>
+    <LanguageSwitcher variant="list" />
     <div class={cn("divider my-1 block md:hidden", { hidden: !local })}></div>
   </div>
   {local && <SidebarElement entry={local} />}
