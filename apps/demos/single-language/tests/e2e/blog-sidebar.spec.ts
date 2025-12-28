@@ -12,7 +12,9 @@ test.describe('Blog Sidebar Configuration', () => {
     await page.goto('/blog')
 
     // The sidebar should show "All posts" as configured
-    const sidebarTitle = page.locator('.drawer-side .menu-title')
+    const sidebarTitle = page.locator(
+      '[data-testid="sidebar-local-nav"] .menu-title',
+    )
     await expect(sidebarTitle).toHaveText('All posts')
   })
 
@@ -22,7 +24,9 @@ test.describe('Blog Sidebar Configuration', () => {
     await page.goto('/blog')
 
     // With blogSidebarCount: 'ALL', all 3 posts should be shown
-    const blogPostLinks = page.locator('.drawer-side .menu a[href*="/blog/2"]')
+    const blogPostLinks = page.locator(
+      '[data-testid="sidebar-local-nav"] a[href*="/blog/2"]',
+    )
     const postCount = await blogPostLinks.count()
 
     // Should have all 3 posts
@@ -36,7 +40,7 @@ test.describe('Blog Sidebar Configuration', () => {
 
     // With blogSidebarCount: 'ALL', there should be no "View all posts" link
     const viewAllLink = page.locator(
-      '.drawer-side a:has-text("View all posts")',
+      '[data-testid="sidebar-local-nav"] a:has-text("View all posts")',
     )
     await expect(viewAllLink).not.toBeVisible()
   })
@@ -44,8 +48,10 @@ test.describe('Blog Sidebar Configuration', () => {
   test('sidebar posts are sorted by date (newest first)', async ({ page }) => {
     await page.goto('/blog')
 
-    // Get all blog post links from sidebar
-    const sidebarLinks = page.locator('.drawer-side a[href*="/blog/2"]')
+    // Get all blog post links from sidebar local nav section
+    const sidebarLinks = page.locator(
+      '[data-testid="sidebar-local-nav"] a[href*="/blog/2"]',
+    )
     const hrefs: string[] = []
     const count = await sidebarLinks.count()
 

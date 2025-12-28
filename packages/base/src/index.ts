@@ -7,27 +7,35 @@ export { getTitle } from './tools/title'
 export * from './types'
 
 const shipyardConfigId = 'virtual:shipyard/config'
+const shipyardLocalesId = 'virtual:shipyard/locales'
 
 const resolveId: Record<string, string | undefined> = {
   [shipyardConfigId]: `${shipyardConfigId}`,
+  [shipyardLocalesId]: `${shipyardLocalesId}`,
 }
-
-const load = (config: Config) =>
-  ({
-    [shipyardConfigId]: `export default ${JSON.stringify(config)}`,
-  }) as Record<string, string | undefined>
 
 export default (config: Config): AstroIntegration => ({
   name: 'shipyard',
   hooks: {
-    'astro:config:setup': ({ updateConfig }) => {
+    'astro:config:setup': ({ updateConfig, config: astroConfig }) => {
+      // Extract locales from Astro's i18n config
+      const locales = astroConfig.i18n?.locales ?? []
+      const localeList = locales.map((locale) =>
+        typeof locale === 'string' ? locale : locale.path,
+      )
+
+      const load = {
+        [shipyardConfigId]: `export default ${JSON.stringify(config)}`,
+        [shipyardLocalesId]: `export const locales = ${JSON.stringify(localeList)}; export default ${JSON.stringify(localeList)};`,
+      } as Record<string, string | undefined>
+
       updateConfig({
         vite: {
           plugins: [
             {
               name: 'shipyard',
               resolveId: (id: string) => resolveId[id],
-              load: (id: string) => load(config)[id],
+              load: (id: string) => load[id],
             },
           ],
         },

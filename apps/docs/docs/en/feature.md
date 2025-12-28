@@ -6,7 +6,7 @@ description: Learn how to install and configure shipyard for your Astro project
 
 # Getting Started with shipyard
 
-This guide will help you set up shipyard in your Astro project. By the end, you'll have a fully configured site with documentation, blog, and beautiful styling.
+This guide walks you through setting up shipyard in your Astro project. By the end, you'll have a fully configured site with documentation and blog functionality.
 
 ## Prerequisites
 
@@ -14,33 +14,39 @@ Before you begin, make sure you have:
 
 - **Node.js** 18 or later
 - **npm** (comes with Node.js)
-- An existing Astro project, or you can create one with `npm create astro@latest`
+- An existing Astro project, or create one with `npm create astro@latest`
 
 ## Installation
+
+### Step 1: Install Packages
 
 Install the shipyard packages you need:
 
 ```bash
-# Install all three packages for a full-featured site
+# Full-featured site (docs + blog)
 npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
-# Or install only what you need
-npm install @levino/shipyard-base                    # Core components only
-npm install @levino/shipyard-base @levino/shipyard-docs   # Docs site
-npm install @levino/shipyard-base @levino/shipyard-blog   # Blog site
+# Documentation site only
+npm install @levino/shipyard-base @levino/shipyard-docs
+
+# Blog site only
+npm install @levino/shipyard-base @levino/shipyard-blog
+
+# Core components only
+npm install @levino/shipyard-base
 ```
 
-### Peer Dependencies
+### Step 2: Install Peer Dependencies
 
 shipyard requires the following peer dependencies:
 
 ```bash
-npm install tailwindcss daisyui @tailwindcss/typography
+npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
 ```
 
 ## Configuration
 
-### 1. Configure Astro
+### Astro Configuration
 
 Update your `astro.config.mjs`:
 
@@ -53,13 +59,11 @@ import { defineConfig } from 'astro/config'
 
 export default defineConfig({
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
+    tailwind({ applyBaseStyles: false }),
     shipyard({
-      title: 'My Site',
+      brand: 'My Site',
+      title: 'My Awesome Site',
       tagline: 'Built with shipyard',
-      brand: 'My Brand',
       navigation: {
         docs: { label: 'Docs', href: '/docs' },
         blog: { label: 'Blog', href: '/blog' },
@@ -71,9 +75,9 @@ export default defineConfig({
 })
 ```
 
-### 2. Configure Tailwind
+### Tailwind Configuration
 
-Create or update your `tailwind.config.mjs`:
+Create or update `tailwind.config.mjs`:
 
 ```javascript
 import daisyui from 'daisyui'
@@ -94,34 +98,41 @@ export default {
 }
 ```
 
-### 3. Set Up Content Collections
+### Content Collections
 
 Create `src/content.config.ts`:
 
 ```typescript
 import { defineCollection } from 'astro:content'
 import { createDocsCollection } from '@levino/shipyard-docs'
-import { createBlogCollection } from '@levino/shipyard-blog'
+import { blogSchema } from '@levino/shipyard-blog'
+import { glob } from 'astro/loaders'
 
 const docs = defineCollection(createDocsCollection('./docs'))
-const blog = defineCollection(createBlogCollection('./blog'))
+
+const blog = defineCollection({
+  schema: blogSchema,
+  loader: glob({ pattern: '**/*.md', base: './blog' }),
+})
 
 export const collections = { docs, blog }
 ```
 
 ## Project Structure
 
-After setup, your project structure should look like this:
+After setup, your project should look like this:
 
 ```
 my-site/
-├── docs/                    # Documentation markdown files
-│   └── getting-started.md
-├── blog/                    # Blog post markdown files
-│   └── 2024-01-01-first-post.md
+├── docs/                       # Documentation markdown files
+│   ├── index.md               # Docs landing page
+│   └── getting-started.md     # Documentation pages
+├── blog/                       # Blog post markdown files
+│   └── 2025-01-15-first-post.md
 ├── src/
-│   ├── content.config.ts    # Content collection config
-│   └── pages/               # Additional pages
+│   ├── content.config.ts      # Content collection config
+│   └── pages/                 # Additional pages
+│       └── index.astro        # Homepage
 ├── astro.config.mjs
 ├── tailwind.config.mjs
 └── package.json
@@ -129,63 +140,61 @@ my-site/
 
 ## Creating Content
 
-### Documentation
+### Documentation Pages
 
 Create markdown files in the `docs/` directory:
 
 ```markdown
 ---
-title: My First Doc
+title: Introduction
 sidebar_position: 1
+description: Learn about our project
 ---
 
-# Welcome to the Docs
+# Introduction
 
 Your documentation content here...
 ```
 
+**Key frontmatter options:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | `string` | Page title |
+| `sidebar_position` | `number` | Order in sidebar (lower = earlier) |
+| `description` | `string` | Page description for SEO |
+
+See [@levino/shipyard-docs](./docs-package) for all frontmatter options.
+
 ### Blog Posts
 
-Create markdown files in the `blog/` directory with dates in the filename:
+Create markdown files in the `blog/` directory:
 
 ```markdown
 ---
 title: My First Post
-description: A brief description
-date: 2024-01-01
+description: A brief description of this post
+date: 2025-01-15
 ---
 
-# Hello World
+# My First Post
 
 Your blog post content here...
 ```
 
-## Configuration Options
+**Required frontmatter:**
 
-### shipyard Base Options
+| Field | Type | Description |
+|-------|------|-------------|
+| `title` | `string` | Post title |
+| `description` | `string` | Post description/excerpt |
+| `date` | `Date` | Publication date (YYYY-MM-DD) |
 
-| Option | Type | Description |
-|--------|------|-------------|
-| `title` | `string` | Site title used in metadata |
-| `tagline` | `string` | Short description for the site |
-| `brand` | `string` | Brand name shown in navigation |
-| `navigation` | `object` | Navigation links configuration |
-
-### shipyard Docs Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `routeBasePath` | `string` | `'docs'` | Base URL path for documentation |
-
-### shipyard Blog Options
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `routeBasePath` | `string` | `'blog'` | Base URL path for blog |
+See [@levino/shipyard-blog](./blog-package) for all frontmatter options.
 
 ## Adding Internationalization
 
-shipyard supports i18n out of the box. Update your Astro config:
+shipyard supports Astro's i18n features. Update your Astro config:
 
 ```javascript
 export default defineConfig({
@@ -196,29 +205,62 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
-  // ... rest of config
+  integrations: [
+    // ... your integrations
+  ],
 })
 ```
 
-Then organize your content by locale:
+Organize content by locale:
 
 ```
 docs/
 ├── en/
+│   ├── index.md
 │   └── getting-started.md
 ├── de/
+│   ├── index.md
 │   └── getting-started.md
-└── fr/
-    └── getting-started.md
+
+blog/
+├── en/
+│   └── 2025-01-15-first-post.md
+├── de/
+│   └── 2025-01-15-erster-beitrag.md
 ```
+
+## Running Your Site
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+Build for production:
+
+```bash
+npm run build
+```
+
+## Package Overview
+
+shipyard consists of three packages that work together:
+
+| Package | Purpose | Documentation |
+|---------|---------|---------------|
+| `@levino/shipyard-base` | Core layouts, components, and configuration | [Base Package](./base-package) |
+| `@levino/shipyard-docs` | Documentation features, sidebar, pagination | [Docs Package](./docs-package) |
+| `@levino/shipyard-blog` | Blog functionality, post listing, navigation | [Blog Package](./blog-package) |
 
 ## Next Steps
 
 Now that you have shipyard set up, explore these topics:
 
-- **[Multiple Documentation Instances](./multi-docs)** - Set up multiple doc sections
-- **[Documentation Pagination](./pagination)** - Customize navigation between pages
-- **[Feature Roadmap](./roadmap)** - See what features are coming next
+- **[@levino/shipyard-base](./base-package)** – Layouts, components, and configuration
+- **[@levino/shipyard-docs](./docs-package)** – Documentation features and customization
+- **[@levino/shipyard-blog](./blog-package)** – Blog features and customization
+- **[Feature Roadmap](./roadmap)** – See what features are coming next
 
 ## Need Help?
 

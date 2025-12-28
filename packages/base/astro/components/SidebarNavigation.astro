@@ -1,5 +1,6 @@
 ---
 import { cn } from '../../src/tools/cn'
+import LanguageSwitcher from './LanguageSwitcher.astro'
 import SidebarElement from './SidebarElement.astro'
 import type { Entry } from './types'
 
@@ -15,13 +16,13 @@ const withLocale = (path: string) =>
   Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
 
-<ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })}>
+<ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })} data-testid="sidebar-navigation">
   <div>
     <a href={withLocale("/")} class="btn btn-ghost mb-2 text-xl">
       {brand}
     </a>
   </div>
-  <div class="block md:hidden">
+  <div class="block md:hidden" data-testid="sidebar-global-nav">
     <li>
       {
         local ? (
@@ -34,7 +35,8 @@ const withLocale = (path: string) =>
         )
       }
     </li>
+    <LanguageSwitcher variant="list" />
     <div class={cn("divider my-1 block md:hidden", { hidden: !local })}></div>
   </div>
-  {local && <SidebarElement entry={local} />}
+  {local && <div data-testid="sidebar-local-nav"><SidebarElement entry={local} /></div>}
 </ul>
