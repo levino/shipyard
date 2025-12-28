@@ -200,6 +200,7 @@ const docsConfigs: Record<
     showLastUpdateAuthor: boolean
     routeBasePath: string
     collectionName: string
+    llmsTxtEnabled: boolean
   }
 > = {}
 
@@ -232,6 +233,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateAuthor,
     routeBasePath: normalizedBasePath,
     collectionName: resolvedCollectionName,
+    llmsTxtEnabled: !!llmsTxt?.enabled,
   }
 
   // Virtual module for this specific route's config
@@ -421,7 +423,13 @@ const routeBasePath = ${JSON.stringify(normalizedBasePath)}
 
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site?.toString() ?? 'https://example.com'
-  const docs = await getCollection(collectionName)
+  const allDocs = await getCollection(collectionName)
+
+  // When i18n is enabled, only include docs from the default locale
+  const defaultLocale = i18n?.defaultLocale
+  const docs = defaultLocale
+    ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
+    : allDocs
 
   const entries = await Promise.all(
     docs.map(async (doc) => {
@@ -431,8 +439,7 @@ export const GET: APIRoute = async ({ site }) => {
       const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
       const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
 
-      // Handle i18n: when i18n is enabled, the doc.id contains locale prefix (e.g., 'en/page')
-      // We need to generate paths like '/en/docs/page' instead of '/docs/en/page'
+      // Generate paths without locale prefix (llms.txt links to default locale content)
       let path
       if (i18n) {
         const [locale, ...rest] = finalPath.split('/')
@@ -477,7 +484,13 @@ const routeBasePath = ${JSON.stringify(normalizedBasePath)}
 
 export const GET: APIRoute = async ({ site }) => {
   const baseUrl = site?.toString() ?? 'https://example.com'
-  const docs = await getCollection(collectionName)
+  const allDocs = await getCollection(collectionName)
+
+  // When i18n is enabled, only include docs from the default locale
+  const defaultLocale = i18n?.defaultLocale
+  const docs = defaultLocale
+    ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
+    : allDocs
 
   const entries = await Promise.all(
     docs.map(async (doc) => {
@@ -487,8 +500,7 @@ export const GET: APIRoute = async ({ site }) => {
       const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
       const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
 
-      // Handle i18n: when i18n is enabled, the doc.id contains locale prefix (e.g., 'en/page')
-      // We need to generate paths like '/en/docs/page' instead of '/docs/en/page'
+      // Generate paths without locale prefix (llms.txt links to default locale content)
       let path
       if (i18n) {
         const [locale, ...rest] = finalPath.split('/')
@@ -522,15 +534,15 @@ export const GET: APIRoute = async ({ site }) => {
 `
           writeFileSync(llmsFullTxtFilePath, llmsFullTxtFileContent)
 
-          // Inject routes for llms.txt and llms-full.txt
+          // Inject routes for llms.txt and llms-full.txt under the docs path
           injectRoute({
-            pattern: '/llms.txt',
+            pattern: `/${normalizedBasePath}/llms.txt`,
             entrypoint: llmsTxtFilePath,
             prerender: true,
           })
 
           injectRoute({
-            pattern: '/llms-full.txt',
+            pattern: `/${normalizedBasePath}/llms-full.txt`,
             entrypoint: llmsFullTxtFilePath,
             prerender: true,
           })

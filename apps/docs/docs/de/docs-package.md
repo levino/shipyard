@@ -213,12 +213,22 @@ shipyardDocs({
 
 ### Generierte Dateien
 
-Wenn aktiviert, werden zwei Dateien beim Build automatisch generiert:
+Wenn aktiviert, werden zwei Dateien beim Build automatisch unter dem Docs-Pfad generiert:
 
 | Datei | Beschreibung |
 |-------|--------------|
-| `/llms.txt` | Index-Datei mit Links und Beschreibungen jeder Dokumentationsseite |
-| `/llms-full.txt` | Vollständige Datei mit dem kompletten Inhalt aller Dokumentationsseiten |
+| `/{routeBasePath}/llms.txt` | Index-Datei mit Links und Beschreibungen jeder Dokumentationsseite |
+| `/{routeBasePath}/llms-full.txt` | Vollständige Datei mit dem kompletten Inhalt aller Dokumentationsseiten |
+
+Zum Beispiel sind bei Standard-`routeBasePath` von `docs` die Dateien unter `/docs/llms.txt` und `/docs/llms-full.txt` verfügbar.
+
+### Sidebar-Integration
+
+Wenn llms.txt aktiviert ist, wird automatisch ein Link zu `/docs/llms.txt` in der Sidebar hinzugefügt. Dieser Link enthält einen Button zum Kopieren in die Zwischenablage, was das Kopieren der URL und Einfügen in KI-Assistenten-Prompts erleichtert.
+
+### Internationalisierung
+
+Wenn Astros i18n konfiguriert ist, enthält llms.txt nur Inhalte aus der **Standardsprache**. Dies verhindert das Mischen verschiedener Sprachen in derselben Datei und stellt sicher, dass LLMs konsistente, einsprachige Dokumentation erhalten.
 
 ### LLMs.txt-Optionen
 

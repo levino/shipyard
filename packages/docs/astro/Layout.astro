@@ -122,6 +122,16 @@ const entries: NavigationTree =
     ? (fullTree[Astro.currentLocale]?.subEntry ?? {})
     : fullTree
 
+// Add llms.txt link to sidebar if enabled for this docs instance
+const docsConfig = docsConfigs[normalizedBasePath]
+if (docsConfig?.llmsTxtEnabled) {
+  entries['llms.txt'] = {
+    label: 'llms.txt',
+    href: `/${normalizedBasePath}/llms.txt`,
+    copyUrl: true,
+  }
+}
+
 // Compute pagination info for the current page
 const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
 ---
