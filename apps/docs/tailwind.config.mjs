@@ -9,11 +9,15 @@ export default {
     './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
     path.join(
       path.dirname(require.resolve('@levino/shipyard-base')),
-      '../**/*.{tsx,astro}',
+      '../astro/**/*.astro',
     ),
     path.join(
-      path.dirname(require.resolve('@levino/shipyard-base')),
-      '../**/*.{tsx,astro}',
+      path.dirname(require.resolve('@levino/shipyard-docs')),
+      '../astro/**/*.astro',
+    ),
+    path.join(
+      path.dirname(require.resolve('@levino/shipyard-blog')),
+      '../astro/**/*.astro',
     ),
   ],
   theme: {

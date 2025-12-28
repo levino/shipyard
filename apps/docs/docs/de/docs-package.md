@@ -16,6 +16,32 @@ npm install @levino/shipyard-docs
 
 Erfordert dass `@levino/shipyard-base` installiert und konfiguriert ist.
 
+### Tailwind-Konfiguration
+
+Damit Tailwind die in shipyard-docs-Komponenten verwendeten Klassen korrekt erkennt, musst du den Paketpfad zum `content`-Array in deiner `tailwind.config.mjs` hinzufügen:
+
+```javascript
+const path = require('node:path')
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    // shipyard-base einschließen (erforderlich)
+    path.join(
+      path.dirname(require.resolve('@levino/shipyard-base')),
+      '../astro/**/*.astro',
+    ),
+    // shipyard-docs einschließen
+    path.join(
+      path.dirname(require.resolve('@levino/shipyard-docs')),
+      '../astro/**/*.astro',
+    ),
+  ],
+  // ... Rest deiner Konfiguration
+}
+```
+
 ## Schnellstart
 
 ### 1. Astro konfigurieren
