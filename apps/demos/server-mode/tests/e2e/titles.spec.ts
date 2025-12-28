@@ -6,6 +6,8 @@ test.describe('Page Title Integration Tests', () => {
     await expect(page).toHaveTitle(
       'Server Mode Demo - Welcome to Server Mode Demo',
     )
+    // Verify dynamic content is present (random animal)
+    await expect(page.locator('.alert-info')).toBeVisible()
   })
 
   test('about page shows site title with page title', async ({ page }) => {
