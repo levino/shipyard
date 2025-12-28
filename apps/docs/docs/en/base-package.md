@@ -1,11 +1,12 @@
 ---
-title: Base Package Reference
+title: '@levino/shipyard-base'
 sidebar_position: 3
+description: Core package providing layouts, components, and configuration for shipyard
 ---
 
 # @levino/shipyard-base
 
-The base package is the foundation of shipyard. It provides the core configuration system, layouts, and components that all other shipyard packages build upon.
+The base package is the foundation of shipyard. It provides the core configuration system, layouts, components, and utilities that all other shipyard packages build upon.
 
 ## Installation
 
@@ -15,12 +16,18 @@ npm install @levino/shipyard-base
 
 ### Peer Dependencies
 
-The base package requires the following peer dependencies:
+| Package | Version | Description |
+|---------|---------|-------------|
+| `astro` | ^5.7 | Astro framework |
+| `tailwindcss` | ^3 | Utility-first CSS framework |
+| `daisyui` | ^4 | Tailwind CSS component library |
+| `@tailwindcss/typography` | ^0.5.10 | Typography plugin for prose styling |
 
-- `astro` ^5.7
-- `tailwindcss` ^3
-- `daisyui` ^4
-- `@tailwindcss/typography` ^0.5.10
+Install peer dependencies:
+
+```bash
+npm install tailwindcss daisyui @tailwindcss/typography
+```
 
 ## Configuration
 
@@ -47,28 +54,36 @@ export default defineConfig({
 
 ### Configuration Options
 
-The `Config` interface defines all available configuration options:
-
-| Option | Type | Required | Description |
-|--------|------|----------|-------------|
-| `brand` | `string` | Yes | The brand name displayed in the navigation bar and sidebar |
-| `title` | `string` | Yes | The site title used in the HTML `<title>` tag |
-| `tagline` | `string` | Yes | A short description of your site |
-| `navigation` | `NavigationTree` | Yes | The global navigation structure |
-| `scripts` | `Script[]` | No | Optional scripts to include in the page head |
+| Option | Type | Required | Default | Description |
+|--------|------|----------|---------|-------------|
+| `brand` | `string` | Yes | — | Brand name displayed in navigation bar and sidebar |
+| `title` | `string` | Yes | — | Site title used in the HTML `<title>` tag |
+| `tagline` | `string` | Yes | — | Short description of your site |
+| `navigation` | `NavigationTree` | Yes | — | Global navigation structure (see below) |
+| `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
 
 ### Navigation Structure
 
-The `navigation` option accepts a `NavigationTree` object. Each entry can have:
+The `navigation` option accepts a `NavigationTree` object where each key maps to a `NavigationEntry`:
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `label` | `string` | Display text (defaults to the key name) |
-| `href` | `string` | Link destination |
-| `subEntry` | `NavigationTree` | Nested navigation entries for dropdowns |
-| `active` | `boolean` | Whether this entry is currently active (set automatically) |
+| Property | Type | Required | Default | Description |
+|----------|------|----------|---------|-------------|
+| `label` | `string` | No | Key name | Display text in navigation |
+| `href` | `string` | No | — | Link destination URL |
+| `subEntry` | `NavigationTree` | No | — | Nested navigation entries for dropdown menus |
+| `active` | `boolean` | No | `false` | Whether entry is currently active (set automatically) |
 
-**Example with nested navigation:**
+**Simple navigation:**
+
+```javascript
+navigation: {
+  docs: { label: 'Docs', href: '/docs' },
+  blog: { label: 'Blog', href: '/blog' },
+  about: { label: 'About', href: '/about' },
+}
+```
+
+**Nested navigation with dropdowns:**
 
 ```javascript
 navigation: {
@@ -80,13 +95,12 @@ navigation: {
     },
   },
   blog: { label: 'Blog', href: '/blog' },
-  about: { label: 'About', href: '/about' },
 }
 ```
 
 ### Scripts Configuration
 
-You can add custom scripts to every page using the `scripts` option:
+Add custom scripts to every page:
 
 ```javascript
 shipyard({
@@ -104,13 +118,19 @@ shipyard({
 })
 ```
 
+---
+
 ## Layouts
 
-The base package provides three layouts that you can use directly or extend.
+Import layouts from `@levino/shipyard-base/layouts`:
+
+```javascript
+import { Page, Splash, Footer } from '@levino/shipyard-base/layouts'
+```
 
 ### Page Layout
 
-The main layout for content pages. It includes the navigation bar, sidebar support, and footer.
+The main layout for content pages. Includes navigation bar, optional sidebar, and footer.
 
 ```astro
 ---
@@ -125,17 +145,23 @@ import { Page } from '@levino/shipyard-base/layouts'
 
 **Props:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `title` | `string` | Page title (combined with site title) |
-| `description` | `string` | Page description for SEO |
-| `sidebarNavigation` | `NavigationTree` | Optional sidebar navigation for documentation-style pages |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `title` | `string` | No | — | Page title (combined with site title) |
+| `description` | `string` | No | — | Page description for SEO |
+| `sidebarNavigation` | `NavigationTree` | No | — | Sidebar navigation for documentation-style pages |
 
-When `sidebarNavigation` is provided, a left sidebar will appear on larger screens with local navigation.
+**Features:**
+- Responsive drawer navigation for mobile
+- Global desktop navigation bar
+- Optional sidebar navigation (when `sidebarNavigation` is provided)
+- Footer with configurable links
+- Automatic locale prefix for i18n
+- OpenGraph meta tags
 
 ### Splash Layout
 
-A simplified layout that wraps content in a prose container. Ideal for markdown content pages.
+A simplified layout that wraps content in a prose container. Ideal for markdown pages and landing pages.
 
 ```astro
 ---
@@ -148,7 +174,9 @@ import { Splash } from '@levino/shipyard-base/layouts'
 </Splash>
 ```
 
-The Splash layout extends the Page layout but adds a `prose` class for optimal typography.
+**Props:** Same as Page layout.
+
+The Splash layout extends Page but adds a `prose mx-auto` wrapper for optimal typography.
 
 ### Footer Layout
 
@@ -162,9 +190,9 @@ import { Footer } from '@levino/shipyard-base/layouts'
 <Footer />
 ```
 
-The default footer includes:
-- Copyright information linking to the author
-- An "Impressum" (imprint) link
+The default footer includes copyright information and an imprint link.
+
+---
 
 ## Components
 
@@ -187,31 +215,23 @@ import {
 Displays a breadcrumb trail based on the navigation tree.
 
 ```astro
----
-import { Breadcrumbs } from '@levino/shipyard-base/components'
----
-
 <Breadcrumbs navigation={sidebarNavigation} />
 ```
 
 **Props:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `navigation` | `Entry` | The navigation tree to traverse |
-| `currentPath` | `string` | Current page path (defaults to `Astro.url.pathname`) |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `navigation` | `Entry` | Yes | — | Navigation tree to traverse |
+| `currentPath` | `string` | No | `Astro.url.pathname` | Current page path |
 
 ### TableOfContents
 
-Displays a table of contents based on page headings.
+Displays a table of contents from page headings. Only shows h2 and h3 headings.
 
 ```astro
 ---
-import { TableOfContents } from '@levino/shipyard-base/components'
-
-const headings = await Astro.glob('./*.md').then(posts =>
-  posts[0].getHeadings()
-)
+const { headings } = await render(entry)
 ---
 
 <TableOfContents links={headings} />
@@ -219,66 +239,141 @@ const headings = await Astro.glob('./*.md').then(posts =>
 
 **Props:**
 
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `links` | `Link[]` | - | Array of heading objects with `depth`, `text`, and `slug` |
-| `label` | `string` | `"On this page"` | Label text for the table of contents |
-| `class` | `string` | - | Additional CSS classes |
-| `desktopOnly` | `boolean` | `false` | Only show on desktop (hide mobile collapsible) |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `links` | `Link[]` | Yes | — | Array of headings with `depth`, `text`, and `slug` |
+| `label` | `string` | No | `"On this page"` | Label text for the section |
+| `class` | `string` | No | — | Additional CSS classes |
+| `desktopOnly` | `boolean` | No | `false` | Only show on desktop screens |
 
-The component automatically filters to show only h2 and h3 headings (depth 2 and 3).
+**Link object structure:**
+
+```typescript
+interface Link {
+  depth: number   // Heading level (2 or 3)
+  text: string    // Heading text
+  slug: string    // Anchor slug for the link
+}
+```
 
 ### GlobalDesktopNavigation
 
-The main navigation bar component. This is typically used internally by the Page layout.
+The main navigation bar component. Typically used internally by Page layout.
 
 **Props:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `brand` | `string` | Brand name to display |
-| `navigation` | `NavigationTree` | Navigation entries |
-| `showBrand` | `boolean` | Whether to show the brand on desktop |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `brand` | `string` | Yes | — | Brand name to display |
+| `navigation` | `NavigationTree` | Yes | — | Navigation entries |
+| `showBrand` | `boolean` | Yes | — | Whether to show brand on desktop |
 
 ### SidebarNavigation
 
-The sidebar component that combines global and local navigation. Used internally by the Page layout.
+Sidebar with brand, global menu, and local navigation. Used internally by Page layout.
 
 **Props:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `brand` | `string` | Brand name to display |
-| `global` | `Entry` | Global navigation entries |
-| `local` | `Entry` | Local/sidebar navigation entries |
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `brand` | `string` | Yes | — | Brand name for logo |
+| `global` | `Entry` | Yes | — | Global navigation entries |
+| `local` | `Entry \| undefined` | Yes | — | Local/section navigation entries |
+
+### SidebarElement
+
+Recursive component for rendering hierarchical navigation menus.
+
+**Props:**
+
+| Prop | Type | Required | Default | Description |
+|------|------|----------|---------|-------------|
+| `entry` | `Entry` | Yes | — | Navigation entry to render |
+| `currentPath` | `string` | No | `Astro.url.pathname` | Current page path |
 
 ### Footer (Component)
 
-A customizable footer component (separate from the Footer layout).
+Customizable footer component with links and copyright.
+
+```astro
+<Footer
+  links={[
+    { label: 'Privacy', href: '/privacy' },
+    { label: 'Imprint', href: '/imprint' },
+  ]}
+  copyright={{
+    label: 'Your Company',
+    href: 'https://yourcompany.com',
+    year: 2025,
+  }}
+/>
+```
 
 **Props:**
 
-| Prop | Type | Description |
-|------|------|-------------|
-| `links` | `{ label: string, href: string }[]` | Footer links |
-| `copyright` | `{ label: string, href: string, year: number }` | Copyright information |
+| Prop | Type | Required | Description |
+|------|------|----------|-------------|
+| `links` | `FooterLink[]` | Yes | Footer links array |
+| `copyright` | `CopyrightInfo` | Yes | Copyright information |
+
+**FooterLink:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Link text |
+| `href` | `string` | Link URL |
+
+**CopyrightInfo:**
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `label` | `string` | Copyright holder name |
+| `href` | `string` | Link to copyright holder |
+| `year` | `number` | Copyright year |
+
+---
 
 ## Utility Functions
 
 ### getTitle
 
-Combines the site title with a page title:
+Combines site title with page title for the HTML `<title>` tag.
 
 ```typescript
 import { getTitle } from '@levino/shipyard-base'
 
-getTitle('My Site', 'About')  // Returns: "My Site - About"
-getTitle('My Site', null)     // Returns: "My Site"
+getTitle('My Site', 'About')     // "My Site - About"
+getTitle('My Site', null)        // "My Site"
+getTitle('My Site', 'My Site')   // "My Site" (no duplication)
+getTitle('My Site', '  ')        // "My Site" (trims whitespace)
 ```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `siteTitle` | `string` | The main site title |
+| `pageTitle` | `string \| null \| undefined` | Optional page-specific title |
+
+**Returns:** Combined title string.
+
+### cn
+
+Utility for merging CSS class names with Tailwind CSS conflict resolution.
+
+```typescript
+import { cn } from '@levino/shipyard-base'
+
+cn('px-4', 'px-8')                    // "px-8" (later wins)
+cn('px-4', { 'pl-8': isNested })      // Conditional classes
+cn('text-red-500', 'text-blue-500')   // "text-blue-500"
+```
+
+Uses `clsx` and `tailwind-merge` for intelligent class merging.
+
+---
 
 ## TypeScript Types
 
-The package exports several TypeScript types for use in your application:
+Import types from `@levino/shipyard-base`:
 
 ```typescript
 import type {
@@ -291,9 +386,44 @@ import type {
 } from '@levino/shipyard-base'
 ```
 
-### Entry Type
+### Config
 
-Used for navigation structures in components:
+Complete configuration interface:
+
+```typescript
+interface Config {
+  brand: string
+  title: string
+  tagline: string
+  navigation: NavigationTree
+  scripts?: Script[]
+}
+```
+
+### NavigationEntry
+
+Single navigation item:
+
+```typescript
+interface NavigationEntry {
+  label?: string
+  href?: string
+  subEntry?: NavigationTree
+  active?: boolean
+}
+```
+
+### NavigationTree
+
+Collection of navigation entries:
+
+```typescript
+type NavigationTree = Record<string, NavigationEntry>
+```
+
+### Entry
+
+Used for component navigation structures:
 
 ```typescript
 type Entry = Record<string, {
@@ -305,9 +435,9 @@ type Entry = Record<string, {
 }>
 ```
 
-### LinkData Type
+### LinkData
 
-Used for simple link data:
+Simple link data structure:
 
 ```typescript
 interface LinkData {
@@ -317,9 +447,40 @@ interface LinkData {
 }
 ```
 
+### Script
+
+Script configuration:
+
+```typescript
+type Script = string | {
+  src?: string
+  async?: boolean
+  defer?: boolean
+  // ... other script attributes
+}
+```
+
+---
+
+## Virtual Module
+
+The base package provides a virtual module with your configuration:
+
+```typescript
+import config from 'virtual:shipyard/config'
+
+console.log(config.brand)      // Your brand name
+console.log(config.title)      // Your site title
+console.log(config.navigation) // Your navigation tree
+```
+
+This is used internally by layouts and components but can be accessed directly when needed.
+
+---
+
 ## Internationalization
 
-The base package automatically supports Astro's i18n features. When i18n is configured in your Astro config, navigation links are automatically prefixed with the current locale.
+The base package automatically supports Astro's i18n features. When i18n is configured, navigation links are automatically prefixed with the current locale.
 
 ```javascript
 // astro.config.mjs
@@ -335,15 +496,17 @@ export default defineConfig({
 })
 ```
 
-## Virtual Module
+All navigation hrefs will automatically receive the appropriate locale prefix.
 
-The base package provides a virtual module `virtual:shipyard/config` that contains your shipyard configuration. This is used internally by the layouts and components, but you can also access it directly:
+---
+
+## Constants
+
+The package exports month name arrays for i18n purposes:
 
 ```typescript
-import config from 'virtual:shipyard/config'
+import { MONTHS_EN, MONTHS_DE } from '@levino/shipyard-base'
 
-console.log(config.brand)  // Your brand name
-console.log(config.title)  // Your site title
+// MONTHS_EN = ['january', 'february', 'march', ...]
+// MONTHS_DE = ['Januar', 'Februar', 'März', ...]
 ```
-
-For TypeScript support, ensure you have the types declaration in your project. The package includes a `virtual.d.ts` file that provides type definitions for the virtual module.
