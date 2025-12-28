@@ -1,14 +1,3 @@
-# Wrangler configuration for shipyard SSR Demo on Cloudflare Pages
-# Documentation: https://developers.cloudflare.com/workers/wrangler/configuration/
-
 name = "shipyard-ssr-demo"
 main = "dist/_worker.js/index.js"
-compatibility_date = "2025-03-25"
-compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
-
-[assets]
-binding = "ASSETS"
-directory = "./dist"
-
-[observability]
-enabled = true
+compatibility_date = "2025-12-28"
