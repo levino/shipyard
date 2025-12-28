@@ -8,6 +8,7 @@ import shipyardBlog from '../../packages/blog/src/index.ts'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://shipyard.levinkeller.de',
   redirects: {
     '/': {
       status: 302,
@@ -44,7 +45,16 @@ export default defineConfig({
       tagline: 'A universal page builder for astro',
       brand: 'shipyard',
     }),
-    shipyardDocs(),
+    shipyardDocs({
+      llmsTxt: {
+        enabled: true,
+        projectName: 'shipyard',
+        summary:
+          'shipyard is an Astro-based page builder for creating documentation sites, blogs, and content-focused websites with responsive design, i18n support, and modular components.',
+        description:
+          'shipyard provides three packages: @levino/shipyard-base (core layouts and configuration), @levino/shipyard-docs (documentation features with sidebar and pagination), and @levino/shipyard-blog (blog functionality). It uses Tailwind CSS with DaisyUI for styling.',
+      },
+    }),
     shipyardBlog(),
   ],
 })

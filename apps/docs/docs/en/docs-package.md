@@ -188,3 +188,63 @@ docs/
 ```
 
 Locale-based routing is automatic when Astro's i18n is configured.
+
+---
+
+## LLMs.txt Support
+
+shipyard-docs can automatically generate `llms.txt` and `llms-full.txt` files following the [llms.txt specification](https://llmstxt.org/). These files help Large Language Models efficiently parse and understand your documentation.
+
+### Configuration
+
+Enable llms.txt generation by adding the `llmsTxt` option:
+
+```javascript
+shipyardDocs({
+  llmsTxt: {
+    enabled: true,
+    projectName: 'My Project',
+    summary: 'A brief description of your project for LLMs',
+    description: 'Optional additional context about your project.',
+    sectionTitle: 'Documentation', // Optional, defaults to 'Documentation'
+  },
+})
+```
+
+### Generated Files
+
+When enabled, two files are automatically generated at build time:
+
+| File | Description |
+|------|-------------|
+| `/llms.txt` | Index file with links and descriptions of each documentation page |
+| `/llms-full.txt` | Complete file with full content of all documentation pages |
+
+### LLMs.txt Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enabled` | `boolean` | `false` | Enable llms.txt generation |
+| `projectName` | `string` | `'Documentation'` | H1 heading in the generated file |
+| `summary` | `string` | — | Brief project summary (displayed as blockquote) |
+| `description` | `string` | — | Additional context paragraphs |
+| `sectionTitle` | `string` | `'Documentation'` | Title for the links section |
+
+### Example Output
+
+The generated `llms.txt` follows this format:
+
+```markdown
+# My Project
+
+> A brief description of your project for LLMs
+
+Optional additional context about your project.
+
+## Documentation
+
+- [Getting Started](https://example.com/docs/getting-started): Installation and setup guide
+- [Configuration](https://example.com/docs/configuration): Configuration options reference
+```
+
+This makes your documentation easily accessible to AI coding assistants like Claude, Cursor, and others that support the llms.txt standard.

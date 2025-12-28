@@ -7,6 +7,9 @@ import { z } from 'astro/zod'
 // Re-export git metadata utilities
 export type { GitMetadata } from './gitMetadata'
 export { getEditUrl, getGitMetadata } from './gitMetadata'
+// Re-export llms.txt utilities
+export type { LlmsDocEntry, LlmsTxtConfig } from './llmsTxt'
+export { generateLlmsFullTxt, generateLlmsTxt } from './llmsTxt'
 // Re-export pagination types and utilities
 export type { PaginationInfo, PaginationLink } from './pagination'
 export { getPaginationInfo } from './pagination'
@@ -50,6 +53,39 @@ export const docsSchema = z.object({
 })
 
 /**
+ * Configuration for llms.txt generation.
+ * When enabled, generates llms.txt and llms-full.txt files following
+ * the specification at https://llmstxt.org/
+ */
+export interface LlmsTxtDocsConfig {
+  /**
+   * Whether to enable llms.txt generation.
+   * @default false
+   */
+  enabled?: boolean
+  /**
+   * The project name to use as the H1 heading in llms.txt.
+   * If not provided, will need to be set for the file to be useful.
+   */
+  projectName?: string
+  /**
+   * A concise summary of the project displayed as a blockquote.
+   * This should help LLMs quickly understand what the project is about.
+   */
+  summary?: string
+  /**
+   * Optional additional description paragraphs.
+   * Displayed after the summary blockquote.
+   */
+  description?: string
+  /**
+   * Custom section title for the documentation links.
+   * @default 'Documentation'
+   */
+  sectionTitle?: string
+}
+
+/**
  * Configuration for a docs instance.
  */
 export interface DocsConfig {
@@ -83,6 +119,23 @@ export interface DocsConfig {
    * @default false
    */
   showLastUpdateAuthor?: boolean
+  /**
+   * Configuration for llms.txt generation.
+   * Enables automatic generation of llms.txt and llms-full.txt files
+   * that help LLMs understand and index your documentation.
+   *
+   * @example
+   * ```ts
+   * shipyardDocs({
+   *   llmsTxt: {
+   *     enabled: true,
+   *     projectName: 'My Project',
+   *     summary: 'A framework for building amazing apps',
+   *   }
+   * })
+   * ```
+   */
+  llmsTxt?: LlmsTxtDocsConfig
 }
 
 /**
@@ -157,6 +210,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     editUrl,
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
+    llmsTxt,
   } = config
 
   // Normalize the route base path (remove leading/trailing slashes safely)
@@ -339,6 +393,145 @@ if (
           injectRoute({
             pattern: `/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
+            prerender: true,
+          })
+        }
+
+        // Generate llms.txt routes if enabled
+        if (llmsTxt?.enabled) {
+          const llmsTxtConfig = {
+            projectName: llmsTxt.projectName ?? 'Documentation',
+            summary: llmsTxt.summary,
+            description: llmsTxt.description,
+            sectionTitle: llmsTxt.sectionTitle ?? 'Documentation',
+          }
+
+          // Generate llms.txt endpoint file
+          const llmsTxtFileName = `llms-txt-${normalizedBasePath}.ts`
+          const llmsTxtFilePath = join(generatedDir, llmsTxtFileName)
+
+          const llmsTxtFileContent = `import type { APIRoute } from 'astro'
+import { i18n } from 'astro:config/server'
+import { getCollection, render } from 'astro:content'
+import { generateLlmsTxt } from '@levino/shipyard-docs'
+
+const llmsTxtConfig = ${JSON.stringify(llmsTxtConfig)}
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
+export const GET: APIRoute = async ({ site }) => {
+  const baseUrl = site?.toString() ?? 'https://example.com'
+  const docs = await getCollection(collectionName)
+
+  const entries = await Promise.all(
+    docs.map(async (doc) => {
+      const { headings } = await render(doc)
+      const h1 = headings.find((h) => h.depth === 1)
+      const cleanId = doc.id.replace(/\\.md$/, '')
+      const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
+      const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
+
+      // Handle i18n: when i18n is enabled, the doc.id contains locale prefix (e.g., 'en/page')
+      // We need to generate paths like '/en/docs/page' instead of '/docs/en/page'
+      let path
+      if (i18n) {
+        const [locale, ...rest] = finalPath.split('/')
+        const docPath = rest.length ? rest.join('/') : ''
+        path = '/' + locale + '/' + routeBasePath + (docPath ? '/' + docPath : '')
+      } else {
+        path = '/' + routeBasePath + (finalPath ? '/' + finalPath : '')
+      }
+
+      return {
+        path,
+        title: doc.data.title ?? h1?.text ?? doc.id,
+        description: doc.data.description,
+        position: doc.data.sidebar_position,
+      }
+    })
+  )
+
+  const content = generateLlmsTxt(entries, llmsTxtConfig, baseUrl)
+
+  return new Response(content, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+  })
+}
+`
+          writeFileSync(llmsTxtFilePath, llmsTxtFileContent)
+
+          // Generate llms-full.txt endpoint file
+          const llmsFullTxtFileName = `llms-full-txt-${normalizedBasePath}.ts`
+          const llmsFullTxtFilePath = join(generatedDir, llmsFullTxtFileName)
+
+          const llmsFullTxtFileContent = `import type { APIRoute } from 'astro'
+import { i18n } from 'astro:config/server'
+import { getCollection, render } from 'astro:content'
+import { generateLlmsFullTxt } from '@levino/shipyard-docs'
+
+const llmsTxtConfig = ${JSON.stringify(llmsTxtConfig)}
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
+export const GET: APIRoute = async ({ site }) => {
+  const baseUrl = site?.toString() ?? 'https://example.com'
+  const docs = await getCollection(collectionName)
+
+  const entries = await Promise.all(
+    docs.map(async (doc) => {
+      const { headings } = await render(doc)
+      const h1 = headings.find((h) => h.depth === 1)
+      const cleanId = doc.id.replace(/\\.md$/, '')
+      const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
+      const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
+
+      // Handle i18n: when i18n is enabled, the doc.id contains locale prefix (e.g., 'en/page')
+      // We need to generate paths like '/en/docs/page' instead of '/docs/en/page'
+      let path
+      if (i18n) {
+        const [locale, ...rest] = finalPath.split('/')
+        const docPath = rest.length ? rest.join('/') : ''
+        path = '/' + locale + '/' + routeBasePath + (docPath ? '/' + docPath : '')
+      } else {
+        path = '/' + routeBasePath + (finalPath ? '/' + finalPath : '')
+      }
+
+      // Read the raw markdown content from the file
+      const rawContent = doc.body ?? ''
+
+      return {
+        path,
+        title: doc.data.title ?? h1?.text ?? doc.id,
+        description: doc.data.description,
+        position: doc.data.sidebar_position,
+        content: rawContent,
+      }
+    })
+  )
+
+  const content = generateLlmsFullTxt(entries, llmsTxtConfig, baseUrl)
+
+  return new Response(content, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+  })
+}
+`
+          writeFileSync(llmsFullTxtFilePath, llmsFullTxtFileContent)
+
+          // Inject routes for llms.txt and llms-full.txt
+          injectRoute({
+            pattern: '/llms.txt',
+            entrypoint: llmsTxtFilePath,
+            prerender: true,
+          })
+
+          injectRoute({
+            pattern: '/llms-full.txt',
+            entrypoint: llmsFullTxtFilePath,
             prerender: true,
           })
         }

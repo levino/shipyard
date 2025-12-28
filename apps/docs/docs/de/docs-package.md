@@ -188,3 +188,63 @@ docs/
 ```
 
 Locale-basiertes Routing erfolgt automatisch wenn Astros i18n konfiguriert ist.
+
+---
+
+## LLMs.txt-Unterstützung
+
+shipyard-docs kann automatisch `llms.txt`- und `llms-full.txt`-Dateien gemäß der [llms.txt-Spezifikation](https://llmstxt.org/) generieren. Diese Dateien helfen Large Language Models, deine Dokumentation effizient zu parsen und zu verstehen.
+
+### Konfiguration
+
+Aktiviere die llms.txt-Generierung durch Hinzufügen der `llmsTxt`-Option:
+
+```javascript
+shipyardDocs({
+  llmsTxt: {
+    enabled: true,
+    projectName: 'Mein Projekt',
+    summary: 'Eine kurze Beschreibung deines Projekts für LLMs',
+    description: 'Optionaler zusätzlicher Kontext über dein Projekt.',
+    sectionTitle: 'Dokumentation', // Optional, Standard ist 'Documentation'
+  },
+})
+```
+
+### Generierte Dateien
+
+Wenn aktiviert, werden zwei Dateien beim Build automatisch generiert:
+
+| Datei | Beschreibung |
+|-------|--------------|
+| `/llms.txt` | Index-Datei mit Links und Beschreibungen jeder Dokumentationsseite |
+| `/llms-full.txt` | Vollständige Datei mit dem kompletten Inhalt aller Dokumentationsseiten |
+
+### LLMs.txt-Optionen
+
+| Option | Typ | Standard | Beschreibung |
+|--------|-----|----------|--------------|
+| `enabled` | `boolean` | `false` | Aktiviert llms.txt-Generierung |
+| `projectName` | `string` | `'Documentation'` | H1-Überschrift in der generierten Datei |
+| `summary` | `string` | — | Kurze Projektzusammenfassung (als Blockquote angezeigt) |
+| `description` | `string` | — | Zusätzliche Kontext-Absätze |
+| `sectionTitle` | `string` | `'Documentation'` | Titel für den Links-Abschnitt |
+
+### Beispiel-Ausgabe
+
+Die generierte `llms.txt` folgt diesem Format:
+
+```markdown
+# Mein Projekt
+
+> Eine kurze Beschreibung deines Projekts für LLMs
+
+Optionaler zusätzlicher Kontext über dein Projekt.
+
+## Dokumentation
+
+- [Erste Schritte](https://example.com/docs/erste-schritte): Installations- und Setup-Anleitung
+- [Konfiguration](https://example.com/docs/konfiguration): Referenz der Konfigurationsoptionen
+```
+
+Dies macht deine Dokumentation leicht zugänglich für KI-Coding-Assistenten wie Claude, Cursor und andere, die den llms.txt-Standard unterstützen.
