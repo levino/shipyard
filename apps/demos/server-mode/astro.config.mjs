@@ -3,9 +3,9 @@
 import cloudflare from '@astrojs/cloudflare'
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
+import shipyardBlog from '@levino/shipyard-blog'
 import shipyardDocs from '@levino/shipyard-docs'
 import { defineConfig } from 'astro/config'
-import shipyardBlog from '@levino/shipyard-blog'
 
 // https://astro.build/config
 export default defineConfig({
