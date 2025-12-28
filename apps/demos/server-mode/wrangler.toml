@@ -1,6 +1,11 @@
 name = "shipyard-ssr-demo"
-main = "dist/_worker.js/index.js"
+main = "./dist/_worker.js/index.js"
 compatibility_date = "2025-12-28"
+compatibility_flags = ["nodejs_compat"]
+
+[assets]
+binding = "ASSETS"
+directory = "./dist"
 
 [build]
 command = "npm run build"
