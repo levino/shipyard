@@ -7,6 +7,9 @@ import Layout from './Layout.astro'
 
 const { postsPerPage } = blogConfig
 
+// Prerender configuration - set to false for on-demand SSR rendering
+export const prerender = blogConfig.prerender
+
 export const getStaticPaths = (async () => {
   const allPosts = await getCollection('blog')
 
@@ -49,12 +52,15 @@ export const getStaticPaths = (async () => {
 const pageParam = Astro.params.page
 const currentPage = parseInt(pageParam, 10)
 
+// Get locale from params (server mode) or Astro.currentLocale (static mode)
+const currentLocale = Astro.params.locale || Astro.currentLocale
+
 const entries = await getCollection('blog').then((posts) => {
   if (i18n) {
     return posts
       .filter(({ id }) => {
         const [postLocale] = id.split('/')
-        return postLocale === Astro.currentLocale
+        return postLocale === currentLocale
       })
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
@@ -80,14 +86,14 @@ const getBlogPostLink = (id: string, locale?: string) => {
 }
 
 const getPageLink = (page: number) => {
-  const basePath = i18n ? `/${Astro.currentLocale}/blog` : '/blog'
+  const basePath = i18n ? `/${currentLocale}/blog` : '/blog'
   if (page === 1) {
     return basePath
   }
   return `${basePath}/page/${page}`
 }
 
-const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
+const formatDate = new Intl.DateTimeFormat(currentLocale || 'en').format
 
 // Generate page numbers to display (3 adjacent pages around current)
 const getAdjacentPages = () => {
@@ -116,7 +122,7 @@ const showRightEllipsis =
     <div class="prose max-w-none">
       {
         paginatedEntries.map(async (entry) => (
-          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, currentLocale)}`}>
             <div class="text-sm">{formatDate(entry.data.date)}</div>
             <h2 class="my-0">{entry.data.title}</h2>
             <p>{entry.data.description}</p>

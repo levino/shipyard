@@ -59,6 +59,12 @@ export const blogConfigSchema = z.object({
    * @default false
    */
   showLastUpdateAuthor: z.boolean().default(false),
+  /**
+   * Whether to prerender blog pages at build time.
+   * Set to false for on-demand (SSR) rendering when using Astro's server mode.
+   * @default true
+   */
+  prerender: z.boolean().default(true),
 })
 
 export type BlogConfig = z.infer<typeof blogConfigSchema>
@@ -100,28 +106,34 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
           injectRoute({
             pattern: `/[locale]/blog`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndex.astro`,
+            prerender: blogConfig.prerender,
           })
           injectRoute({
             pattern: `/[locale]/blog/page/[page]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
+            prerender: blogConfig.prerender,
           })
           injectRoute({
             pattern: `/[locale]/blog/[...slug]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
+            prerender: blogConfig.prerender,
           })
         } else {
           // Without i18n: direct path
           injectRoute({
             pattern: `/blog`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndex.astro`,
+            prerender: blogConfig.prerender,
           })
           injectRoute({
             pattern: `/blog/page/[page]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
+            prerender: blogConfig.prerender,
           })
           injectRoute({
             pattern: `/blog/[...slug]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
+            prerender: blogConfig.prerender,
           })
         }
       },
