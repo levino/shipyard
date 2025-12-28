@@ -1,5 +1,12 @@
 # @levino/shipyard-base
 
+## 0.5.10
+
+### Patch Changes
+
+- 4739185: You can now switch between languages directly from the navigation bar. When your Astro project has multiple locales configured, a language switcher automatically appears in both the desktop navigation dropdown and the mobile sidebar menu. The switcher reads available locales directly from your Astro i18n configuration, so there's no extra setup required beyond configuring Astro's built-in internationalization.
+- 4739185: Added a new Markdown layout for prose-styled content pages. The Splash layout no longer applies prose styling, making it better suited for custom landing pages. Use the new Markdown layout when you want automatic typography styling for markdown content.
+
 ## 0.5.9
 
 ### Patch Changes
