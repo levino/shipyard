@@ -135,7 +135,7 @@ Documentation features:
 
 8. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`.
 
-9. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
+9. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early. **Note**: Before running E2E tests for the first time, install Playwright browsers with `npx playwright install`.
 
 ## Working with Components
 
