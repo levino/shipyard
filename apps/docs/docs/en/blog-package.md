@@ -16,6 +16,32 @@ npm install @levino/shipyard-blog
 
 Requires `@levino/shipyard-base` to be installed and configured.
 
+### Tailwind Configuration
+
+For Tailwind to correctly pick up the classes used in shipyard-blog components, you need to add the package path to the `content` array in your `tailwind.config.mjs`:
+
+```javascript
+const path = require('node:path')
+
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
+    // Include shipyard-base (required)
+    path.join(
+      path.dirname(require.resolve('@levino/shipyard-base')),
+      '../astro/**/*.astro',
+    ),
+    // Include shipyard-blog
+    path.join(
+      path.dirname(require.resolve('@levino/shipyard-blog')),
+      '../astro/**/*.astro',
+    ),
+  ],
+  // ... rest of your config
+}
+```
+
 ## Quick Start
 
 ### 1. Configure Astro
