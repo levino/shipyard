@@ -72,11 +72,17 @@ export default defineConfig({
 
 ---
 
-## Live Demo
+## Live Demos
 
-**[Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
+Explore shipyard's features in action with our demo sites:
 
-Experience shipyard firsthand – see how elegant and functional your site can be with responsive layouts, internationalization, and seamless navigation.
+| Demo | Description |
+|------|-------------|
+| **[Single Language](https://single-language.demos.shipyard.levinkeller.de)** | Basic shipyard setup with docs and blog |
+| **[Internationalization (i18n)](https://i18n.demos.shipyard.levinkeller.de)** | Multi-language site with locale-based routing |
+| **[Server Mode](https://server-mode.demos.shipyard.levinkeller.de)** | Server-side rendering (SSR) with on-demand page generation |
+
+Each demo showcases different shipyard capabilities. The source code for all demos is available in the [demos directory](https://github.com/levino/shipyard/tree/main/apps/demos).
 
 ---
 
@@ -94,6 +100,7 @@ Experience shipyard firsthand – see how elegant and functional your site can b
 
 ### Additional Resources
 
+- **[Server Mode (SSR)](./server-mode)** – Using shipyard with server-side rendering
 - **[Feature Roadmap](./roadmap)** – Docusaurus feature parity status and upcoming features
 
 ---

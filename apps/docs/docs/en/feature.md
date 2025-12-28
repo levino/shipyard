@@ -260,6 +260,7 @@ Now that you have shipyard set up, explore these topics:
 - **[@levino/shipyard-base](./base-package)** – Layouts, components, and configuration
 - **[@levino/shipyard-docs](./docs-package)** – Documentation features and customization
 - **[@levino/shipyard-blog](./blog-package)** – Blog features and customization
+- **[Server Mode (SSR)](./server-mode)** – Using shipyard with server-side rendering
 - **[Feature Roadmap](./roadmap)** – See what features are coming next
 
 ## Need Help?

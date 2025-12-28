@@ -1,0 +1,75 @@
+---
+import CustomTocLayout from '../../layouts/CustomTocLayout.astro'
+
+const headings = [
+  { depth: 2, text: 'Getting Started', slug: 'getting-started' },
+  { depth: 3, text: 'Prerequisites', slug: 'prerequisites' },
+  { depth: 3, text: 'Installation', slug: 'installation' },
+  { depth: 2, text: 'Configuration', slug: 'configuration' },
+  { depth: 3, text: 'Basic Setup', slug: 'basic-setup' },
+  { depth: 3, text: 'Advanced Options', slug: 'advanced-options' },
+  { depth: 2, text: 'Usage Examples', slug: 'usage-examples' },
+]
+---
+
+<CustomTocLayout headings={headings}>
+  <h1>Custom Table of Contents Example</h1>
+  <p class="lead">
+    This page demonstrates how to customize the TableOfContents component
+    with a custom label. Notice that the sidebar says "In this article" instead
+    of the default "On this page".
+  </p>
+
+  <h2 id="getting-started">Getting Started</h2>
+  <p>
+    The TableOfContents component accepts a <code>label</code> prop that allows
+    you to customize the heading text shown above the links.
+  </p>
+
+  <h3 id="prerequisites">Prerequisites</h3>
+  <p>
+    Before customizing the TableOfContents, make sure you have:
+  </p>
+  <ul>
+    <li>A working shipyard installation</li>
+    <li>A custom layout or page where you can import the component</li>
+  </ul>
+
+  <h3 id="installation">Installation</h3>
+  <p>
+    The TableOfContents component is included in the <code>@levino/shipyard-base</code> package.
+  </p>
+  <pre><code>import {"{"} TableOfContents {"}"} from '@levino/shipyard-base/components'</code></pre>
+
+  <h2 id="configuration">Configuration</h2>
+  <p>
+    Configure the TableOfContents by passing props to the component.
+  </p>
+
+  <h3 id="basic-setup">Basic Setup</h3>
+  <p>
+    Basic usage with just the headings:
+  </p>
+  <pre><code>{"<TableOfContents links={headings} />"}</code></pre>
+
+  <h3 id="advanced-options">Advanced Options</h3>
+  <p>
+    Customize the label for different locales or contexts:
+  </p>
+  <pre><code>{"<TableOfContents links={headings} label=\"In this article\" />"}</code></pre>
+
+  <h2 id="usage-examples">Usage Examples</h2>
+  <p>
+    This very page is an example! Look at the table of contents on the right
+    (or the dropdown on mobile) - it shows "In this article" instead of
+    "On this page".
+  </p>
+  <p>
+    Common use cases for custom labels:
+  </p>
+  <ul>
+    <li><strong>Localization:</strong> "Dans cet article" for French sites</li>
+    <li><strong>Branding:</strong> "Quick Links" or "Jump to section"</li>
+    <li><strong>Context:</strong> "API Reference" for technical docs</li>
+  </ul>
+</CustomTocLayout>

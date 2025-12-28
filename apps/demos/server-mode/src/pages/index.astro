@@ -1,0 +1,101 @@
+---
+import Layout from '@levino/shipyard-base/layouts/Splash.astro'
+
+// Random animal that changes on each request - this proves SSR is working!
+const animals = [
+  {
+    emoji: '🦊',
+    name: 'Fox',
+    fact: 'Foxes can make over 40 different sounds.',
+  },
+  {
+    emoji: '🦉',
+    name: 'Owl',
+    fact: 'Owls can rotate their heads up to 270 degrees.',
+  },
+  {
+    emoji: '🦋',
+    name: 'Butterfly',
+    fact: 'Butterflies taste with their feet.',
+  },
+  {
+    emoji: '🐙',
+    name: 'Octopus',
+    fact: 'Octopuses have three hearts and blue blood.',
+  },
+  {
+    emoji: '🦥',
+    name: 'Sloth',
+    fact: 'Sloths take two weeks to digest their food.',
+  },
+  {
+    emoji: '🦔',
+    name: 'Hedgehog',
+    fact: 'Hedgehogs have about 5000-7000 spines.',
+  },
+  {
+    emoji: '🐝',
+    name: 'Bee',
+    fact: 'A bee visits about 50-100 flowers per foraging trip.',
+  },
+  {
+    emoji: '🦩',
+    name: 'Flamingo',
+    fact: 'Flamingos are pink because of the shrimp they eat.',
+  },
+  {
+    emoji: '🐨',
+    name: 'Koala',
+    fact: 'Koalas sleep up to 22 hours a day.',
+  },
+  {
+    emoji: '🦭',
+    name: 'Seal',
+    fact: 'Seals can hold their breath for up to 2 hours.',
+  },
+]
+
+const randomAnimal = animals[Math.floor(Math.random() * animals.length)]
+const timestamp = new Date().toLocaleTimeString('en-US')
+---
+
+<Layout title="Welcome to Server Mode Demo">
+  <div class="prose max-w-none">
+    <h1>Welcome to Server Mode Demo</h1>
+
+    <div class="alert alert-info my-8">
+      <div class="text-6xl">{randomAnimal.emoji}</div>
+      <div>
+        <h3 class="font-bold m-0">Random Animal: {randomAnimal.name}</h3>
+        <p class="m-0">{randomAnimal.fact}</p>
+        <p class="text-sm opacity-70 m-0">Generated at {timestamp} - reload the page for a new animal!</p>
+      </div>
+    </div>
+
+    <p>
+      This is a demonstration site showing how shipyard works with <strong>server-side rendering</strong> (SSR).
+      Pages are rendered on-demand per request instead of being pre-generated at build time.
+    </p>
+
+    <h2>Features Demonstrated</h2>
+    <ul>
+      <li><strong>Server-side rendering</strong>: All pages are rendered on each request</li>
+      <li><strong>Dynamic content</strong>: The animal above changes on every page load!</li>
+      <li><strong>Blog functionality</strong>: Blog posts at <a href="/blog">/blog</a> with SSR</li>
+      <li><strong>Documentation</strong>: Docs at <a href="/docs">/docs</a> with SSR</li>
+    </ul>
+
+    <h2>Getting Started</h2>
+    <p>Explore the site:</p>
+    <ul>
+      <li><a href="/blog">Browse our blog</a> - See recent posts and articles</li>
+      <li><a href="/docs">Read the documentation</a> - Learn how to use our features</li>
+      <li><a href="/about">About this demo</a> - More information about this project</li>
+    </ul>
+
+    <p>
+      This demonstrates that shipyard can work with Astro's server mode when you need dynamic,
+      on-demand rendering capabilities.
+    </p>
+  </div>
+</Layout>
