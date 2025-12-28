@@ -1,7 +1,7 @@
 ---
 title: Welcome to Single Language Demo
 description: A demonstration of shipyard without internationalization
-layout: '@levino/shipyard-base/layouts/Splash.astro'
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
 ---
 
 # Welcome to Single Language Demo

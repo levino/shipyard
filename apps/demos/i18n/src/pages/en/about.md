@@ -1,5 +1,5 @@
 ---
-layout: '@levino/shipyard-base/layouts/Splash.astro'
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
 title: About Metro Gardens
 description: Learn about our community garden's mission, history, and the dedicated team that makes it all possible.
 ---
