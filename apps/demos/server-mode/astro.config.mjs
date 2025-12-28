@@ -1,6 +1,6 @@
 // @ts-check
 
-import node from '@astrojs/node'
+import cloudflare from '@astrojs/cloudflare'
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
@@ -9,11 +9,9 @@ import shipyardBlog from '../../../packages/blog/src/index.ts'
 
 // https://astro.build/config
 export default defineConfig({
-  // Server mode configuration
+  // Server mode configuration for Cloudflare
   output: 'server',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  adapter: cloudflare(),
   // No i18n configuration - single language site
   integrations: [
     tailwind({
