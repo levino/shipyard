@@ -121,21 +121,27 @@ Documentation features:
 
 1. **Monorepo Structure**: This is a workspace-based monorepo. When making changes, consider impact across packages and apps.
 
-2. **Peer Dependencies**: Packages use peer dependencies for Astro, Tailwind, and DaisyUI. Check `peerDependencies` in package.json files.
+2. **Git Operations (Merge, Rebase, etc.)**: Before performing git operations like merge or rebase, always unshallow the git clone first:
+   ```bash
+   git fetch --unshallow origin
+   ```
+   GitHub Actions typically use shallow clones for performance, which prevents proper git operations.
 
-3. **Testing**: E2E tests are located in `apps/demo/tests/e2e/` using Playwright.
+3. **Peer Dependencies**: Packages use peer dependencies for Astro, Tailwind, and DaisyUI. Check `peerDependencies` in package.json files.
 
-4. **Build Process**: Each app can be built independently. No global build command is configured.
+4. **Testing**: E2E tests are located in `apps/demo/tests/e2e/` using Playwright.
 
-5. **Changesets**: The project uses `@changesets/cli` for version management.
+5. **Build Process**: Each app can be built independently. No global build command is configured.
 
-6. **Git Hooks**: Lefthook is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
+6. **Changesets**: The project uses `@changesets/cli` for version management.
 
-7. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
+7. **Git Hooks**: Lefthook is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
-8. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`.
+8. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
 
-9. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
+9. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`.
+
+10. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
 
 ## Working with Components
 
