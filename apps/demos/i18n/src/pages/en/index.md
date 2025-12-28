@@ -1,5 +1,5 @@
 ---
-layout: '@levino/shipyard-base/layouts/Splash.astro'
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
 title: Metro Gardens Community Club
 locale: en
 description:
