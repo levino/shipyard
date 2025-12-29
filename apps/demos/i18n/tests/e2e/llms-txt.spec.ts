@@ -40,14 +40,14 @@ test.describe('LLMs.txt Generation', () => {
       expect(content).toContain('## Documentation')
     })
 
-    test('llms.txt contains links to documentation pages', async ({
-      request,
-    }) => {
+    test('llms.txt contains links to plain text files', async ({ request }) => {
       const response = await request.get('/docs/llms.txt')
       const content = await response.text()
 
-      // Check for markdown link format - links should point to default locale (en)
-      expect(content).toMatch(/\[.+\]\(https?:\/\/.+\/en\/docs\/.+\)/)
+      // Check for markdown link format - links should point to _llms-txt/*.txt files
+      expect(content).toMatch(
+        /\[.+\]\(https?:\/\/.+\/docs\/_llms-txt\/.+\.txt\)/,
+      )
     })
 
     test('llms.txt links include page descriptions when available', async ({
@@ -61,16 +61,18 @@ test.describe('LLMs.txt Generation', () => {
       expect(content).toMatch(/- \[.+\]\(https?:\/\/.+\)/)
     })
 
-    test('llms.txt only includes default locale content', async ({
+    test('llms.txt links point to _llms-txt directory (locale-independent)', async ({
       request,
     }) => {
       const response = await request.get('/docs/llms.txt')
       const content = await response.text()
 
-      // Should contain English (default locale) links
-      expect(content).toMatch(/\/en\/docs\//)
+      // Links should point to plain text files, not HTML pages with locale prefixes
+      expect(content).toMatch(/\/docs\/_llms-txt\//)
+      expect(content).toMatch(/\.txt\)/)
 
-      // Should NOT contain German locale links
+      // Should NOT contain locale prefixes in paths (they link to .txt files now)
+      expect(content).not.toMatch(/\/en\/docs\/[^_]/)
       expect(content).not.toMatch(/\/de\/docs\//)
     })
   })
@@ -124,16 +126,18 @@ test.describe('LLMs.txt Generation', () => {
       expect(h2Matches?.length).toBeGreaterThan(1)
     })
 
-    test('llms-full.txt only includes default locale content', async ({
+    test('llms-full.txt links point to _llms-txt directory (locale-independent)', async ({
       request,
     }) => {
       const response = await request.get('/docs/llms-full.txt')
       const content = await response.text()
 
-      // Should contain English (default locale) URLs
-      expect(content).toMatch(/\/en\/docs\//)
+      // Links should point to plain text files
+      expect(content).toMatch(/\/docs\/_llms-txt\//)
+      expect(content).toMatch(/\.txt/)
 
-      // Should NOT contain German locale URLs
+      // Should NOT contain locale prefixes in URL paths
+      expect(content).not.toMatch(/\/en\/docs\/[^_]/)
       expect(content).not.toMatch(/\/de\/docs\//)
     })
   })
@@ -159,6 +163,43 @@ test.describe('LLMs.txt Generation', () => {
         const url = match.slice(2, -1)
         expect(url).toMatch(/^https?:\/\//)
       }
+    })
+  })
+
+  test.describe('individual plain text endpoints', () => {
+    test('individual txt files return correct content type', async ({
+      request,
+    }) => {
+      // First get the llms.txt to find a valid path
+      const llmsResponse = await request.get('/docs/llms.txt')
+      const content = await llmsResponse.text()
+
+      // Extract a txt file path from the links
+      const match = content.match(/\/docs\/_llms-txt\/([^.]+)\.txt/)
+      expect(match).not.toBeNull()
+
+      const txtPath = `/docs/_llms-txt/${match?.[1]}.txt`
+      const response = await request.get(txtPath)
+
+      expect(response.status()).toBe(200)
+      expect(response.headers()['content-type']).toContain('text/plain')
+    })
+
+    test('individual txt files contain markdown content', async ({
+      request,
+    }) => {
+      const llmsResponse = await request.get('/docs/llms.txt')
+      const content = await llmsResponse.text()
+
+      const match = content.match(/\/docs\/_llms-txt\/([^.]+)\.txt/)
+      expect(match).not.toBeNull()
+
+      const txtPath = `/docs/_llms-txt/${match?.[1]}.txt`
+      const response = await request.get(txtPath)
+      const txtContent = await response.text()
+
+      // Should start with a markdown heading
+      expect(txtContent).toMatch(/^# .+/)
     })
   })
 

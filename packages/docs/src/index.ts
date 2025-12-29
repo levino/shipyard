@@ -408,6 +408,70 @@ if (
             sectionTitle: llmsTxt.sectionTitle ?? 'Documentation',
           }
 
+          // Generate individual plain text endpoints for each doc page
+          // These are mounted at /_llms-txt/[slug].txt
+          const llmsTxtPagesFileName = `llms-txt-pages-${normalizedBasePath}.ts`
+          const llmsTxtPagesFilePath = join(generatedDir, llmsTxtPagesFileName)
+
+          const llmsTxtPagesFileContent = `import type { APIRoute, GetStaticPaths } from 'astro'
+import { i18n } from 'astro:config/server'
+import { getCollection, render } from 'astro:content'
+
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const allDocs = await getCollection(collectionName)
+
+  // When i18n is enabled, only include docs from the default locale
+  const defaultLocale = i18n?.defaultLocale
+  const docs = defaultLocale
+    ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
+    : allDocs
+
+  return docs.map((doc) => {
+    const cleanId = doc.id.replace(/\\.md$/, '')
+    // For i18n, strip the locale prefix from the slug
+    let slug = cleanId
+    if (i18n && defaultLocale) {
+      const [locale, ...rest] = cleanId.split('/')
+      slug = rest.length ? rest.join('/') : locale
+    }
+    // Handle index pages - use special suffix
+    if (slug.endsWith('/index')) {
+      slug = slug.slice(0, -6) + '/_index'
+    } else if (slug === 'index') {
+      slug = '_index'
+    }
+
+    return {
+      // For [...slug], the param should be the full path string (Astro handles the split)
+      params: { slug },
+      props: { doc },
+    }
+  })
+}
+
+export const GET: APIRoute = async ({ props }) => {
+  const { doc } = props as { doc: Awaited<ReturnType<typeof getCollection>>[number] }
+  const { headings } = await render(doc)
+  const h1 = headings.find((h) => h.depth === 1)
+
+  // Build the plain text content with title and raw markdown body
+  const title = doc.data.title ?? h1?.text ?? doc.id
+  const description = doc.data.description ? doc.data.description + '\\n\\n' : ''
+  const body = doc.body ?? ''
+
+  const content = '# ' + title + '\\n\\n' + description + body
+
+  return new Response(content, {
+    headers: {
+      'Content-Type': 'text/plain; charset=utf-8',
+    },
+  })
+}
+`
+          writeFileSync(llmsTxtPagesFilePath, llmsTxtPagesFileContent)
+
           // Generate llms.txt endpoint file
           const llmsTxtFileName = `llms-txt-${normalizedBasePath}.ts`
           const llmsTxtFilePath = join(generatedDir, llmsTxtFileName)
@@ -436,18 +500,22 @@ export const GET: APIRoute = async ({ site }) => {
       const { headings } = await render(doc)
       const h1 = headings.find((h) => h.depth === 1)
       const cleanId = doc.id.replace(/\\.md$/, '')
-      const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
-      const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
 
-      // Generate paths without locale prefix (llms.txt links to default locale content)
-      let path
-      if (i18n) {
-        const [locale, ...rest] = finalPath.split('/')
-        const docPath = rest.length ? rest.join('/') : ''
-        path = '/' + locale + '/' + routeBasePath + (docPath ? '/' + docPath : '')
-      } else {
-        path = '/' + routeBasePath + (finalPath ? '/' + finalPath : '')
+      // Generate slug for the _llms-txt path
+      let slug = cleanId
+      if (i18n && defaultLocale) {
+        const [locale, ...rest] = cleanId.split('/')
+        slug = rest.length ? rest.join('/') : locale
       }
+      // Handle index pages - use special suffix
+      if (slug.endsWith('/index')) {
+        slug = slug.slice(0, -6) + '/_index'
+      } else if (slug === 'index') {
+        slug = '_index'
+      }
+
+      // Path points to the plain text file
+      const path = '/' + routeBasePath + '/_llms-txt/' + slug + '.txt'
 
       return {
         path,
@@ -497,18 +565,22 @@ export const GET: APIRoute = async ({ site }) => {
       const { headings } = await render(doc)
       const h1 = headings.find((h) => h.depth === 1)
       const cleanId = doc.id.replace(/\\.md$/, '')
-      const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
-      const finalPath = isIndex ? cleanId.replace(/\\/?index$/, '') : cleanId
 
-      // Generate paths without locale prefix (llms.txt links to default locale content)
-      let path
-      if (i18n) {
-        const [locale, ...rest] = finalPath.split('/')
-        const docPath = rest.length ? rest.join('/') : ''
-        path = '/' + locale + '/' + routeBasePath + (docPath ? '/' + docPath : '')
-      } else {
-        path = '/' + routeBasePath + (finalPath ? '/' + finalPath : '')
+      // Generate slug for the _llms-txt path
+      let slug = cleanId
+      if (i18n && defaultLocale) {
+        const [locale, ...rest] = cleanId.split('/')
+        slug = rest.length ? rest.join('/') : locale
       }
+      // Handle index pages - use special suffix
+      if (slug.endsWith('/index')) {
+        slug = slug.slice(0, -6) + '/_index'
+      } else if (slug === 'index') {
+        slug = '_index'
+      }
+
+      // Path points to the plain text file
+      const path = '/' + routeBasePath + '/_llms-txt/' + slug + '.txt'
 
       // Read the raw markdown content from the file
       const rawContent = doc.body ?? ''
@@ -533,6 +605,13 @@ export const GET: APIRoute = async ({ site }) => {
 }
 `
           writeFileSync(llmsFullTxtFilePath, llmsFullTxtFileContent)
+
+          // Inject route for individual plain text pages (catch-all for nested paths)
+          injectRoute({
+            pattern: `/${normalizedBasePath}/_llms-txt/[...slug].txt`,
+            entrypoint: llmsTxtPagesFilePath,
+            prerender: true,
+          })
 
           // Inject routes for llms.txt and llms-full.txt under the docs path
           injectRoute({

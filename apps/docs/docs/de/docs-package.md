@@ -239,14 +239,20 @@ shipyardDocs({
 
 ### Generierte Dateien
 
-Wenn aktiviert, werden zwei Dateien beim Build automatisch unter dem Docs-Pfad generiert:
+Wenn aktiviert, werden mehrere Dateien beim Build automatisch unter dem Docs-Pfad generiert:
 
 | Datei | Beschreibung |
 |-------|--------------|
-| `/{routeBasePath}/llms.txt` | Index-Datei mit Links und Beschreibungen jeder Dokumentationsseite |
+| `/{routeBasePath}/llms.txt` | Index-Datei mit Links zu Plain-Text-Versionen jeder Dokumentationsseite |
 | `/{routeBasePath}/llms-full.txt` | Vollständige Datei mit dem kompletten Inhalt aller Dokumentationsseiten |
+| `/{routeBasePath}/_llms-txt/*.txt` | Einzelne Plain-Text/Markdown-Dateien für jede Dokumentationsseite |
 
-Zum Beispiel sind bei Standard-`routeBasePath` von `docs` die Dateien unter `/docs/llms.txt` und `/docs/llms-full.txt` verfügbar.
+Zum Beispiel mit dem Standard-`routeBasePath` von `docs`:
+- `/docs/llms.txt` - Haupt-Index-Datei mit Links zu einzelnen Plain-Text-Seiten
+- `/docs/llms-full.txt` - Gesamte Dokumentation in einer Datei
+- `/docs/_llms-txt/getting-started.txt` - Plain-Text-Version einer einzelnen Seite
+
+Die `llms.txt`-Datei verlinkt direkt auf `.txt`-Dateien (nicht HTML-Seiten), wie es auch bei [Astros Dokumentation](https://docs.astro.build/llms.txt) gemacht wird.
 
 ### Sidebar-Integration
 
@@ -279,8 +285,10 @@ Optionaler zusätzlicher Kontext über dein Projekt.
 
 ## Dokumentation
 
-- [Erste Schritte](https://example.com/docs/erste-schritte): Installations- und Setup-Anleitung
-- [Konfiguration](https://example.com/docs/konfiguration): Referenz der Konfigurationsoptionen
+- [Erste Schritte](https://example.com/docs/_llms-txt/erste-schritte.txt): Installations- und Setup-Anleitung
+- [Konfiguration](https://example.com/docs/_llms-txt/konfiguration.txt): Referenz der Konfigurationsoptionen
 ```
+
+Jede verlinkte `.txt`-Datei enthält den rohen Markdown-Inhalt dieser Dokumentationsseite, was es für LLMs einfach macht, den Inhalt direkt ohne HTML-Overhead zu parsen.
 
 Dies macht deine Dokumentation leicht zugänglich für KI-Coding-Assistenten wie Claude, Cursor und andere, die den llms.txt-Standard unterstützen.
