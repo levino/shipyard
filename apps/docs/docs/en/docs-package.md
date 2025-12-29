@@ -214,3 +214,81 @@ docs/
 ```
 
 Locale-based routing is automatic when Astro's i18n is configured.
+
+---
+
+## LLMs.txt Support
+
+shipyard-docs can automatically generate `llms.txt` and `llms-full.txt` files following the [llms.txt specification](https://llmstxt.org/). These files help Large Language Models efficiently parse and understand your documentation.
+
+### Configuration
+
+Enable llms.txt generation by adding the `llmsTxt` option:
+
+```javascript
+shipyardDocs({
+  llmsTxt: {
+    enabled: true,
+    projectName: 'My Project',
+    summary: 'A brief description of your project for LLMs',
+    description: 'Optional additional context about your project.',
+    sectionTitle: 'Documentation', // Optional, defaults to 'Documentation'
+  },
+})
+```
+
+### Generated Files
+
+When enabled, several files are automatically generated at build time under the docs path:
+
+| File | Description |
+|------|-------------|
+| `/{routeBasePath}/llms.txt` | Index file with links to plain text versions of each documentation page |
+| `/{routeBasePath}/llms-full.txt` | Complete file with full content of all documentation pages |
+| `/{routeBasePath}/_llms-txt/*.txt` | Individual plain text/markdown files for each documentation page |
+
+For example, with the default `routeBasePath` of `docs`:
+- `/docs/llms.txt` - Main index file linking to individual plain text pages
+- `/docs/llms-full.txt` - All documentation content in one file
+- `/docs/_llms-txt/getting-started.txt` - Plain text version of a single page
+
+The `llms.txt` file links directly to `.txt` files (not HTML pages), following the approach used by [Astro's documentation](https://docs.astro.build/llms.txt).
+
+### Sidebar Integration
+
+When llms.txt is enabled, a link to `/docs/llms.txt` is automatically added to the sidebar. This link includes a copy-to-clipboard button, making it easy to copy the URL and paste it into AI assistant prompts.
+
+### Internationalization
+
+When Astro's i18n is configured, llms.txt only includes content from the **default locale**. This prevents mixing different languages in the same file, ensuring LLMs receive consistent, single-language documentation.
+
+### LLMs.txt Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `enabled` | `boolean` | `false` | Enable llms.txt generation |
+| `projectName` | `string` | `'Documentation'` | H1 heading in the generated file |
+| `summary` | `string` | — | Brief project summary (displayed as blockquote) |
+| `description` | `string` | — | Additional context paragraphs |
+| `sectionTitle` | `string` | `'Documentation'` | Title for the links section |
+
+### Example Output
+
+The generated `llms.txt` follows this format:
+
+```markdown
+# My Project
+
+> A brief description of your project for LLMs
+
+Optional additional context about your project.
+
+## Documentation
+
+- [Getting Started](https://example.com/docs/_llms-txt/getting-started.txt): Installation and setup guide
+- [Configuration](https://example.com/docs/_llms-txt/configuration.txt): Configuration options reference
+```
+
+Each linked `.txt` file contains the raw markdown content of that documentation page, making it easy for LLMs to parse the content directly without HTML overhead.
+
+This makes your documentation easily accessible to AI coding assistants like Claude, Cursor, and others that support the llms.txt standard.

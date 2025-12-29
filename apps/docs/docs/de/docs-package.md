@@ -214,3 +214,81 @@ docs/
 ```
 
 Locale-basiertes Routing erfolgt automatisch wenn Astros i18n konfiguriert ist.
+
+---
+
+## LLMs.txt-Unterstützung
+
+shipyard-docs kann automatisch `llms.txt`- und `llms-full.txt`-Dateien gemäß der [llms.txt-Spezifikation](https://llmstxt.org/) generieren. Diese Dateien helfen Large Language Models, deine Dokumentation effizient zu parsen und zu verstehen.
+
+### Konfiguration
+
+Aktiviere die llms.txt-Generierung durch Hinzufügen der `llmsTxt`-Option:
+
+```javascript
+shipyardDocs({
+  llmsTxt: {
+    enabled: true,
+    projectName: 'Mein Projekt',
+    summary: 'Eine kurze Beschreibung deines Projekts für LLMs',
+    description: 'Optionaler zusätzlicher Kontext über dein Projekt.',
+    sectionTitle: 'Dokumentation', // Optional, Standard ist 'Documentation'
+  },
+})
+```
+
+### Generierte Dateien
+
+Wenn aktiviert, werden mehrere Dateien beim Build automatisch unter dem Docs-Pfad generiert:
+
+| Datei | Beschreibung |
+|-------|--------------|
+| `/{routeBasePath}/llms.txt` | Index-Datei mit Links zu Plain-Text-Versionen jeder Dokumentationsseite |
+| `/{routeBasePath}/llms-full.txt` | Vollständige Datei mit dem kompletten Inhalt aller Dokumentationsseiten |
+| `/{routeBasePath}/_llms-txt/*.txt` | Einzelne Plain-Text/Markdown-Dateien für jede Dokumentationsseite |
+
+Zum Beispiel mit dem Standard-`routeBasePath` von `docs`:
+- `/docs/llms.txt` - Haupt-Index-Datei mit Links zu einzelnen Plain-Text-Seiten
+- `/docs/llms-full.txt` - Gesamte Dokumentation in einer Datei
+- `/docs/_llms-txt/getting-started.txt` - Plain-Text-Version einer einzelnen Seite
+
+Die `llms.txt`-Datei verlinkt direkt auf `.txt`-Dateien (nicht HTML-Seiten), wie es auch bei [Astros Dokumentation](https://docs.astro.build/llms.txt) gemacht wird.
+
+### Sidebar-Integration
+
+Wenn llms.txt aktiviert ist, wird automatisch ein Link zu `/docs/llms.txt` in der Sidebar hinzugefügt. Dieser Link enthält einen Button zum Kopieren in die Zwischenablage, was das Kopieren der URL und Einfügen in KI-Assistenten-Prompts erleichtert.
+
+### Internationalisierung
+
+Wenn Astros i18n konfiguriert ist, enthält llms.txt nur Inhalte aus der **Standardsprache**. Dies verhindert das Mischen verschiedener Sprachen in derselben Datei und stellt sicher, dass LLMs konsistente, einsprachige Dokumentation erhalten.
+
+### LLMs.txt-Optionen
+
+| Option | Typ | Standard | Beschreibung |
+|--------|-----|----------|--------------|
+| `enabled` | `boolean` | `false` | Aktiviert llms.txt-Generierung |
+| `projectName` | `string` | `'Documentation'` | H1-Überschrift in der generierten Datei |
+| `summary` | `string` | — | Kurze Projektzusammenfassung (als Blockquote angezeigt) |
+| `description` | `string` | — | Zusätzliche Kontext-Absätze |
+| `sectionTitle` | `string` | `'Documentation'` | Titel für den Links-Abschnitt |
+
+### Beispiel-Ausgabe
+
+Die generierte `llms.txt` folgt diesem Format:
+
+```markdown
+# Mein Projekt
+
+> Eine kurze Beschreibung deines Projekts für LLMs
+
+Optionaler zusätzlicher Kontext über dein Projekt.
+
+## Dokumentation
+
+- [Erste Schritte](https://example.com/docs/_llms-txt/erste-schritte.txt): Installations- und Setup-Anleitung
+- [Konfiguration](https://example.com/docs/_llms-txt/konfiguration.txt): Referenz der Konfigurationsoptionen
+```
+
+Jede verlinkte `.txt`-Datei enthält den rohen Markdown-Inhalt dieser Dokumentationsseite, was es für LLMs einfach macht, den Inhalt direkt ohne HTML-Overhead zu parsen.
+
+Dies macht deine Dokumentation leicht zugänglich für KI-Coding-Assistenten wie Claude, Cursor und andere, die den llms.txt-Standard unterstützen.

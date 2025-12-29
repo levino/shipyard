@@ -33,8 +33,12 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
   return (
     <li class={entryValue.className}>
       {entryValue.href
-        ? <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
-        : <span class='menu-title'>{label}</span>}
+        ? entryValue.labelHtml
+          ? <Fragment set:html={entryValue.labelHtml} />
+          : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+        : entryValue.labelHtml
+          ? <Fragment set:html={entryValue.labelHtml} />
+          : <span class='menu-title'>{label}</span>}
       {entryValue.subEntry ? (
         <ul>
           <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />

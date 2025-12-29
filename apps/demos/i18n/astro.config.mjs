@@ -7,6 +7,7 @@ import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://i18n.demos.shipyard.levinkeller.de',
   redirects: {
     '/': {
       status: 302,
@@ -68,6 +69,12 @@ export default defineConfig({
         'https://github.com/levino/shipyard/edit/main/apps/demos/i18n/docs',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
+      llmsTxt: {
+        enabled: true,
+        projectName: 'Metro Gardens',
+        summary:
+          'Metro Gardens is a community garden documentation site with guides for growing vegetables, maintaining garden beds, and harvesting crops.',
+      },
     }),
     shipyardDocs({
       routeBasePath: 'guides',
