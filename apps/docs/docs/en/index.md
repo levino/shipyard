@@ -78,7 +78,7 @@ Explore shipyard's features in action with our demo sites:
 
 | Demo | Description |
 |------|-------------|
-| **[Single Language](https://single-language.demos.shipyard.levinkeller.de)** | Basic shipyard setup with docs and blog |
+| **[Single Language](https://single-locale.demos.shipyard.levinkeller.de)** | Basic shipyard setup with docs and blog |
 | **[Internationalization (i18n)](https://i18n.demos.shipyard.levinkeller.de)** | Multi-language site with locale-based routing |
 | **[Server Mode](https://server-mode.demos.shipyard.levinkeller.de)** | Server-side rendering (SSR) with on-demand page generation |
 
