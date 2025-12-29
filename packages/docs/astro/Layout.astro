@@ -141,7 +141,7 @@ if (docsConfig?.llmsTxtEnabled) {
 <BaseLayout sidebarNavigation={entries}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
-      <div class="prose max-w-none overflow-x-auto">
+      <div class="prose max-w-none">
         <Breadcrumbs navigation={entries} />
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
