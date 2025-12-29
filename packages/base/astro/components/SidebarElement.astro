@@ -47,23 +47,3 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
     </li>
   )
 })}
-
-<script>
-  document.querySelectorAll('[data-copy-url]').forEach((button) => {
-    button.addEventListener('click', async (event) => {
-      event.preventDefault()
-      const target = event.currentTarget as HTMLButtonElement
-      const path = target.dataset.copyUrl
-      if (!path) return
-
-      const fullUrl = new URL(path, window.location.origin).toString()
-      try {
-        await navigator.clipboard.writeText(fullUrl)
-        target.classList.add('text-success')
-        setTimeout(() => target.classList.remove('text-success'), 1500)
-      } catch (error) {
-        console.error('Failed to copy URL:', error)
-      }
-    })
-  })
-</script>
