@@ -2,12 +2,7 @@
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
-import {
-  buildTagsMap,
-  getTagLabel as getTagLabelUtil,
-  type Tag,
-  type TagsMap,
-} from '../src/index.ts'
+import { buildTagsMap, type TagsMap } from '../src/index.ts'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (async () => {
@@ -28,24 +23,22 @@ export const getStaticPaths = (async () => {
     return Array.from(tags)
   }
 
-  // Build maps of tag ID -> tag data, grouped by locale
+  // Build maps of tag ID -> tag data, grouped by locale using shared utility
   const tagsMapByLocale = new Map<string | undefined, TagsMap>()
   try {
     const tagsEntries = await getCollection('tags')
-    for (const entry of tagsEntries) {
-      if (i18n) {
-        const [locale, ...rest] = entry.id.split('/')
-        const tagKey = rest.join('/')
-        if (!tagsMapByLocale.has(locale)) {
-          tagsMapByLocale.set(locale, new Map())
+    if (i18n) {
+      for (const locale of i18n.locales) {
+        if (typeof locale !== 'string') {
+          throw new Error('shipyard does only support strings as locales.')
         }
-        tagsMapByLocale.get(locale)?.set(tagKey, entry.data as Tag)
-      } else {
-        if (!tagsMapByLocale.has(undefined)) {
-          tagsMapByLocale.set(undefined, new Map())
-        }
-        tagsMapByLocale.get(undefined)?.set(entry.id, entry.data as Tag)
+        tagsMapByLocale.set(
+          locale,
+          buildTagsMap(tagsEntries, { i18n: true, currentLocale: locale }),
+        )
       }
+    } else {
+      tagsMapByLocale.set(undefined, buildTagsMap(tagsEntries, { i18n: false }))
     }
   } catch {
     // Tags collection doesn't exist
@@ -55,6 +48,18 @@ export const getStaticPaths = (async () => {
     const tagsMap = tagsMapByLocale.get(locale) || new Map()
     const tagDef = tagsMap.get(tagValue)
     return tagDef?.permalink || tagValue
+  }
+
+  const getTagData = (
+    tagValue: string,
+    locale?: string,
+  ): { label: string; description?: string } => {
+    const tagsMap = tagsMapByLocale.get(locale) || new Map()
+    const tagDef = tagsMap.get(tagValue)
+    return {
+      label: tagDef?.label || tagValue,
+      description: tagDef?.description,
+    }
   }
 
   if (i18n) {
@@ -70,6 +75,8 @@ export const getStaticPaths = (async () => {
         },
         props: {
           tagValue: tag,
+          tagLabel: getTagData(tag, locale).label,
+          tagDescription: getTagData(tag, locale).description,
         },
       }))
     })
@@ -81,12 +88,14 @@ export const getStaticPaths = (async () => {
       },
       props: {
         tagValue: tag,
+        tagLabel: getTagData(tag, undefined).label,
+        tagDescription: getTagData(tag, undefined).description,
       },
     }))
   }
 }) satisfies GetStaticPaths
 
-const { tagValue } = Astro.props
+const { tagValue, tagLabel, tagDescription } = Astro.props
 
 // Get all blog posts with this tag
 const blogPosts = await getCollection('blog').then((posts) => {
@@ -105,24 +114,6 @@ const blogPosts = await getCollection('blog').then((posts) => {
     .filter((post) => post.data.tags?.includes(tagValue))
     .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
 })
-
-// Build a map of tag ID -> tag data from the tags collection
-let tagsMap: TagsMap
-try {
-  const tagsEntries = await getCollection('tags')
-  tagsMap = buildTagsMap(tagsEntries, {
-    i18n: !!i18n,
-    currentLocale: Astro.currentLocale,
-  })
-} catch {
-  // Tags collection doesn't exist, use empty map
-  tagsMap = new Map()
-}
-
-// Get tag label and description
-const tagLabel = getTagLabelUtil(tagValue, tagsMap)
-const tagDef = tagsMap.get(tagValue)
-const tagDescription = tagDef?.description
 
 const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
 
