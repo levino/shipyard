@@ -3,6 +3,7 @@ import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
+import { buildTagsMap, type TagsMap } from '../src/index.ts'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
@@ -45,6 +46,19 @@ const entries = await getCollection('blog').then((posts) => {
     )
   }
 })
+
+// Build tags map once to pass to BlogTags components
+let tagsMap: TagsMap
+try {
+  const tagsEntries = await getCollection('tags')
+  tagsMap = buildTagsMap(tagsEntries, {
+    i18n: !!i18n,
+    currentLocale: Astro.currentLocale,
+  })
+} catch {
+  // Tags collection doesn't exist, use empty map
+  tagsMap = new Map()
+}
 
 // Calculate pagination
 const totalPosts = entries.length
@@ -104,7 +118,7 @@ const showRightEllipsis =
               <h2 class="my-0">{entry.data.title}</h2>
               <p>{entry.data.description}</p>
             </a>
-            <BlogTags tags={entry.data.tags} />
+            <BlogTags tags={entry.data.tags} tagsMap={tagsMap} />
           </div>
         ))
       }

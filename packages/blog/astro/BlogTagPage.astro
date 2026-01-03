@@ -2,7 +2,12 @@
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
-import type { Tag } from '../src/index.ts'
+import {
+  buildTagsMap,
+  getTagLabel as getTagLabelUtil,
+  type Tag,
+  type TagsMap,
+} from '../src/index.ts'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (async () => {
@@ -24,7 +29,7 @@ export const getStaticPaths = (async () => {
   }
 
   // Build maps of tag ID -> tag data, grouped by locale
-  const tagsMapByLocale = new Map<string | undefined, Map<string, Tag>>()
+  const tagsMapByLocale = new Map<string | undefined, TagsMap>()
   try {
     const tagsEntries = await getCollection('tags')
     for (const entry of tagsEntries) {
@@ -34,12 +39,12 @@ export const getStaticPaths = (async () => {
         if (!tagsMapByLocale.has(locale)) {
           tagsMapByLocale.set(locale, new Map())
         }
-        tagsMapByLocale.get(locale)!.set(tagKey, entry.data as Tag)
+        tagsMapByLocale.get(locale)?.set(tagKey, entry.data as Tag)
       } else {
         if (!tagsMapByLocale.has(undefined)) {
           tagsMapByLocale.set(undefined, new Map())
         }
-        tagsMapByLocale.get(undefined)!.set(entry.id, entry.data as Tag)
+        tagsMapByLocale.get(undefined)?.set(entry.id, entry.data as Tag)
       }
     }
   } catch {
@@ -102,29 +107,21 @@ const blogPosts = await getCollection('blog').then((posts) => {
 })
 
 // Build a map of tag ID -> tag data from the tags collection
-const tagsMap = new Map<string, Tag>()
+let tagsMap: TagsMap
 try {
   const tagsEntries = await getCollection('tags')
-  for (const entry of tagsEntries) {
-    if (i18n) {
-      // For i18n, filter by current locale (entry.id format: "locale/tag-key")
-      const [locale, ...rest] = entry.id.split('/')
-      if (locale === Astro.currentLocale) {
-        const tagKey = rest.join('/')
-        tagsMap.set(tagKey, entry.data as Tag)
-      }
-    } else {
-      // For non-i18n, use entry.id directly as the tag key
-      tagsMap.set(entry.id, entry.data as Tag)
-    }
-  }
+  tagsMap = buildTagsMap(tagsEntries, {
+    i18n: !!i18n,
+    currentLocale: Astro.currentLocale,
+  })
 } catch {
-  // Tags collection doesn't exist
+  // Tags collection doesn't exist, use empty map
+  tagsMap = new Map()
 }
 
 // Get tag label and description
+const tagLabel = getTagLabelUtil(tagValue, tagsMap)
 const tagDef = tagsMap.get(tagValue)
-const tagLabel = tagDef?.label || tagValue
 const tagDescription = tagDef?.description
 
 const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format

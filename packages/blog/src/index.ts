@@ -109,6 +109,14 @@ export const tagsSchema = z.record(z.string(), tagSchema)
 export type Tag = z.infer<typeof tagSchema>
 export type TagsCollection = z.infer<typeof tagsSchema>
 
+// Re-export tag utilities for use in components
+export {
+  buildTagsMap,
+  getTagLabel,
+  getTagPermalink,
+  type TagsMap,
+} from './tag-utils.ts'
+
 const VIRTUAL_MODULE_ID = 'virtual:shipyard-blog/config'
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
 

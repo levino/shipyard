@@ -2,7 +2,12 @@
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import type { GetStaticPaths } from 'astro'
-import type { Tag } from '../src/index.ts'
+import {
+  buildTagsMap,
+  getTagLabel as getTagLabelUtil,
+  getTagPermalink as getTagPermalinkUtil,
+  type TagsMap,
+} from '../src/index.ts'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = (() => {
@@ -47,39 +52,27 @@ for (const post of blogPosts) {
 }
 
 // Build a map of tag ID -> tag data from the tags collection
-const tagsMap = new Map<string, Tag>()
+let tagsMap: TagsMap
 try {
   const tagsEntries = await getCollection('tags')
-  for (const entry of tagsEntries) {
-    if (i18n) {
-      // For i18n, filter by current locale (entry.id format: "locale/tag-key")
-      const [locale, ...rest] = entry.id.split('/')
-      if (locale === Astro.currentLocale) {
-        const tagKey = rest.join('/')
-        tagsMap.set(tagKey, entry.data as Tag)
-      }
-    } else {
-      // For non-i18n, use entry.id directly as the tag key
-      tagsMap.set(entry.id, entry.data as Tag)
-    }
-  }
+  tagsMap = buildTagsMap(tagsEntries, {
+    i18n: !!i18n,
+    currentLocale: Astro.currentLocale,
+  })
 } catch {
-  // Tags collection doesn't exist, will use tag values as labels
+  // Tags collection doesn't exist, use empty map
+  tagsMap = new Map()
 }
+
+const i18nOptions = { i18n: !!i18n, currentLocale: Astro.currentLocale }
 
 // Helper to get tag label
-const getTagLabel = (tagValue: string): string => {
-  const tagDef = tagsMap.get(tagValue)
-  return tagDef?.label || tagValue
-}
+const getTagLabel = (tagValue: string): string =>
+  getTagLabelUtil(tagValue, tagsMap)
 
 // Helper to get tag permalink
-const getTagPermalink = (tagValue: string): string => {
-  const tagDef = tagsMap.get(tagValue)
-  const permalink = tagDef?.permalink || tagValue
-  const basePath = i18n ? `/${Astro.currentLocale}/blog/tags` : '/blog/tags'
-  return `${basePath}/${encodeURIComponent(permalink)}`
-}
+const getTagPermalink = (tagValue: string): string =>
+  getTagPermalinkUtil(tagValue, tagsMap, i18nOptions)
 
 // Sort tags alphabetically by label
 const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
