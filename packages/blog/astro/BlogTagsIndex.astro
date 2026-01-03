@@ -1,0 +1,113 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths } from 'astro'
+import type { Tag } from '../src/index.ts'
+import Layout from './Layout.astro'
+
+export const getStaticPaths = (() => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return {
+        params: {
+          locale,
+        },
+      }
+    })
+  } else {
+    // For non-i18n, return a single path without locale
+    return [{ params: {} }]
+  }
+}) satisfies GetStaticPaths
+
+// Get all blog posts
+const blogPosts = await getCollection('blog').then((posts) => {
+  if (i18n) {
+    // With i18n: filter by locale
+    return posts.filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === Astro.currentLocale
+    })
+  } else {
+    // Without i18n: return all posts
+    return posts
+  }
+})
+
+// Collect all unique tags with post counts
+const tagCounts = new Map<string, number>()
+for (const post of blogPosts) {
+  const tags = post.data.tags || []
+  for (const tag of tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) || 0) + 1)
+  }
+}
+
+// Build a map of tag ID -> tag data from the tags collection
+const tagsMap = new Map<string, Tag>()
+try {
+  const tagsEntries = await getCollection('tags')
+  for (const entry of tagsEntries) {
+    if (i18n) {
+      // For i18n, filter by current locale (entry.id format: "locale/tag-key")
+      const [locale, ...rest] = entry.id.split('/')
+      if (locale === Astro.currentLocale) {
+        const tagKey = rest.join('/')
+        tagsMap.set(tagKey, entry.data as Tag)
+      }
+    } else {
+      // For non-i18n, use entry.id directly as the tag key
+      tagsMap.set(entry.id, entry.data as Tag)
+    }
+  }
+} catch {
+  // Tags collection doesn't exist, will use tag values as labels
+}
+
+// Helper to get tag label
+const getTagLabel = (tagValue: string): string => {
+  const tagDef = tagsMap.get(tagValue)
+  return tagDef?.label || tagValue
+}
+
+// Helper to get tag permalink
+const getTagPermalink = (tagValue: string): string => {
+  const tagDef = tagsMap.get(tagValue)
+  const permalink = tagDef?.permalink || tagValue
+  const basePath = i18n ? `/${Astro.currentLocale}/blog/tags` : '/blog/tags'
+  return `${basePath}/${encodeURIComponent(permalink)}`
+}
+
+// Sort tags alphabetically by label
+const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
+  getTagLabel(a[0]).localeCompare(getTagLabel(b[0])),
+)
+---
+
+<Layout title="Tags">
+  <div class="max-w-7xl mx-auto">
+    <div class="prose max-w-none mb-8">
+      <h1>Tags</h1>
+    </div>
+
+    {sortedTags.length === 0 ? (
+      <p class="text-base-content/70">No tags found.</p>
+    ) : (
+      <div class="flex flex-wrap gap-3" data-testid="tags-list">
+        {sortedTags.map(([tag, count]) => (
+          <a
+            href={getTagPermalink(tag)}
+            class="badge badge-lg badge-outline hover:badge-primary transition-colors gap-2"
+            data-testid={`tag-${tag}`}
+          >
+            <span>{getTagLabel(tag)}</span>
+            <span class="opacity-70">({count})</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>

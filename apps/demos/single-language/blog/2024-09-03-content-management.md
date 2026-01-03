@@ -2,6 +2,10 @@
 title: Content Management Made Simple
 description: How to organize and manage content in single-language shipyard sites
 date: 2024-09-03
+tags:
+  - content-management
+  - markdown
+  - tutorial
 ---
 
 # Content Management Made Simple

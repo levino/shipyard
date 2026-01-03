@@ -3,6 +3,7 @@ import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
+import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
 const { postsPerPage } = blogConfig
@@ -97,11 +98,14 @@ const showRightEllipsis =
     <div class="prose max-w-none">
       {
         paginatedEntries.map(async (entry) => (
-          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
-            <div class="text-sm">{formatDate(entry.data.date)}</div>
-            <h2 class="my-0">{entry.data.title}</h2>
-            <p>{entry.data.description}</p>
-          </a>
+          <div class="my-8">
+            <a class="block no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+              <div class="text-sm">{formatDate(entry.data.date)}</div>
+              <h2 class="my-0">{entry.data.title}</h2>
+              <p>{entry.data.description}</p>
+            </a>
+            <BlogTags tags={entry.data.tags} />
+          </div>
         ))
       }
     </div>

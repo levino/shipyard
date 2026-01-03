@@ -6,6 +6,7 @@ import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
 import BlogMetadata from './BlogMetadata.astro'
 import BlogPostPagination from './BlogPostPagination.astro'
+import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
@@ -78,7 +79,8 @@ const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-post overrides
-const { custom_edit_url, last_update_author, last_update_time } = entry.data
+const { custom_edit_url, last_update_author, last_update_time, tags } =
+  entry.data
 
 // Compute edit URL
 let editUrl: string | undefined
@@ -131,6 +133,7 @@ if (
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
       <div class="prose max-w-none">
+        <BlogTags tags={tags} />
         <Content />
         <BlogMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
       </div>

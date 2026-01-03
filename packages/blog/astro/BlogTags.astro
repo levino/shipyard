@@ -1,0 +1,67 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { Tag } from '../src/index.ts'
+
+export interface Props {
+  /**
+   * Array of tag values from the blog post frontmatter.
+   */
+  tags?: string[]
+}
+
+const { tags = [] } = Astro.props
+
+if (tags.length === 0) {
+  return null
+}
+
+// Build a map of tag ID -> tag data from the tags collection
+// Each entry in the collection has entry.id as the tag key (e.g., "getting-started" or "en/getting-started")
+// and entry.data contains { label, description?, permalink? }
+const tagsMap = new Map<string, Tag>()
+try {
+  const tagsEntries = await getCollection('tags')
+  for (const entry of tagsEntries) {
+    if (i18n) {
+      // For i18n, filter by current locale (entry.id format: "locale/tag-key")
+      const [locale, ...rest] = entry.id.split('/')
+      if (locale === Astro.currentLocale) {
+        const tagKey = rest.join('/')
+        tagsMap.set(tagKey, entry.data as Tag)
+      }
+    } else {
+      // For non-i18n, use entry.id directly as the tag key
+      tagsMap.set(entry.id, entry.data as Tag)
+    }
+  }
+} catch {
+  // Tags collection doesn't exist, will use tag values as labels
+}
+
+// Helper to get tag label
+const getTagLabel = (tagValue: string): string => {
+  const tagDef = tagsMap.get(tagValue)
+  return tagDef?.label || tagValue
+}
+
+// Helper to get tag permalink
+const getTagPermalink = (tagValue: string): string => {
+  const tagDef = tagsMap.get(tagValue)
+  const permalink = tagDef?.permalink || tagValue
+  const basePath = i18n ? `/${Astro.currentLocale}/blog/tags` : '/blog/tags'
+  return `${basePath}/${encodeURIComponent(permalink)}`
+}
+---
+
+<div class="blog-tags flex flex-wrap gap-2 my-4" data-testid="blog-tags">
+  {tags.map((tag) => (
+    <a
+      href={getTagPermalink(tag)}
+      class="badge badge-outline hover:badge-primary transition-colors"
+      data-testid={`tag-${tag}`}
+    >
+      {getTagLabel(tag)}
+    </a>
+  ))}
+</div>

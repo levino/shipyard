@@ -6,6 +6,11 @@ export const blogSchema = z.object({
   title: z.string(),
   description: z.string(),
   /**
+   * Tags for categorizing this blog post.
+   * Can be an array of tag values (strings) that map to entries in the tags collection.
+   */
+  tags: z.array(z.string()).optional(),
+  /**
    * Override the last update author for this specific post.
    * Set to false to hide the author for this post.
    */
@@ -63,6 +68,47 @@ export const blogConfigSchema = z.object({
 
 export type BlogConfig = z.infer<typeof blogConfigSchema>
 
+/**
+ * Schema for a single tag definition in the tags collection.
+ * Each tag has a value (used as ID/key), a label for display, and optional description.
+ */
+export const tagSchema = z.object({
+  /**
+   * The display label for this tag.
+   * For i18n sites, this can be locale-specific.
+   */
+  label: z.string(),
+  /**
+   * Optional description for this tag.
+   */
+  description: z.string().optional(),
+  /**
+   * Optional custom permalink for this tag.
+   * If not provided, the tag value (ID) will be used.
+   */
+  permalink: z.string().optional(),
+})
+
+/**
+ * Schema for the tags collection.
+ * The collection is a YAML file where keys are tag values and values contain label/description.
+ * For i18n support, tags should be organized by locale in the file structure.
+ *
+ * @example
+ * ```yaml
+ * # tags/en/tags.yaml
+ * harvest-report:
+ *   label: "Harvest Report"
+ *   description: "Weekly harvest updates"
+ * spring:
+ *   label: "Spring"
+ * ```
+ */
+export const tagsSchema = z.record(z.string(), tagSchema)
+
+export type Tag = z.infer<typeof tagSchema>
+export type TagsCollection = z.infer<typeof tagsSchema>
+
 const VIRTUAL_MODULE_ID = 'virtual:shipyard-blog/config'
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
 
@@ -106,6 +152,14 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
           })
           injectRoute({
+            pattern: `/[locale]/blog/tags`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagsIndex.astro`,
+          })
+          injectRoute({
+            pattern: `/[locale]/blog/tags/[tag]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagPage.astro`,
+          })
+          injectRoute({
             pattern: `/[locale]/blog/[...slug]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
           })
@@ -118,6 +172,14 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
           injectRoute({
             pattern: `/blog/page/[page]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
+          })
+          injectRoute({
+            pattern: `/blog/tags`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagsIndex.astro`,
+          })
+          injectRoute({
+            pattern: `/blog/tags/[tag]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagPage.astro`,
           })
           injectRoute({
             pattern: `/blog/[...slug]`,
