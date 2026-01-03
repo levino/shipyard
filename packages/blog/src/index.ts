@@ -69,13 +69,11 @@ export const blogConfigSchema = z.object({
 export type BlogConfig = z.infer<typeof blogConfigSchema>
 
 /**
- * Schema for a single tag definition in the tags collection.
- * Each tag has a value (used as ID/key), a label for display, and optional description.
+ * Schema for a single tag's locale-specific data.
  */
-export const tagSchema = z.object({
+export const tagLocaleDataSchema = z.object({
   /**
    * The display label for this tag.
-   * For i18n sites, this can be locale-specific.
    */
   label: z.string(),
   /**
@@ -84,28 +82,54 @@ export const tagSchema = z.object({
   description: z.string().optional(),
   /**
    * Optional custom permalink for this tag.
-   * If not provided, the tag value (ID) will be used.
+   * If not provided, the tag key will be used.
    */
   permalink: z.string().optional(),
 })
 
 /**
+ * Schema for a single tag definition in the tags collection.
+ * Supports both i18n (locale-nested) and non-i18n (flat) structures.
+ */
+export const tagSchema = z.union([
+  // Non-i18n: flat structure with label/description/permalink
+  tagLocaleDataSchema,
+  // i18n: locale-nested structure where keys are locale codes
+  z.record(z.string(), tagLocaleDataSchema),
+])
+
+/**
  * Schema for the tags collection.
- * The collection is a YAML file where keys are tag values and values contain label/description.
- * For i18n support, tags should be organized by locale in the file structure.
+ * A single YAML file containing all tags.
  *
- * @example
+ * @example Non-i18n structure:
  * ```yaml
- * # tags/en/tags.yaml
- * harvest-report:
- *   label: "Harvest Report"
- *   description: "Weekly harvest updates"
- * spring:
- *   label: "Spring"
+ * # tags/tags.yaml
+ * getting-started:
+ *   label: "Getting Started"
+ *   description: "Posts about getting started"
+ * tutorial:
+ *   label: "Tutorial"
+ * ```
+ *
+ * @example i18n structure:
+ * ```yaml
+ * # tags/tags.yaml
+ * getting-started:
+ *   en:
+ *     label: "Getting Started"
+ *   de:
+ *     label: "Erste Schritte"
+ * tutorial:
+ *   en:
+ *     label: "Tutorial"
+ *   de:
+ *     label: "Anleitung"
  * ```
  */
 export const tagsSchema = z.record(z.string(), tagSchema)
 
+export type TagLocaleData = z.infer<typeof tagLocaleDataSchema>
 export type Tag = z.infer<typeof tagSchema>
 export type TagsCollection = z.infer<typeof tagsSchema>
 

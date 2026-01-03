@@ -77,6 +77,7 @@ export const getStaticPaths = async () => {
 
 const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
 
 // Get frontmatter data for per-post overrides
 const { custom_edit_url, last_update_author, last_update_time, tags } =
@@ -133,6 +134,7 @@ if (
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
       <div class="prose max-w-none">
+        <div class="text-sm mb-2">{formatDate(entry.data.date)}</div>
         <BlogTags tags={tags} />
         <Content />
         <BlogMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />

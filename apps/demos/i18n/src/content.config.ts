@@ -1,6 +1,6 @@
 import { defineCollection } from 'astro:content'
 import { docsSchema } from '@levino/shipyard-docs'
-import { glob } from 'astro/loaders'
+import { file, glob } from 'astro/loaders'
 import { blogSchema, tagSchema } from '../../../packages/blog/src/index.ts'
 
 // 3. Define your collection(s)
@@ -18,7 +18,7 @@ const guides = defineCollection({
 })
 const tags = defineCollection({
   schema: tagSchema,
-  loader: glob({ pattern: '**/*.yaml', base: './tags' }),
+  loader: file('./tags/tags.yaml'),
 })
 
 // 4. Export a single `collections` object to register your collection(s)

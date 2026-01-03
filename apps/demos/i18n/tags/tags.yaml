@@ -1,0 +1,51 @@
+# Tags collection for blog posts with i18n support
+# Each key is a tag value used in frontmatter across all locales
+# Labels are locale-specific for proper translation
+
+harvest-report:
+  en:
+    label: "Harvest Report"
+    description: "Weekly harvest updates and statistics"
+  de:
+    label: "Erntebericht"
+    description: "Wöchentliche Ernteupdates und Statistiken"
+
+community-distribution:
+  en:
+    label: "Community Distribution"
+    description: "Posts about community distribution activities"
+  de:
+    label: "Gemeinschaftsverteilung"
+    description: "Beiträge über Gemeinschaftsverteilungsaktivitäten"
+
+spring:
+  en:
+    label: "Spring"
+    description: "Spring season content"
+  de:
+    label: "Frühling"
+    description: "Frühlingsinhalt"
+
+summer:
+  en:
+    label: "Summer"
+    description: "Summer season content"
+  de:
+    label: "Sommer"
+    description: "Sommerinhalt"
+
+autumn:
+  en:
+    label: "Autumn"
+    description: "Autumn season content"
+  de:
+    label: "Herbst"
+    description: "Herbstinhalt"
+
+winter:
+  en:
+    label: "Winter"
+    description: "Winter season content"
+  de:
+    label: "Winter"
+    description: "Winterinhalt"
