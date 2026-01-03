@@ -1,0 +1,67 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import {
+  buildTagsMap,
+  getTagLabel as getTagLabelUtil,
+  getTagPermalink as getTagPermalinkUtil,
+  type TagsMap,
+} from '../src/index.ts'
+
+export interface Props {
+  /**
+   * Array of tag values from the blog post frontmatter.
+   */
+  tags?: string[]
+  /**
+   * Pre-built tags map to avoid fetching the collection multiple times.
+   * If not provided, the component will fetch and build the map itself.
+   */
+  tagsMap?: TagsMap
+}
+
+const { tags = [], tagsMap: providedTagsMap } = Astro.props
+
+if (tags.length === 0) {
+  return null
+}
+
+// Use provided tagsMap or build one from the collection
+let tagsMap: TagsMap
+if (providedTagsMap) {
+  tagsMap = providedTagsMap
+} else {
+  try {
+    const tagsEntries = await getCollection('tags')
+    tagsMap = buildTagsMap(tagsEntries, {
+      i18n: !!i18n,
+      currentLocale: Astro.currentLocale,
+    })
+  } catch {
+    // Tags collection doesn't exist, use empty map
+    tagsMap = new Map()
+  }
+}
+
+const i18nOptions = { i18n: !!i18n, currentLocale: Astro.currentLocale }
+
+// Helper to get tag label
+const getTagLabel = (tagValue: string): string =>
+  getTagLabelUtil(tagValue, tagsMap)
+
+// Helper to get tag permalink
+const getTagPermalink = (tagValue: string): string =>
+  getTagPermalinkUtil(tagValue, tagsMap, i18nOptions)
+---
+
+<div class="blog-tags flex flex-wrap gap-2 my-4" data-testid="blog-tags">
+  {tags.map((tag) => (
+    <a
+      href={getTagPermalink(tag)}
+      class="badge badge-outline hover:badge-primary transition-colors"
+      data-testid={`tag-${tag}`}
+    >
+      {getTagLabel(tag)}
+    </a>
+  ))}
+</div>

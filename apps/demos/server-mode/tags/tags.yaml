@@ -1,0 +1,13 @@
+# Tags collection for blog posts
+
+getting-started:
+  label: "Getting Started"
+  description: "Posts about getting started with shipyard"
+
+server-mode:
+  label: "Server Mode"
+  description: "Posts about server-side rendering"
+
+tutorial:
+  label: "Tutorial"
+  description: "Step-by-step tutorials"

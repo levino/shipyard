@@ -2,6 +2,10 @@
 title: Advanced Features in Single-Language Mode
 description: Explore advanced shipyard features that work great with single-language sites
 date: 2024-09-05
+tags:
+  - advanced
+  - customization
+  - theming
 ---
 
 # Advanced Features in Single-Language Mode

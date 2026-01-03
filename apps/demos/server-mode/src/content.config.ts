@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content'
 import { docsSchema } from '@levino/shipyard-docs'
-import { glob } from 'astro/loaders'
-import { blogSchema } from '../../../packages/blog/src/index.ts'
+import { file, glob } from 'astro/loaders'
+import { blogSchema, tagSchema } from '../../../packages/blog/src/index.ts'
 
 const blog = defineCollection({
   schema: blogSchema,
@@ -11,5 +11,9 @@ const docs = defineCollection({
   schema: docsSchema,
   loader: glob({ pattern: '**/*.md', base: './docs' }),
 })
+const tags = defineCollection({
+  schema: tagSchema,
+  loader: file('./tags/tags.yaml'),
+})
 
-export const collections = { blog, docs }
+export const collections = { blog, docs, tags }

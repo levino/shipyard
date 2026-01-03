@@ -1,0 +1,34 @@
+# Tags collection for blog posts
+# Each key is a tag value used in frontmatter, mapped to its display label and optional description
+
+getting-started:
+  label: "Getting Started"
+  description: "Posts about getting started with shipyard"
+
+single-language:
+  label: "Single Language"
+  description: "Posts about single-language sites"
+
+tutorial:
+  label: "Tutorial"
+  description: "Step-by-step tutorials"
+
+content-management:
+  label: "Content Management"
+  description: "Posts about managing content"
+
+markdown:
+  label: "Markdown"
+  description: "Posts about Markdown features"
+
+advanced:
+  label: "Advanced"
+  description: "Advanced topics and features"
+
+customization:
+  label: "Customization"
+  description: "Posts about customizing shipyard"
+
+theming:
+  label: "Theming"
+  description: "Posts about theming and styling"

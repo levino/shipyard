@@ -6,6 +6,11 @@ export const blogSchema = z.object({
   title: z.string(),
   description: z.string(),
   /**
+   * Tags for categorizing this blog post.
+   * Can be an array of tag values (strings) that map to entries in the tags collection.
+   */
+  tags: z.array(z.string()).optional(),
+  /**
    * Override the last update author for this specific post.
    * Set to false to hide the author for this post.
    */
@@ -63,6 +68,79 @@ export const blogConfigSchema = z.object({
 
 export type BlogConfig = z.infer<typeof blogConfigSchema>
 
+/**
+ * Schema for a single tag's locale-specific data.
+ */
+export const tagLocaleDataSchema = z.object({
+  /**
+   * The display label for this tag.
+   */
+  label: z.string(),
+  /**
+   * Optional description for this tag.
+   */
+  description: z.string().optional(),
+  /**
+   * Optional custom permalink for this tag.
+   * If not provided, the tag key will be used.
+   */
+  permalink: z.string().optional(),
+})
+
+/**
+ * Schema for a single tag definition in the tags collection.
+ * Supports both i18n (locale-nested) and non-i18n (flat) structures.
+ */
+export const tagSchema = z.union([
+  // Non-i18n: flat structure with label/description/permalink
+  tagLocaleDataSchema,
+  // i18n: locale-nested structure where keys are locale codes
+  z.record(z.string(), tagLocaleDataSchema),
+])
+
+/**
+ * Schema for the tags collection.
+ * A single YAML file containing all tags.
+ *
+ * @example Non-i18n structure:
+ * ```yaml
+ * # tags/tags.yaml
+ * getting-started:
+ *   label: "Getting Started"
+ *   description: "Posts about getting started"
+ * tutorial:
+ *   label: "Tutorial"
+ * ```
+ *
+ * @example i18n structure:
+ * ```yaml
+ * # tags/tags.yaml
+ * getting-started:
+ *   en:
+ *     label: "Getting Started"
+ *   de:
+ *     label: "Erste Schritte"
+ * tutorial:
+ *   en:
+ *     label: "Tutorial"
+ *   de:
+ *     label: "Anleitung"
+ * ```
+ */
+export const tagsSchema = z.record(z.string(), tagSchema)
+
+export type TagLocaleData = z.infer<typeof tagLocaleDataSchema>
+export type Tag = z.infer<typeof tagSchema>
+export type TagsCollection = z.infer<typeof tagsSchema>
+
+// Re-export tag utilities for use in components
+export {
+  buildTagsMap,
+  getTagLabel,
+  getTagPermalink,
+  type TagsMap,
+} from './tag-utils.ts'
+
 const VIRTUAL_MODULE_ID = 'virtual:shipyard-blog/config'
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
 
@@ -106,6 +184,14 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
           })
           injectRoute({
+            pattern: `/[locale]/blog/tags`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagsIndex.astro`,
+          })
+          injectRoute({
+            pattern: `/[locale]/blog/tags/[tag]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagPage.astro`,
+          })
+          injectRoute({
             pattern: `/[locale]/blog/[...slug]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogEntry.astro`,
           })
@@ -118,6 +204,14 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
           injectRoute({
             pattern: `/blog/page/[page]`,
             entrypoint: `@levino/shipyard-blog/astro/BlogIndexPaginated.astro`,
+          })
+          injectRoute({
+            pattern: `/blog/tags`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagsIndex.astro`,
+          })
+          injectRoute({
+            pattern: `/blog/tags/[tag]`,
+            entrypoint: `@levino/shipyard-blog/astro/BlogTagPage.astro`,
           })
           injectRoute({
             pattern: `/blog/[...slug]`,

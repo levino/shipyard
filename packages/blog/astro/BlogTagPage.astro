@@ -1,0 +1,162 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths } from 'astro'
+import { buildTagsMap, type TagsMap } from '../src/index.ts'
+import Layout from './Layout.astro'
+
+export const getStaticPaths = (async () => {
+  const blogPosts = await getCollection('blog')
+
+  // Get all unique tags across all posts, grouped by locale for i18n
+  const getTagsForLocale = (locale?: string) => {
+    const posts = locale
+      ? blogPosts.filter(({ id }) => id.startsWith(`${locale}/`))
+      : blogPosts
+
+    const tags = new Set<string>()
+    for (const post of posts) {
+      for (const tag of post.data.tags || []) {
+        tags.add(tag)
+      }
+    }
+    return Array.from(tags)
+  }
+
+  // Build maps of tag ID -> tag data, grouped by locale using shared utility
+  const tagsMapByLocale = new Map<string | undefined, TagsMap>()
+  try {
+    const tagsEntries = await getCollection('tags')
+    if (i18n) {
+      for (const locale of i18n.locales) {
+        if (typeof locale !== 'string') {
+          throw new Error('shipyard does only support strings as locales.')
+        }
+        tagsMapByLocale.set(
+          locale,
+          buildTagsMap(tagsEntries, { i18n: true, currentLocale: locale }),
+        )
+      }
+    } else {
+      tagsMapByLocale.set(undefined, buildTagsMap(tagsEntries, { i18n: false }))
+    }
+  } catch {
+    // Tags collection doesn't exist
+  }
+
+  const getTagPermalink = (tagValue: string, locale?: string): string => {
+    const tagsMap = tagsMapByLocale.get(locale) || new Map()
+    const tagDef = tagsMap.get(tagValue)
+    return tagDef?.permalink || tagValue
+  }
+
+  const getTagData = (
+    tagValue: string,
+    locale?: string,
+  ): { label: string; description?: string } => {
+    const tagsMap = tagsMapByLocale.get(locale) || new Map()
+    const tagDef = tagsMap.get(tagValue)
+    return {
+      label: tagDef?.label || tagValue,
+      description: tagDef?.description,
+    }
+  }
+
+  if (i18n) {
+    return i18n.locales.flatMap((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      const tags = getTagsForLocale(locale)
+      return tags.map((tag) => ({
+        params: {
+          locale,
+          tag: getTagPermalink(tag, locale),
+        },
+        props: {
+          tagValue: tag,
+          tagLabel: getTagData(tag, locale).label,
+          tagDescription: getTagData(tag, locale).description,
+        },
+      }))
+    })
+  } else {
+    const tags = getTagsForLocale()
+    return tags.map((tag) => ({
+      params: {
+        tag: getTagPermalink(tag, undefined),
+      },
+      props: {
+        tagValue: tag,
+        tagLabel: getTagData(tag, undefined).label,
+        tagDescription: getTagData(tag, undefined).description,
+      },
+    }))
+  }
+}) satisfies GetStaticPaths
+
+const { tagValue, tagLabel, tagDescription } = Astro.props
+
+// Get all blog posts with this tag
+const blogPosts = await getCollection('blog').then((posts) => {
+  let filteredPosts = posts
+
+  if (i18n) {
+    // With i18n: filter by locale
+    filteredPosts = posts.filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === Astro.currentLocale
+    })
+  }
+
+  // Filter by tag
+  return filteredPosts
+    .filter((post) => post.data.tags?.includes(tagValue))
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+})
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
+
+const getBlogPostLink = (id: string) => {
+  if (i18n) {
+    const [locale, ...rest] = id.split('/')
+    return `/${locale}/blog/${rest.join('/')}`
+  }
+  return `/blog/${id}`
+}
+
+const tagsIndexLink = i18n ? `/${Astro.currentLocale}/blog/tags` : '/blog/tags'
+---
+
+<Layout title={`Tag: ${tagLabel}`}>
+  <div class="max-w-7xl mx-auto">
+    <div class="prose max-w-none mb-8">
+      <nav class="text-sm breadcrumbs mb-4">
+        <a href={tagsIndexLink} class="link link-hover">Tags</a>
+        <span class="mx-2">/</span>
+        <span>{tagLabel}</span>
+      </nav>
+      <h1>
+        Posts tagged "{tagLabel}"
+      </h1>
+      {tagDescription && <p class="lead">{tagDescription}</p>}
+      <p class="text-base-content/70">
+        {blogPosts.length} {blogPosts.length === 1 ? 'post' : 'posts'}
+      </p>
+    </div>
+
+    {blogPosts.length === 0 ? (
+      <p class="text-base-content/70">No posts found with this tag.</p>
+    ) : (
+      <div class="prose max-w-none" data-testid="tag-posts">
+        {blogPosts.map((entry) => (
+          <a class="block my-8 no-underline" href={getBlogPostLink(entry.id)}>
+            <div class="text-sm">{formatDate(entry.data.date)}</div>
+            <h2 class="my-0">{entry.data.title}</h2>
+            <p>{entry.data.description}</p>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>
