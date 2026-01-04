@@ -58,7 +58,7 @@ const getTagPermalink = (tagValue: string): string =>
   {tags.map((tag) => (
     <a
       href={getTagPermalink(tag)}
-      class="badge badge-outline hover:badge-primary transition-colors"
+      class="badge badge-outline hover:badge-primary transition-colors no-underline"
       data-testid={`tag-${tag}`}
     >
       {getTagLabel(tag)}
