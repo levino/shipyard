@@ -93,7 +93,7 @@ const sortedTags = Array.from(tagCounts.entries()).sort((a, b) =>
         {sortedTags.map(([tag, count]) => (
           <a
             href={getTagPermalink(tag)}
-            class="badge badge-lg badge-outline hover:badge-primary transition-colors gap-2"
+            class="badge badge-lg badge-outline hover:badge-primary transition-colors gap-2 no-underline"
             data-testid={`tag-${tag}`}
           >
             <span>{getTagLabel(tag)}</span>
