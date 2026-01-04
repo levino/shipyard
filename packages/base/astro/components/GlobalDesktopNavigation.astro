@@ -6,6 +6,9 @@ import LanguageSwitcher from './LanguageSwitcher.astro'
 type Props = Pick<Config, 'brand' | 'navigation'> & { showBrand: boolean }
 
 const { brand, navigation, showBrand = false } = Astro.props as Props
+
+const withLocale = (path: string) =>
+  Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
 
 <div class="navbar z-10 bg-base-100">
@@ -36,7 +39,7 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
   </span>
   <div class="flex-1">
     <a
-      href="/"
+      href={withLocale("/")}
       class={cn("btn btn-ghost text-xl", {
         "md:hidden": !showBrand,
       })}
