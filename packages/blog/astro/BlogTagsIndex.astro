@@ -1,0 +1,71 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths } from 'astro'
+import { getAllTags, tagToSlug } from '../src/tools/truncate'
+import Layout from './Layout.astro'
+
+export const getStaticPaths = (() => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return {
+        params: { locale },
+      }
+    })
+  } else {
+    return [{ params: {} }]
+  }
+}) satisfies GetStaticPaths
+
+const entries = await getCollection('blog').then((posts) => {
+  // Filter out drafts in production
+  const filteredPosts = posts.filter((post) => {
+    if (import.meta.env.PROD && post.data.draft) return false
+    return true
+  })
+
+  if (i18n) {
+    return filteredPosts.filter(({ id }) => {
+      const [postLocale] = id.split('/')
+      return postLocale === Astro.currentLocale
+    })
+  }
+  return filteredPosts
+})
+
+const allTags = getAllTags(entries)
+const sortedTags = [...allTags.entries()].sort((a, b) => b[1].count - a[1].count)
+
+const getTagLink = (tag: string) => {
+  const slug = tagToSlug(tag)
+  if (i18n) {
+    return `/${Astro.currentLocale}/blog/tags/${slug}`
+  }
+  return `/blog/tags/${slug}`
+}
+---
+
+<Layout title="Tags">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">Tags</h1>
+
+    {sortedTags.length === 0 ? (
+      <p class="text-base-content/60">No tags found.</p>
+    ) : (
+      <div class="flex flex-wrap gap-3">
+        {sortedTags.map(([tag, { count }]) => (
+          <a
+            href={getTagLink(tag)}
+            class="badge badge-lg badge-outline hover:badge-primary transition-colors gap-2"
+          >
+            {tag}
+            <span class="badge badge-sm badge-neutral">{count}</span>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>

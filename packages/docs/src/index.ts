@@ -50,6 +50,26 @@ export const docsSchema = z.object({
    * Set to null to disable edit link for this page.
    */
   custom_edit_url: z.string().nullable().optional(),
+  /**
+   * Tags for categorizing the document.
+   */
+  tags: z.array(z.string()).optional(),
+  /**
+   * Mark the document as a draft. Draft documents are only shown in development.
+   */
+  draft: z.boolean().optional(),
+  /**
+   * Hide the document from listings but keep it accessible via direct URL.
+   */
+  unlisted: z.boolean().optional(),
+  /**
+   * Keywords for SEO.
+   */
+  keywords: z.array(z.string()).optional(),
+  /**
+   * Social card/preview image.
+   */
+  image: z.string().optional(),
 })
 
 /**

@@ -1,0 +1,122 @@
+---
+import { cn } from '../../src/tools/cn'
+
+interface Props {
+  /**
+   * Array of tab labels
+   */
+  labels: string[]
+  /**
+   * Optional class for the tabs container
+   */
+  class?: string
+  /**
+   * Group ID for syncing tabs across the page
+   */
+  groupId?: string
+  /**
+   * Default active tab index (0-based)
+   */
+  defaultIndex?: number
+}
+
+const {
+  labels,
+  class: className,
+  groupId,
+  defaultIndex = 0,
+} = Astro.props
+
+// Generate unique ID for this tabs instance
+const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`
+---
+
+<div
+  class={cn('tabs-container', className)}
+  data-tabs-group={groupId}
+  data-tabs-id={tabsId}
+>
+  <div class="tabs tabs-bordered" role="tablist">
+    {labels.map((label, index) => (
+      <button
+        class={cn('tab', { 'tab-active': index === defaultIndex })}
+        role="tab"
+        aria-selected={index === defaultIndex ? 'true' : 'false'}
+        aria-controls={`${tabsId}-panel-${index}`}
+        data-tab-index={index}
+        data-tab-label={label}
+      >
+        {label}
+      </button>
+    ))}
+  </div>
+
+  <div class="tabs-content mt-4">
+    <slot />
+  </div>
+</div>
+
+<script>
+  // Tab switching logic
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabsContainers = document.querySelectorAll('[data-tabs-id]')
+
+    tabsContainers.forEach((container) => {
+      const tabs = container.querySelectorAll('[role="tab"]')
+      const groupId = container.getAttribute('data-tabs-group')
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          const index = parseInt(tab.getAttribute('data-tab-index') || '0', 10)
+          const label = tab.getAttribute('data-tab-label')
+
+          // Update this tabs container
+          updateTabs(container, index)
+
+          // Sync with other tabs in the same group
+          if (groupId && label) {
+            syncTabsByGroup(groupId, label)
+          }
+        })
+      })
+    })
+
+    function updateTabs(container: Element, activeIndex: number) {
+      const tabs = container.querySelectorAll('[role="tab"]')
+      const panels = container.querySelectorAll('[data-tab-panel]')
+
+      tabs.forEach((tab, i) => {
+        const isActive = i === activeIndex
+        tab.classList.toggle('tab-active', isActive)
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false')
+      })
+
+      panels.forEach((panel, i) => {
+        const isActive = i === activeIndex
+        panel.classList.toggle('hidden', !isActive)
+      })
+    }
+
+    function syncTabsByGroup(groupId: string, label: string) {
+      const groupContainers = document.querySelectorAll(`[data-tabs-group="${groupId}"]`)
+
+      groupContainers.forEach((container) => {
+        const matchingTab = container.querySelector(`[data-tab-label="${label}"]`)
+        if (matchingTab) {
+          const index = parseInt(matchingTab.getAttribute('data-tab-index') || '0', 10)
+          updateTabs(container, index)
+        }
+      })
+    }
+  })
+</script>
+
+<style>
+  .tabs-container [data-tab-panel] {
+    display: none;
+  }
+
+  .tabs-container [data-tab-panel]:first-of-type {
+    display: block;
+  }
+</style>

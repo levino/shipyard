@@ -56,30 +56,30 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [ ] `hide_table_of_contents` - Hide TOC sidebar
 - [ ] `toc_min_heading_level` - Minimum heading level for TOC
 - [ ] `toc_max_heading_level` - Maximum heading level for TOC
-- [ ] `pagination_next` - Custom next page
-- [ ] `pagination_prev` - Custom previous page
+- [x] `pagination_next` - Custom next page
+- [x] `pagination_prev` - Custom previous page
 - [ ] `pagination_label` - Custom pagination label
-- [ ] `keywords` - Keywords for SEO
-- [ ] `image` - Social media preview image
-- [ ] `tags` - Document tags
-- [ ] `draft` - Mark as draft (excluded from production)
+- [x] `keywords` - Keywords for SEO
+- [x] `image` - Social media preview image
+- [x] `tags` - Document tags
+- [x] `draft` - Mark as draft (excluded from production)
 - [ ] `last_update` - Manual last update info
-- [ ] `unlisted` - Hide from production but keep accessible
+- [x] `unlisted` - Hide from production but keep accessible
 
 ### MDX & Markdown Features
 
 - [x] Standard Markdown support
 - [x] MDX support (via Astro MDX integration)
 - [x] Import React/Astro components in MDX
-- [ ] Admonitions/callouts (`:::note`, `:::tip`, `:::warning`, etc.)
+- [x] Admonitions/callouts (`:::note`, `:::tip`, `:::warning`, etc.)
 - [x] Code blocks with syntax highlighting (via Astro/Shiki)
-- [ ] Line highlighting in code blocks
-- [ ] Line numbering in code blocks
-- [ ] Code block titles/filenames
+- [x] Line highlighting in code blocks
+- [x] Line numbering in code blocks
+- [x] Code block titles/filenames
 - [ ] Live code editors
 - [ ] npm2yarn code block support
 - [x] Automatic heading anchors
-- [ ] Tabs component
+- [x] Tabs component
 - [ ] Details/collapsible sections component
 
 ### Sidebar Features
@@ -112,7 +112,7 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [x] Meta description from frontmatter
 - [x] OpenGraph tags (`og:title`, `og:description`)
 - [ ] Custom canonical URLs
-- [ ] Keywords support
+- [x] Keywords support
 - [ ] Custom meta tags via frontmatter
 - [ ] Social card images
 - [x] Sitemap generation (via Astro sitemap integration)
@@ -126,28 +126,28 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [x] Blog post management from Markdown/MDX files
 - [x] Blog listing page with posts
 - [x] Individual blog post pages
-- [ ] Author management
-- [ ] Tag system for blog posts
-- [ ] RSS/Atom feed generation
-- [ ] Archive page
+- [x] Author management
+- [x] Tag system for blog posts
+- [x] RSS/Atom feed generation
+- [x] Archive page
 
 ### Configuration Options
 
 - [x] Custom path to blog content directory
 - [x] Custom URL route base path
-- [ ] Blog title configuration
-- [ ] Blog description configuration
-- [ ] Blog sidebar title
-- [ ] Blog sidebar post count
-- [ ] Posts per page (pagination)
+- [x] Blog title configuration (via `feedOptions.title`)
+- [x] Blog description configuration (via `feedOptions.description`)
+- [x] Blog sidebar title (`blogSidebarTitle`)
+- [x] Blog sidebar post count (`blogSidebarCount`)
+- [x] Posts per page (pagination) (`postsPerPage`)
 - [ ] Custom blog list component (partial - uses Astro)
 - [ ] Custom blog post component (partial - uses Astro)
-- [ ] Authors map file support
-- [ ] Show reading time
-- [ ] Custom reading time calculation
-- [ ] "Edit this page" links
-- [ ] Truncation marker (`<!--truncate-->`)
-- [ ] RSS/Atom feed options
+- [x] Authors map file support (`authorsMap`)
+- [x] Show reading time (`showReadingTime`)
+- [x] Custom reading time calculation (`readingTimeWordsPerMinute`)
+- [x] "Edit this page" links (`editUrl`)
+- [x] Truncation marker (`<!--truncate-->`)
+- [x] RSS/Atom feed options (`feedOptions`)
 - [x] Sort posts by date
 - [x] Remark plugins (via Astro)
 - [x] Rehype plugins (via Astro)
@@ -157,61 +157,61 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [x] `title` - Post title
 - [x] `description` - Post description/excerpt
 - [x] `date` - Publication date
-- [ ] `authors` - Post author(s)
-- [ ] `tags` - Post tags
-- [ ] `image` - Social card image
+- [x] `authors` - Post author(s)
+- [x] `tags` - Post tags
+- [x] `image` - Social card image
 - [ ] `keywords` - SEO keywords
 - [ ] `hide_table_of_contents` - Hide TOC
 - [ ] `toc_min_heading_level` - Min TOC level
 - [ ] `toc_max_heading_level` - Max TOC level
-- [ ] `draft` - Mark as draft
-- [ ] `unlisted` - Unlisted post
+- [x] `draft` - Mark as draft
+- [x] `unlisted` - Unlisted post
 - [ ] `last_update` - Last update info
 - [ ] `slug` - Custom URL slug
 
 ### Author Features
 
-- [ ] Author name
-- [ ] Author role/title
-- [ ] Author URL/website
-- [ ] Author avatar image
-- [ ] Author email
+- [x] Author name
+- [x] Author role/title
+- [x] Author URL/website
+- [x] Author avatar image
+- [x] Author email
 - [ ] Generated author pages
-- [ ] Multiple authors per post
-- [ ] Inline author definition in frontmatter
+- [x] Multiple authors per post
+- [x] Inline author definition in frontmatter
 
 ### Tag Features
 
-- [ ] Tag listing page
-- [ ] Individual tag pages
-- [ ] Tag counts
+- [x] Tag listing page
+- [x] Individual tag pages
+- [x] Tag counts
 - [ ] Tags definition file
 - [ ] Tag descriptions
-- [ ] Tag permalinks
+- [x] Tag permalinks
 
 ### Feed Features
 
-- [ ] RSS 2.0 feed
-- [ ] Atom feed
-- [ ] JSON feed
-- [ ] Custom feed configuration
-- [ ] Feed title/description
-- [ ] Feed item limits
+- [x] RSS 2.0 feed
+- [x] Atom feed
+- [x] JSON feed
+- [x] Custom feed configuration
+- [x] Feed title/description
+- [x] Feed item limits
 
 ### Navigation Features
 
 - [x] Blog sidebar with posts
-- [ ] Pagination controls
-- [ ] Previous/next post navigation
-- [ ] Archive page with chronological listing
-- [ ] Tag-based navigation
+- [x] Pagination controls
+- [x] Previous/next post navigation
+- [x] Archive page with chronological listing
+- [x] Tag-based navigation
 
 ### Other Blog Features
 
-- [ ] Reading time estimation
+- [x] Reading time estimation
 - [ ] Multi-instance blogs
 - [x] i18n support for blog posts
-- [ ] Draft posts (dev-only)
+- [x] Draft posts (dev-only)
 
 ---
 
@@ -275,9 +275,9 @@ This document tracks shipyard's progress towards supporting features from Docusa
 
 - [x] MDX support with components (via Astro)
 - [x] Remark/Rehype plugin extensibility (via Astro)
-- [ ] Admonitions/callouts in all content types
-- [ ] Draft mode for all content types
-- [ ] Unlisted content for all types
+- [x] Admonitions/callouts in all content types
+- [x] Draft mode for all content types
+- [x] Unlisted content for all types
 - [x] i18n/internationalization support
 - [x] Asset handling (images, files)
 - [x] Theme components (via Tailwind/DaisyUI)
@@ -324,23 +324,23 @@ The following Docusaurus features are **not applicable** because Astro handles t
 
 ## Priority Roadmap
 
-### High Priority (Core Parity)
+### High Priority (Core Parity) - ✅ Complete!
 
-1. **Admonitions/Callouts** - Essential for documentation
-2. **Tags for docs and blog** - Important for content organization
-3. **RSS/Atom feeds** - Expected feature for blogs
-4. **Reading time** - Nice UX for blog posts
-5. **Draft mode** - Essential for content workflow
-6. **Previous/next navigation** - Expected in docs
+1. ~~**Admonitions/Callouts**~~ - ✅ Implemented
+2. ~~**Tags for docs and blog**~~ - ✅ Implemented
+3. ~~**RSS/Atom feeds**~~ - ✅ Implemented
+4. ~~**Reading time**~~ - ✅ Implemented
+5. ~~**Draft mode**~~ - ✅ Implemented
+6. ~~**Previous/next navigation**~~ - ✅ Implemented
 
 ### Medium Priority (Enhanced Features)
 
 1. **Search integration** - Critical for larger docs
 2. ~~**"Edit this page" links**~~ - ✅ Implemented
 3. ~~**Last updated timestamps**~~ - ✅ Implemented
-4. **Code block enhancements** - Line numbers, highlighting, titles
-5. **Tabs component** - Common docs pattern
-6. **Archive page for blog** - Better blog navigation
+4. ~~**Code block enhancements**~~ - ✅ Line numbers, highlighting, titles
+5. ~~**Tabs component**~~ - ✅ Implemented
+6. ~~**Archive page for blog**~~ - ✅ Implemented
 
 ### Lower Priority (Advanced Features)
 
@@ -362,4 +362,4 @@ We welcome contributions to help reach feature parity with Docusaurus! If you'd 
 
 ---
 
-*Last updated: November 2025*
+*Last updated: January 2026*

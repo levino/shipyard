@@ -1,0 +1,105 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths } from 'astro'
+import blogConfig from 'virtual:shipyard-blog/config'
+import { calculateReadingTime } from '../src/tools/readingTime'
+import { getAllTags, tagToSlug } from '../src/tools/truncate'
+import Layout from './Layout.astro'
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog')
+
+  // Filter out drafts in production
+  const filteredPosts = posts.filter((post) => {
+    if (import.meta.env.PROD && post.data.draft) return false
+    return true
+  })
+
+  const allTags = getAllTags(filteredPosts)
+
+  if (i18n) {
+    const paths: Array<{ params: { locale: string; tag: string }; props: { tag: string; posts: typeof filteredPosts } }> = []
+
+    for (const locale of i18n.locales) {
+      if (typeof locale !== 'string') continue
+
+      const localePosts = filteredPosts.filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === locale
+      })
+
+      const localeTags = getAllTags(localePosts)
+
+      for (const [tag, { posts: tagPosts }] of localeTags) {
+        paths.push({
+          params: { locale, tag: tagToSlug(tag) },
+          props: { tag, posts: tagPosts },
+        })
+      }
+    }
+
+    return paths
+  } else {
+    return [...allTags.entries()].map(([tag, { posts: tagPosts }]) => ({
+      params: { tag: tagToSlug(tag) },
+      props: { tag, posts: tagPosts },
+    }))
+  }
+}) satisfies GetStaticPaths
+
+const { tag, posts } = Astro.props
+
+// Sort posts by date (newest first)
+const sortedPosts = posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+
+const getBlogPostLink = (id: string, locale?: string) => {
+  if (i18n && locale) {
+    return id.replace(`${locale}/`, `${locale}/blog/`)
+  }
+  return `blog/${id}`
+}
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en').format
+
+const { showReadingTime, readingTimeWordsPerMinute } = blogConfig
+---
+
+<Layout title={`Tag: ${tag}`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <a href={i18n ? `/${Astro.currentLocale}/blog/tags` : '/blog/tags'} class="text-primary hover:underline">
+        &larr; All tags
+      </a>
+    </div>
+
+    <h1 class="text-3xl font-bold mb-2">
+      Posts tagged with "{tag}"
+    </h1>
+    <p class="text-base-content/60 mb-8">{sortedPosts.length} post{sortedPosts.length !== 1 ? 's' : ''}</p>
+
+    <div class="prose max-w-none">
+      {sortedPosts.map((entry) => {
+        const readingTime = showReadingTime && entry.body
+          ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
+          : null
+
+        return (
+          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+            <div class="flex items-center gap-2 text-sm text-base-content/60">
+              <span>{formatDate(entry.data.date)}</span>
+              {readingTime && (
+                <>
+                  <span>·</span>
+                  <span>{readingTime.text}</span>
+                </>
+              )}
+            </div>
+            <h2 class="my-0">{entry.data.title}</h2>
+            <p>{entry.data.description}</p>
+          </a>
+        )
+      })}
+    </div>
+  </div>
+</Layout>

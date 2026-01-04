@@ -2,6 +2,16 @@ import type { AstroIntegration } from 'astro'
 import type { Config } from './schemas/config'
 
 export type { Entry } from '../astro/components/types'
+export type { AdmonitionType as RehypeAdmonitionType } from './rehype/rehypeAdmonitions'
+export { default as rehypeAdmonitions } from './rehype/rehypeAdmonitions'
+export type { AdmonitionType as RemarkAdmonitionType } from './remark/remarkAdmonitions'
+
+export { default as remarkAdmonitions } from './remark/remarkAdmonitions'
+export type { CodeBlockMeta } from './remark/remarkCodeBlocks'
+export {
+  default as remarkCodeBlocks,
+  parseCodeMeta,
+} from './remark/remarkCodeBlocks'
 export type * from './schemas/config'
 export { getTitle } from './tools/title'
 export * from './types'

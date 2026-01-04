@@ -4,6 +4,9 @@ import { type CollectionEntry, getCollection, render } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
+import { calculateReadingTime } from '../src/tools/readingTime'
+import { tagToSlug } from '../src/tools/truncate'
+import type { Author } from '../src/index'
 import BlogMetadata from './BlogMetadata.astro'
 import BlogPostPagination from './BlogPostPagination.astro'
 import Layout from './Layout.astro'
@@ -78,7 +81,57 @@ const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-post overrides
-const { custom_edit_url, last_update_author, last_update_time } = entry.data
+const { custom_edit_url, last_update_author, last_update_time, tags, authors, image } = entry.data
+
+// Calculate reading time
+const { showReadingTime, readingTimeWordsPerMinute, tagsOptions, authorsMap } = blogConfig
+const readingTime = showReadingTime && entry.body
+  ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
+  : null
+
+// Normalize authors to array of Author objects
+const normalizeAuthors = (): Author[] => {
+  if (!authors) return []
+
+  const resolveAuthor = (author: string | Author): Author => {
+    if (typeof author === 'string') {
+      // Check if it's a key in authorsMap
+      if (authorsMap && authorsMap[author]) {
+        return authorsMap[author]
+      }
+      // Otherwise treat as just a name
+      return { name: author }
+    }
+    return author
+  }
+
+  if (typeof authors === 'string') {
+    return [resolveAuthor(authors)]
+  }
+  if (Array.isArray(authors)) {
+    return authors.map(resolveAuthor)
+  }
+  if ('name' in authors) {
+    return [authors]
+  }
+  return []
+}
+
+const resolvedAuthors = normalizeAuthors()
+
+const getTagLink = (tag: string) => {
+  const slug = tagToSlug(tag)
+  if (i18n) {
+    return `/${Astro.currentLocale}/blog/tags/${slug}`
+  }
+  return `/blog/tags/${slug}`
+}
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format
 
 // Compute edit URL
 let editUrl: string | undefined
@@ -130,10 +183,71 @@ if (
 <Layout title={entry.data.title}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
-      <div class="prose max-w-none">
-        <Content />
-        <BlogMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
-      </div>
+      <article>
+        {/* Post header */}
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
+
+          <div class="flex flex-wrap items-center gap-4 text-base-content/60 text-sm mb-4">
+            <time>{formatDate(entry.data.date)}</time>
+            {readingTime && (
+              <>
+                <span>·</span>
+                <span>{readingTime.text}</span>
+              </>
+            )}
+          </div>
+
+          {/* Authors */}
+          {resolvedAuthors.length > 0 && (
+            <div class="flex flex-wrap items-center gap-4 mb-4">
+              {resolvedAuthors.map((author) => (
+                <div class="flex items-center gap-2">
+                  {author.image_url && (
+                    <img
+                      src={author.image_url}
+                      alt={author.name}
+                      class="w-10 h-10 rounded-full"
+                    />
+                  )}
+                  <div>
+                    {author.url ? (
+                      <a href={author.url} class="font-medium hover:text-primary">
+                        {author.name}
+                      </a>
+                    ) : (
+                      <span class="font-medium">{author.name}</span>
+                    )}
+                    {author.title && (
+                      <div class="text-sm text-base-content/60">{author.title}</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Tags */}
+          {tagsOptions.enabled && tags && tags.length > 0 && (
+            <div class="flex flex-wrap gap-2">
+              {tags.map((tag) => (
+                <a
+                  href={getTagLink(tag)}
+                  class="badge badge-outline hover:badge-primary transition-colors"
+                >
+                  {tag}
+                </a>
+              ))}
+            </div>
+          )}
+        </header>
+
+        {/* Post content */}
+        <div class="prose max-w-none">
+          <Content />
+          <BlogMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
+        </div>
+      </article>
       <BlogPostPagination older={older} newer={newer} />
     </div>
     <div class="hidden xl:block col-span-3">

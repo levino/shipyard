@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import { generateFeed, type FeedType } from '../src/tools/feed'
+
+// Determine feed type from URL
+const url = Astro.url.pathname
+let feedType: FeedType = 'rss'
+if (url.endsWith('atom.xml')) {
+  feedType = 'atom'
+} else if (url.endsWith('feed.json')) {
+  feedType = 'json'
+}
+
+const { feedOptions } = blogConfig
+
+// Get all blog posts, sorted by date
+const posts = await getCollection('blog').then((allPosts) => {
+  // Filter out drafts and unlisted
+  return allPosts
+    .filter((post) => {
+      if (post.data.draft) return false
+      if (post.data.unlisted) return false
+      return true
+    })
+    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    .slice(0, feedOptions.limit)
+})
+
+// Build feed items
+const items = await Promise.all(
+  posts.map(async (post) => {
+    const { Content } = await render(post)
+
+    // Get author name
+    let authorName: string | undefined
+    if (post.data.authors) {
+      const authors = post.data.authors
+      if (typeof authors === 'string') {
+        authorName = authors
+      } else if (Array.isArray(authors)) {
+        const firstAuthor = authors[0]
+        if (typeof firstAuthor === 'string') {
+          authorName = firstAuthor
+        } else if (firstAuthor && 'name' in firstAuthor) {
+          authorName = firstAuthor.name
+        }
+      } else if ('name' in authors) {
+        authorName = authors.name
+      }
+    }
+
+    return {
+      title: post.data.title,
+      description: post.data.description,
+      link: new URL(`/blog/${post.id}`, Astro.site ?? 'https://example.com').toString(),
+      pubDate: post.data.date,
+      author: authorName,
+      content: post.body,
+      categories: post.data.tags,
+    }
+  })
+)
+
+const siteUrl = Astro.site?.toString() ?? 'https://example.com'
+const feedUrl = new URL(url, siteUrl).toString()
+
+const feedConfig = {
+  title: feedOptions.title ?? 'Blog',
+  description: feedOptions.description ?? 'Latest blog posts',
+  siteUrl,
+  feedUrl,
+  items,
+}
+
+const { content, contentType } = generateFeed(feedType, feedConfig)
+
+return new Response(content, {
+  headers: {
+    'Content-Type': contentType,
+  },
+})
+---

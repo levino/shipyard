@@ -8,4 +8,47 @@
   .prose :where(table) {
     @apply block overflow-x-auto;
   }
+
+  /* Code block enhancements */
+  .prose pre[data-code-title]::before {
+    content: attr(data-code-title);
+    @apply block bg-base-300 text-base-content px-4 py-2 text-sm font-mono rounded-t-lg border-b border-base-content/10;
+  }
+
+  .prose pre[data-code-title] {
+    @apply rounded-t-none;
+  }
+
+  .prose pre[data-line-numbers] code {
+    counter-reset: line;
+  }
+
+  .prose pre[data-line-numbers] code .line::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply inline-block w-8 mr-4 text-right text-base-content/40 select-none;
+  }
+
+  /* Line highlighting */
+  .prose pre code .line.highlighted {
+    @apply bg-primary/20 -mx-4 px-4 border-l-2 border-primary;
+  }
+
+  /* Admonition styles - reset prose styling for the admonition wrapper */
+  .prose .admonition {
+    all: revert;
+    @apply my-4 rounded-lg border-l-4 p-4;
+  }
+
+  .prose .admonition .admonition-heading {
+    @apply mb-2 flex items-center gap-2 font-semibold;
+  }
+
+  .prose .admonition .admonition-content > *:first-child {
+    @apply mt-0;
+  }
+
+  .prose .admonition .admonition-content > *:last-child {
+    @apply mb-0;
+  }
 }

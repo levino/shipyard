@@ -4,6 +4,9 @@
   "description": "",
   "type": "module",
   "main": "src/index.ts",
+  "scripts": {
+    "test:unit": "vitest run"
+  },
   "exports": {
     ".": "./src/index.ts",
     "./astro": "./src/astro.ts",
@@ -23,7 +26,8 @@
     "astro": "^5.15"
   },
   "devDependencies": {
-    "astro": "^5.15"
+    "astro": "^5.15",
+    "vitest": "^2.1.8"
   },
   "repository": {
     "type": "git",

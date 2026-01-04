@@ -1,0 +1,67 @@
+---
+import { cn } from '../../src/tools/cn'
+
+export type AdmonitionType = 'note' | 'tip' | 'info' | 'warning' | 'danger' | 'caution'
+
+interface Props {
+  type?: AdmonitionType
+  title?: string
+  class?: string
+}
+
+const { type = 'note', title, class: className } = Astro.props
+
+const typeConfig: Record<AdmonitionType, { icon: string; defaultTitle: string; classes: string }> = {
+  note: {
+    icon: '📝',
+    defaultTitle: 'Note',
+    classes: 'border-info bg-info/10 text-info-content',
+  },
+  tip: {
+    icon: '💡',
+    defaultTitle: 'Tip',
+    classes: 'border-success bg-success/10 text-success-content',
+  },
+  info: {
+    icon: 'ℹ️',
+    defaultTitle: 'Info',
+    classes: 'border-info bg-info/10 text-info-content',
+  },
+  warning: {
+    icon: '⚠️',
+    defaultTitle: 'Warning',
+    classes: 'border-warning bg-warning/10 text-warning-content',
+  },
+  danger: {
+    icon: '🚨',
+    defaultTitle: 'Danger',
+    classes: 'border-error bg-error/10 text-error-content',
+  },
+  caution: {
+    icon: '⚠️',
+    defaultTitle: 'Caution',
+    classes: 'border-warning bg-warning/10 text-warning-content',
+  },
+}
+
+const config = typeConfig[type] ?? typeConfig.note
+const displayTitle = title ?? config.defaultTitle
+---
+
+<div
+  class={cn(
+    'admonition my-4 rounded-lg border-l-4 p-4',
+    config.classes,
+    className,
+  )}
+  role="note"
+  aria-label={displayTitle}
+>
+  <div class="admonition-heading mb-2 flex items-center gap-2 font-semibold">
+    <span class="admonition-icon" aria-hidden="true">{config.icon}</span>
+    <span class="admonition-title">{displayTitle}</span>
+  </div>
+  <div class="admonition-content prose prose-sm max-w-none">
+    <slot />
+  </div>
+</div>

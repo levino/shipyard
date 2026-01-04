@@ -3,9 +3,11 @@ import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
+import { calculateReadingTime } from '../src/tools/readingTime'
+import { tagToSlug, truncateAtMarker } from '../src/tools/truncate'
 import Layout from './Layout.astro'
 
-const { postsPerPage } = blogConfig
+const { postsPerPage, showReadingTime, readingTimeWordsPerMinute, truncateMarker, tagsOptions } = blogConfig
 
 export const getStaticPaths = (() => {
   if (i18n) {
@@ -29,9 +31,16 @@ export const getStaticPaths = (() => {
 const currentPage = 1
 
 const entries = await getCollection('blog').then((posts) => {
+  // Filter out drafts in production and unlisted posts
+  const filteredPosts = posts.filter((post) => {
+    if (import.meta.env.PROD && post.data.draft) return false
+    if (post.data.unlisted) return false
+    return true
+  })
+
   if (i18n) {
     // With i18n: filter by locale
-    return posts
+    return filteredPosts
       .filter(({ id }) => {
         const [postLocale] = id.split('/')
         return postLocale === Astro.currentLocale
@@ -39,11 +48,19 @@ const entries = await getCollection('blog').then((posts) => {
       .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
   } else {
     // Without i18n: return all posts
-    return posts.toSorted(
+    return filteredPosts.toSorted(
       (a, b) => b.data.date.getTime() - a.data.date.getTime(),
     )
   }
 })
+
+const getTagLink = (tag: string) => {
+  const slug = tagToSlug(tag)
+  if (i18n) {
+    return `/${Astro.currentLocale}/blog/tags/${slug}`
+  }
+  return `/blog/tags/${slug}`
+}
 
 // Calculate pagination
 const totalPosts = entries.length
@@ -96,13 +113,45 @@ const showRightEllipsis =
   <div class="max-w-7xl mx-auto">
     <div class="prose max-w-none">
       {
-        paginatedEntries.map(async (entry) => (
-          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
-            <div class="text-sm">{formatDate(entry.data.date)}</div>
-            <h2 class="my-0">{entry.data.title}</h2>
-            <p>{entry.data.description}</p>
-          </a>
-        ))
+        paginatedEntries.map((entry) => {
+          const readingTime = showReadingTime && entry.body
+            ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
+            : null
+          const { excerpt } = entry.body
+            ? truncateAtMarker(entry.body, truncateMarker)
+            : { excerpt: '' }
+          const tags = entry.data.tags ?? []
+
+          return (
+            <article class="my-8">
+              <a class="block no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+                <div class="flex items-center gap-2 text-sm text-base-content/60">
+                  <time>{formatDate(entry.data.date)}</time>
+                  {readingTime && (
+                    <>
+                      <span>·</span>
+                      <span>{readingTime.text}</span>
+                    </>
+                  )}
+                </div>
+                <h2 class="my-0">{entry.data.title}</h2>
+                <p>{entry.data.description}</p>
+              </a>
+              {tagsOptions.enabled && tags.length > 0 && (
+                <div class="flex flex-wrap gap-2 mt-2 not-prose">
+                  {tags.map((tag) => (
+                    <a
+                      href={getTagLink(tag)}
+                      class="badge badge-outline badge-sm hover:badge-primary transition-colors"
+                    >
+                      {tag}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </article>
+          )
+        })
       }
     </div>
 

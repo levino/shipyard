@@ -1,0 +1,88 @@
+---
+import { i18n } from 'astro:config/server'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths } from 'astro'
+import { groupPostsByYear } from '../src/tools/truncate'
+import Layout from './Layout.astro'
+
+export const getStaticPaths = (() => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return {
+        params: { locale },
+      }
+    })
+  } else {
+    return [{ params: {} }]
+  }
+}) satisfies GetStaticPaths
+
+const entries = await getCollection('blog').then((posts) => {
+  // Filter out drafts in production
+  const filteredPosts = posts.filter((post) => {
+    if (import.meta.env.PROD && post.data.draft) return false
+    return true
+  })
+
+  if (i18n) {
+    return filteredPosts
+      .filter(({ id }) => {
+        const [postLocale] = id.split('/')
+        return postLocale === Astro.currentLocale
+      })
+      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  }
+
+  return filteredPosts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+})
+
+const postsByYear = groupPostsByYear(entries)
+
+const getBlogPostLink = (id: string, locale?: string) => {
+  if (i18n && locale) {
+    return id.replace(`${locale}/`, `${locale}/blog/`)
+  }
+  return `blog/${id}`
+}
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
+  month: 'short',
+  day: 'numeric',
+}).format
+---
+
+<Layout title="Archive">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-8">Archive</h1>
+
+    {postsByYear.size === 0 ? (
+      <p class="text-base-content/60">No posts found.</p>
+    ) : (
+      <div class="space-y-12">
+        {[...postsByYear.entries()].map(([year, posts]) => (
+          <section>
+            <h2 class="text-2xl font-bold mb-4 border-b border-base-300 pb-2">{year}</h2>
+            <ul class="space-y-4">
+              {posts.map((post) => (
+                <li class="flex items-baseline gap-4">
+                  <time class="text-sm text-base-content/60 w-20 shrink-0">
+                    {formatDate(post.data.date)}
+                  </time>
+                  <a
+                    href={`/${getBlogPostLink(post.id, Astro.currentLocale)}`}
+                    class="hover:text-primary transition-colors"
+                  >
+                    {post.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>

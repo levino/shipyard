@@ -1,0 +1,22 @@
+---
+interface Props {
+  /**
+   * Label for this tab item (must match a label in parent Tabs)
+   */
+  label: string
+  /**
+   * Whether this is the default active tab
+   */
+  default?: boolean
+}
+
+const { label, default: isDefault = false } = Astro.props
+---
+
+<div
+  data-tab-panel
+  data-tab-label={label}
+  class:list={[{ hidden: !isDefault }]}
+>
+  <slot />
+</div>
