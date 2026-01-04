@@ -70,6 +70,15 @@ And more text after.
     expect(result.minutes).toBe(1)
   })
 
+  it('removes nested/obfuscated HTML tags', () => {
+    // Test for nested tags like <scr<script>ipt> which could bypass single-pass regex
+    const text = '<scr<script>ipt>alert("test")</scr</script>ipt> Hello World'
+    const result = calculateReadingTime(text, 200)
+
+    // Only "Hello World" should remain after stripping nested tags
+    expect(result.minutes).toBe(1)
+  })
+
   it('uses custom words per minute', () => {
     const words = Array(100).fill('word').join(' ')
 

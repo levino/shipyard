@@ -10,12 +10,19 @@ export const calculateReadingTime = (
   wordsPerMinute: number = 200,
 ): { minutes: number; text: string } => {
   // Remove markdown/HTML tags for more accurate word count
-  const cleanText = text
+  let cleanText = text
     .replace(/```[\s\S]*?```/g, '') // Remove code blocks
     .replace(/`[^`]+`/g, '') // Remove inline code
     .replace(/!?\[([^\]]*)\]\([^)]+\)/g, '$1') // Remove links/images
-    .replace(/<[^>]+>/g, '') // Remove HTML tags
-    .replace(/[#*_~`]/g, '') // Remove markdown formatting
+
+  // Remove HTML tags iteratively to handle nested/obfuscated tags like <scr<script>ipt>
+  let previousText: string
+  do {
+    previousText = cleanText
+    cleanText = cleanText.replace(/<[^>]+>/g, '')
+  } while (cleanText !== previousText)
+
+  cleanText = cleanText.replace(/[#*_~`]/g, '') // Remove markdown formatting
 
   // Count words
   const words = cleanText.split(/\s+/).filter((word) => word.length > 0)
@@ -25,11 +32,11 @@ export const calculateReadingTime = (
   const minutes = Math.ceil(wordCount / wordsPerMinute)
 
   // Format the reading time string
-  const text_result = minutes === 1 ? '1 min read' : `${minutes} min read`
+  const formattedText = minutes === 1 ? '1 min read' : `${minutes} min read`
 
   return {
     minutes,
-    text: text_result,
+    text: formattedText,
   }
 }
 
