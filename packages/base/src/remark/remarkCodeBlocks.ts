@@ -36,7 +36,9 @@ export const parseCodeMeta = (meta: string | undefined): CodeBlockMeta => {
   }
 
   // Extract line highlights {1,3-5,7}
-  const highlightMatch = meta.match(/\{([^}]+)\}/)
+  // Use a specific pattern that only matches valid highlight syntax (numbers, commas, dashes, spaces)
+  // to avoid ReDoS vulnerability with arbitrary content inside braces
+  const highlightMatch = meta.match(/\{([\d\s,-]+)\}/)
   if (highlightMatch) {
     const highlightSpec = highlightMatch[1]
     const lines: number[] = []
