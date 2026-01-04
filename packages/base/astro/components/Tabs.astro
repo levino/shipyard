@@ -20,15 +20,16 @@ interface Props {
   defaultIndex?: number
 }
 
-const {
-  labels,
-  class: className,
-  groupId,
-  defaultIndex = 0,
-} = Astro.props
+const { labels, class: className, groupId, defaultIndex = 0 } = Astro.props
 
-// Generate unique ID for this tabs instance
-const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`
+// Generate unique ID for this tabs instance using crypto for better uniqueness
+// Fallback to timestamp + random for environments without crypto
+let tabsId: string
+try {
+  tabsId = `tabs-${crypto.randomUUID().slice(0, 8)}`
+} catch {
+  tabsId = `tabs-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`
+}
 ---
 
 <div
@@ -98,13 +99,23 @@ const tabsId = `tabs-${Math.random().toString(36).slice(2, 9)}`
     }
 
     function syncTabsByGroup(groupId: string, label: string) {
-      const groupContainers = document.querySelectorAll(`[data-tabs-group="${groupId}"]`)
+      // Use safer attribute matching by filtering after querySelectorAll
+      // to avoid CSS selector injection vulnerabilities
+      const allTabsContainers = document.querySelectorAll('[data-tabs-group]')
 
-      groupContainers.forEach((container) => {
-        const matchingTab = container.querySelector(`[data-tab-label="${label}"]`)
-        if (matchingTab) {
-          const index = parseInt(matchingTab.getAttribute('data-tab-index') || '0', 10)
-          updateTabs(container, index)
+      allTabsContainers.forEach((container) => {
+        // Compare attribute values directly to avoid selector injection
+        if (container.getAttribute('data-tabs-group') !== groupId) {
+          return
+        }
+
+        const tabs = container.querySelectorAll('[data-tab-label]')
+        for (const tab of Array.from(tabs)) {
+          if (tab.getAttribute('data-tab-label') === label) {
+            const index = parseInt(tab.getAttribute('data-tab-index') || '0', 10)
+            updateTabs(container, index)
+            break
+          }
         }
       })
     }

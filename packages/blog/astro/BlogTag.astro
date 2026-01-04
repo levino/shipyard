@@ -1,8 +1,8 @@
 ---
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
-import type { GetStaticPaths } from 'astro'
 import blogConfig from 'virtual:shipyard-blog/config'
+import type { GetStaticPaths } from 'astro'
 import { calculateReadingTime } from '../src/tools/readingTime'
 import { getAllTags, tagToSlug } from '../src/tools/truncate'
 import Layout from './Layout.astro'
@@ -19,7 +19,10 @@ export const getStaticPaths = (async () => {
   const allTags = getAllTags(filteredPosts)
 
   if (i18n) {
-    const paths: Array<{ params: { locale: string; tag: string }; props: { tag: string; posts: typeof filteredPosts } }> = []
+    const paths: Array<{
+      params: { locale: string; tag: string }
+      props: { tag: string; posts: typeof filteredPosts }
+    }> = []
 
     for (const locale of i18n.locales) {
       if (typeof locale !== 'string') continue
@@ -51,7 +54,9 @@ export const getStaticPaths = (async () => {
 const { tag, posts } = Astro.props
 
 // Sort posts by date (newest first)
-const sortedPosts = posts.toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+const sortedPosts = posts.toSorted(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)
 
 const getBlogPostLink = (id: string, locale?: string) => {
   if (i18n && locale) {

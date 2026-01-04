@@ -37,7 +37,9 @@ const entries = await getCollection('blog').then((posts) => {
 })
 
 const allTags = getAllTags(entries)
-const sortedTags = [...allTags.entries()].sort((a, b) => b[1].count - a[1].count)
+const sortedTags = [...allTags.entries()].sort(
+  (a, b) => b[1].count - a[1].count,
+)
 
 const getTagLink = (tag: string) => {
   const slug = tagToSlug(tag)

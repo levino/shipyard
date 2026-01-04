@@ -4,9 +4,9 @@ import { type CollectionEntry, getCollection, render } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
+import type { Author } from '../src/index'
 import { calculateReadingTime } from '../src/tools/readingTime'
 import { tagToSlug } from '../src/tools/truncate'
-import type { Author } from '../src/index'
 import BlogMetadata from './BlogMetadata.astro'
 import BlogPostPagination from './BlogPostPagination.astro'
 import Layout from './Layout.astro'
@@ -81,13 +81,22 @@ const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-post overrides
-const { custom_edit_url, last_update_author, last_update_time, tags, authors, image } = entry.data
+const {
+  custom_edit_url,
+  last_update_author,
+  last_update_time,
+  tags,
+  authors,
+  image,
+} = entry.data
 
 // Calculate reading time
-const { showReadingTime, readingTimeWordsPerMinute, tagsOptions, authorsMap } = blogConfig
-const readingTime = showReadingTime && entry.body
-  ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
-  : null
+const { showReadingTime, readingTimeWordsPerMinute, tagsOptions, authorsMap } =
+  blogConfig
+const readingTime =
+  showReadingTime && entry.body
+    ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
+    : null
 
 // Normalize authors to array of Author objects
 const normalizeAuthors = (): Author[] => {
@@ -96,7 +105,7 @@ const normalizeAuthors = (): Author[] => {
   const resolveAuthor = (author: string | Author): Author => {
     if (typeof author === 'string') {
       // Check if it's a key in authorsMap
-      if (authorsMap && authorsMap[author]) {
+      if (authorsMap?.[author]) {
         return authorsMap[author]
       }
       // Otherwise treat as just a name

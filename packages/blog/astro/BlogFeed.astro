@@ -1,7 +1,7 @@
 ---
-import { getCollection, render } from 'astro:content'
+import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
-import { generateFeed, type FeedType } from '../src/tools/feed'
+import { type FeedType, generateFeed } from '../src/tools/feed'
 
 // Determine feed type from URL
 const url = Astro.url.pathname
@@ -28,39 +28,38 @@ const posts = await getCollection('blog').then((allPosts) => {
 })
 
 // Build feed items
-const items = await Promise.all(
-  posts.map(async (post) => {
-    const { Content } = await render(post)
-
-    // Get author name
-    let authorName: string | undefined
-    if (post.data.authors) {
-      const authors = post.data.authors
-      if (typeof authors === 'string') {
-        authorName = authors
-      } else if (Array.isArray(authors)) {
-        const firstAuthor = authors[0]
-        if (typeof firstAuthor === 'string') {
-          authorName = firstAuthor
-        } else if (firstAuthor && 'name' in firstAuthor) {
-          authorName = firstAuthor.name
-        }
-      } else if ('name' in authors) {
-        authorName = authors.name
+const items = posts.map((post) => {
+  // Get author name
+  let authorName: string | undefined
+  if (post.data.authors) {
+    const authors = post.data.authors
+    if (typeof authors === 'string') {
+      authorName = authors
+    } else if (Array.isArray(authors)) {
+      const firstAuthor = authors[0]
+      if (typeof firstAuthor === 'string') {
+        authorName = firstAuthor
+      } else if (firstAuthor && 'name' in firstAuthor) {
+        authorName = firstAuthor.name
       }
+    } else if ('name' in authors) {
+      authorName = authors.name
     }
+  }
 
-    return {
-      title: post.data.title,
-      description: post.data.description,
-      link: new URL(`/blog/${post.id}`, Astro.site ?? 'https://example.com').toString(),
-      pubDate: post.data.date,
-      author: authorName,
-      content: post.body,
-      categories: post.data.tags,
-    }
-  })
-)
+  return {
+    title: post.data.title,
+    description: post.data.description,
+    link: new URL(
+      `/blog/${post.id}`,
+      Astro.site ?? 'https://example.com',
+    ).toString(),
+    pubDate: post.data.date,
+    author: authorName,
+    content: post.body,
+    categories: post.data.tags,
+  }
+})
 
 const siteUrl = Astro.site?.toString() ?? 'https://example.com'
 const feedUrl = new URL(url, siteUrl).toString()

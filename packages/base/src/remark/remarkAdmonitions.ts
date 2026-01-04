@@ -10,15 +10,6 @@ export type AdmonitionType =
   | 'danger'
   | 'caution'
 
-const ADMONITION_TYPES = new Set<string>([
-  'note',
-  'tip',
-  'info',
-  'warning',
-  'danger',
-  'caution',
-])
-
 interface AdmonitionNode {
   type: 'admonition'
   name: AdmonitionType

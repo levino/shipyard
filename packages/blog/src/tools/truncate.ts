@@ -55,13 +55,16 @@ export const getAllTags = <T extends { data: { tags?: string[] }; id: string }>(
  * Creates a URL-safe slug from a tag name.
  *
  * @param tag - The tag name to slugify
- * @returns A URL-safe slug
+ * @returns A URL-safe slug, or 'tag' if the result would be empty
  */
 export const tagToSlug = (tag: string): string => {
-  return tag
+  const slug = tag
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
+
+  // Return a default slug if the result is empty (e.g., tag was only special characters)
+  return slug === '' ? 'tag' : slug
 }
 
 /**

@@ -4,10 +4,15 @@ import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
 import { calculateReadingTime } from '../src/tools/readingTime'
-import { tagToSlug, truncateAtMarker } from '../src/tools/truncate'
+import { tagToSlug } from '../src/tools/truncate'
 import Layout from './Layout.astro'
 
-const { postsPerPage, showReadingTime, readingTimeWordsPerMinute, truncateMarker, tagsOptions } = blogConfig
+const {
+  postsPerPage,
+  showReadingTime,
+  readingTimeWordsPerMinute,
+  tagsOptions,
+} = blogConfig
 
 export const getStaticPaths = (() => {
   if (i18n) {
@@ -117,9 +122,6 @@ const showRightEllipsis =
           const readingTime = showReadingTime && entry.body
             ? calculateReadingTime(entry.body, readingTimeWordsPerMinute)
             : null
-          const { excerpt } = entry.body
-            ? truncateAtMarker(entry.body, truncateMarker)
-            : { excerpt: '' }
           const tags = entry.data.tags ?? []
 
           return (

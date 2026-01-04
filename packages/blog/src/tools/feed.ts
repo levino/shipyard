@@ -34,6 +34,15 @@ const escapeXml = (text: string): string => {
 }
 
 /**
+ * Escapes content for CDATA sections.
+ * The sequence "]]>" must be escaped to prevent premature CDATA termination.
+ */
+const escapeCData = (text: string): string => {
+  // Replace "]]>" with "]]]]><![CDATA[>" to properly escape the CDATA closing sequence
+  return text.replace(/\]\]>/g, ']]]]><![CDATA[>')
+}
+
+/**
  * Formats a date for RSS (RFC 822 format)
  */
 const formatRssDate = (date: Date): string => {
@@ -64,7 +73,7 @@ export const generateRssFeed = (config: FeedConfig): string => {
       <pubDate>${formatRssDate(item.pubDate)}</pubDate>
       <guid isPermaLink="true">${escapeXml(item.link)}</guid>
       ${item.author ? `<author>${escapeXml(item.author)}</author>` : ''}
-      ${item.content ? `<content:encoded><![CDATA[${item.content}]]></content:encoded>` : ''}
+      ${item.content ? `<content:encoded><![CDATA[${escapeCData(item.content)}]]></content:encoded>` : ''}
       ${item.categories?.map((cat) => `<category>${escapeXml(cat)}</category>`).join('\n      ') ?? ''}
     </item>`,
     )
@@ -101,7 +110,7 @@ export const generateAtomFeed = (config: FeedConfig): string => {
     <id>${escapeXml(item.link)}</id>
     <updated>${formatAtomDate(item.pubDate)}</updated>
     <summary>${escapeXml(item.description)}</summary>
-    ${item.content ? `<content type="html"><![CDATA[${item.content}]]></content>` : ''}
+    ${item.content ? `<content type="html"><![CDATA[${escapeCData(item.content)}]]></content>` : ''}
     ${item.author ? `<author><name>${escapeXml(item.author)}</name></author>` : ''}
     ${item.categories?.map((cat) => `<category term="${escapeXml(cat)}"/>`).join('\n    ') ?? ''}
   </entry>`,

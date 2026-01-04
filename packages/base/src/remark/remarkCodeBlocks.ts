@@ -51,7 +51,7 @@ export const parseCodeMeta = (meta: string | undefined): CodeBlockMeta => {
         const [startStr, endStr] = trimmed.split('-')
         const start = parseInt(startStr, 10)
         const end = parseInt(endStr, 10)
-        if (!isNaN(start) && !isNaN(end)) {
+        if (!Number.isNaN(start) && !Number.isNaN(end)) {
           for (let lineNum = start; lineNum <= end; lineNum++) {
             lines.push(lineNum)
           }
@@ -59,7 +59,7 @@ export const parseCodeMeta = (meta: string | undefined): CodeBlockMeta => {
       } else {
         // Single line
         const line = parseInt(trimmed, 10)
-        if (!isNaN(line)) {
+        if (!Number.isNaN(line)) {
           lines.push(line)
         }
       }

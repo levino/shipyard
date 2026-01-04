@@ -1,7 +1,7 @@
 ---
 import { cn } from '../../src/tools/cn'
 
-export type AdmonitionType = 'note' | 'tip' | 'info' | 'warning' | 'danger' | 'caution'
+type AdmonitionType = 'note' | 'tip' | 'info' | 'warning' | 'danger' | 'caution'
 
 interface Props {
   type?: AdmonitionType
@@ -11,7 +11,10 @@ interface Props {
 
 const { type = 'note', title, class: className } = Astro.props
 
-const typeConfig: Record<AdmonitionType, { icon: string; defaultTitle: string; classes: string }> = {
+const typeConfig: Record<
+  AdmonitionType,
+  { icon: string; defaultTitle: string; classes: string }
+> = {
   note: {
     icon: '📝',
     defaultTitle: 'Note',
