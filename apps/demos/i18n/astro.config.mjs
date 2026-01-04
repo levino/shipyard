@@ -11,7 +11,7 @@ export default defineConfig({
   redirects: {
     '/': {
       status: 302,
-      destination: 'en',
+      destination: '/en',
     },
   },
   i18n: {
