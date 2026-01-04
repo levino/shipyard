@@ -44,5 +44,4 @@ test.describe('Brand Navigation Tests', () => {
     // Should navigate to English home, not cause redirect loop
     await expect(page).toHaveURL('/en/')
   })
-
 })
