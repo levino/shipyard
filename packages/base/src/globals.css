@@ -8,4 +8,232 @@
   .prose :where(table) {
     @apply block overflow-x-auto;
   }
+
+  /* Admonitions / Callouts */
+  .admonition {
+    @apply my-4 rounded-lg border-l-4 p-4;
+  }
+
+  .admonition-heading {
+    @apply mb-2 font-semibold flex items-center gap-2;
+  }
+
+  .admonition-content {
+    @apply text-sm;
+  }
+
+  .admonition-content > p {
+    @apply m-0;
+  }
+
+  /* Note - Blue */
+  .admonition-note {
+    @apply border-l-info bg-info/10;
+  }
+
+  .admonition-note .admonition-heading {
+    @apply text-info;
+  }
+
+  .admonition-note .admonition-heading::before {
+    content: "📝";
+  }
+
+  /* Tip - Green */
+  .admonition-tip {
+    @apply border-l-success bg-success/10;
+  }
+
+  .admonition-tip .admonition-heading {
+    @apply text-success;
+  }
+
+  .admonition-tip .admonition-heading::before {
+    content: "💡";
+  }
+
+  /* Info - Cyan */
+  .admonition-info {
+    @apply border-l-accent bg-accent/10;
+  }
+
+  .admonition-info .admonition-heading {
+    @apply text-accent;
+  }
+
+  .admonition-info .admonition-heading::before {
+    content: "ℹ️";
+  }
+
+  /* Warning - Yellow/Orange */
+  .admonition-warning {
+    @apply border-l-warning bg-warning/10;
+  }
+
+  .admonition-warning .admonition-heading {
+    @apply text-warning;
+  }
+
+  .admonition-warning .admonition-heading::before {
+    content: "⚠️";
+  }
+
+  /* Danger - Red */
+  .admonition-danger {
+    @apply border-l-error bg-error/10;
+  }
+
+  .admonition-danger .admonition-heading {
+    @apply text-error;
+  }
+
+  .admonition-danger .admonition-heading::before {
+    content: "🚫";
+  }
+
+  /* Details / Collapsible Sections */
+  .prose details {
+    @apply my-4 rounded-lg border border-base-300 bg-base-200/50;
+  }
+
+  .prose details summary {
+    @apply cursor-pointer p-4 font-semibold;
+  }
+
+  .prose details summary:hover {
+    @apply bg-base-300/30;
+  }
+
+  .prose details[open] summary {
+    @apply border-b border-base-300;
+  }
+
+  .prose details > *:not(summary) {
+    @apply px-4;
+  }
+
+  .prose details > *:last-child {
+    @apply pb-4;
+  }
+
+  /* Code block enhancements */
+  .code-block-wrapper {
+    @apply relative my-4;
+  }
+
+  /* Code block title styling using data attribute */
+  pre[data-title] {
+    @apply rounded-t-none;
+  }
+
+  pre[data-title]::before {
+    content: attr(data-title);
+    @apply block rounded-t-lg bg-base-300 px-4 py-2 text-sm font-mono -mx-4 -mt-4 mb-4;
+    margin-left: calc(-1rem - 1px);
+    margin-right: calc(-1rem - 1px);
+    margin-top: calc(-1rem - 1px);
+    border-top-left-radius: inherit;
+    border-top-right-radius: inherit;
+  }
+
+  .code-block-title {
+    @apply rounded-t-lg bg-base-300 px-4 py-2 text-sm font-mono;
+  }
+
+  .code-block-title + pre {
+    @apply rounded-t-none mt-0;
+  }
+
+  /* Line numbers */
+  .line-numbers {
+    counter-reset: line;
+  }
+
+  .line-numbers .line::before {
+    counter-increment: line;
+    content: counter(line);
+    @apply inline-block w-8 mr-4 text-right text-base-content/40 select-none;
+  }
+
+  /* Line highlighting */
+  .line.highlighted {
+    @apply bg-primary/20 -mx-4 px-4 border-l-2 border-l-primary;
+    display: block;
+  }
+
+  .line.highlighted-error {
+    @apply bg-error/20 -mx-4 px-4 border-l-2 border-l-error;
+    display: block;
+  }
+
+  /* Hide magic comment lines */
+  .line.magic-comment-line {
+    @apply hidden;
+  }
+
+  /* Tabs component */
+  .shipyard-tabs {
+    @apply my-4;
+  }
+
+  .shipyard-tabs-list {
+    @apply flex border-b border-base-300 gap-1;
+  }
+
+  .shipyard-tab-button {
+    @apply px-4 py-2 text-sm font-medium -mb-px border-b-2 border-transparent;
+    @apply hover:text-primary hover:border-primary/50;
+    @apply transition-colors duration-200;
+  }
+
+  .shipyard-tab-button[aria-selected="true"] {
+    @apply text-primary border-primary;
+  }
+
+  .shipyard-tab-button:focus {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-base-100;
+  }
+
+  .shipyard-tab-panel {
+    @apply p-4;
+  }
+
+  .shipyard-tab-panel[hidden] {
+    @apply hidden;
+  }
+
+  /* npm2yarn tabs - package manager code block tabs */
+  .npm2yarn-tabs {
+    @apply my-4 rounded-lg border border-base-300 overflow-hidden;
+  }
+
+  .npm2yarn-tabs .tabs-header {
+    @apply flex bg-base-200 border-b border-base-300;
+  }
+
+  .npm2yarn-tabs .tab-button {
+    @apply px-4 py-2 text-sm font-medium;
+    @apply hover:bg-base-300 transition-colors;
+    @apply border-b-2 border-transparent -mb-px;
+  }
+
+  .npm2yarn-tabs .tab-button.active {
+    @apply bg-base-100 border-primary text-primary;
+  }
+
+  .npm2yarn-tabs .tab-content {
+    @apply hidden;
+  }
+
+  .npm2yarn-tabs .tab-content.active {
+    @apply block;
+  }
+
+  .npm2yarn-tabs .tab-content pre {
+    @apply m-0 rounded-none border-0;
+  }
+
+  .npm2yarn-tabs .tab-content p {
+    @apply m-0;
+  }
 }

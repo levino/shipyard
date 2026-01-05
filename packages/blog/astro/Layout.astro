@@ -7,11 +7,12 @@ import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
 
 type Props = {
   title: string
+  canonicalUrl?: string
 }
 
 const locale = Astro.currentLocale
-const { title } = Astro.props
-const { blogSidebarCount, blogSidebarTitle } = blogConfig
+const { title, canonicalUrl } = Astro.props
+const { blogSidebarCount, blogSidebarTitle, routeBasePath } = blogConfig
 
 // Get and filter posts by locale
 const allPosts = await getCollection('blog')
@@ -36,12 +37,14 @@ const displayPosts =
 const hasMorePosts = blogSidebarCount !== 'ALL' && totalPosts > blogSidebarCount
 
 // Build navigation tree with title as section header
-const blogIndexPath = i18n ? `/${locale}/blog` : '/blog'
+const blogIndexPath = i18n ? `/${locale}/${routeBasePath}` : `/${routeBasePath}`
 const postsEntry = displayPosts.reduce(
-  (acc, { id, data: { title: postTitle } }, key) => {
+  (acc, { id, data: { title: postTitle, sidebar_label } }, key) => {
     acc[key] = {
-      href: i18n ? `/${locale}/blog/${id.slice(3)}` : `/blog/${id}`,
-      label: postTitle,
+      href: i18n
+        ? `/${locale}/${routeBasePath}/${id.slice(3)}`
+        : `/${routeBasePath}/${id}`,
+      label: sidebar_label ?? postTitle,
     }
     return acc
   },
@@ -65,6 +68,6 @@ if (hasMorePosts) {
 }
 ---
 
-<BaseLayout title={title} sidebarNavigation={entry}>
+<BaseLayout title={title} sidebarNavigation={entry} canonicalUrl={canonicalUrl}>
   <slot />
 </BaseLayout>

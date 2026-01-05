@@ -31,13 +31,20 @@ npm init -y
 
 ### 2. Install Dependencies
 
-```bash
-# Install Astro and shipyard packages
-npm install astro @astrojs/tailwind tailwindcss daisyui
-npm install @levino/shipyard-base @levino/shipyard-blog @levino/shipyard-docs
+Install Astro and shipyard packages:
 
-# Install dev dependencies  
-npm install -D @tailwindcss/typography typescript
+```bash npm2yarn
+npm install astro @astrojs/tailwind tailwindcss daisyui
+```
+
+```bash npm2yarn
+npm install @levino/shipyard-base @levino/shipyard-blog @levino/shipyard-docs
+```
+
+Install dev dependencies:
+
+```bash npm2yarn
+npm install --save-dev @tailwindcss/typography typescript
 ```
 
 ### 3. Configure Astro

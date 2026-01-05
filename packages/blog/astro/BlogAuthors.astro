@@ -1,0 +1,52 @@
+---
+/**
+ * Displays blog post author(s) with avatar and optional metadata.
+ */
+import type { Author } from '../src/index'
+
+interface Props {
+  /**
+   * Array of resolved author objects
+   */
+  authors: Author[]
+  /**
+   * Whether to show author title/role
+   */
+  showTitle?: boolean
+}
+
+const { authors, showTitle = true } = Astro.props
+---
+
+{authors.length > 0 && (
+  <div class="flex flex-wrap gap-4">
+    {authors.map((author) => (
+      <div class="flex items-center gap-3">
+        {author.image_url && (
+          <img
+            src={author.image_url}
+            alt={author.name}
+            class="w-10 h-10 rounded-full object-cover"
+          />
+        )}
+        <div>
+          {author.url ? (
+            <a
+              href={author.url}
+              class="font-medium hover:text-primary transition-colors"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {author.name}
+            </a>
+          ) : (
+            <span class="font-medium">{author.name}</span>
+          )}
+          {showTitle && author.title && (
+            <div class="text-sm text-base-content/60">{author.title}</div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+)}

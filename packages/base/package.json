@@ -12,13 +12,15 @@
     "./layouts": "./astro/layouts/index.ts",
     "./layouts/*": "./astro/layouts/*",
     "./components": "./astro/components/index.ts",
-    "./components/*": "./astro/components/*"
+    "./components/*": "./astro/components/*",
+    "./remark": "./src/remark/index.ts",
+    "./shiki": "./src/shiki/index.ts"
   },
   "peerDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "astro": "^5.7",
     "daisyui": "^4",
-    "tailwindcss": "^3",
-    "@tailwindcss/typography": "^0.5.10"
+    "tailwindcss": "^3"
   },
   "files": [
     "astro",
@@ -32,6 +34,8 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/ramda": "^0.31",
     "daisyui": "^4.6.0",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.2.2",
     "vite": "^7",
@@ -39,7 +43,11 @@
   },
   "dependencies": {
     "clsx": "^2.1.0",
+    "mdast-util-directive": "^3.0.0",
     "ramda": "^0.31",
-    "tailwind-merge": "^2.2.0"
+    "remark-directive": "^3.0.0",
+    "tailwind-merge": "^2.2.0",
+    "unified": "^11.0.0",
+    "unist-util-visit": "^5.0.0"
   }
 }

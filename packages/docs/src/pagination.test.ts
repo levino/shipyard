@@ -31,21 +31,25 @@ describe('getPaginationInfo', () => {
   const createDocs = (): DocsData[] => [
     {
       id: 'intro.md',
+      fileId: 'intro.md',
       title: 'Introduction',
       path: '/docs/intro',
     },
     {
       id: 'guide/getting-started.md',
+      fileId: 'guide/getting-started.md',
       title: 'Getting Started',
       path: '/docs/guide/getting-started',
     },
     {
       id: 'guide/advanced.md',
+      fileId: 'guide/advanced.md',
       title: 'Advanced',
       path: '/docs/guide/advanced',
     },
     {
       id: 'api.md',
+      fileId: 'api.md',
       title: 'API Reference',
       path: '/docs/api',
     },
@@ -107,22 +111,26 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
         pagination_next: 'api.md', // Skip directly to api
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
       {
         id: 'guide/advanced.md',
+        fileId: 'guide/advanced.md',
         title: 'Advanced',
         path: '/docs/guide/advanced',
       },
       {
         id: 'api.md',
+        fileId: 'api.md',
         title: 'API Reference',
         path: '/docs/api',
       },
@@ -142,21 +150,25 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
       {
         id: 'guide/advanced.md',
+        fileId: 'guide/advanced.md',
         title: 'Advanced',
         path: '/docs/guide/advanced',
       },
       {
         id: 'api.md',
+        fileId: 'api.md',
         title: 'API Reference',
         path: '/docs/api',
         pagination_prev: 'intro.md', // Skip back to intro
@@ -177,12 +189,14 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
         pagination_next: null, // Explicitly disable
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -199,11 +213,13 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
         pagination_prev: null, // Explicitly disable
@@ -228,6 +244,7 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
         pagination_next: null,
@@ -249,12 +266,14 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
         sidebarLabel: 'Intro', // Custom label
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -266,8 +285,9 @@ describe('getPaginationInfo', () => {
       docs,
     )
 
+    // sidebarLabel is used for the title, so it should be 'Intro' not 'Introduction'
     expect(pagination.prev).toEqual({
-      title: 'Introduction',
+      title: 'Intro',
       href: '/docs/intro',
     })
   })
@@ -306,16 +326,19 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/basics/page-1.md',
+        fileId: 'guide/basics/page-1.md',
         title: 'Page 1',
         path: '/docs/guide/basics/page-1',
       },
       {
         id: 'guide/basics/page-2.md',
+        fileId: 'guide/basics/page-2.md',
         title: 'Page 2',
         path: '/docs/guide/basics/page-2',
       },
       {
         id: 'guide/advanced/page-3.md',
+        fileId: 'guide/advanced/page-3.md',
         title: 'Page 3',
         path: '/docs/guide/advanced/page-3',
       },
@@ -342,12 +365,14 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
         pagination_next: 'nonexistent.md', // Invalid reference
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -364,11 +389,13 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
         pagination_prev: 'nonexistent.md', // Invalid reference

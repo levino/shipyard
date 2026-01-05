@@ -2,6 +2,13 @@
 title: Content Management Made Simple
 description: How to organize and manage content in single-language shipyard sites
 date: 2024-09-03
+tags:
+  - content
+  - tutorial
+authors:
+  - name: Levin Keller
+    title: Creator of shipyard
+    url: https://github.com/levino
 ---
 
 # Content Management Made Simple

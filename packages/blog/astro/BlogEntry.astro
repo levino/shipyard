@@ -4,12 +4,28 @@ import { type CollectionEntry, getCollection, render } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
+import { type Author, getReadingTime } from '../src/index'
+import BlogAuthors from './BlogAuthors.astro'
 import BlogMetadata from './BlogMetadata.astro'
 import BlogPostPagination from './BlogPostPagination.astro'
+import BlogReadingTime from './BlogReadingTime.astro'
+import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
 export const getStaticPaths = async () => {
-  const blogPosts = await getCollection('blog')
+  const allPosts = await getCollection('blog')
+
+  // Filter out draft posts for production - defined inside getStaticPaths
+  const isDev = import.meta.env.DEV
+  const { includeDraftsInDev } = blogConfig
+  const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+    if (post.data.draft && !(isDev && includeDraftsInDev)) {
+      return false
+    }
+    return true
+  }
+
+  const blogPosts = allPosts.filter(shouldIncludePost)
 
   // Sort posts by date (newest first)
   const sortedPosts = blogPosts.toSorted(
@@ -32,11 +48,12 @@ export const getStaticPaths = async () => {
   }
 
   const getPostUrl = (post: CollectionEntry<'blog'>) => {
+    const { routeBasePath } = blogConfig
     if (i18n) {
       const [locale, ...rest] = post.id.split('/')
-      return `/${locale}/blog/${rest.join('/')}`
+      return `/${locale}/${routeBasePath}/${rest.join('/')}`
     }
-    return `/blog/${post.id}`
+    return `/${routeBasePath}/${post.id}`
   }
 
   return sortedPosts.map((entry) => {
@@ -78,7 +95,54 @@ const { entry, older, newer } = Astro.props
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-post overrides
-const { custom_edit_url, last_update_author, last_update_time } = entry.data
+const {
+  custom_edit_url,
+  last_update_author,
+  last_update_time,
+  tags = [],
+  authors: rawAuthors,
+  hide_table_of_contents = false,
+  toc_min_heading_level = 2,
+  toc_max_heading_level = 3,
+  draft = false,
+  canonical_url,
+  title_meta,
+} = entry.data
+
+// Use title_meta for SEO if provided, otherwise use title
+const seoTitle = title_meta ?? entry.data.title
+
+// Filter headings based on toc_min/max_heading_level
+const filteredHeadings = headings.filter(
+  (h) => h.depth >= toc_min_heading_level && h.depth <= toc_max_heading_level,
+)
+
+// Calculate reading time
+const readingTime =
+  blogConfig.showReadingTime && entry.body
+    ? getReadingTime(entry.body)
+    : undefined
+
+// Resolve authors to full Author objects
+const resolveAuthors = (
+  authorsInput: string | Author | (string | Author)[] | undefined,
+): Author[] => {
+  if (!authorsInput) return []
+
+  const authorsList = Array.isArray(authorsInput)
+    ? authorsInput
+    : [authorsInput]
+
+  return authorsList.map((author) => {
+    if (typeof author === 'string') {
+      // TODO: Look up author from authors.yml when authorsMapPath is configured
+      return { name: author }
+    }
+    return author
+  })
+}
+
+const authors = resolveAuthors(rawAuthors)
 
 // Compute edit URL
 let editUrl: string | undefined
@@ -125,22 +189,67 @@ if (
     }
   }
 }
+
+// Get tag base URL
+const tagBaseUrl = i18n
+  ? `/${Astro.currentLocale}/${blogConfig.routeBasePath}/tags`
+  : `/${blogConfig.routeBasePath}/tags`
+
+// Format date for display
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}).format
+
+const showToc = !hide_table_of_contents && filteredHeadings.length > 0
 ---
 
-<Layout title={entry.data.title}>
+<Layout title={seoTitle} canonicalUrl={canonical_url}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
-    <div class="col-span-12 xl:col-span-9">
+    <div class:list={['col-span-12', { 'xl:col-span-9': showToc }]}>
+      {/* Post header */}
+      <header class="mb-8">
+        {draft && (
+          <div class="badge badge-warning mb-2">Draft</div>
+        )}
+        <h1 class="text-4xl font-bold mb-4">{entry.data.title}</h1>
+        <div class="flex flex-wrap items-center gap-4 text-sm text-base-content/60 mb-4">
+          <time datetime={entry.data.date.toISOString()}>
+            {formatDate(entry.data.date)}
+          </time>
+          {readingTime && (
+            <>
+              <span>·</span>
+              <BlogReadingTime text={readingTime.text} />
+            </>
+          )}
+        </div>
+        {authors.length > 0 && (
+          <div class="mb-4">
+            <BlogAuthors authors={authors} />
+          </div>
+        )}
+        {tags.length > 0 && (
+          <div class="mb-4">
+            <BlogTags tags={tags} baseUrl={tagBaseUrl} />
+          </div>
+        )}
+      </header>
+
       <div class="prose max-w-none">
         <Content />
         <BlogMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
       </div>
       <BlogPostPagination older={older} newer={newer} />
     </div>
-    <div class="hidden xl:block col-span-3">
-      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
-        <TableOfContents links={headings} desktopOnly />
+    {showToc && (
+      <div class="hidden xl:block col-span-3">
+        <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <TableOfContents links={filteredHeadings} desktopOnly />
+        </div>
       </div>
-    </div>
+    )}
   </div>
-  <TableOfContents links={headings} class="xl:hidden" />
+  {showToc && <TableOfContents links={filteredHeadings} class="xl:hidden" />}
 </Layout>

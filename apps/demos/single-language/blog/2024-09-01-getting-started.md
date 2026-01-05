@@ -2,6 +2,13 @@
 title: Getting Started with Single-Language Sites
 description: Learn how to build single-language sites with shipyard
 date: 2024-09-01
+tags:
+  - getting-started
+  - tutorial
+authors:
+  - name: Levin Keller
+    title: Creator of shipyard
+    url: https://github.com/levino
 ---
 
 # Getting Started with Single-Language Sites
