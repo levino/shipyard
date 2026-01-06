@@ -13,9 +13,21 @@ export { generateLlmsFullTxt, generateLlmsTxt } from './llmsTxt'
 // Re-export pagination types and utilities
 export type { PaginationInfo, PaginationLink } from './pagination'
 export { getPaginationInfo } from './pagination'
-export type { DocsRouteConfig } from './routeHelpers'
+export type { DocsEntry, DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
-export { getDocPath, getRouteParams } from './routeHelpers'
+export {
+  findVersionConfig,
+  getAvailableVersions,
+  getCurrentVersion,
+  getDocPath,
+  getRouteParams,
+  getStableVersion,
+  getVersionedDocPath,
+  getVersionedRouteParams,
+  getVersionPath,
+  isVersionDeprecated,
+  switchVersionInPath,
+} from './routeHelpers'
 // Re-export types and utilities from sidebarEntries
 export type { DocsData } from './sidebarEntries'
 export { toSidebarEntries } from './sidebarEntries'

@@ -45,12 +45,17 @@
       "id": "version-route-helpers",
       "title": "Update route helpers for versioned paths",
       "description": "Modify packages/docs/src/routeHelpers.ts to handle version parameter. Update getDocPath() to include version in path. Add getVersionedDocPath(), getCurrentVersion(), getAvailableVersions() helpers. Ensure i18n compatibility with versioned routes",
-      "status": "pending",
+      "status": "completed",
       "priority": "critical",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T14:53:00Z",
       "dependsOn": ["version-schema-types"],
-      "notes": []
+      "notes": [
+        "Added 9 new functions: getVersionPath, getCurrentVersion, getAvailableVersions, isVersionDeprecated, getStableVersion, findVersionConfig, getVersionedDocPath, getVersionedRouteParams, switchVersionInPath",
+        "All functions exported from packages/docs/src/index.ts",
+        "Added 29 unit tests covering all version helper functions",
+        "All 70 unit tests and 177 E2E tests pass"
+      ]
     },
     {
       "id": "version-static-paths",
