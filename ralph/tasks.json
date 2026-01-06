@@ -157,12 +157,21 @@
       "id": "version-deprecation-banner",
       "title": "Add deprecation banner for old versions",
       "description": "When viewing a deprecated version, show prominent banner warning users. Include link to latest version of same page. Make banner dismissible but re-appear on navigation. Use DaisyUI alert component",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:45:00Z",
       "dependsOn": ["version-badge-component"],
-      "notes": []
+      "notes": [
+        "Created DeprecationBanner.astro component in packages/base/astro/components/",
+        "Banner shows warning alert with 'Outdated Documentation' heading",
+        "Includes link to the same page in the latest version",
+        "Banner is dismissible with X button, reappears on navigation",
+        "Integrated into docs Layout.astro - shows only on deprecated versions",
+        "Exported from packages/base/astro/components/index.ts",
+        "Added 18 comprehensive E2E tests covering visibility, content, navigation, dismissal, and styling",
+        "All 311 E2E tests pass (177 i18n + 11 single-language + 98 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "version-sidebar-context",
@@ -370,12 +379,17 @@
       "id": "test-deprecation-banner-e2e",
       "title": "E2E tests for deprecation banner",
       "description": "Add Playwright tests for deprecation banner behavior. Test: banner appears on deprecated versions, link to latest works, dismissible behavior",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:45:00Z",
       "dependsOn": ["version-deprecation-banner", "demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Created deprecation-banner.spec.ts with 18 comprehensive E2E tests",
+        "Test sections: Banner Visibility (6 tests), Banner Content (4 tests), Banner Navigation (2 tests), Banner Dismissal (3 tests), Banner Styling (3 tests)",
+        "Tests cover: v1/v2 visibility, warning message content, link to latest version, dismissal behavior, warning alert styling, accessibility",
+        "All tests pass"
+      ]
     },
     {
       "id": "test-route-helpers-unit",

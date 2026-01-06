@@ -5,6 +5,7 @@ import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import type { NavigationTree } from '@levino/shipyard-base'
 import {
   Breadcrumbs,
+  DeprecationBanner,
   TableOfContents,
   VersionBadge,
   VersionSelector,
@@ -221,6 +222,52 @@ const versionBadgeProps =
         isLatestAlias: Astro.url.pathname.includes('/latest/'),
       }
     : null
+
+// Check if current version is deprecated
+const isDeprecated =
+  versionsConfig &&
+  currentVersion &&
+  (versionsConfig.deprecated?.includes(currentVersion) ||
+    versionsConfig.available.find((v) => v.version === currentVersion)
+      ?.banner === 'unmaintained')
+
+// Prepare deprecation banner props (show only for deprecated versions)
+// This block only executes when isDeprecated is true, which guarantees versionsConfig and currentVersion exist
+const deprecationBannerProps =
+  isDeprecated && versionsConfig && currentVersion
+    ? (() => {
+        // Find the current version info
+        const currentVersionInfo = versionsConfig.available.find(
+          (v) => v.version === currentVersion,
+        )
+        // Find the latest version info
+        const latestVersionInfo = versionsConfig.available.find(
+          (v) => v.version === versionsConfig.current,
+        )
+        // Build the URL to the same page in the latest version
+        const currentPath = Astro.url.pathname
+        const currentVersionPath = currentVersionInfo?.path ?? currentVersion
+        const latestVersionPath =
+          latestVersionInfo?.path ?? versionsConfig.current
+        // Escape special regex characters in the version path
+        const escapedVersionPath = currentVersionPath.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&',
+        )
+        const latestVersionUrl = currentPath.replace(
+          new RegExp(`/${escapedVersionPath}/`),
+          `/${latestVersionPath}/`,
+        )
+
+        return {
+          version: currentVersion,
+          label: currentVersionInfo?.label,
+          currentVersion: versionsConfig.current,
+          currentVersionLabel: latestVersionInfo?.label,
+          latestVersionUrl,
+        }
+      })()
+    : null
 ---
 
 <BaseLayout sidebarNavigation={entries}>
@@ -244,6 +291,11 @@ const versionBadgeProps =
   }
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
+      {deprecationBannerProps && (
+        <div class="not-prose mb-4">
+          <DeprecationBanner {...deprecationBannerProps} />
+        </div>
+      )}
       <div class="prose max-w-none">
         <div class="flex items-center gap-3 flex-wrap not-prose mb-2">
           <Breadcrumbs navigation={entries} />
