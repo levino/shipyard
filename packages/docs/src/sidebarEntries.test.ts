@@ -170,4 +170,142 @@ describe('toSidebarEntries', () => {
     // So sidebar-demo comes first, then others alphabetically
     expect(keys).toEqual(['sidebar-demo', 'garden-beds', 'harvesting'])
   })
+
+  it('should include collapsible/collapsed in category entries', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'guide/index.md',
+        title: 'Guide',
+        path: '/docs/guide',
+        collapsible: true,
+        collapsed: false,
+      },
+      {
+        id: 'guide/intro.md',
+        title: 'Introduction',
+        path: '/docs/guide/intro',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    expect(entries.guide.collapsible).toBe(true)
+    expect(entries.guide.collapsed).toBe(false)
+  })
+
+  it('should apply default collapsible/collapsed values when not specified', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'guide/index.md',
+        title: 'Guide',
+        path: '/docs/guide',
+      },
+      {
+        id: 'guide/intro.md',
+        title: 'Introduction',
+        path: '/docs/guide/intro',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    // Default values: collapsible: true, collapsed: true
+    expect(entries.guide.collapsible).toBe(true)
+    expect(entries.guide.collapsed).toBe(true)
+  })
+
+  it('should filter unlisted pages from sidebar', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'guide/intro.md',
+        title: 'Introduction',
+        path: '/docs/guide/intro',
+      },
+      {
+        id: 'guide/hidden.md',
+        title: 'Hidden Page',
+        path: '/docs/guide/hidden',
+        unlisted: true,
+      },
+      {
+        id: 'guide/visible.md',
+        title: 'Visible Page',
+        path: '/docs/guide/visible',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+    const guideSubKeys = Object.keys(entries.guide.subEntry || {})
+
+    // hidden should not be in the sidebar
+    expect(guideSubKeys).toContain('intro')
+    expect(guideSubKeys).toContain('visible')
+    expect(guideSubKeys).not.toContain('hidden')
+  })
+
+  it('should create non-clickable entries for render: false (no href)', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'guide/index.md',
+        title: 'Guide',
+        path: '/docs/guide',
+        link: false, // render: false translates to link: false
+      },
+      {
+        id: 'guide/intro.md',
+        title: 'Introduction',
+        path: '/docs/guide/intro',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    // Category should exist but not have an href
+    expect(entries.guide.label).toBe('Guide')
+    expect(entries.guide.href).toBeUndefined()
+    expect(entries.guide.subEntry?.intro.href).toBe('/docs/guide/intro')
+  })
+
+  it('should apply index.md metadata including collapsible state to parent category', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'advanced/index.md',
+        title: 'Advanced Topics',
+        path: '/docs/advanced',
+        sidebarLabel: 'Advanced',
+        sidebarPosition: 5,
+        sidebarClassName: 'advanced-section',
+        collapsible: false,
+        collapsed: false,
+      },
+      {
+        id: 'advanced/topic1.md',
+        title: 'Topic 1',
+        path: '/docs/advanced/topic1',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    expect(entries.advanced.label).toBe('Advanced')
+    expect(entries.advanced.className).toBe('advanced-section')
+    expect(entries.advanced.collapsible).toBe(false)
+    expect(entries.advanced.collapsed).toBe(false)
+  })
+
+  it('should not include collapsible/collapsed for leaf nodes', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'page.md',
+        title: 'Page',
+        path: '/docs/page',
+      },
+    ]
+
+    const entries = toSidebarEntries(docs)
+
+    // Leaf nodes should not have collapsible/collapsed properties
+    expect(entries.page.collapsible).toBeUndefined()
+    expect(entries.page.collapsed).toBeUndefined()
+  })
 })

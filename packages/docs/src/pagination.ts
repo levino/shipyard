@@ -78,9 +78,9 @@ export const getPaginationInfo = (
     (doc) => normalizePath(doc.path) === normalizedCurrentPath,
   )
 
-  // Check for explicit pagination overrides in frontmatter
-  const paginationNext = currentDoc?.['pagination_next' as keyof DocsData]
-  const paginationPrev = currentDoc?.['pagination_prev' as keyof DocsData]
+  // Check for explicit pagination overrides in frontmatter (using camelCase field names)
+  const paginationNext = currentDoc?.paginationNext
+  const paginationPrev = currentDoc?.paginationPrev
 
   // If explicitly disabled (null), return empty pagination
   if (paginationNext === null && paginationPrev === null) {
@@ -88,6 +88,7 @@ export const getPaginationInfo = (
   }
 
   // Flatten the sidebar to get ordered list of pages
+  // Note: unlisted pages are already excluded from sidebar entries
   const flatPages = flattenSidebarEntries(sidebarEntries)
 
   // Find current page index (using normalized paths for comparison)
@@ -116,6 +117,13 @@ export const getPaginationInfo = (
     return {}
   }
 
+  /**
+   * Gets the display title for a doc, using paginationLabel if available,
+   * then falling back to sidebarLabel, then title.
+   */
+  const getDisplayTitle = (doc: DocsData): string =>
+    doc.paginationLabel ?? doc.sidebarLabel ?? doc.title
+
   const result: PaginationInfo = {}
 
   // Special handling for index pages: they come before all sidebar items
@@ -125,7 +133,7 @@ export const getPaginationInfo = (
       const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
       if (targetDoc?.path) {
         result.prev = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
@@ -139,7 +147,7 @@ export const getPaginationInfo = (
       const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
       if (targetDoc?.path) {
         result.next = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
@@ -160,7 +168,7 @@ export const getPaginationInfo = (
     const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
     if (targetDoc?.path) {
       result.prev = {
-        title: targetDoc.sidebarLabel ?? targetDoc.title,
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }
@@ -178,7 +186,7 @@ export const getPaginationInfo = (
     const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
     if (targetDoc?.path) {
       result.next = {
-        title: targetDoc.sidebarLabel ?? targetDoc.title,
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }

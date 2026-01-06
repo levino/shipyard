@@ -83,20 +83,19 @@ const docs =
           id,
           data: {
             title,
-            sidebar: { render: shouldBeRendered, label },
-            sidebar_position,
-            sidebar_label,
-            sidebar_class_name,
-            sidebar_custom_props,
-            pagination_next,
-            pagination_prev,
+            sidebar,
+            render: shouldRender,
+            unlisted,
+            paginationLabel,
+            paginationNext,
+            paginationPrev,
           },
         } = doc
         return {
           id,
           path: getPath(id),
           title:
-            label ??
+            sidebar.label ??
             title ??
             Option.getOrUndefined(
               EffectArray.findFirst(
@@ -105,13 +104,17 @@ const docs =
               ),
             )?.text ??
             id,
-          link: shouldBeRendered,
-          sidebarPosition: sidebar_position,
-          sidebarLabel: sidebar_label,
-          sidebarClassName: sidebar_class_name,
-          sidebarCustomProps: sidebar_custom_props,
-          pagination_next,
-          pagination_prev,
+          link: shouldRender,
+          sidebarPosition: sidebar.position,
+          sidebarLabel: sidebar.label,
+          sidebarClassName: sidebar.className,
+          sidebarCustomProps: sidebar.customProps,
+          collapsible: sidebar.collapsible,
+          collapsed: sidebar.collapsed,
+          unlisted,
+          paginationLabel,
+          paginationNext,
+          paginationPrev,
         }
       }),
     )

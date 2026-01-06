@@ -8,8 +8,13 @@ export interface DocsData {
   sidebarPosition?: number
   sidebarLabel?: string
   sidebarClassName?: string
-  pagination_next?: string | null
-  pagination_prev?: string | null
+  sidebarCustomProps?: Record<string, unknown>
+  collapsible?: boolean
+  collapsed?: boolean
+  unlisted?: boolean
+  paginationLabel?: string
+  paginationNext?: string | null
+  paginationPrev?: string | null
 }
 
 interface TreeNode {
@@ -18,6 +23,8 @@ interface TreeNode {
   readonly href?: string
   readonly position: number
   readonly className?: string
+  readonly collapsible: boolean
+  readonly collapsed: boolean
   readonly children: Readonly<Record<string, TreeNode>>
 }
 
@@ -29,6 +36,8 @@ const createLeafNode = (key: string, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : undefined,
   position: doc.sidebarPosition ?? DEFAULT_POSITION,
   className: doc.sidebarClassName,
+  collapsible: doc.collapsible ?? true,
+  collapsed: doc.collapsed ?? true,
   children: {},
 })
 
@@ -36,6 +45,8 @@ const createBranchNode = (key: string): TreeNode => ({
   key,
   label: key,
   position: DEFAULT_POSITION,
+  collapsible: true,
+  collapsed: true,
   children: {},
 })
 
@@ -45,6 +56,8 @@ const mergeNodeWithDoc = (node: TreeNode, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : node.href,
   position: doc.sidebarPosition ?? node.position,
   className: doc.sidebarClassName ?? node.className,
+  collapsible: doc.collapsible ?? node.collapsible,
+  collapsed: doc.collapsed ?? node.collapsed,
 })
 
 const insertAtPath = (
@@ -93,11 +106,16 @@ const treeNodeToEntry = (node: TreeNode): Entry[string] => {
         )
       : undefined
 
+  // Only include collapsible/collapsed for nodes with children (category nodes)
+  const hasChildren = sortedChildren.length > 0
+
   return {
     label: node.label,
     ...(node.href && { href: node.href }),
     ...(node.className && { className: node.className }),
     ...(subEntry && { subEntry }),
+    ...(hasChildren && { collapsible: node.collapsible }),
+    ...(hasChildren && { collapsed: node.collapsed }),
   }
 }
 
@@ -109,7 +127,10 @@ const parseDocPath = (id: string): readonly string[] => {
 }
 
 export const toSidebarEntries = (docs: readonly DocsData[]): Entry => {
-  const rootTree = docs.reduce<Readonly<Record<string, TreeNode>>>(
+  // Filter out unlisted pages from the sidebar
+  const visibleDocs = docs.filter((doc) => !doc.unlisted)
+
+  const rootTree = visibleDocs.reduce<Readonly<Record<string, TreeNode>>>(
     (acc, doc) => insertAtPath(acc, parseDocPath(doc.id), doc),
     {},
   )
