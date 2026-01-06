@@ -215,10 +215,16 @@
       "id": "fix-blog-sidebar-label",
       "title": "Fix failing test: blog sidebar_label",
       "description": "E2E test fails: 'blog post with sidebar_label uses it in sidebar'. The test expects 'Advanced Features' link to be visible in sidebar-navigation but it's hidden. Blog posts should support sidebar_label for custom sidebar display. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:637",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T20:15:00Z",
+      "notes": [
+        "The blog sidebar_label was already implemented in Layout.astro (using sidebar_label ?? postTitle)",
+        "The issue was that the sidebar details element was collapsed by default",
+        "Added 'collapsed: false' to the blog sidebar navigation tree so it's expanded by default",
+        "This matches Docusaurus behavior where blog sidebar shows recent posts expanded"
+      ]
     }
   ]
 }

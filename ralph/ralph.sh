@@ -2,6 +2,18 @@
 # Ralph Wiggum - loop N times non-interactively
 set -euo pipefail
 
+# Check for required argument
+if [[ $# -eq 0 ]] || ! [[ "$1" =~ ^[0-9]+$ ]]; then
+  echo "Usage: ./ralph/ralph.sh <iterations>"
+  echo ""
+  echo "  <iterations>  Number of times to run the Claude loop (must be a positive integer)"
+  echo ""
+  echo "Example:"
+  echo "  ./ralph/ralph.sh 5    # Run 5 iterations"
+  echo "  ./ralph/ralph.sh 10   # Run 10 iterations"
+  exit 1
+fi
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 cd "$REPO_ROOT"

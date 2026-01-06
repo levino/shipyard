@@ -302,3 +302,36 @@ This file tracks session progress and outcomes.
 - 1 test still fails (pending task: blog sidebar_label)
 
 ---
+
+## Session 2026-01-06T20:15:00Z
+
+### Task Completed
+- **ID**: fix-blog-sidebar-label
+- **Title**: Fix failing test: blog sidebar_label
+
+### What Was Done
+1. Investigated the failing test - the blog post already had `sidebar_label: Advanced Features` in frontmatter
+2. The blog Layout.astro was already correctly using `sidebar_label ?? postTitle` to build the navigation
+3. Discovered the issue: the sidebar `<details>` element was collapsed by default
+4. The SidebarElement component uses `collapsed ?? true` as default, hiding child entries unless expanded
+5. Added `collapsed: false` to the blog sidebar navigation tree in `packages/blog/astro/Layout.astro`
+6. This matches Docusaurus behavior where blog sidebar shows recent posts expanded by default
+
+### Files Modified
+- `packages/blog/astro/Layout.astro` - Added `collapsed: false` to posts navigation entry
+
+### Tips for Next Developer
+- The sidebar's expand/collapse state is controlled by the `collapsed` property in the navigation tree
+- By default, `collapsed ?? true` means all sections are collapsed unless explicitly set to `false`
+- Sections will auto-expand if they contain an active child (via `shouldBeOpen = hasActiveChild || !collapsed`)
+- For blogs, users typically want to see recent posts immediately, so `collapsed: false` is appropriate
+- The i18n demo has pre-existing test failures related to content/test mismatches - not caused by this change
+
+### Tests
+- Both Blog Sidebar Label tests pass:
+  - `blog post with sidebar_label uses it in sidebar`
+  - `blog post with title_meta uses it for page title`
+- All 102 tests pass in single-language demo
+- All tasks in tasks.json are now completed!
+
+---
