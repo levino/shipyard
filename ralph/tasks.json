@@ -34,12 +34,20 @@
       "id": "version-content-structure",
       "title": "Implement versioned content directory structure",
       "description": "Design and implement content organization for versioned docs. Structure: docs/[version]/[locale]/[...slug].md. Update content loader glob patterns to handle version directories. Handle fallback when version-specific content doesn't exist",
-      "status": "pending",
+      "status": "completed",
       "priority": "critical",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T15:19:00Z",
       "dependsOn": ["version-config-integration"],
-      "notes": []
+      "notes": [
+        "Created versionedDocsSchema extending docsSchema with optional version field",
+        "Implemented createVersionedDocsCollection() helper for versioned content loading",
+        "Added getVersionFromDocId() and stripVersionFromDocId() for ID parsing",
+        "Added filterDocsByVersion() and groupDocsByVersion() for filtering docs",
+        "Added findFallbackDoc(), docExistsInVersion(), getDocVersions() for fallback handling",
+        "Added 34 comprehensive unit tests for all new functions",
+        "All 104 unit tests pass"
+      ]
     },
     {
       "id": "version-route-helpers",

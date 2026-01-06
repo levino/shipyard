@@ -1,6 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import type { VersionConfig } from './index'
 import {
+  docExistsInVersion,
+  filterDocsByVersion,
+  findFallbackDoc,
+  getDocVersions,
+  getVersionFromDocId,
+  groupDocsByVersion,
+  stripVersionFromDocId,
+} from './index'
+import {
   findVersionConfig,
   getAvailableVersions,
   getCurrentVersion,
@@ -350,5 +359,300 @@ describe('switchVersionInPath', () => {
     // Edge case: if version appears multiple times, only first is replaced
     const newPath = switchVersionInPath('/docs/v1/v1/intro', 'v2', 'v1')
     expect(newPath).toBe('/docs/v2/v1/intro')
+  })
+})
+
+// Tests for versioned content collection helpers
+describe('getVersionFromDocId', () => {
+  describe('valid version patterns', () => {
+    it('should extract version from v-prefixed semantic version', () => {
+      expect(getVersionFromDocId('v1.0/en/getting-started')).toBe('v1.0')
+      expect(getVersionFromDocId('v2.0.0/en/intro')).toBe('v2.0.0')
+      expect(getVersionFromDocId('v10.20.30/guide')).toBe('v10.20.30')
+    })
+
+    it('should extract version without v prefix', () => {
+      expect(getVersionFromDocId('1.0/en/getting-started')).toBe('1.0')
+      expect(getVersionFromDocId('2.0.0/intro')).toBe('2.0.0')
+    })
+
+    it('should extract special version names', () => {
+      expect(getVersionFromDocId('latest/en/intro')).toBe('latest')
+      expect(getVersionFromDocId('next/guide')).toBe('next')
+      expect(getVersionFromDocId('main/docs/index')).toBe('main')
+      expect(getVersionFromDocId('master/en/intro')).toBe('master')
+      expect(getVersionFromDocId('canary/en/intro')).toBe('canary')
+      expect(getVersionFromDocId('beta/en/intro')).toBe('beta')
+      expect(getVersionFromDocId('alpha/en/intro')).toBe('alpha')
+      expect(getVersionFromDocId('stable/en/intro')).toBe('stable')
+    })
+
+    it('should extract release candidate versions', () => {
+      expect(getVersionFromDocId('rc1/en/intro')).toBe('rc1')
+      expect(getVersionFromDocId('rc/guide')).toBe('rc')
+    })
+  })
+
+  describe('non-versioned paths', () => {
+    it('should return undefined for locale-only paths', () => {
+      expect(getVersionFromDocId('en/getting-started')).toBeUndefined()
+      expect(getVersionFromDocId('de/intro')).toBeUndefined()
+    })
+
+    it('should return undefined for paths not starting with version', () => {
+      expect(getVersionFromDocId('docs/v1.0/intro')).toBeUndefined()
+      expect(getVersionFromDocId('guide')).toBeUndefined()
+    })
+
+    it('should return undefined for empty paths', () => {
+      expect(getVersionFromDocId('')).toBeUndefined()
+    })
+  })
+})
+
+describe('stripVersionFromDocId', () => {
+  it('should remove version prefix from doc id', () => {
+    expect(stripVersionFromDocId('v1.0/en/getting-started')).toBe(
+      'en/getting-started',
+    )
+    expect(stripVersionFromDocId('latest/en/index')).toBe('en/index')
+    expect(stripVersionFromDocId('v2.0.0/guide/intro')).toBe('guide/intro')
+  })
+
+  it('should return unchanged path for non-versioned docs', () => {
+    expect(stripVersionFromDocId('en/getting-started')).toBe(
+      'en/getting-started',
+    )
+    expect(stripVersionFromDocId('guide')).toBe('guide')
+  })
+
+  it('should handle single segment versioned paths', () => {
+    expect(stripVersionFromDocId('v1.0/index')).toBe('index')
+    expect(stripVersionFromDocId('latest/readme')).toBe('readme')
+  })
+})
+
+describe('filterDocsByVersion', () => {
+  const mockDocs = [
+    { id: 'v1.0/en/intro', data: {} },
+    { id: 'v1.0/en/guide', data: {} },
+    { id: 'v2.0/en/intro', data: {} },
+    { id: 'v2.0/en/guide', data: {} },
+    { id: 'v2.0/en/new-feature', data: {} },
+    { id: 'latest/en/intro', data: {} },
+  ]
+
+  it('should filter docs by version', () => {
+    const v1Docs = filterDocsByVersion(mockDocs, 'v1.0')
+    expect(v1Docs).toHaveLength(2)
+    expect(v1Docs.map((d) => d.id)).toEqual(['v1.0/en/intro', 'v1.0/en/guide'])
+  })
+
+  it('should return empty array for non-existent version', () => {
+    const docs = filterDocsByVersion(mockDocs, 'v3.0')
+    expect(docs).toHaveLength(0)
+  })
+
+  it('should handle special version names', () => {
+    const latestDocs = filterDocsByVersion(mockDocs, 'latest')
+    expect(latestDocs).toHaveLength(1)
+    expect(latestDocs[0].id).toBe('latest/en/intro')
+  })
+
+  it('should handle empty docs array', () => {
+    const docs = filterDocsByVersion([], 'v1.0')
+    expect(docs).toHaveLength(0)
+  })
+})
+
+describe('groupDocsByVersion', () => {
+  const mockDocs = [
+    { id: 'v1.0/en/intro', data: {} },
+    { id: 'v1.0/de/intro', data: {} },
+    { id: 'v2.0/en/intro', data: {} },
+    { id: 'v2.0/en/guide', data: {} },
+    { id: 'latest/en/intro', data: {} },
+  ]
+
+  it('should group docs by version', () => {
+    const groups = groupDocsByVersion(mockDocs)
+
+    expect(groups.size).toBe(3)
+    expect(groups.get('v1.0')).toHaveLength(2)
+    expect(groups.get('v2.0')).toHaveLength(2)
+    expect(groups.get('latest')).toHaveLength(1)
+  })
+
+  it('should handle empty docs array', () => {
+    const groups = groupDocsByVersion([])
+    expect(groups.size).toBe(0)
+  })
+
+  it('should handle non-versioned docs', () => {
+    const nonVersionedDocs = [
+      { id: 'en/intro', data: {} },
+      { id: 'de/guide', data: {} },
+    ]
+    const groups = groupDocsByVersion(nonVersionedDocs)
+
+    expect(groups.size).toBe(1)
+    expect(groups.get(undefined)).toHaveLength(2)
+  })
+
+  it('should handle mixed versioned and non-versioned docs', () => {
+    const mixedDocs = [
+      { id: 'v1.0/en/intro', data: {} },
+      { id: 'en/guide', data: {} },
+    ]
+    const groups = groupDocsByVersion(mixedDocs)
+
+    expect(groups.size).toBe(2)
+    expect(groups.get('v1.0')).toHaveLength(1)
+    expect(groups.get(undefined)).toHaveLength(1)
+  })
+})
+
+describe('findFallbackDoc', () => {
+  const mockDocs = [
+    { id: 'v1.0/en/intro', data: { title: 'Intro v1' } },
+    { id: 'v1.0/en/guide', data: { title: 'Guide v1' } },
+    { id: 'v2.0/en/intro', data: { title: 'Intro v2' } },
+    { id: 'v2.0/en/guide', data: { title: 'Guide v2' } },
+    { id: 'v2.0/en/new-feature', data: { title: 'New Feature v2' } },
+    { id: 'latest/en/intro', data: { title: 'Intro latest' } },
+    { id: 'latest/en/guide', data: { title: 'Guide latest' } },
+    { id: 'latest/en/new-feature', data: { title: 'New Feature latest' } },
+    { id: 'latest/en/bleeding-edge', data: { title: 'Bleeding Edge' } },
+  ]
+
+  it('should find fallback doc in first matching version', () => {
+    // new-feature doesn't exist in v1.0, should fall back to v2.0
+    const result = findFallbackDoc(mockDocs, 'en/new-feature', 'v1.0', [
+      'v2.0',
+      'latest',
+    ])
+    expect(result).toBeDefined()
+    expect(result?.version).toBe('v2.0')
+    expect(result?.doc.id).toBe('v2.0/en/new-feature')
+  })
+
+  it('should return first matching fallback in order', () => {
+    // intro exists in all versions, should return first fallback
+    const result = findFallbackDoc(mockDocs, 'en/intro', 'v1.0', [
+      'v2.0',
+      'latest',
+    ])
+    expect(result?.version).toBe('v2.0')
+  })
+
+  it('should skip the requested version even if in fallback list', () => {
+    const result = findFallbackDoc(mockDocs, 'en/intro', 'v1.0', [
+      'v1.0',
+      'v2.0',
+    ])
+    expect(result?.version).toBe('v2.0')
+  })
+
+  it('should return undefined when doc not found in any fallback', () => {
+    // bleeding-edge only exists in latest
+    const result = findFallbackDoc(mockDocs, 'en/bleeding-edge', 'v1.0', [
+      'v2.0',
+    ])
+    expect(result).toBeUndefined()
+  })
+
+  it('should return undefined for empty fallback versions', () => {
+    const result = findFallbackDoc(mockDocs, 'en/intro', 'v1.0', [])
+    expect(result).toBeUndefined()
+  })
+
+  it('should handle empty docs array', () => {
+    const result = findFallbackDoc([], 'en/intro', 'v1.0', ['v2.0', 'latest'])
+    expect(result).toBeUndefined()
+  })
+})
+
+describe('docExistsInVersion', () => {
+  const mockDocs = [
+    { id: 'v1.0/en/intro', data: {} },
+    { id: 'v2.0/en/intro', data: {} },
+    { id: 'v2.0/en/new-feature', data: {} },
+  ]
+
+  it('should return true when doc exists in version', () => {
+    expect(docExistsInVersion(mockDocs, 'en/intro', 'v1.0')).toBe(true)
+    expect(docExistsInVersion(mockDocs, 'en/intro', 'v2.0')).toBe(true)
+    expect(docExistsInVersion(mockDocs, 'en/new-feature', 'v2.0')).toBe(true)
+  })
+
+  it('should return false when doc does not exist in version', () => {
+    expect(docExistsInVersion(mockDocs, 'en/new-feature', 'v1.0')).toBe(false)
+    expect(docExistsInVersion(mockDocs, 'en/intro', 'v3.0')).toBe(false)
+    expect(docExistsInVersion(mockDocs, 'en/nonexistent', 'v1.0')).toBe(false)
+  })
+
+  it('should handle empty docs array', () => {
+    expect(docExistsInVersion([], 'en/intro', 'v1.0')).toBe(false)
+  })
+})
+
+describe('getDocVersions', () => {
+  const mockDocs = [
+    { id: 'v1.0/en/intro', data: {} },
+    { id: 'v1.0/de/intro', data: {} },
+    { id: 'v2.0/en/intro', data: {} },
+    { id: 'v2.0/en/new-feature', data: {} },
+    { id: 'latest/en/intro', data: {} },
+    { id: 'latest/en/new-feature', data: {} },
+    { id: 'latest/en/bleeding-edge', data: {} },
+  ]
+
+  it('should return all versions where doc exists', () => {
+    const versions = getDocVersions(mockDocs, 'en/intro')
+    expect(versions).toHaveLength(3)
+    expect(versions).toContain('v1.0')
+    expect(versions).toContain('v2.0')
+    expect(versions).toContain('latest')
+  })
+
+  it('should return limited versions for version-specific doc', () => {
+    const versions = getDocVersions(mockDocs, 'en/new-feature')
+    expect(versions).toHaveLength(2)
+    expect(versions).toContain('v2.0')
+    expect(versions).toContain('latest')
+    expect(versions).not.toContain('v1.0')
+  })
+
+  it('should return single version for doc only in one version', () => {
+    const versions = getDocVersions(mockDocs, 'en/bleeding-edge')
+    expect(versions).toHaveLength(1)
+    expect(versions).toContain('latest')
+  })
+
+  it('should return empty array for nonexistent doc', () => {
+    const versions = getDocVersions(mockDocs, 'en/nonexistent')
+    expect(versions).toHaveLength(0)
+  })
+
+  it('should handle locale-specific docs', () => {
+    // de/intro only exists in v1.0
+    const versions = getDocVersions(mockDocs, 'de/intro')
+    expect(versions).toHaveLength(1)
+    expect(versions).toContain('v1.0')
+  })
+
+  it('should not return duplicates', () => {
+    // Even if we have multiple docs with same version, should only list once
+    const docsWithDuplicates = [
+      { id: 'v1.0/en/intro', data: {} },
+      { id: 'v1.0/en/intro', data: {} }, // Duplicate
+    ]
+    const versions = getDocVersions(docsWithDuplicates, 'en/intro')
+    expect(versions).toHaveLength(1)
+  })
+
+  it('should handle empty docs array', () => {
+    const versions = getDocVersions([], 'en/intro')
+    expect(versions).toHaveLength(0)
   })
 })

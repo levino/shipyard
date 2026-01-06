@@ -282,6 +282,311 @@ export const createDocsCollection = (
 })
 
 /**
+ * Schema for versioned docs that includes version metadata.
+ * Extends docsSchema with a version field extracted from the file path.
+ */
+export const versionedDocsSchema = docsSchema.extend({
+  /**
+   * The version this document belongs to.
+   * Automatically extracted from the directory structure when using createVersionedDocsCollection.
+   * @example "v1.0", "v2.0", "latest"
+   */
+  version: z.string().optional(),
+})
+
+/**
+ * Options for configuring a versioned docs collection.
+ */
+export interface VersionedDocsCollectionOptions {
+  /**
+   * List of version identifiers to include.
+   * Each version should have a corresponding directory in the basePath.
+   * @example ["v1.0", "v2.0", "latest"]
+   */
+  versions: string[]
+  /**
+   * The fallback version to use when a page doesn't exist in the requested version.
+   * Documents from this version will be used as defaults.
+   * @example "latest" or "v2.0"
+   */
+  fallbackVersion?: string
+}
+
+/**
+ * Helper function to create a versioned docs content collection configuration.
+ * Use this when you need multiple versions of documentation.
+ *
+ * The expected directory structure is:
+ * ```
+ * basePath/
+ *   [version]/
+ *     [locale]/
+ *       [...slug].md
+ * ```
+ *
+ * For example:
+ * ```
+ * docs/
+ *   v1.0/
+ *     en/
+ *       getting-started.md
+ *     de/
+ *       getting-started.md
+ *   v2.0/
+ *     en/
+ *       getting-started.md
+ *       new-feature.md
+ * ```
+ *
+ * @param basePath - The base directory path where versioned docs are located
+ * @param options - Configuration for versions
+ * @returns A loader and schema configuration for use with defineCollection
+ *
+ * @example
+ * ```ts
+ * import { defineCollection } from 'astro:content'
+ * import { createVersionedDocsCollection } from '@levino/shipyard-docs'
+ *
+ * const docs = defineCollection(createVersionedDocsCollection('./docs', {
+ *   versions: ['v1.0', 'v2.0', 'latest'],
+ *   fallbackVersion: 'latest',
+ * }))
+ *
+ * export const collections = { docs }
+ * ```
+ */
+export const createVersionedDocsCollection = (
+  basePath: string,
+  options: VersionedDocsCollectionOptions,
+) => {
+  const { versions } = options
+
+  // Create a glob pattern that matches all version directories
+  // Pattern: {v1.0,v2.0,latest}/**/*.md
+  const versionPattern =
+    versions.length === 1 ? versions[0] : `{${versions.join(',')}}`
+  const pattern = `${versionPattern}/**/*.md`
+
+  return {
+    schema: versionedDocsSchema,
+    loader: glob({ pattern, base: basePath }),
+  }
+}
+
+/**
+ * Extracts the version from a versioned document ID.
+ * The version is expected to be the first path segment.
+ *
+ * @param docId - The document ID (e.g., "v1.0/en/getting-started")
+ * @returns The version string or undefined if not found
+ *
+ * @example
+ * ```ts
+ * getVersionFromDocId("v1.0/en/getting-started") // "v1.0"
+ * getVersionFromDocId("latest/en/index") // "latest"
+ * getVersionFromDocId("en/getting-started") // undefined (non-versioned)
+ * ```
+ */
+export const getVersionFromDocId = (docId: string): string | undefined => {
+  const parts = docId.split('/')
+  // For versioned docs, first part is the version
+  // We check if it looks like a version (starts with 'v' and has numbers, or is 'latest', 'next', etc.)
+  if (parts.length > 0) {
+    const potentialVersion = parts[0]
+    if (isVersionLikeString(potentialVersion)) {
+      return potentialVersion
+    }
+  }
+  return undefined
+}
+
+/**
+ * Checks if a string looks like a version identifier.
+ * Matches: v1.0, v2.0.0, latest, next, main, etc.
+ */
+const isVersionLikeString = (str: string): boolean => {
+  // Match common version patterns
+  return /^(v?\d+(\.\d+)*|latest|next|main|master|canary|beta|alpha|rc\d*|stable)$/i.test(
+    str,
+  )
+}
+
+/**
+ * Strips the version prefix from a versioned document ID.
+ * Returns the ID without the version for use in routing.
+ *
+ * @param docId - The document ID (e.g., "v1.0/en/getting-started")
+ * @returns The ID without version prefix (e.g., "en/getting-started")
+ *
+ * @example
+ * ```ts
+ * stripVersionFromDocId("v1.0/en/getting-started") // "en/getting-started"
+ * stripVersionFromDocId("latest/en/index") // "en/index"
+ * stripVersionFromDocId("en/getting-started") // "en/getting-started" (unchanged)
+ * ```
+ */
+export const stripVersionFromDocId = (docId: string): string => {
+  const version = getVersionFromDocId(docId)
+  if (version) {
+    return docId.slice(version.length + 1) // +1 for the slash
+  }
+  return docId
+}
+
+/**
+ * Filters versioned docs to return only documents for a specific version.
+ * Useful for building version-specific sidebars and navigation.
+ *
+ * @param docs - Array of document entries
+ * @param version - The version to filter by
+ * @param idAccessor - Function to extract the document ID (defaults to doc.id)
+ * @returns Documents matching the specified version
+ *
+ * @example
+ * ```ts
+ * const allDocs = await getCollection('docs')
+ * const v2Docs = filterDocsByVersion(allDocs, 'v2.0')
+ * ```
+ */
+export const filterDocsByVersion = <T extends { id: string }>(
+  docs: readonly T[],
+  version: string,
+): T[] => {
+  return docs.filter((doc) => {
+    const docVersion = getVersionFromDocId(doc.id)
+    return docVersion === version
+  })
+}
+
+/**
+ * Groups versioned documents by their version.
+ * Useful for building version overviews or managing content across versions.
+ *
+ * @param docs - Array of document entries
+ * @returns A Map with version strings as keys and arrays of documents as values
+ *
+ * @example
+ * ```ts
+ * const allDocs = await getCollection('docs')
+ * const byVersion = groupDocsByVersion(allDocs)
+ * // Map { "v1.0" => [...], "v2.0" => [...] }
+ * ```
+ */
+export const groupDocsByVersion = <T extends { id: string }>(
+  docs: readonly T[],
+): Map<string | undefined, T[]> => {
+  const groups = new Map<string | undefined, T[]>()
+  for (const doc of docs) {
+    const version = getVersionFromDocId(doc.id)
+    const existing = groups.get(version) ?? []
+    existing.push(doc)
+    groups.set(version, existing)
+  }
+  return groups
+}
+
+/**
+ * Finds a document in a fallback version when it doesn't exist in the requested version.
+ * Useful for gracefully handling missing version-specific content.
+ *
+ * @param docs - Array of all document entries
+ * @param slug - The slug (path without version) to look for
+ * @param requestedVersion - The version that was originally requested
+ * @param fallbackVersions - Array of versions to check in order (first match wins)
+ * @returns The document from the fallback version, or undefined if not found in any version
+ *
+ * @example
+ * ```ts
+ * const allDocs = await getCollection('docs')
+ * // User requested v1.0/en/new-feature but it doesn't exist
+ * // Fall back to v2.0 or latest
+ * const fallbackDoc = findFallbackDoc(
+ *   allDocs,
+ *   'en/new-feature',
+ *   'v1.0',
+ *   ['v2.0', 'latest']
+ * )
+ * ```
+ */
+export const findFallbackDoc = <T extends { id: string }>(
+  docs: readonly T[],
+  slug: string,
+  requestedVersion: string,
+  fallbackVersions: string[],
+): { doc: T; version: string } | undefined => {
+  // Check each fallback version in order
+  for (const version of fallbackVersions) {
+    // Skip the requested version since we already know it doesn't exist there
+    if (version === requestedVersion) continue
+
+    const targetId = `${version}/${slug}`
+    const doc = docs.find((d) => d.id === targetId)
+    if (doc) {
+      return { doc, version }
+    }
+  }
+  return undefined
+}
+
+/**
+ * Checks if a document exists for a specific version.
+ * Useful for determining whether to use fallback logic.
+ *
+ * @param docs - Array of document entries
+ * @param slug - The slug (path without version) to look for
+ * @param version - The version to check
+ * @returns True if the document exists in the specified version
+ *
+ * @example
+ * ```ts
+ * const allDocs = await getCollection('docs')
+ * if (!docExistsInVersion(allDocs, 'en/new-feature', 'v1.0')) {
+ *   // Handle missing document - show 404 or redirect to another version
+ * }
+ * ```
+ */
+export const docExistsInVersion = <T extends { id: string }>(
+  docs: readonly T[],
+  slug: string,
+  version: string,
+): boolean => {
+  const targetId = `${version}/${slug}`
+  return docs.some((d) => d.id === targetId)
+}
+
+/**
+ * Gets all available versions for a specific slug.
+ * Useful for showing a version switcher with only versions that have this document.
+ *
+ * @param docs - Array of document entries
+ * @param slug - The slug (path without version) to look for
+ * @returns Array of version strings where this document exists
+ *
+ * @example
+ * ```ts
+ * const allDocs = await getCollection('docs')
+ * const versions = getDocVersions(allDocs, 'en/getting-started')
+ * // ['v1.0', 'v2.0', 'latest'] - shows in which versions this doc exists
+ * ```
+ */
+export const getDocVersions = <T extends { id: string }>(
+  docs: readonly T[],
+  slug: string,
+): string[] => {
+  const versions: string[] = []
+  for (const doc of docs) {
+    const docVersion = getVersionFromDocId(doc.id)
+    if (docVersion) {
+      const docSlug = stripVersionFromDocId(doc.id)
+      if (docSlug === slug && !versions.includes(docVersion)) {
+        versions.push(docVersion)
+      }
+    }
+  }
+  return versions
+}
+
+/**
  * shipyard Docs integration for Astro.
  *
  * Supports multiple documentation instances with configurable route mounting.
@@ -395,39 +700,58 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         // Generate the entry file with the correct routeBasePath and collectionName
         // Note: We inline the values directly in getStaticPaths because Astro's compiler
         // hoists getStaticPaths to a separate module context where top-level constants aren't available
+        const hasVersions = !!versions
         const entryFileContent = `---
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import { docsConfigs } from 'virtual:shipyard-docs-configs'
-import { getEditUrl, getGitMetadata } from '@levino/shipyard-docs'
+import { getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId, getVersionPath } from '@levino/shipyard-docs'
 import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 
 export async function getStaticPaths() {
   const collectionName = ${JSON.stringify(resolvedCollectionName)}
   const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+  const hasVersions = ${JSON.stringify(hasVersions)}
+  const versionsConfig = ${JSON.stringify(versions || null)}
   const docs = await getCollection(collectionName)
 
-  const getParams = (slug) => {
+  const getParams = (slug, version) => {
     if (i18n) {
       const [locale, ...rest] = slug.split('/')
-      return {
+      const baseParams = {
         slug: rest.length ? rest.join('/') : undefined,
         locale,
       }
+      return version ? { ...baseParams, version } : baseParams
     } else {
-      return {
+      const baseParams = {
         slug: slug || undefined,
       }
+      return version ? { ...baseParams, version } : baseParams
     }
   }
 
-  return docs.map((entry) => ({
-    params: getParams(entry.id),
-    props: { entry, routeBasePath },
-  }))
+  return docs.map((entry) => {
+    // For versioned docs, extract version from the doc ID (e.g., "v1.0/en/getting-started")
+    let version = null
+    let docIdWithoutVersion = entry.id
+
+    if (hasVersions && versionsConfig) {
+      const extractedVersion = getVersionFromDocId(entry.id)
+      if (extractedVersion) {
+        version = getVersionPath(extractedVersion, versionsConfig) || extractedVersion
+        docIdWithoutVersion = stripVersionFromDocId(entry.id)
+      }
+    }
+
+    return {
+      params: getParams(docIdWithoutVersion, version),
+      props: { entry, routeBasePath, version },
+    }
+  })
 }
 
-const { entry, routeBasePath } = Astro.props
+const { entry, routeBasePath, version } = Astro.props
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,
@@ -435,6 +759,9 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
   routeBasePath: 'docs',
   collectionName: 'docs',
 }
+
+// Version is available for use in Layout/components if needed
+const currentVersion = version
 
 const { Content, headings } = await render(entry)
 
@@ -514,18 +841,38 @@ if (
 
         if (astroConfig.i18n) {
           // With i18n: use locale prefix
-          injectRoute({
-            pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
-            entrypoint: entryFilePath,
-            prerender: true,
-          })
+          if (versions) {
+            // Versioned routes: /[locale]/[routeBasePath]/[version]/[...slug]
+            injectRoute({
+              pattern: `/[locale]/${normalizedBasePath}/[version]/[...slug]`,
+              entrypoint: entryFilePath,
+              prerender: true,
+            })
+          } else {
+            // Non-versioned routes: /[locale]/[routeBasePath]/[...slug]
+            injectRoute({
+              pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
+              entrypoint: entryFilePath,
+              prerender: true,
+            })
+          }
         } else {
           // Without i18n: direct path
-          injectRoute({
-            pattern: `/${normalizedBasePath}/[...slug]`,
-            entrypoint: entryFilePath,
-            prerender: true,
-          })
+          if (versions) {
+            // Versioned routes: /[routeBasePath]/[version]/[...slug]
+            injectRoute({
+              pattern: `/${normalizedBasePath}/[version]/[...slug]`,
+              entrypoint: entryFilePath,
+              prerender: true,
+            })
+          } else {
+            // Non-versioned routes: /[routeBasePath]/[...slug]
+            injectRoute({
+              pattern: `/${normalizedBasePath}/[...slug]`,
+              entrypoint: entryFilePath,
+              prerender: true,
+            })
+          }
         }
 
         // Generate llms.txt routes if enabled
