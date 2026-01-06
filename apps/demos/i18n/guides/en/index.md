@@ -1,7 +1,8 @@
 ---
 title: Gardening Guides
 description: Step-by-step tutorials and guides for your garden
-sidebar_position: 1
+sidebar:
+  position: 1
 ---
 
 # Gardening Guides
