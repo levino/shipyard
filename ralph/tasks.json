@@ -122,12 +122,18 @@
       "id": "version-selector-integration",
       "title": "Integrate VersionSelector into layout",
       "description": "Add VersionSelector to docs layout (packages/docs/astro/Layout.astro). Position in navbar alongside LanguageSwitcher. Ensure proper styling with DaisyUI/Tailwind. Make version visible in mobile view",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:05:00Z",
       "dependsOn": ["version-selector-component"],
-      "notes": []
+      "notes": [
+        "Added navbarExtra and sidebarExtra named slots to GlobalDesktopNavigation and SidebarNavigation",
+        "Added slot pass-through in Page.astro base layout",
+        "Updated docs Layout.astro to extract version from URL and pass VersionSelector through slots",
+        "VersionSelector only renders when versionsConfig has multiple versions",
+        "All 113 unit tests pass, all 188 E2E tests pass (177 i18n + 11 single-language)"
+      ]
     },
     {
       "id": "version-badge-component",
