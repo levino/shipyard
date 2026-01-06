@@ -42,3 +42,7 @@ Check out the [Getting Started guide](/en/docs/getting-started) for full setup i
 shipyard is production-ready and actively developed. See the [roadmap](/en/docs/roadmap) for upcoming features.
 
 Contributions and feedback are welcome! Visit the [GitHub repository](https://github.com/levino/shipyard) to get involved.
+
+---
+
+*Levin Keller – Hildesheim, Germany*
