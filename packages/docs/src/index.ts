@@ -53,6 +53,89 @@ export const docsSchema = z.object({
 })
 
 /**
+ * Schema for a single version entry in the versions configuration.
+ */
+export const singleVersionSchema = z.object({
+  /**
+   * The version identifier (e.g., "v1.0", "2.0.0", "latest").
+   */
+  version: z.string(),
+  /**
+   * Optional human-readable label for display in the UI.
+   * If not provided, the version string will be used.
+   * @example "Version 2.0" or "Latest"
+   */
+  label: z.string().optional(),
+  /**
+   * Path segment used in URLs for this version.
+   * If not provided, defaults to the version string.
+   * @example "v2" for a URL like /docs/v2/getting-started
+   */
+  path: z.string().optional(),
+  /**
+   * Optional banner to display when viewing this version.
+   * Use "unreleased" for preview/beta versions, "unmaintained" for deprecated versions.
+   */
+  banner: z.enum(['unreleased', 'unmaintained']).optional(),
+})
+
+/**
+ * Schema for version configuration in docs.
+ * Allows configuring multiple documentation versions with routing and UI options.
+ */
+export const versionConfigSchema = z.object({
+  /**
+   * The current/default version of the documentation.
+   * This version will be shown when users visit the docs without specifying a version.
+   * @example "v2.0" or "latest"
+   */
+  current: z.string(),
+  /**
+   * List of all available versions with their configuration.
+   * Order matters: versions are typically displayed in reverse chronological order.
+   */
+  available: z.array(singleVersionSchema).min(1),
+  /**
+   * List of version identifiers that are deprecated.
+   * These versions will show a deprecation banner directing users to the current version.
+   * @example ["v1.0", "v0.9"]
+   */
+  deprecated: z.array(z.string()).optional().default([]),
+  /**
+   * The stable version identifier.
+   * This may differ from "current" - for example, current could be "latest"
+   * while stable is "v2.0" (the last released version).
+   * @example "v2.0"
+   */
+  stable: z.string().optional(),
+})
+
+/**
+ * Configuration for a single documentation version.
+ * Inferred from singleVersionSchema.
+ */
+export type SingleVersionConfig = z.infer<typeof singleVersionSchema>
+
+/**
+ * Configuration for documentation versioning.
+ * Inferred from versionConfigSchema.
+ *
+ * @example
+ * ```ts
+ * const versions: VersionConfig = {
+ *   current: 'v2.0',
+ *   available: [
+ *     { version: 'v2.0', label: 'Version 2.0 (Latest)' },
+ *     { version: 'v1.0', label: 'Version 1.0', banner: 'unmaintained' },
+ *   ],
+ *   deprecated: ['v1.0'],
+ *   stable: 'v2.0',
+ * }
+ * ```
+ */
+export type VersionConfig = z.infer<typeof versionConfigSchema>
+
+/**
  * Configuration for llms.txt generation.
  * When enabled, generates llms.txt and llms-full.txt files following
  * the specification at https://llmstxt.org/

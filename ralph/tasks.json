@@ -6,11 +6,13 @@
       "id": "version-schema-types",
       "title": "Define version schema and TypeScript types",
       "description": "Create Zod schema for version configuration and TypeScript types. Add version field to docsSchema, create VersionConfig type with properties: current, available[], deprecated[], stable. Export types from packages/docs/src/index.ts",
-      "status": "pending",
+      "status": "completed",
       "priority": "critical",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
-      "notes": []
+      "completedAt": "2026-01-06T14:43:00Z",
+      "notes": [
+        "Added singleVersionSchema, versionConfigSchema, SingleVersionConfig and VersionConfig types to packages/docs/src/index.ts"
+      ]
     },
     {
       "id": "version-config-integration",
