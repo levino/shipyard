@@ -266,4 +266,4 @@ Now that you have shipyard set up, explore these topics:
 ## Need Help?
 
 - Check the [GitHub repository](https://github.com/levino/shipyard) for issues and discussions
-- Explore the [live demo](https://shipyard-demo.levinkeller.de) for examples
+- Explore the [live demo](https://i18n.demos.shipyard.levinkeller.de/en/) for examples

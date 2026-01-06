@@ -6,7 +6,7 @@ This is a monorepo for shipyard, a general-purpose page builder for Astro. This 
 
 **shipyard** is an Astro-based page builder that provides reusable components and layouts for creating documentation sites, blogs, and demo applications. It's built as a monorepo using npm workspaces.
 
-- **Demo**: https://shipyard-demo.levinkeller.de
+- **Demo**: https://i18n.demos.shipyard.levinkeller.de/en/
 - **License**: MIT
 - **Main Author**: Levin Keller (@levino)
 
