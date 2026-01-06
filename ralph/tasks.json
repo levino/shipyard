@@ -352,23 +352,32 @@
       "id": "test-route-helpers-unit",
       "title": "Unit tests for versioned route helpers",
       "description": "Add Vitest unit tests for routeHelpers.ts version functions. Test: getVersionedDocPath(), path generation edge cases, version validation, i18n+version combinations",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:27:00Z",
       "dependsOn": ["version-route-helpers"],
-      "notes": []
+      "notes": [
+        "Tests already exist - added during version-route-helpers task",
+        "83 tests in routeHelpers.test.ts covering all version functions",
+        "Covers: getVersionedDocPath, path edge cases, version validation, i18n+version combinations",
+        "All 111 unit tests pass"
+      ]
     },
     {
       "id": "test-sidebar-entries-unit",
       "title": "Unit tests for versioned sidebar entries",
       "description": "Extend packages/docs/src/sidebarEntries.test.ts with version filtering tests. Test: entries filtered by version, tree building with versions, edge cases",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:28:00Z",
       "dependsOn": ["version-sidebar-context"],
-      "notes": []
+      "notes": [
+        "Tests already exist - added during version-sidebar-context task",
+        "7 tests for filterDocsForVersion covering: basic filtering, version stripping, property preservation, empty results, i18n locales, semantic versions, special names",
+        "All 111 unit tests pass"
+      ]
     },
     {
       "id": "test-version-schema-unit",
@@ -413,12 +422,20 @@
       "id": "docs-api-reference-update",
       "title": "Update API reference with version options",
       "description": "Update packages/docs README and API documentation. Document new shipyardDocs() version options. Add TypeScript type documentation. Include code examples",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:30:00Z",
       "dependsOn": ["version-config-integration"],
-      "notes": []
+      "notes": [
+        "Updated packages/docs/README.md with versioned documentation example",
+        "Added comprehensive Versioning section to apps/docs/docs/en/docs-package.md",
+        "Added versions and llmsTxt options to Configuration table",
+        "Documented VersionConfig and SingleVersionConfig options",
+        "Added URL structure, Version Selector, and Best Practices sections",
+        "Docs app builds successfully (36 pages)",
+        "All 111 unit tests pass"
+      ]
     },
     {
       "id": "docs-migration-guide-en",

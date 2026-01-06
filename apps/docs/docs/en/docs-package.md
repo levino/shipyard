@@ -107,6 +107,8 @@ That's it! Your documentation is now available at `/docs`.
 | `editUrl` | `string` | — | Base URL for "Edit this page" links |
 | `showLastUpdateTime` | `boolean` | `false` | Show last update timestamp from git |
 | `showLastUpdateAuthor` | `boolean` | `false` | Show last update author from git |
+| `versions` | `VersionConfig` | — | Enable multi-version documentation ([see Versioning](#versioning)) |
+| `llmsTxt` | `LlmsTxtConfig` | — | Enable llms.txt generation ([see LLMs.txt](#llmstxt-support)) |
 
 ### Example
 
@@ -292,3 +294,113 @@ Optional additional context about your project.
 Each linked `.txt` file contains the raw markdown content of that documentation page, making it easy for LLMs to parse the content directly without HTML overhead.
 
 This makes your documentation easily accessible to AI coding assistants like Claude, Cursor, and others that support the llms.txt standard.
+
+---
+
+## Versioning
+
+shipyard-docs supports multi-version documentation, allowing you to maintain separate content for different versions of your project.
+
+### Quick Setup
+
+**1. Configure version options:**
+
+```javascript
+shipyardDocs({
+  routeBasePath: 'docs',
+  versions: {
+    current: 'v2',
+    available: [
+      { version: 'v2', label: 'Version 2.0 (Latest)' },
+      { version: 'v1', label: 'Version 1.0', banner: 'unmaintained' },
+    ],
+    deprecated: ['v1'],
+    stable: 'v2',
+  },
+})
+```
+
+**2. Set up versioned content collection:**
+
+```typescript
+// content.config.ts
+import { defineCollection } from 'astro:content'
+import { createVersionedDocsCollection } from '@levino/shipyard-docs'
+
+const docs = defineCollection(
+  createVersionedDocsCollection('./docs', {
+    versions: ['v1', 'v2'],
+  })
+)
+
+export const collections = { docs }
+```
+
+**3. Organize content by version:**
+
+```
+docs/
+├── v2/
+│   ├── getting-started.md
+│   ├── configuration.md
+│   └── new-feature.md
+└── v1/
+    ├── getting-started.md
+    └── configuration.md
+```
+
+### Version Configuration Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `current` | `string` | Yes | Default version shown to users |
+| `available` | `SingleVersionConfig[]` | Yes | List of all available versions |
+| `deprecated` | `string[]` | No | Versions to show deprecation warnings |
+| `stable` | `string` | No | Stable version (defaults to `current`) |
+
+### Single Version Options
+
+| Option | Type | Required | Description |
+|--------|------|----------|-------------|
+| `version` | `string` | Yes | Version identifier (e.g., `'v2'`, `'2.0'`) |
+| `label` | `string` | No | Display label in UI (defaults to version) |
+| `path` | `string` | No | URL path segment (defaults to version) |
+| `banner` | `'unreleased' \| 'unmaintained'` | No | Banner type to display |
+
+### URL Structure
+
+With versioning enabled, routes follow this pattern:
+
+- **Without i18n:** `/docs/v2/getting-started`
+- **With i18n:** `/en/docs/v2/getting-started`
+
+Special routes:
+- `/docs/` redirects to `/docs/[current-version]/`
+- `/docs/latest/` is an alias for the current version
+
+### Version Selector
+
+When versioning is enabled with multiple versions, a version selector dropdown automatically appears in the navbar and sidebar. The selector shows:
+
+- **Green "stable" badge** for the stable version
+- **Yellow "deprecated" badge** for deprecated versions
+- **Blue "unreleased" badge** for versions with `banner: 'unreleased'`
+
+### Best Practices
+
+**Content organization:**
+- Keep common pages in all versions for discoverability
+- Only add version-specific pages where functionality differs
+- Use consistent page slugs across versions for easy switching
+
+**Version naming:**
+- Avoid dots in folder names (use `v1`, not `v1.0`)
+- Use the `label` option for display-friendly names
+- Use the `path` option if you need custom URL segments
+
+**Deprecation workflow:**
+1. Add `banner: 'unmaintained'` to the version config
+2. Add the version to the `deprecated` array
+3. Consider removing very old versions to reduce maintenance
+
+For a complete guide, see the [Versioning Guide](/en/guides/versioning).
