@@ -227,12 +227,21 @@
       "id": "demo-versioned-docs",
       "title": "Create versioned-docs demo application",
       "description": "Create new demo app in apps/demos/versioned-docs/. Set up with multiple versions (v1.0, v2.0, latest). Include sample content in each version. Configure astro.config.mjs with version settings",
-      "status": "in_progress",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:15:00Z",
       "dependsOn": ["version-route-injection"],
-      "notes": []
+      "notes": [
+        "Created demo in apps/demos/versioned-docs/",
+        "Configured with two versions: v1 and v2 (using short names to avoid Astro dot issues)",
+        "Added latest alias that resolves to v2 (current version)",
+        "Docs root (/docs/) redirects to /docs/v2/",
+        "v1 marked as deprecated with unmaintained banner",
+        "Created 7 content pages (4 for v2, 3 for v1)",
+        "Added 13 Playwright E2E tests covering routing, navigation, and version selector",
+        "All 202 E2E tests pass (178 i18n + 11 single-language + 13 versioned-docs)"
+      ]
     },
     {
       "id": "demo-versioned-i18n",

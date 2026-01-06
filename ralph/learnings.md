@@ -75,4 +75,26 @@ cd apps/demo && npm run dev
 
 ---
 
+## Versioning System
+
+### Content Structure for Versioned Docs
+- **IMPORTANT**: Do NOT use dots in version folder names (e.g., `v1.0/`, `v2.0/`)
+- Astro's content collection glob loader strips dots from folder names in document IDs
+- Use short names like `v1/`, `v2/`, `latest/` instead
+- The version config can use `label` property for display: `{ version: 'v1', label: 'Version 1.0' }`
+
+### Version URL Structure
+- Pattern: `/docs/[version]/[...slug]`
+- With i18n: `/[locale]/docs/[version]/[...slug]`
+- `latest` alias is auto-generated for current version
+- Docs root redirects to current version
+
+### VersionSelector Component
+- Located in `packages/base/astro/components/VersionSelector.astro`
+- Supports `dropdown` and `list` variants (like LanguageSwitcher)
+- Prop-based design - must pass version config from parent
+- Uses named slots `navbarExtra` and `sidebarExtra` in layouts
+
+---
+
 <!-- Add new learnings below as you discover them -->
