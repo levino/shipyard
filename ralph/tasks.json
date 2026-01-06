@@ -385,12 +385,18 @@
       "id": "docs-versioning-guide-en",
       "title": "Write versioning guide documentation (English)",
       "description": "Create comprehensive guide in apps/docs for version management. Cover: configuration, directory structure, adding new versions, deprecating old versions, best practices. Place in docs/en/guides/versioning.md",
-      "status": "in_progress",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:20:00Z",
       "dependsOn": ["demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Created apps/docs/docs/en/guides/versioning.md with comprehensive guide",
+        "Covers: quick start, configuration reference, directory structure, URL patterns, adding/deprecating versions, version selector, best practices",
+        "Also created guides index page (apps/docs/docs/en/guides/index.md)",
+        "Docs app builds successfully (36 pages)",
+        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)"
+      ]
     },
     {
       "id": "docs-versioning-guide-de",
