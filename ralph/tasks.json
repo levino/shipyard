@@ -18,12 +18,17 @@
       "id": "version-config-integration",
       "title": "Add version configuration to docs integration",
       "description": "Extend shipyardDocs() integration options to accept versions config. Update packages/docs/src/index.ts to handle version configuration. Store version config in virtual module virtual:shipyard-docs-configs",
-      "status": "pending",
+      "status": "completed",
       "priority": "critical",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T14:48:00Z",
       "dependsOn": ["version-schema-types"],
-      "notes": []
+      "notes": [
+        "Added `versions?: VersionConfig` to DocsConfig interface",
+        "Added validation of versions config with Zod schema",
+        "Added versions to docsConfigs registry for virtual module",
+        "Updated virtual-module.d.ts with versions and llmsTxtEnabled fields"
+      ]
     },
     {
       "id": "version-content-structure",

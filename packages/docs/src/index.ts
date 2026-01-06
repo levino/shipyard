@@ -219,6 +219,27 @@ export interface DocsConfig {
    * ```
    */
   llmsTxt?: LlmsTxtDocsConfig
+  /**
+   * Configuration for documentation versioning.
+   * When provided, enables multi-version documentation support with version selectors
+   * and version-specific content.
+   *
+   * @example
+   * ```ts
+   * shipyardDocs({
+   *   versions: {
+   *     current: 'v2.0',
+   *     available: [
+   *       { version: 'v2.0', label: 'Version 2.0 (Latest)' },
+   *       { version: 'v1.0', label: 'Version 1.0', banner: 'unmaintained' },
+   *     ],
+   *     deprecated: ['v1.0'],
+   *     stable: 'v2.0',
+   *   }
+   * })
+   * ```
+   */
+  versions?: VersionConfig
 }
 
 /**
@@ -284,6 +305,7 @@ const docsConfigs: Record<
     routeBasePath: string
     collectionName: string
     llmsTxtEnabled: boolean
+    versions?: VersionConfig
   }
 > = {}
 
@@ -295,7 +317,18 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
     llmsTxt,
+    versions,
   } = config
+
+  // Validate versions config if provided
+  if (versions) {
+    const parseResult = versionConfigSchema.safeParse(versions)
+    if (!parseResult.success) {
+      throw new Error(
+        `Invalid versions configuration: ${parseResult.error.message}`,
+      )
+    }
+  }
 
   // Normalize the route base path (remove leading/trailing slashes safely)
   let normalizedBasePath = routeBasePath
@@ -317,6 +350,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     routeBasePath: normalizedBasePath,
     collectionName: resolvedCollectionName,
     llmsTxtEnabled: !!llmsTxt?.enabled,
+    versions,
   }
 
   // Virtual module for this specific route's config

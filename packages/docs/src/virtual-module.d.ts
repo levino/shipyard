@@ -1,3 +1,5 @@
+import type { VersionConfig } from './index'
+
 declare module 'virtual:shipyard-docs-configs' {
   export const docsConfigs: Record<
     string,
@@ -7,6 +9,8 @@ declare module 'virtual:shipyard-docs-configs' {
       showLastUpdateAuthor: boolean
       routeBasePath: string
       collectionName: string
+      llmsTxtEnabled: boolean
+      versions?: VersionConfig
     }
   >
 }
