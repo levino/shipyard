@@ -196,12 +196,17 @@
       "id": "version-pagination",
       "title": "Update pagination for versioned docs",
       "description": "Ensure prev/next pagination stays within same version. Update pagination_next/pagination_prev to work with versioned paths. Handle edge cases at version boundaries",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:00:00Z",
       "dependsOn": ["version-sidebar-context"],
-      "notes": []
+      "notes": [
+        "Pagination already respects version boundaries through filtered docs system",
+        "Layout.astro uses sidebarDocs (version-filtered) for pagination computation",
+        "E2E tests for pagination within version already exist and pass (3 tests in version-sidebar.spec.ts)",
+        "pagination_next/pagination_prev frontmatter work with versioned paths via allDocs lookup"
+      ]
     },
     {
       "id": "version-search-integration",
@@ -426,12 +431,18 @@
       "id": "test-version-schema-unit",
       "title": "Unit tests for version schema validation",
       "description": "Add Vitest unit tests for version Zod schema. Test: valid configs accepted, invalid configs rejected with clear errors, edge cases handled",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:15:00Z",
       "dependsOn": ["version-schema-types"],
-      "notes": []
+      "notes": [
+        "Created versionSchema.test.ts with 38 comprehensive unit tests",
+        "Tests for singleVersionSchema: valid configs (7 tests), invalid configs (6 tests)",
+        "Tests for versionConfigSchema: valid configs (7 tests), invalid configs (10 tests), edge cases (8 tests)",
+        "Edge case tests cover: version not in available, deprecated not in available, stable not in available, long strings, special chars, unicode, many versions, duplicates",
+        "All 149 unit tests pass (38 new + 111 existing)"
+      ]
     },
     {
       "id": "docs-versioning-guide-en",
