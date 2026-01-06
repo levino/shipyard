@@ -23,19 +23,19 @@ Additionally, check:
 
 ### Step 2: Select Task
 
-Use your judgment to pick the **best** task to work on now. Consider:
+**FIRST**: Check if any task has status `in_progress` - if so, continue that task (it was interrupted).
 
-1. **In-progress tasks first**: If a task is already `in_progress`, continue and complete it
-2. **Dependencies**: Some tasks depend on others - do prerequisites first
-3. **Priority**: Higher priority tasks are generally more important
-4. **Logical ordering**: What makes sense to build first? (e.g., core infrastructure before features that use it)
-5. **Context from history**: What was recently worked on? Does something naturally follow?
+If no in_progress tasks, pick the best `pending` task considering:
+1. **Dependencies**: Do prerequisites first
+2. **Priority**: Higher priority tasks are generally more important
+3. **Logical ordering**: What makes sense to build first?
+4. **Context from history**: What was recently worked on?
 
-If no pending/in_progress tasks remain, report completion and exit.
+If no pending/in_progress tasks remain, output `<promise>COMPLETE</promise>` and exit.
 
-### Step 3: Work on Task - COMPLETE IT FULLY
+### Step 3: Work on Task
 
-- Update task status to `in_progress` in tasks.json
+**IMMEDIATELY** mark the task as `in_progress` in tasks.json before doing any work. This ensures if interrupted, the next session knows where to continue.
 - **Complete the task fully** - do not leave it half-done
 - Follow the project's coding standards (see CLAUDE.md)
 - Run tests to verify your work
