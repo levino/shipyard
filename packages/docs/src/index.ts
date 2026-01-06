@@ -867,6 +867,40 @@ if (
               entrypoint: entryFilePath,
               prerender: true,
             })
+
+            // Generate redirect from docs root to current version
+            const redirectFileName = `docs-redirect-${normalizedBasePath}.astro`
+            const redirectFilePath = join(generatedDir, redirectFileName)
+            const currentVersionPath =
+              versions.available.find((v) => v.version === versions.current)
+                ?.path ?? versions.current
+            const redirectFileContent = `---
+import { i18n } from 'astro:config/server'
+
+export function getStaticPaths() {
+  const locales = i18n?.locales ?? ['en']
+  return locales.map((locale) => {
+    const localeCode = typeof locale === 'string' ? locale : locale.path
+    return { params: { locale: localeCode } }
+  })
+}
+
+const { locale } = Astro.params
+const currentVersion = ${JSON.stringify(currentVersionPath)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
+// Redirect to the current version's index
+return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302)
+---
+`
+            writeFileSync(redirectFilePath, redirectFileContent)
+
+            // Inject redirect route for docs root (without trailing slash)
+            injectRoute({
+              pattern: `/[locale]/${normalizedBasePath}`,
+              entrypoint: redirectFilePath,
+              prerender: true,
+            })
           } else {
             // Non-versioned routes: /[locale]/[routeBasePath]/[...slug]
             injectRoute({
@@ -882,6 +916,29 @@ if (
             injectRoute({
               pattern: `/${normalizedBasePath}/[version]/[...slug]`,
               entrypoint: entryFilePath,
+              prerender: true,
+            })
+
+            // Generate redirect from docs root to current version
+            const redirectFileName = `docs-redirect-${normalizedBasePath}.astro`
+            const redirectFilePath = join(generatedDir, redirectFileName)
+            const currentVersionPath =
+              versions.available.find((v) => v.version === versions.current)
+                ?.path ?? versions.current
+            const redirectFileContent = `---
+const currentVersion = ${JSON.stringify(currentVersionPath)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
+// Redirect to the current version's index
+return Astro.redirect(\`/\${routeBasePath}/\${currentVersion}/\`, 302)
+---
+`
+            writeFileSync(redirectFilePath, redirectFileContent)
+
+            // Inject redirect route for docs root (without trailing slash)
+            injectRoute({
+              pattern: `/${normalizedBasePath}`,
+              entrypoint: redirectFilePath,
               prerender: true,
             })
           } else {

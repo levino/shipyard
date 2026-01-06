@@ -85,12 +85,18 @@
       "id": "version-route-injection",
       "title": "Inject versioned routes into Astro",
       "description": "Update integration's injectRoute calls to handle versioned route patterns. Pattern: /[locale]/[routeBasePath]/[version]/[...slug]. Add redirect from /docs/ to /docs/[currentVersion]/",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T15:30:00Z",
       "dependsOn": ["version-static-paths"],
-      "notes": []
+      "notes": [
+        "Versioned route patterns were already implemented in previous session",
+        "Added redirect from /docs/ to /docs/[currentVersion]/ for versioned docs",
+        "Redirect works with both i18n (uses locale-aware getStaticPaths) and non-i18n modes",
+        "Uses 302 redirect to allow search engines to follow while not caching permanently",
+        "All 104 unit tests and 188 E2E tests pass"
+      ]
     },
     {
       "id": "version-selector-component",
