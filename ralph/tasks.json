@@ -227,7 +227,7 @@
       "id": "demo-versioned-docs",
       "title": "Create versioned-docs demo application",
       "description": "Create new demo app in apps/demos/versioned-docs/. Set up with multiple versions (v1.0, v2.0, latest). Include sample content in each version. Configure astro.config.mjs with version settings",
-      "status": "pending",
+      "status": "in_progress",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
       "completedAt": null,
