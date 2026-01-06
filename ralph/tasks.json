@@ -288,12 +288,18 @@
       "id": "test-version-selector-e2e",
       "title": "E2E tests for version selector",
       "description": "Add Playwright tests for VersionSelector component. Test: dropdown opens, versions listed correctly, navigation works, badges display, current version highlighted",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:45:00Z",
       "dependsOn": ["version-selector-integration", "demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Created version-selector.spec.ts with 17 comprehensive E2E tests",
+        "Fixed bug in Layout.astro: Astro fragments don't work with slot children - had to use separate conditionals",
+        "Tests cover dropdown variant (navbar), list variant (sidebar on mobile), navigation, badges, and edge cases",
+        "All 34 versioned-docs E2E tests pass (17 version-selector + 17 versioned-docs)",
+        "Full E2E suite passes: 178 i18n + 11 single-language + 34 versioned-docs (server-mode skipped - pre-existing issue)"
+      ]
     },
     {
       "id": "test-version-sidebar-e2e",

@@ -108,6 +108,25 @@ cd apps/demo && npm run dev
 - Solution: Extract shared utilities to separate files like `versionHelpers.ts`
 - Then both sidebarEntries.ts and index.ts can safely import from the helper file
 
+### Astro Fragments and Slots
+- **IMPORTANT**: Astro fragments (`<> ... </>`) do NOT work properly when children have `slot` attributes
+- If you wrap slotted children in a fragment, Astro will silently ignore the slot assignments
+- Instead of:
+  ```astro
+  {condition && (
+    <>
+      <Component slot="slotA" />
+      <Component slot="slotB" />
+    </>
+  )}
+  ```
+- Use separate conditionals:
+  ```astro
+  {condition && (<Component slot="slotA" />)}
+  {condition && (<Component slot="slotB" />)}
+  ```
+- This is a subtle bug that's hard to debug - the component appears to not render at all
+
 ---
 
 <!-- Add new learnings below as you discover them -->
