@@ -495,12 +495,18 @@
       "id": "docs-migration-guide-en",
       "title": "Write migration guide for existing users (English)",
       "description": "Create migration guide for users upgrading to versioned docs. Cover: directory restructure, config changes, breaking changes if any. Place in docs/en/guides/migration-to-versioned.md",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:20:00Z",
       "dependsOn": ["docs-versioning-guide-en"],
-      "notes": []
+      "notes": [
+        "Created comprehensive migration guide at apps/docs/docs/en/guides/migration-to-versioned.md",
+        "Guide covers: planning version strategy, directory restructure, content collection update, version config, testing, updating links, adding second version, troubleshooting, rollback plan",
+        "Updated guides index page to include link to migration guide",
+        "Docs app builds successfully (37 pages)",
+        "All 149 unit tests pass, all E2E tests pass"
+      ]
     },
     {
       "id": "docs-migration-guide-de",
