@@ -59,10 +59,16 @@
       "id": "fix-hide-title",
       "title": "Fix failing test: hide_title",
       "description": "E2E test fails: 'page with hide_title hides the H1'. The test expects the H1 heading to be hidden when hide_title: true is set in frontmatter. Currently the H1 remains visible. Implement hide_title support in the layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:161",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:20:00Z",
+      "notes": [
+        "Added hideTitle prop extraction in generated entry file template",
+        "Added hideTitle prop to Layout.astro and passed through to BaseLayout",
+        "Added .hide-title CSS class to global CSS with display:none for first h1",
+        "Applied .hide-title class conditionally on prose container when hideTitle is true"
+      ]
     },
     {
       "id": "fix-pagination-label",

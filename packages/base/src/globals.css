@@ -236,4 +236,9 @@
   .npm2yarn-tabs .tab-content p {
     @apply m-0;
   }
+
+  /* Hide title feature - hides the first H1 when hide_title: true is set */
+  .hide-title h1:first-of-type {
+    @apply hidden;
+  }
 }

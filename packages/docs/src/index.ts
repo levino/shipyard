@@ -412,7 +412,7 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, keywords, image, canonicalUrl, customMetaTags } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags } = entry.data
 
 let editUrl
 if (customEditUrl === null) {
@@ -452,7 +452,7 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
   <Content />
 </Layout>
 `

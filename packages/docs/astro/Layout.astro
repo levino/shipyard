@@ -66,6 +66,11 @@ interface Props {
    * Custom meta tags to add to the page head.
    */
   customMetaTags?: CustomMetaTag[]
+  /**
+   * Whether to hide the H1 title heading on this page.
+   * @default false
+   */
+  hideTitle?: boolean
 }
 
 const {
@@ -76,6 +81,7 @@ const {
   lastUpdated,
   lastAuthor,
   hideTableOfContents = false,
+  hideTitle = false,
   keywords,
   image,
   canonicalUrl,
@@ -182,7 +188,7 @@ if (docsConfig?.llmsTxtEnabled) {
 <BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
-      <div class="prose max-w-none">
+      <div class:list={['prose', 'max-w-none', { 'hide-title': hideTitle }]}>
         <Breadcrumbs navigation={entries} />
         {!hideTableOfContents && <TableOfContents links={headings} class="xl:hidden" />}
         <slot />
