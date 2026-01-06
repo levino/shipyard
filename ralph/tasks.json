@@ -555,12 +555,19 @@
       "id": "example-basic-versioning",
       "title": "Create basic versioning example",
       "description": "Add simple example showing minimal version setup. Include in docs examples section. Show: basic config, two versions, simple content",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:04:00Z",
       "dependsOn": ["docs-versioning-guide-en"],
-      "notes": []
+      "notes": [
+        "Created new 'examples' section in docs with English and German versions",
+        "Created apps/docs/docs/en/examples/index.md and apps/docs/docs/de/examples/index.md as example index pages",
+        "Created apps/docs/docs/en/examples/basic-versioning.md with comprehensive example including astro.config.mjs, content.config.ts, directory structure, and sample content files",
+        "Created German translation at apps/docs/docs/de/examples/basic-versioning.md",
+        "Docs app builds successfully (44 pages, +4 from new examples)",
+        "All 149 unit tests pass, all E2E tests pass"
+      ]
     },
     {
       "id": "example-versioning-with-i18n",
