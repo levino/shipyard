@@ -19,11 +19,9 @@ export default defineConfig({
     locales: ['de', 'en'],
     routing: {
       prefixDefaultLocale: true,
-      fallbackType: 'rewrite',
     },
-    fallback: {
-      de: 'en',
-    },
+    // Fallback disabled to prevent overwriting explicitly generated redirect pages
+    // All docs have content in both locales, so fallback is not needed
   },
   integrations: [
     tailwind({

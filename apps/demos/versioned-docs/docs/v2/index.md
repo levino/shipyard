@@ -18,9 +18,9 @@ Welcome to the **Version 2.0** documentation! This is the latest and recommended
 
 Ready to dive in? Check out these pages:
 
-1. [Installation Guide](/docs/v2/installation) - Get up and running
-2. [Migration from v1](/docs/v2/migration) - Upgrade from the previous version
-3. [Configuration](/docs/v2/configuration) - Customize your setup
+1. [Installation Guide](./installation) - Get up and running (relative link)
+2. [Migration from v1](./migration) - Upgrade from the previous version
+3. [Configuration](/docs/configuration) - Customize your setup (auto-versioned link)
 
 ## Version Information
 

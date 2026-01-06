@@ -14,8 +14,12 @@ test.describe('Version Badge Component', () => {
       await expect(badge).toBeVisible()
     })
 
-    test('version badge is visible on latest alias', async ({ page }) => {
+    test('version badge is visible after latest alias redirect', async ({
+      page,
+    }) => {
       await page.goto('/docs/latest/')
+      // Wait for 301 redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
       const badge = page.locator('[data-testid="version-badge"]')
       await expect(badge).toBeVisible()
     })
@@ -50,8 +54,12 @@ test.describe('Version Badge Component', () => {
       await expect(badge).toHaveClass(/badge-warning/)
     })
 
-    test('latest alias shows Stable badge (same as v2)', async ({ page }) => {
+    test('latest alias redirects and shows Stable badge (same as v2)', async ({
+      page,
+    }) => {
       await page.goto('/docs/latest/')
+      // Wait for 301 redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
       const badge = page.locator('[data-testid="version-badge"]')
       await expect(badge).toContainText('Stable')
       await expect(badge).toHaveClass(/badge-success/)

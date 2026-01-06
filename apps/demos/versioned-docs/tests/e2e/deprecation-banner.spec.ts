@@ -30,11 +30,14 @@ test.describe('Deprecation Banner', () => {
       await expect(banner).not.toBeVisible()
     })
 
-    test('deprecation banner does NOT appear on latest alias pages', async ({
+    test('deprecation banner does NOT appear after latest alias redirect', async ({
       page,
     }) => {
       await page.goto('/docs/latest/')
+      // Wait for 301 redirect to v2
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
       const banner = page.locator('[data-testid="deprecation-banner"]')
+      // After redirect to v2 (stable), banner should not appear
       await expect(banner).not.toBeVisible()
     })
 

@@ -183,13 +183,17 @@ test.describe('Versioned i18n Demo', () => {
       ).toBeVisible()
     })
 
-    test('latest alias works in English', async ({ page }) => {
+    test('latest alias redirects in English', async ({ page }) => {
       await page.goto('/en/docs/latest/')
+      // Wait for 301 redirect to v2
+      await page.waitForURL(/\/en\/docs\/v2\/?$/, { timeout: 5000 })
       await expect(page.locator('h1')).toContainText('Documentation v2')
     })
 
-    test('latest alias works in German', async ({ page }) => {
+    test('latest alias redirects in German', async ({ page }) => {
       await page.goto('/de/docs/latest/')
+      // Wait for 301 redirect to v2
+      await page.waitForURL(/\/de\/docs\/v2\/?$/, { timeout: 5000 })
       await expect(page.locator('h1')).toContainText('Dokumentation v2')
     })
   })
@@ -201,15 +205,13 @@ test.describe('Versioned i18n Demo', () => {
       expect(page.url()).toContain('/en/docs/v2/')
     })
 
-    // Note: German /docs/ currently redirects to /en/docs/v2/ instead of /de/docs/v2/
-    // This is a known limitation - the redirect doesn't preserve locale context
-    test('German /docs/ redirects to default locale version', async ({
+    test('German /docs/ redirects to current version preserving locale', async ({
       page,
     }) => {
       await page.goto('/de/docs/')
-      // Astro meta-refresh redirects can take a moment - redirects to default locale
-      await page.waitForURL(/\/en\/docs\/v2/, { timeout: 6000 })
-      expect(page.url()).toContain('/en/docs/v2')
+      // Should redirect to German v2, preserving locale context
+      await page.waitForURL('/de/docs/v2/', { timeout: 5000 })
+      expect(page.url()).toContain('/de/docs/v2/')
     })
   })
 

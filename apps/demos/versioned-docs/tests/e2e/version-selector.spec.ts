@@ -215,12 +215,17 @@ test.describe('Version Selector Component', () => {
       expect(href).toBe('/docs/v1/configuration/')
     })
 
-    test('latest alias shows v2 as current version', async ({ page }) => {
+    test('latest alias redirects to v2 and shows v2 as current version', async ({
+      page,
+    }) => {
       await page.goto('/docs/latest/')
+      // Wait for 301 redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
+
       const dropdown = page.locator('[data-testid="version-selector"].dropdown')
       const dropdownButton = dropdown.locator('button, [role="button"]')
 
-      // Button should show v2 since latest resolves to v2
+      // Button should show v2 since we redirected to v2
       await expect(dropdownButton).toContainText('Version 2.0')
     })
   })

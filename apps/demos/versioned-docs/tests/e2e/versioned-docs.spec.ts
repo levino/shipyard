@@ -29,8 +29,10 @@ test.describe('Versioned Documentation Demo', () => {
       await expect(page.locator('h1')).toContainText('Documentation v1')
     })
 
-    test('latest alias resolves to v2', async ({ page }) => {
+    test('latest alias redirects to v2', async ({ page }) => {
       await page.goto('/docs/latest/')
+      // Wait for 301 redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
       await expect(page.locator('h1')).toContainText('Documentation v2')
     })
 
@@ -189,11 +191,14 @@ test.describe('Versioned Documentation Demo', () => {
       expect(page.url()).toMatch(/\/docs\/v1\/configuration\/?$/)
     })
 
-    test('latest alias has correct URL structure', async ({ page }) => {
+    test('latest alias redirects with correct URL structure', async ({
+      page,
+    }) => {
       await page.goto('/docs/latest/installation/')
-      // Should keep the 'latest' in URL (no redirect)
-      expect(page.url()).toMatch(/\/docs\/latest\/installation\/?$/)
-      // But should show v2 content
+      // SEO-friendly 301 redirect to canonical version URL
+      await page.waitForURL(/\/docs\/v2\/installation\/?$/, { timeout: 5000 })
+      expect(page.url()).toMatch(/\/docs\/v2\/installation\/?$/)
+      // Shows v2 content
       await expect(page.locator('h1')).toContainText('Installation Guide (v2)')
     })
 

@@ -141,11 +141,27 @@ cd apps/demo && npm run dev
 - Sidebar links on latest alias pages point to canonical version URLs (e.g., `/docs/v2/...`), not `/docs/latest/...`
 
 ### Docs Root Redirect with i18n
-- **Known Limitation**: The docs root redirect (`/[locale]/docs/`) doesn't preserve the locale context
-- When visiting `/de/docs/`, it redirects to `/en/docs/v2/` instead of `/de/docs/v2/`
-- This happens because the redirect page is generated without awareness of the current locale
-- Workaround: Users should link directly to versioned paths (e.g., `/de/docs/v2/`) instead of `/de/docs/`
-- Future improvement: Generate locale-aware redirect pages or use middleware/SSR for smarter redirects
+- The docs root redirect (`/[locale]/docs/`) now preserves locale context when i18n fallback is disabled
+- When visiting `/de/docs/`, it correctly redirects to `/de/docs/v2/`
+- This works because the redirect page is generated with the `docLocale` prop from getStaticPaths
+
+### Astro i18n Fallback Conflicts with Static Redirects
+- **IMPORTANT**: When using Astro's i18n fallback with `fallbackType: 'rewrite'`, Astro will generate fallback pages AFTER getStaticPaths runs
+- This can overwrite explicitly generated static paths (like redirect pages) with fallback content
+- If German content explicitly exists but you also have `fallback: { de: 'en' }`, the fallback may overwrite your German pages
+- **Solution for versioned docs**: Disable i18n fallback when all localized content exists in each locale
+- **Alternative**: Use inline Response objects with redirect HTML instead of `Astro.redirect()` - these are more resilient to fallback interference
+- **Symptom**: Pages show as 404 with path showing the source locale (e.g., `/de/docs/latest/` shows `Path: /en/docs/latest/` in 404 page)
+
+### SEO-Friendly Static Redirects
+- For `/latest/` alias redirects, generate HTML with:
+  - `<title>Redirecting to: [targetUrl]</title>` for tab display
+  - `<meta http-equiv="refresh" content="0;url=[targetUrl]">` for immediate redirect
+  - `<meta name="robots" content="noindex">` to prevent indexing redirect pages
+  - `<link rel="canonical" href="[absoluteTargetUrl]">` for SEO
+  - Fallback anchor link for non-JS/meta-refresh browsers
+- Return as Response with status 301 and Location header (for server-side handling)
+- This approach works in SSG mode and is more reliable than `Astro.redirect()` with i18n
 
 ---
 

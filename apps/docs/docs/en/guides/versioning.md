@@ -357,6 +357,138 @@ Each version generates a complete set of static pages. For large documentation s
 
 ---
 
+## Cross-Version Links
+
+When writing versioned documentation, you often need to link between pages within the same version or to specific pages in other versions. shipyard provides a rehype plugin for intelligent link handling.
+
+### Setting Up Link Resolution
+
+Add the `rehypeVersionLinks` plugin to your Astro markdown config:
+
+```javascript
+import shipyardDocs, { rehypeVersionLinks } from '@levino/shipyard-docs'
+
+// Define your versions config (reuse in both places)
+const versionsConfig = {
+  current: 'v2',
+  available: [
+    { version: 'v2', label: 'Version 2.0 (Latest)' },
+    { version: 'v1', label: 'Version 1.0', banner: 'unmaintained' },
+  ],
+  deprecated: ['v1'],
+  stable: 'v2',
+}
+
+export default defineConfig({
+  markdown: {
+    rehypePlugins: [
+      [
+        rehypeVersionLinks,
+        {
+          routeBasePath: 'docs',
+          currentVersion: versionsConfig.current,
+          availableVersions: versionsConfig.available.map((v) => v.version),
+        },
+      ],
+    ],
+  },
+  integrations: [
+    shipyardDocs({
+      versions: versionsConfig,
+    }),
+  ],
+})
+```
+
+### Link Types
+
+#### 1. Relative Links (Same Version)
+
+Relative links automatically stay within the current version:
+
+```markdown
+<!-- In /docs/v2/getting-started.md -->
+See the [configuration guide](./configuration) for more options.
+
+<!-- Renders as: <a href="./configuration">... -->
+<!-- Navigates to: /docs/v2/configuration -->
+```
+
+Use relative links for navigation within the same version. They work correctly regardless of which version the page is in.
+
+#### 2. Cross-Version Links (@version:/path)
+
+Use the `@version:/path` syntax to link to a specific version:
+
+```markdown
+<!-- Link to v2 from any page -->
+Check the [v2 migration guide](@v2:/migration)
+
+<!-- Link to v1 docs -->
+See the [old configuration](@v1:/configuration)
+
+<!-- Link using latest alias -->
+View the [latest documentation](@latest:/getting-started)
+```
+
+The plugin transforms these links:
+- `@v2:/migration` → `/docs/v2/migration`
+- `@v1:/configuration` → `/docs/v1/configuration`
+- `@latest:/getting-started` → `/docs/latest/getting-started`
+
+#### 3. Auto-Versioned Absolute Links
+
+Absolute links to docs without a version are automatically versioned to the current version:
+
+```markdown
+<!-- In any versioned doc -->
+See the [installation guide](/docs/installation)
+
+<!-- With currentVersion: 'v2', renders as: -->
+<a href="/docs/v2/installation">...
+```
+
+This is useful when migrating existing docs to versioning.
+
+### Best Practices for Links
+
+| Use Case | Recommended Approach | Example |
+|----------|---------------------|---------|
+| Same-version navigation | Relative links | `[Page](./page)` |
+| Cross-version references | @version syntax | `[@v2:/page](@v2:/page)` |
+| External links | Full URL | `[Docs](https://...)` |
+| Anchor links | Standard syntax | `[Section](#section)` |
+
+### Plugin Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `routeBasePath` | `string` | Base path for docs (e.g., `'docs'`) |
+| `currentVersion` | `string` | The current/default version |
+| `availableVersions` | `string[]` | List of valid version identifiers |
+| `debug` | `boolean` | Enable verbose logging (default: `false`) |
+
+### Example: Deprecation Notice Links
+
+A common pattern is linking from deprecated docs to the current version:
+
+```markdown
+<!-- In docs/v1/configuration.md -->
+---
+title: Configuration (v1)
+---
+
+# Configuration (v1)
+
+> **Deprecated**: This guide is for v1. See the [v2 configuration guide](@v2:/configuration) for current options.
+
+## Legacy Configuration
+
+When upgrading to v2, see the [Migration Guide](@v2:/migration).
+```
+
+---
+
 ## See Also
 
 - [@levino/shipyard-docs](../docs-package) - Full docs package reference

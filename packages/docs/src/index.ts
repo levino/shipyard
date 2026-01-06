@@ -13,6 +13,9 @@ export { generateLlmsFullTxt, generateLlmsTxt } from './llmsTxt'
 // Re-export pagination types and utilities
 export type { PaginationInfo, PaginationLink } from './pagination'
 export { getPaginationInfo } from './pagination'
+// Re-export rehype plugin for version-aware links
+export type { RehypeVersionLinksOptions } from './rehypeVersionLinks'
+export { rehypeVersionLinks } from './rehypeVersionLinks'
 export type { DocsEntry, DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
 export {
@@ -698,20 +701,23 @@ export async function getStaticPaths() {
       }
     }
 
+    // Extract locale from docIdWithoutVersion for i18n builds
+    const docLocale = i18n ? docIdWithoutVersion.split('/')[0] : undefined
+
     // Add the main path for this doc
     paths.push({
       params: getParams(docIdWithoutVersion, version),
-      props: { entry, routeBasePath, version, isLatestAlias: false },
+      props: { entry, routeBasePath, version, isLatestAlias: false, docLocale },
     })
 
-    // If this doc is in the current version, also generate a 'latest' alias path
+    // If this doc is in the current version, also generate a 'latest' alias path that redirects
     if (hasVersions && versionsConfig && version) {
       const extractedVersion = getVersionFromDocId(entry.id)
       const currentVersion = versionsConfig.current
       if (extractedVersion === currentVersion) {
         paths.push({
           params: getParams(docIdWithoutVersion, 'latest'),
-          props: { entry, routeBasePath, version: 'latest', actualVersion: version, isLatestAlias: true },
+          props: { entry, routeBasePath, version: 'latest', actualVersion: version, isLatestAlias: true, docLocale },
         })
       }
     }
@@ -720,7 +726,40 @@ export async function getStaticPaths() {
   return paths
 }
 
-const { entry, routeBasePath, version, actualVersion, isLatestAlias } = Astro.props
+const { entry, routeBasePath, version, actualVersion, isLatestAlias, docLocale } = Astro.props
+const { slug: pageSlug } = Astro.params
+
+// SEO-friendly redirect for /latest/ URLs to canonical version URLs
+// We handle the redirect inline below since Astro.redirect() doesn't work reliably
+// with i18n fallback pages
+const redirectInfo = isLatestAlias && actualVersion ? {
+  locale: docLocale,
+  targetUrl: docLocale
+    ? (pageSlug
+        ? \`/\${docLocale}/\${routeBasePath}/\${actualVersion}/\${pageSlug}\`
+        : \`/\${docLocale}/\${routeBasePath}/\${actualVersion}/\`)
+    : (pageSlug
+        ? \`/\${routeBasePath}/\${actualVersion}/\${pageSlug}\`
+        : \`/\${routeBasePath}/\${actualVersion}/\`),
+  fromUrl: docLocale
+    ? (pageSlug
+        ? \`/\${docLocale}/\${routeBasePath}/latest/\${pageSlug}\`
+        : \`/\${docLocale}/\${routeBasePath}/latest/\`)
+    : (pageSlug
+        ? \`/\${routeBasePath}/latest/\${pageSlug}\`
+        : \`/\${routeBasePath}/latest/\`),
+} : null
+
+// If this is a redirect, return early with a minimal redirect page
+if (redirectInfo) {
+  return new Response(\`<!doctype html><title>Redirecting to: \${redirectInfo.targetUrl}</title><meta http-equiv="refresh" content="0;url=\${redirectInfo.targetUrl}"><meta name="robots" content="noindex"><link rel="canonical" href="\${Astro.site ? new URL(redirectInfo.targetUrl, Astro.site).href : redirectInfo.targetUrl}"><body>\\t<a href="\${redirectInfo.targetUrl}">Redirecting from <code>\${redirectInfo.fromUrl}</code> to <code>\${redirectInfo.targetUrl}</code></a></body>\`, {
+    status: 301,
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Location': redirectInfo.targetUrl,
+    },
+  })
+}
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,
@@ -876,6 +915,7 @@ export function hasVersioning(routeBasePath = 'docs') {
           // With i18n: use locale prefix
           if (versions) {
             // Versioned routes: /[locale]/[routeBasePath]/[version]/[...slug]
+            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the frontmatter
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}/[version]/[...slug]`,
               entrypoint: entryFilePath,
@@ -927,6 +967,7 @@ return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302
           // Without i18n: direct path
           if (versions) {
             // Versioned routes: /[routeBasePath]/[version]/[...slug]
+            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the frontmatter
             injectRoute({
               pattern: `/${normalizedBasePath}/[version]/[...slug]`,
               entrypoint: entryFilePath,

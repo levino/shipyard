@@ -50,12 +50,16 @@ test.describe('Version-specific Sidebar E2E Tests', () => {
       )
     })
 
-    test('latest alias sidebar matches v2 content', async ({ page }) => {
+    test('latest alias redirects to v2 and sidebar matches v2 content', async ({
+      page,
+    }) => {
       await page.goto('/docs/latest/')
+      // Wait for redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
+
       const sidebar = page.locator('[data-testid="sidebar-local-nav"]')
 
-      // Latest alias resolves to v2 for sidebar filtering
-      // Sidebar links point to canonical v2 URLs (not latest alias)
+      // After redirect, sidebar shows v2 content
       await expect(
         sidebar.locator('a[href="/docs/v2/installation"]'),
       ).toBeVisible()
@@ -265,10 +269,13 @@ test.describe('Version-specific Sidebar E2E Tests', () => {
       }
     })
 
-    test('latest alias sidebar links point to canonical v2 paths', async ({
+    test('latest alias redirects to v2 and sidebar shows v2 paths', async ({
       page,
     }) => {
       await page.goto('/docs/latest/')
+      // Wait for redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
+
       const sidebar = page.locator('[data-testid="sidebar-local-nav"]')
 
       const docLinks = sidebar.locator('a[href^="/docs/"]')
@@ -276,8 +283,7 @@ test.describe('Version-specific Sidebar E2E Tests', () => {
         links.map((l) => l.getAttribute('href')),
       )
 
-      // Latest alias sidebar shows v2 content with canonical v2 URLs
-      // (not latest alias URLs - this is expected behavior)
+      // After redirect to v2, sidebar shows v2 content with canonical v2 URLs
       expect(hrefs.length).toBeGreaterThan(0)
       for (const href of hrefs) {
         expect(href).toMatch(/^\/docs\/v2(\/|$)/)

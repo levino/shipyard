@@ -6,7 +6,7 @@ sidebar_position: 2
 
 # Configuration Guide (v1)
 
-> **Deprecated**: This guide is for v1. See the [v2 configuration guide](/docs/v2/configuration) for current options.
+> **Deprecated**: This guide is for v1. See the [v2 configuration guide](@v2:/configuration) for current options.
 
 ## Basic Configuration
 
@@ -55,7 +55,7 @@ v1 configuration does not support:
 - Advanced sidebar configuration
 - Custom theme options
 
-These features are available in [v2](/docs/v2/configuration).
+These features are available in [v2](@v2:/configuration).
 
 ## Migrating Configuration
 
@@ -65,4 +65,4 @@ When upgrading to v2, rename these options:
 - `siteTagline` → `tagline`
 - `brandName` → `brand`
 
-See the [Migration Guide](/docs/v2/migration) for complete instructions.
+See the [Migration Guide](@v2:/migration) for complete instructions.
