@@ -6,7 +6,7 @@ date: 2026-01-06
 
 # shipyard Public Release
 
-We're excited to announce the public release of **shipyard** - a composable page builder for Astro.
+I'm excited to announce the public release of **shipyard** - a composable page builder for Astro.
 
 ## What is shipyard?
 
@@ -22,7 +22,7 @@ shipyard is a toolkit for building documentation sites, blogs, and content-focus
 
 ## Why shipyard?
 
-We built shipyard because existing tools didn't quite fit our needs:
+I built shipyard because existing tools didn't quite fit my needs:
 
 - **Docusaurus** is powerful but ships heavy JavaScript bundles and makes custom content types difficult
 - **Starlight** is lean but couples docs functionality too tightly - you can't use just the styling and navigation
@@ -39,6 +39,6 @@ Check out the [Getting Started guide](/en/docs/getting-started) for full setup i
 
 ## What's Next
 
-shipyard is production-ready and actively developed. See our [roadmap](/en/docs/roadmap) for upcoming features.
+shipyard is production-ready and actively developed. See the [roadmap](/en/docs/roadmap) for upcoming features.
 
-We welcome contributions and feedback! Visit our [GitHub repository](https://github.com/levino/shipyard) to get involved.
+Contributions and feedback are welcome! Visit the [GitHub repository](https://github.com/levino/shipyard) to get involved.
