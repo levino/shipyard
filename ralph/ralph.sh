@@ -17,12 +17,12 @@ while true; do
 
   echo "$pending tasks remaining"
 
-  # Run Claude with context files
-  echo "Read these files and follow the instructions in PROMPT.md:
+  # Run Claude non-interactively
+  claude -p "Read these files and follow the instructions in PROMPT.md:
 @$SCRIPT_DIR/PROMPT.md
 @$SCRIPT_DIR/tasks.json
 @$SCRIPT_DIR/learnings.md
-@$SCRIPT_DIR/history.md" | claude --print
+@$SCRIPT_DIR/history.md"
 
   echo "=== Session complete, waiting 5s ==="
   sleep 5
