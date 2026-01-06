@@ -241,12 +241,19 @@
       "id": "version-latest-redirect",
       "title": "Implement /latest/ redirect handling",
       "description": "Create redirect from /docs/latest/[...slug] to /docs/[currentVersion]/[...slug]. Handle in both SSG and SSR modes. Ensure SEO-friendly (301 redirect) for latest",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:52:00Z",
       "dependsOn": ["version-route-injection"],
-      "notes": []
+      "notes": [
+        "Implemented SEO-friendly 301 redirects for /latest/ URLs in SSG mode",
+        "Uses HTML meta-refresh redirect instead of Astro.redirect() for compatibility with i18n fallback",
+        "Redirect pages include canonical URL, noindex meta, and fallback link",
+        "Works correctly for both non-i18n (/docs/latest/ -> /docs/v2/) and i18n (/de/docs/latest/ -> /de/docs/v2/) modes",
+        "For i18n mode, disabled i18n fallback in versioned-i18n demo to prevent overwriting explicitly generated redirect pages",
+        "All 123 versioned-docs E2E tests pass (98 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "version-cross-version-links",
@@ -530,12 +537,19 @@
       "id": "docs-migration-guide-de",
       "title": "Translate migration guide to German",
       "description": "Translate the migration guide from English to German. Place in docs/de/guides/migration-to-versioned.md",
-      "status": "pending",
+      "status": "completed",
       "priority": "low",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:59:00Z",
       "dependsOn": ["docs-migration-guide-en"],
-      "notes": []
+      "notes": [
+        "Created German translation at apps/docs/docs/de/guides/migration-to-versioned.md",
+        "Translation follows same approach as versioning guide (technical terms in English)",
+        "German guides index already had link to migration guide",
+        "Docs app builds successfully (40 pages)",
+        "All 149 unit tests pass",
+        "All E2E tests pass (177 i18n + 11 single-language + 98 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "example-basic-versioning",
