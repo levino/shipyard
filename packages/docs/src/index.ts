@@ -434,7 +434,17 @@ if (customEditUrl === null) {
   editUrl = undefined
 } else if (customEditUrl) {
   editUrl = customEditUrl
+} else if (entry.filePath) {
+  // Use filePath instead of entry.id because Astro's glob loader
+  // strips "index" from entry.id for index pages (e.g., en/index -> en)
+  // Strip the collection base directory to get the relative path
+  const collectionBase = \`\${docsConfig.collectionName}/\`
+  const relativePath = entry.filePath.startsWith(collectionBase)
+    ? entry.filePath.slice(collectionBase.length)
+    : entry.filePath
+  editUrl = getEditUrl(docsConfig.editUrl, relativePath)
 } else {
+  // Fallback to entry.id if filePath is not available
   editUrl = getEditUrl(docsConfig.editUrl, entry.id)
 }
 

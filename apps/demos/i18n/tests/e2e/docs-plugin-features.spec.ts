@@ -265,6 +265,28 @@ test.describe('Documentation Plugin Features', () => {
       await expect(editLink).toHaveAttribute('target', '_blank')
       await expect(editLink).toHaveAttribute('rel', /noopener/)
     })
+
+    test('edit link for index pages points to index.md file', async ({
+      page,
+    }) => {
+      // Test docs index page
+      await page.goto('/en/docs/')
+      const docsEditLink = page.locator('a.edit-link')
+      await expect(docsEditLink).toBeAttached()
+      const docsHref = await docsEditLink.getAttribute('href')
+      // Should end with /index.md, not just /en.md
+      expect(docsHref).toContain('/en/index.md')
+      expect(docsHref).not.toContain('/en.md')
+
+      // Test guides index page
+      await page.goto('/en/guides/')
+      const guidesEditLink = page.locator('a.edit-link')
+      await expect(guidesEditLink).toBeAttached()
+      const guidesHref = await guidesEditLink.getAttribute('href')
+      // Should end with /index.md, not just /en.md
+      expect(guidesHref).toContain('/en/index.md')
+      expect(guidesHref).not.toContain('/en.md')
+    })
   })
 
   test.describe('SEO Features', () => {
