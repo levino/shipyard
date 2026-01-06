@@ -10,9 +10,9 @@ Is shipyard ready for production use? Who maintains it? Will it be around in a y
 
 > **Note:** This page reflects the state of the project as of December 2025.
 
-## Is Shipyard Production-Ready?
+## Is shipyard Production-Ready?
 
-**Yes.** Shipyard is already used in several production projects. Most features are working well.
+**Yes.** shipyard is already used in several production projects. Most features are working well.
 
 Here's an honest assessment of where things stand:
 
@@ -24,9 +24,9 @@ Here's an honest assessment of where things stand:
 | **Documentation** | Growing – core features are documented |
 | **Test coverage** | E2E tests for critical paths |
 
-## Who Maintains Shipyard?
+## Who Maintains shipyard?
 
-Shipyard is currently a **one-person project**, maintained by [Levin Keller](https://github.com/levino).
+shipyard is currently a **one-person project**, maintained by [Levin Keller](https://github.com/levino).
 
 ### Is That a Problem?
 
@@ -38,7 +38,7 @@ Not necessarily. Consider:
 
 ### What About Long-Term Sustainability?
 
-Shipyard is used in production for the maintainer's own projects. That means:
+shipyard is used in production for the maintainer's own projects. That means:
 
 - There's real incentive to keep it working
 - Features are battle-tested in real use cases
@@ -52,17 +52,17 @@ Let's be direct about resources:
 |---------|---------|
 | **Docusaurus** | Meta (Facebook) – significant corporate resources |
 | **Starlight** | Astro – Chris Swithinbank is now employed by Astro |
-| **Shipyard** | Independent – one developer, no corporate backing |
+| **shipyard** | Independent – one developer, no corporate backing |
 
-This is a real difference. Docusaurus has dedicated engineers. Starlight has official Astro support. Shipyard has one person working on it in their available time.
+This is a real difference. Docusaurus has dedicated engineers. Starlight has official Astro support. shipyard has one person working on it in their available time.
 
-### Why Shipyard Can Still Compete
+### Why shipyard Can Still Compete
 
 **AI-augmented development changes the equation.**
 
-Shipyard is also an experiment: Can a single developer, augmented by AI tools like Claude, deliver the same value as a well-funded team? So far, the answer seems to be yes.
+shipyard is also an experiment: Can a single developer, augmented by AI tools like Claude, deliver the same value as a well-funded team? So far, the answer seems to be yes.
 
-- Shipyard already has features that Starlight lacks
+- shipyard already has features that Starlight lacks
 - Development velocity is higher than you'd expect from a solo project
 - AI assistance handles much of the implementation grunt work
 
@@ -79,7 +79,7 @@ Want to help? Contributions are welcome:
 
 ## Version Policy
 
-Shipyard follows semantic versioning:
+shipyard follows semantic versioning:
 
 - **Patch versions** (0.x.Y) – Bug fixes, no breaking changes
 - **Minor versions** (0.X.0) – New features, potentially breaking in 0.x
@@ -89,6 +89,6 @@ You won't be surprised by breaking changes. Update when you're ready, check the 
 
 ## The Bottom Line
 
-Shipyard is production-ready today. It's maintained by someone who uses it in production. It may not have Meta's resources, but it's actively developed and improving.
+shipyard is production-ready today. It's maintained by someone who uses it in production. It may not have Meta's resources, but it's actively developed and improving.
 
 If you need the safety of corporate backing, choose Docusaurus. If you want lean, composable building blocks and are comfortable with an independent project, shipyard is ready for you.

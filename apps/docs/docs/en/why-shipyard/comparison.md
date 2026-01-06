@@ -58,9 +58,9 @@ The default page builder for Astro is [Starlight](https://github.com/withastro/s
 
 ---
 
-## How Shipyard Differs
+## How shipyard Differs
 
-Shipyard takes a different approach: **composable building blocks on Astro**.
+shipyard takes a different approach: **composable building blocks on Astro**.
 
 - Use **@levino/shipyard-base** alone for a marketing site—no docs required
 - Add **@levino/shipyard-docs** when you need documentation
@@ -68,7 +68,7 @@ Shipyard takes a different approach: **composable building blocks on Astro**.
 - Customize navigation, layouts, and styling from day one
 - Leverage [DaisyUI](https://daisyui.com/) for well-documented, maintained components
 
-The key difference is flexibility. Shipyard doesn't assume you're building a documentation site—it gives you the tools to build whatever you need.
+The key difference is flexibility. shipyard doesn't assume you're building a documentation site—it gives you the tools to build whatever you need.
 
 ---
 
@@ -76,6 +76,6 @@ The key difference is flexibility. Shipyard doesn't assume you're building a doc
 
 - **Choose Docusaurus** if you need versioned docs and don't mind the JavaScript bundle
 - **Choose Starlight** if you only need documentation and want minimal setup
-- **Choose Shipyard** if you want composable building blocks and the flexibility to grow beyond docs
+- **Choose shipyard** if you want composable building blocks and the flexibility to grow beyond docs
 
 See also: [Docusaurus Feature Parity Roadmap](../roadmap) for a detailed comparison of supported features.

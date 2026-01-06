@@ -1,31 +1,31 @@
 ---
-title: Why Shipyard?
+title: Why shipyard?
 slug: 'en/why-shipyard'
 ---
 
-# Why Shipyard?
+# Why shipyard?
 
 With established tools like [Docusaurus](https://docusaurus.io/) and [Astro Starlight](https://starlight.astro.build/) already available, why create another page builder?
 
 ## Quick Answer
 
-Shipyard exists because:
+shipyard exists because:
 
 - **Docusaurus** is powerful but heavy (SPA, React-only) and hard to extend with custom content types
 - **Starlight** is lean but couples docs functionality too tightly—you can't use just the styling and navigation
-- **Shipyard** gives you composable building blocks on Astro, with easy migration in and out
+- **shipyard** gives you composable building blocks on Astro, with easy migration in and out
 
 ## Learn More
 
 | Topic | Description |
 |-------|-------------|
 | [Comparison with Other Tools](./comparison) | Detailed look at Docusaurus and Starlight—what they do well and where they fall short |
-| [The Shipyard Philosophy](./philosophy) | How shipyard approaches composability, styling, and migration |
+| [The shipyard Philosophy](./philosophy) | How shipyard approaches composability, styling, and migration |
 | [Sustainability & Production Readiness](./sustainability) | Is shipyard production-ready? Who maintains it? The AI experiment |
 
-## When to Use Shipyard
+## When to Use shipyard
 
-Shipyard is ideal when you want:
+shipyard is ideal when you want:
 
 - A content-focused site on Astro without starting from scratch
 - The flexibility to add custom content types beyond docs and blogs
@@ -48,10 +48,12 @@ Astro leans into the space theme—users are "astronauts," projects are "spacesh
 
 A **shipyard** is where you build ships. Not just one ship, but many. It's a station—a mothership, if you will—designed to efficiently produce vessels that go out on their own missions.
 
-That's the idea behind this project. Shipyard is for people who frequently need to spin up new websites. Instead of starting from scratch each time, you have a well-equipped station where you can quickly assemble your next ship and send it off into the cosmos.
+That's the idea behind this project. shipyard is for people who frequently need to spin up new websites. Instead of starting from scratch each time, you have a well-equipped station where you can quickly assemble your next ship and send it off into the cosmos.
 
 Build a site. Launch it. Build another. That's the shipyard workflow.
 
+*By the way: it's always "shipyard" in lowercase, even at the start of a sentence.*
+
 ---
 
-*Shipyard exists because content sites shouldn't require complex frameworks or compromise on flexibility.*
+*shipyard exists because content sites shouldn't require complex frameworks or compromise on flexibility.*

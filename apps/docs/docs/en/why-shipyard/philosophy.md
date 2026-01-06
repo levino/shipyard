@@ -1,12 +1,12 @@
 ---
-title: The Shipyard Philosophy
+title: The shipyard Philosophy
 slug: 'en/why-shipyard/philosophy'
 sidebar_position: 2
 ---
 
-# The Shipyard Philosophy
+# The shipyard Philosophy
 
-Shipyard is built on a few core principles that guide every design decision.
+shipyard is built on a few core principles that guide every design decision.
 
 ## Built on Astro's Strengths
 
@@ -60,7 +60,7 @@ This lets shipyard focus on page builder concerns while delegating styling to ex
 
 ### No Vendor Lock-In
 
-Shipyard doesn't require:
+shipyard doesn't require:
 
 - Proprietary file formats
 - Complex content transformations
