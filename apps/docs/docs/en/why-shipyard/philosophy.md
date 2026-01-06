@@ -58,6 +58,8 @@ This lets shipyard focus on page builder concerns while delegating styling to ex
 - **Migrating from Starlight to shipyard** is equally straightforward
 - **Migrating away from shipyard** is just as easy if you ever need to
 
+*Tip: Use an AI assistant like Claude to help with migration. Since it's just moving Markdown files and adjusting configuration, AI tools can handle most of the work for you.*
+
 ### No Vendor Lock-In
 
 shipyard doesn't require:
