@@ -1,7 +1,8 @@
 ---
 title: Full-Width Page Example
 description: This page demonstrates the hide_sidebar frontmatter option
-sidebar_position: 63
+sidebar:
+  position: 63
 hide_sidebar: true
 pagination_label: Full Width Page
 ---

@@ -1,7 +1,8 @@
 ---
 title: Markdown Features
 description: Explore all the enhanced markdown features available in shipyard
-sidebar_position: 50
+sidebar:
+  position: 50
 tags:
   - markdown
   - documentation

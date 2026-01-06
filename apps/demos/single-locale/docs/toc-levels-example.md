@@ -1,7 +1,8 @@
 ---
 title: TOC Level Filtering Example
 description: Demonstrating toc_min_heading_level and toc_max_heading_level
-sidebar_position: 62
+sidebar:
+  position: 62
 toc_min_heading_level: 2
 toc_max_heading_level: 4
 ---

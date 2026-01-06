@@ -1,7 +1,8 @@
 ---
 title: Custom Document ID Example
 id: my-custom-doc-id
-sidebar_position: 87
+sidebar:
+  position: 87
 description: Demonstration of using a custom document ID for referencing in pagination
 pagination_label: Custom ID Demo
 ---

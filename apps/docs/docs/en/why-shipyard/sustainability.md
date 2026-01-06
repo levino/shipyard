@@ -1,7 +1,8 @@
 ---
 title: Sustainability & Production Readiness
 slug: 'en/why-shipyard/sustainability'
-sidebar_position: 3
+sidebar:
+  position: 3
 ---
 
 # Sustainability & Production Readiness

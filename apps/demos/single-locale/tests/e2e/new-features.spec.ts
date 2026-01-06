@@ -638,9 +638,9 @@ test.describe('Title Meta Frontmatter', () => {
 })
 
 test.describe('Blog Sidebar Label', () => {
-  test('blog post with sidebar_label uses it in sidebar', async ({ page }) => {
+  test('blog post with sidebar.label uses it in sidebar', async ({ page }) => {
     await page.goto('/blog')
-    // sidebar_label "Advanced Features" is used instead of the full title
+    // sidebar.label "Advanced Features" is used instead of the full title
     const sidebarLabel = page.locator(
       '[data-testid="sidebar-navigation"] a:has-text("Advanced Features")',
     )

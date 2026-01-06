@@ -1,6 +1,7 @@
 ---
 title: Canonical URL Example
-sidebar_position: 75
+sidebar:
+  position: 75
 description: Demonstration of using custom canonical URLs for SEO
 canonical_url: https://example.com/the-canonical-version
 pagination_label: Canonical URL

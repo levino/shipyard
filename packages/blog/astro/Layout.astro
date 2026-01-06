@@ -39,12 +39,12 @@ const hasMorePosts = blogSidebarCount !== 'ALL' && totalPosts > blogSidebarCount
 // Build navigation tree with title as section header
 const blogIndexPath = i18n ? `/${locale}/${routeBasePath}` : `/${routeBasePath}`
 const postsEntry = displayPosts.reduce(
-  (acc, { id, data: { title: postTitle, sidebar_label } }, key) => {
+  (acc, { id, data: { title: postTitle, sidebar } }, key) => {
     acc[key] = {
       href: i18n
         ? `/${locale}/${routeBasePath}/${id.slice(3)}`
         : `/${routeBasePath}/${id}`,
-      label: sidebar_label ?? postTitle,
+      label: sidebar?.label ?? postTitle,
     }
     return acc
   },

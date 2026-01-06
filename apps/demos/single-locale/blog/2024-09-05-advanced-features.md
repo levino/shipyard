@@ -1,7 +1,8 @@
 ---
 title: Advanced Features in Single-Language Mode
 title_meta: "Advanced shipyard Features | Blog"
-sidebar_label: Advanced Features
+sidebar:
+  label: Advanced Features
 description: Explore advanced shipyard features that work great with single-language sites
 date: 2024-09-05
 tags:

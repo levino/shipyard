@@ -1,6 +1,7 @@
 ---
 title: Pagination with Custom ID
-sidebar_position: 88
+sidebar:
+  position: 88
 description: Demonstration of referencing a page by its custom ID in pagination
 pagination_next: my-custom-doc-id
 pagination_prev: null

@@ -54,7 +54,7 @@ export default defineConfig({
     }),
     shipyardDocs({
       editUrl:
-        'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/docs',
+        'https://github.com/levino/shipyard/edit/main/apps/demos/single-locale/docs',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
     }),
@@ -62,7 +62,7 @@ export default defineConfig({
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All posts',
       editUrl:
-        'https://github.com/levino/shipyard/edit/main/apps/demos/single-language/blog',
+        'https://github.com/levino/shipyard/edit/main/apps/demos/single-locale/blog',
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
       tagsMapPath: './blog/tags.yml',

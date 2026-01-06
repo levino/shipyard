@@ -1,6 +1,7 @@
 ---
 title: Custom Meta Tags Example
-sidebar_position: 85
+sidebar:
+  position: 85
 description: Demonstration of using custom meta tags for SEO and social sharing
 custom_meta_tags:
   - name: robots

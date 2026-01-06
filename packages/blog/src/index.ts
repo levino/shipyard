@@ -118,10 +118,17 @@ export const blogSchema = z.object({
    */
   hide_table_of_contents: z.boolean().default(false),
   /**
-   * Custom label for this post in the blog sidebar.
-   * If not provided, uses the title.
+   * Sidebar configuration for this blog post.
    */
-  sidebar_label: z.string().optional(),
+  sidebar: z
+    .object({
+      /**
+       * Custom label for this post in the blog sidebar.
+       * If not provided, uses the title.
+       */
+      label: z.string().optional(),
+    })
+    .default({}),
   /**
    * Minimum heading level to include in table of contents.
    * @default 2

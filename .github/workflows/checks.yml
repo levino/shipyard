@@ -37,9 +37,9 @@ jobs:
           - name: i18n
             workspace: demo
             path: apps/demos/i18n
-          - name: single-language
+          - name: single-locale
             workspace: single-locale-demo
-            path: apps/demos/single-language
+            path: apps/demos/single-locale
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4

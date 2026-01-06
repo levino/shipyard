@@ -14,6 +14,6 @@ Category metadata can be configured via `index.md` frontmatter in category folde
 
 New SEO frontmatter options are available for both docs and blog:
 - `title_meta` - Override the page title used in `<title>` tags and meta tags for SEO, while keeping the regular `title` for sidebar display
-- `sidebar_label` (blog only) - Customize how blog posts appear in the blog sidebar without changing the post title
+- `sidebar.label` (blog only) - Customize how blog posts appear in the blog sidebar without changing the post title
 
 Math equations (KaTeX) and Mermaid diagrams are now supported via Astro's standard remark/rehype plugin ecosystem.

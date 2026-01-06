@@ -2,7 +2,8 @@
 title: SEO Features Demo
 title_meta: "SEO Frontmatter Features | shipyard Documentation"
 description: Demonstrating SEO frontmatter features including keywords and social images
-sidebar_position: 60
+sidebar:
+  position: 60
 keywords:
   - SEO
   - meta tags

@@ -1,6 +1,7 @@
 ---
 title: Custom Slug Example
-sidebar_position: 70
+sidebar:
+  position: 70
 description: Demonstration of using a custom URL slug for documentation pages
 slug: my-custom-url
 pagination_label: Custom URL Slug

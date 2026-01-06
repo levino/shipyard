@@ -1,20 +1,21 @@
 ---
 title: Sidebar Custom Props Example
-sidebar_position: 80
-description: Demonstration of using sidebar_custom_props for badges and custom styling
-sidebar_custom_props:
-  badge: New
-  badgeType: success
+sidebar:
+  position: 80
+  customProps:
+    badge: New
+    badgeType: success
+description: Demonstration of using sidebar.customProps for badges and custom styling
 pagination_label: Custom Props
 ---
 
 # Sidebar Custom Props Example
 
-This page demonstrates the `sidebar_custom_props` frontmatter option which allows you to add custom properties to sidebar items, such as badges.
+This page demonstrates the `sidebar.customProps` frontmatter option which allows you to add custom properties to sidebar items, such as badges.
 
 ## How It Works
 
-The `sidebar_custom_props` field accepts an object with arbitrary key-value pairs. Shipyard supports special properties for common use cases:
+The `sidebar.customProps` field accepts an object with arbitrary key-value pairs. Shipyard supports special properties for common use cases:
 
 ### Badge Properties
 
@@ -23,14 +24,15 @@ The `sidebar_custom_props` field accepts an object with arbitrary key-value pair
 
 ## Usage
 
-Add the `sidebar_custom_props` property to your frontmatter:
+Add the `sidebar.customProps` property to your frontmatter:
 
 ```md
 ---
 title: My New Feature
-sidebar_custom_props:
-  badge: New
-  badgeType: success
+sidebar:
+  customProps:
+    badge: New
+    badgeType: success
 ---
 ```
 
@@ -39,9 +41,10 @@ sidebar_custom_props:
 This page uses:
 
 ```yaml
-sidebar_custom_props:
-  badge: New
-  badgeType: success
+sidebar:
+  customProps:
+    badge: New
+    badgeType: success
 ```
 
 Look at the sidebar - you'll see a green "New" badge next to this page's entry!
@@ -72,11 +75,12 @@ Custom props are useful for:
 You can also add any custom property you need:
 
 ```yaml
-sidebar_custom_props:
-  badge: Beta
-  badgeType: warning
-  version: "2.0"
-  experimental: true
+sidebar:
+  customProps:
+    badge: Beta
+    badgeType: warning
+    version: "2.0"
+    experimental: true
 ```
 
 Custom properties beyond `badge` and `badgeType` are available in the sidebar entry for custom rendering components.

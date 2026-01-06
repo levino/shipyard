@@ -1,7 +1,8 @@
 ---
 title: Hidden Title Example
 description: This page demonstrates the hide_title frontmatter option
-sidebar_position: 61
+sidebar:
+  position: 61
 hide_title: true
 ---
 

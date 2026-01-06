@@ -1,7 +1,8 @@
 ---
 title: Page Without Table of Contents
 description: This page demonstrates the hide_table_of_contents frontmatter option
-sidebar_position: 55
+sidebar:
+  position: 55
 hide_table_of_contents: true
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Erste Schritte
-sidebar_position: 2
+sidebar:
+  position: 2
 description: Lerne wie du shipyard für dein Astro-Projekt installierst und konfigurierst
 ---
 
@@ -147,7 +148,8 @@ Erstelle Markdown-Dateien im `docs/`-Verzeichnis:
 ```markdown
 ---
 title: Einführung
-sidebar_position: 1
+sidebar:
+  position: 1
 description: Lerne unser Projekt kennen
 ---
 
@@ -161,7 +163,7 @@ Dein Dokumentationsinhalt hier...
 | Feld | Typ | Beschreibung |
 |------|-----|--------------|
 | `title` | `string` | Seitentitel |
-| `sidebar_position` | `number` | Position in Sidebar (niedriger = früher) |
+| `sidebar.position` | `number` | Position in Sidebar (niedriger = früher) |
 | `description` | `string` | Seitenbeschreibung für SEO |
 
 Siehe [@levino/shipyard-docs](./docs-package) für alle Frontmatter-Optionen.

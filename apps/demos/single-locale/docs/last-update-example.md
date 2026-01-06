@@ -1,7 +1,8 @@
 ---
 title: Manual Last Update Example
 description: Demonstrating the last_update frontmatter option for manual overrides
-sidebar_position: 64
+sidebar:
+  position: 64
 last_update:
   date: 2025-01-01
   author: Documentation Team
