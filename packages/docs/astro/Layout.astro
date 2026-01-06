@@ -14,6 +14,12 @@ import DocMetadata from './DocMetadata.astro'
 import DocPagination from './DocPagination.astro'
 import LlmsTxtSidebarLabel from './LlmsTxtSidebarLabel.astro'
 
+type CustomMetaTag = {
+  name?: string
+  property?: string
+  content: string
+}
+
 interface Props {
   headings?: { depth: number; text: string; slug: string }[]
   /**
@@ -44,6 +50,22 @@ interface Props {
    * @default false
    */
   hideTableOfContents?: boolean
+  /**
+   * SEO keywords for the page.
+   */
+  keywords?: string[]
+  /**
+   * Social preview image URL (og:image).
+   */
+  image?: string
+  /**
+   * Custom canonical URL for the page.
+   */
+  canonicalUrl?: string
+  /**
+   * Custom meta tags to add to the page head.
+   */
+  customMetaTags?: CustomMetaTag[]
 }
 
 const {
@@ -54,6 +76,10 @@ const {
   lastUpdated,
   lastAuthor,
   hideTableOfContents = false,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
 } = Astro.props
 
 // Normalize the route base path
@@ -153,7 +179,7 @@ if (docsConfig?.llmsTxtEnabled) {
 }
 ---
 
-<BaseLayout sidebarNavigation={entries}>
+<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
       <div class="prose max-w-none">

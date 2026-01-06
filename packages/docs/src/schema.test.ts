@@ -275,4 +275,35 @@ describe('docsSchema', () => {
       expect(result.data.hideTitle).toBe(true)
     }
   })
+
+  it('should transform canonical_url to canonicalUrl', () => {
+    const validData = {
+      canonical_url: 'https://example.com/canonical',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.canonicalUrl).toBe('https://example.com/canonical')
+    }
+  })
+
+  it('should transform custom_meta_tags to customMetaTags', () => {
+    const validData = {
+      custom_meta_tags: [
+        { name: 'robots', content: 'noindex, nofollow' },
+        { name: 'author', content: 'Test Author' },
+      ],
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.customMetaTags).toHaveLength(2)
+      expect(result.data.customMetaTags?.[0]).toEqual({
+        name: 'robots',
+        content: 'noindex, nofollow',
+      })
+    }
+  })
 })

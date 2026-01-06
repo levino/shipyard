@@ -61,6 +61,8 @@ export const docsSchema = z
     image: z.string().optional(),
     /** Custom canonical URL */
     canonicalUrl: z.string().optional(),
+    /** Custom canonical URL - snake_case alias for Docusaurus compatibility */
+    canonical_url: z.string().optional(),
 
     // === Page Rendering ===
     /** Whether to render a page (default: true) */
@@ -126,6 +128,16 @@ export const docsSchema = z
         }),
       )
       .optional(),
+    /** Custom meta tags - snake_case alias for Docusaurus compatibility */
+    custom_meta_tags: z
+      .array(
+        z.object({
+          name: z.string().optional(),
+          property: z.string().optional(),
+          content: z.string(),
+        }),
+      )
+      .optional(),
   })
   .transform((data) => ({
     ...data,
@@ -133,6 +145,8 @@ export const docsSchema = z
     hideTitle: data.hide_title ?? data.hideTitle,
     hideTableOfContents:
       data.hide_table_of_contents ?? data.hideTableOfContents,
+    canonicalUrl: data.canonical_url ?? data.canonicalUrl,
+    customMetaTags: data.custom_meta_tags ?? data.customMetaTags,
   }))
   .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
     message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
@@ -398,7 +412,7 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, keywords, image, canonicalUrl, customMetaTags } = entry.data
 
 let editUrl
 if (customEditUrl === null) {
@@ -438,7 +452,7 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
   <Content />
 </Layout>
 `

@@ -20,28 +20,40 @@
       "id": "fix-keywords-meta-tag",
       "title": "Fix failing test: keywords meta tag",
       "description": "E2E test fails: 'page with keywords has keywords meta tag'. The test expects meta[name='keywords'] to exist when a page has keywords in frontmatter. Currently the meta tag is not rendered. Add keywords support to the page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:132",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Updated generated entry file to extract keywords, image, canonicalUrl, customMetaTags from entry.data",
+        "Added props to docs Layout.astro for keywords, image, canonicalUrl, customMetaTags",
+        "Passed SEO props from Layout.astro to BaseLayout",
+        "Added snake_case aliases for canonical_url and custom_meta_tags with schema transforms"
+      ]
     },
     {
       "id": "fix-og-image-meta-tag",
       "title": "Fix failing test: og:image meta tag",
       "description": "E2E test fails: 'page with image has og:image meta tag'. The test expects meta[property='og:image'] when a page has an image in frontmatter. Currently not rendered. Add og:image support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:141",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - image prop was already in schema but not passed through Layout chain"
+      ]
     },
     {
       "id": "fix-twitter-card-meta-tag",
       "title": "Fix failing test: twitter:card meta tag",
       "description": "E2E test fails: 'page with image has twitter:card meta tag'. The test expects meta[name='twitter:card'] when a page has an image. Currently not rendered. Add twitter:card support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:147",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - twitter:card is automatically added when image is present"
+      ]
     },
     {
       "id": "fix-hide-title",
