@@ -96,6 +96,8 @@ export const docsSchema = z
     // === Pagination ===
     /** Label shown in prev/next buttons */
     paginationLabel: z.string().optional(),
+    /** Label shown in prev/next buttons - snake_case alias for Docusaurus compatibility */
+    pagination_label: z.string().optional(),
     /** Next page ID, or null to disable */
     paginationNext: z.string().nullable().optional(),
     /** Previous page ID, or null to disable */
@@ -147,6 +149,7 @@ export const docsSchema = z
       data.hide_table_of_contents ?? data.hideTableOfContents,
     canonicalUrl: data.canonical_url ?? data.canonicalUrl,
     customMetaTags: data.custom_meta_tags ?? data.customMetaTags,
+    paginationLabel: data.pagination_label ?? data.paginationLabel,
   }))
   .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
     message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',

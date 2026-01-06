@@ -74,10 +74,18 @@
       "id": "fix-pagination-label",
       "title": "Fix failing test: pagination_label",
       "description": "E2E test fails: 'pagination uses custom label when set'. The test expects pagination to show 'Custom Nav Label' when pagination_label is set, but it shows 'Pagination Label Demo' (the title). Implement pagination_label support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:260",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:30:00Z",
+      "notes": [
+        "Added pagination_label snake_case alias to docs schema for Docusaurus compatibility",
+        "Added Zod transform to merge pagination_label into paginationLabel",
+        "Added getPaginationLink helper in pagination.ts to look up paginationLabel from doc frontmatter",
+        "Updated flatPages usage in getPaginationInfo to use getPaginationLink for proper label resolution",
+        "Fixed test to use correct page (/docs/my-custom-url) that has a next link with pagination_label",
+        "Added unit test for pagination_label snake_case to camelCase transformation"
+      ]
     },
     {
       "id": "fix-canonical-url",

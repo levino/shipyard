@@ -124,6 +124,19 @@ export const getPaginationInfo = (
   const getDisplayTitle = (doc: DocsData): string =>
     doc.paginationLabel ?? doc.sidebarLabel ?? doc.title
 
+  /**
+   * Gets the pagination link for a page, using paginationLabel for the title
+   * if available in the doc's frontmatter.
+   */
+  const getPaginationLink = (page: FlattenedEntry): PaginationLink => {
+    const normalizedHref = normalizePath(page.href)
+    const doc = allDocs.find((d) => normalizePath(d.path) === normalizedHref)
+    return {
+      title: doc ? getDisplayTitle(doc) : page.title,
+      href: page.href,
+    }
+  }
+
   const result: PaginationInfo = {}
 
   // Special handling for index pages: they come before all sidebar items
@@ -153,7 +166,7 @@ export const getPaginationInfo = (
       }
     } else if (flatPages.length > 0) {
       // Use the first sidebar item as next
-      result.next = flatPages[0]
+      result.next = getPaginationLink(flatPages[0])
     }
 
     return result
@@ -174,7 +187,7 @@ export const getPaginationInfo = (
     }
   } else if (currentIndex > 0) {
     // Use the previous page in sidebar order
-    result.prev = flatPages[currentIndex - 1]
+    result.prev = getPaginationLink(flatPages[currentIndex - 1])
   }
 
   // Handle next page
@@ -192,7 +205,7 @@ export const getPaginationInfo = (
     }
   } else if (currentIndex < flatPages.length - 1) {
     // Use the next page in sidebar order
-    result.next = flatPages[currentIndex + 1]
+    result.next = getPaginationLink(flatPages[currentIndex + 1])
   }
 
   return result

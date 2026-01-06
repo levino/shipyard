@@ -173,6 +173,18 @@ describe('docsSchema', () => {
     }
   })
 
+  it('should transform pagination_label snake_case to camelCase', () => {
+    const validData = {
+      pagination_label: 'Custom Nav Label',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.paginationLabel).toBe('Custom Nav Label')
+    }
+  })
+
   it('should accept git metadata override fields', () => {
     const validData = {
       lastUpdateAuthor: 'John Doe',
