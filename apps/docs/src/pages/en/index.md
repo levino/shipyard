@@ -64,7 +64,7 @@ Explore our demo deployments showcasing different configurations:
 | Demo | Description |
 |------|-------------|
 | **[i18n Demo](https://i18n.demos.shipyard.levinkeller.de/docs/)** | Multi-language support with locale-based routing |
-| **[Single Locale Demo](https://i18n.demos.shipyard.levinkeller.de/en//docs/)** | Simplified setup for single-language sites |
+| **[Single Locale Demo](https://i18n.demos.shipyard.levinkeller.de/en/docs/)** | Simplified setup for single-language sites |
 
 ---
 
