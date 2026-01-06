@@ -479,16 +479,22 @@
       "id": "changeset-versioned-docs",
       "title": "Create changeset for versioned docs feature",
       "description": "Run npx changeset and create user-centric changeset. Focus on what users can now do: 'You can now create versioned documentation with multiple versions, version selector UI, and deprecation notices'. Minor version bump for packages/docs",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:30:00Z",
       "dependsOn": [
         "test-version-routing-e2e",
         "test-version-selector-e2e",
         "docs-versioning-guide-en"
       ],
-      "notes": []
+      "notes": [
+        "Created user-centric changeset in .changeset/versioned-docs-feature.md",
+        "Patch bump for both @levino/shipyard-docs and @levino/shipyard-base",
+        "Changeset describes key features: version configuration, UI selector, badges, sidebar filtering, pagination boundaries, latest alias",
+        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)",
+        "Used patch instead of minor since packages are 0.x.y versions per CLAUDE.md guidelines"
+      ]
     },
     {
       "id": "regression-existing-demos",
