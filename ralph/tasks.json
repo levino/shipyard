@@ -91,10 +91,15 @@
       "id": "fix-canonical-url",
       "title": "Fix failing test: canonical_url",
       "description": "E2E test fails: 'page with canonical_url has canonical link tag'. The test expects link[rel='canonical'] when canonical_url is set in frontmatter. Currently not rendered. Add canonical URL support to page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:314",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "canonical_url snake_case alias added to schema with transform to canonicalUrl",
+        "canonicalUrl passed through Layout chain to BaseLayout which renders <link rel='canonical'>"
+      ]
     },
     {
       "id": "fix-sidebar-badge",
@@ -119,28 +124,34 @@
       "id": "fix-custom-meta-tags-robots",
       "title": "Fix failing test: custom robots meta tag",
       "description": "E2E test fails: 'page with custom_meta_tags has custom robots meta tag'. The test expects meta[name='robots'] with content 'noindex, nofollow' when custom_meta_tags is set. Currently not rendered. Implement custom_meta_tags support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:379",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "customMetaTags passed through Layout chain and rendered in BaseLayout"
+      ]
     },
     {
       "id": "fix-custom-meta-tags-author",
       "title": "Fix failing test: custom author meta tag",
       "description": "E2E test fails: 'page with custom_meta_tags has custom author meta tag'. The test expects meta[name='author'] with content 'Custom Author'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:387",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
     },
     {
       "id": "fix-custom-meta-tags-og-locale",
       "title": "Fix failing test: custom og:locale meta tag",
       "description": "E2E test fails: 'page with custom_meta_tags has custom og:locale property'. The test expects meta[property='og:locale'] with content 'en_GB'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:395",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
     },
     {
       "id": "fix-custom-document-id-pagination",
