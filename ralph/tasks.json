@@ -385,7 +385,7 @@
       "id": "docs-versioning-guide-en",
       "title": "Write versioning guide documentation (English)",
       "description": "Create comprehensive guide in apps/docs for version management. Cover: configuration, directory structure, adding new versions, deprecating old versions, best practices. Place in docs/en/guides/versioning.md",
-      "status": "pending",
+      "status": "in_progress",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
       "completedAt": null,
