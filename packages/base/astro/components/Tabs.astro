@@ -1,0 +1,200 @@
+---
+/**
+ * Tabs component for organizing content into tabbed panels.
+ * Supports groupId for syncing tabs across the page.
+ *
+ * @example
+ * ```astro
+ * <Tabs items={['JavaScript', 'TypeScript', 'Python']}>
+ *   <TabItem value="JavaScript">
+ *     JS content
+ *   </TabItem>
+ *   <TabItem value="TypeScript">
+ *     TS content
+ *   </TabItem>
+ *   <TabItem value="Python">
+ *     Python content
+ *   </TabItem>
+ * </Tabs>
+ * ```
+ */
+
+interface Props {
+  /**
+   * Array of tab labels
+   */
+  items: string[]
+  /**
+   * Group ID for syncing tabs across the page
+   */
+  groupId?: string
+  /**
+   * Whether to persist selection in URL query string
+   */
+  queryString?: boolean | string
+  /**
+   * Default selected tab (by value/label)
+   */
+  defaultValue?: string
+}
+
+const { items, groupId, queryString, defaultValue } = Astro.props
+
+const tabId = `tabs-${Math.random().toString(36).slice(2, 9)}`
+const defaultTab = defaultValue ?? items[0]
+---
+
+<div
+  class="shipyard-tabs"
+  data-tabs-id={tabId}
+  data-group-id={groupId}
+  data-query-string={queryString === true ? groupId : (queryString || undefined)}
+>
+  <div class="shipyard-tabs-list" role="tablist" aria-label="Content tabs">
+    {items.map((item, index) => (
+      <button
+        type="button"
+        role="tab"
+        class="shipyard-tab-button"
+        id={`${tabId}-tab-${index}`}
+        aria-controls={`${tabId}-panel-${index}`}
+        aria-selected={item === defaultTab ? 'true' : 'false'}
+        tabindex={item === defaultTab ? 0 : -1}
+        data-tab-value={item}
+      >
+        {item}
+      </button>
+    ))}
+  </div>
+  <slot />
+</div>
+
+<script>
+  // Tab synchronization and interaction logic
+  function initTabs() {
+    const tabContainers = document.querySelectorAll('.shipyard-tabs')
+
+    tabContainers.forEach((container) => {
+      const buttons = container.querySelectorAll<HTMLButtonElement>('.shipyard-tab-button')
+      const panels = container.querySelectorAll<HTMLDivElement>('.shipyard-tab-panel')
+      const groupId = container.getAttribute('data-group-id')
+      const queryStringParam = container.getAttribute('data-query-string')
+
+      // Check URL for initial selection
+      if (queryStringParam) {
+        const urlParams = new URLSearchParams(window.location.search)
+        const urlValue = urlParams.get(queryStringParam)
+        if (urlValue) {
+          const matchingButton = Array.from(buttons).find(
+            (button) => button.getAttribute('data-tab-value') === urlValue
+          )
+          if (matchingButton) {
+            selectTab(matchingButton, buttons, panels, false)
+          }
+        }
+      }
+
+      // Check localStorage for group selection
+      if (groupId) {
+        const storedValue = localStorage.getItem(`shipyard-tabs-${groupId}`)
+        if (storedValue) {
+          const matchingButton = Array.from(buttons).find(
+            (button) => button.getAttribute('data-tab-value') === storedValue
+          )
+          if (matchingButton) {
+            selectTab(matchingButton, buttons, panels, false)
+          }
+        }
+      }
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          selectTab(button, buttons, panels, true)
+
+          const value = button.getAttribute('data-tab-value')
+
+          // Sync with other tabs in the same group
+          if (groupId && value) {
+            localStorage.setItem(`shipyard-tabs-${groupId}`, value)
+            syncTabsInGroup(groupId, value)
+          }
+
+          // Update URL query string
+          if (queryStringParam && value) {
+            const url = new URL(window.location.href)
+            url.searchParams.set(queryStringParam, value)
+            window.history.replaceState({}, '', url.toString())
+          }
+        })
+
+        // Keyboard navigation
+        button.addEventListener('keydown', (event: KeyboardEvent) => {
+          const currentIndex = Array.from(buttons).indexOf(button)
+          let newIndex = currentIndex
+
+          if (event.key === 'ArrowRight') {
+            newIndex = (currentIndex + 1) % buttons.length
+          } else if (event.key === 'ArrowLeft') {
+            newIndex = (currentIndex - 1 + buttons.length) % buttons.length
+          } else if (event.key === 'Home') {
+            newIndex = 0
+          } else if (event.key === 'End') {
+            newIndex = buttons.length - 1
+          } else {
+            return
+          }
+
+          event.preventDefault()
+          buttons[newIndex].focus()
+          buttons[newIndex].click()
+        })
+      })
+    })
+  }
+
+  function selectTab(
+    selectedButton: HTMLButtonElement,
+    allButtons: NodeListOf<HTMLButtonElement>,
+    panels: NodeListOf<HTMLDivElement>,
+    focus: boolean
+  ) {
+    const selectedValue = selectedButton.getAttribute('data-tab-value')
+
+    allButtons.forEach((button, index) => {
+      const isSelected = button === selectedButton
+      button.setAttribute('aria-selected', isSelected ? 'true' : 'false')
+      button.tabIndex = isSelected ? 0 : -1
+
+      if (panels[index]) {
+        panels[index].hidden = !isSelected
+      }
+    })
+
+    if (focus) {
+      selectedButton.focus()
+    }
+  }
+
+  function syncTabsInGroup(groupId: string, value: string) {
+    const tabContainers = document.querySelectorAll(
+      `.shipyard-tabs[data-group-id="${groupId}"]`
+    )
+
+    tabContainers.forEach((container) => {
+      const buttons = container.querySelectorAll<HTMLButtonElement>('.shipyard-tab-button')
+      const panels = container.querySelectorAll<HTMLDivElement>('.shipyard-tab-panel')
+
+      const matchingButton = Array.from(buttons).find(
+        (button) => button.getAttribute('data-tab-value') === value
+      )
+
+      if (matchingButton) {
+        selectTab(matchingButton, buttons, panels, false)
+      }
+    })
+  }
+
+  // Initialize on DOMContentLoaded and after Astro page transitions
+  document.addEventListener('DOMContentLoaded', initTabs)
+  document.addEventListener('astro:page-load', initTabs)
+</script>

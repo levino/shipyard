@@ -1,0 +1,131 @@
+---
+import type { AnnouncementBar } from '../../src/schemas/config'
+
+interface Props {
+  config: AnnouncementBar
+}
+
+const { config } = Astro.props
+const {
+  id = 'announcement-bar',
+  content,
+  backgroundColor = 'primary',
+  textColor = 'primary-content',
+  isCloseable = true,
+} = config
+
+// Determine CSS classes for colors
+const getDaisyClass = (
+  color: string,
+  type: 'bg' | 'text',
+): string | undefined => {
+  const daisyColors = [
+    'primary',
+    'secondary',
+    'accent',
+    'info',
+    'success',
+    'warning',
+    'error',
+    'primary-content',
+    'secondary-content',
+    'accent-content',
+    'base-content',
+  ]
+  if (daisyColors.includes(color)) {
+    return `${type}-${color}`
+  }
+  return undefined
+}
+
+const bgClass = getDaisyClass(backgroundColor, 'bg')
+const textClass = getDaisyClass(textColor, 'text')
+
+// Use custom style if not a DaisyUI color
+const customStyle = [
+  bgClass ? undefined : `background-color: ${backgroundColor}`,
+  textClass ? undefined : `color: ${textColor}`,
+]
+  .filter(Boolean)
+  .join('; ')
+---
+
+<div
+  id={id}
+  class:list={[
+    'announcement-bar',
+    'py-2 px-4 text-center text-sm font-medium relative',
+    bgClass,
+    textClass,
+  ]}
+  style={customStyle || undefined}
+  role="banner"
+>
+  <div class="announcement-content" set:html={content} />
+  {
+    isCloseable && (
+      <button
+        type="button"
+        class="announcement-close absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:opacity-70 transition-opacity"
+        aria-label="Close announcement"
+        data-announcement-id={id}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
+      </button>
+    )
+  }
+</div>
+
+<script>
+  // Handle announcement bar dismissal with localStorage persistence
+  document.addEventListener('DOMContentLoaded', () => {
+    const closeButtons = document.querySelectorAll('.announcement-close')
+
+    closeButtons.forEach((button) => {
+      const announcementId = button.getAttribute('data-announcement-id')
+      const storageKey = `shipyard-announcement-dismissed-${announcementId}`
+
+      // Check if already dismissed
+      if (localStorage.getItem(storageKey) === 'true') {
+        const bar = button.closest('.announcement-bar')
+        if (bar) {
+          bar.remove()
+        }
+        return
+      }
+
+      // Handle close click
+      button.addEventListener('click', () => {
+        const bar = button.closest('.announcement-bar')
+        if (bar) {
+          bar.remove()
+          localStorage.setItem(storageKey, 'true')
+        }
+      })
+    })
+  })
+</script>
+
+<style>
+  .announcement-content :global(a) {
+    text-decoration: underline;
+    font-weight: 600;
+  }
+
+  .announcement-content :global(a:hover) {
+    opacity: 0.8;
+  }
+</style>

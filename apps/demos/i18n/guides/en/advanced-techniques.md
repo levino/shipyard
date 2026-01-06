@@ -1,7 +1,8 @@
 ---
 title: Advanced Gardening Techniques
 description: Advanced techniques and patterns for experienced gardeners
-sidebar_position: 3
+sidebar:
+  position: 3
 ---
 
 # Advanced Gardening Techniques

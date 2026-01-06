@@ -1,7 +1,8 @@
 ---
 title: Code Style Guide
-sidebar_position: 1
-sidebar_label: Code Style
+sidebar:
+  position: 1
+  label: Code Style
 description: Coding conventions for shipyard contributors
 ---
 

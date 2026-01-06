@@ -31,21 +31,25 @@ describe('getPaginationInfo', () => {
   const createDocs = (): DocsData[] => [
     {
       id: 'intro.md',
+      fileId: 'intro.md',
       title: 'Introduction',
       path: '/docs/intro',
     },
     {
       id: 'guide/getting-started.md',
+      fileId: 'guide/getting-started.md',
       title: 'Getting Started',
       path: '/docs/guide/getting-started',
     },
     {
       id: 'guide/advanced.md',
+      fileId: 'guide/advanced.md',
       title: 'Advanced',
       path: '/docs/guide/advanced',
     },
     {
       id: 'api.md',
+      fileId: 'api.md',
       title: 'API Reference',
       path: '/docs/api',
     },
@@ -102,27 +106,31 @@ describe('getPaginationInfo', () => {
     expect(pagination).toEqual({})
   })
 
-  it('should respect pagination_next override', () => {
+  it('should respect paginationNext override', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
-        pagination_next: 'api.md', // Skip directly to api
+        paginationNext: 'api.md', // Skip directly to api
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
       {
         id: 'guide/advanced.md',
+        fileId: 'guide/advanced.md',
         title: 'Advanced',
         path: '/docs/guide/advanced',
       },
       {
         id: 'api.md',
+        fileId: 'api.md',
         title: 'API Reference',
         path: '/docs/api',
       },
@@ -137,29 +145,33 @@ describe('getPaginationInfo', () => {
     })
   })
 
-  it('should respect pagination_prev override', () => {
+  it('should respect paginationPrev override', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
       {
         id: 'guide/advanced.md',
+        fileId: 'guide/advanced.md',
         title: 'Advanced',
         path: '/docs/guide/advanced',
       },
       {
         id: 'api.md',
+        fileId: 'api.md',
         title: 'API Reference',
         path: '/docs/api',
-        pagination_prev: 'intro.md', // Skip back to intro
+        paginationPrev: 'intro.md', // Skip back to intro
       },
     ]
 
@@ -172,17 +184,19 @@ describe('getPaginationInfo', () => {
     expect(pagination.next).toBeUndefined()
   })
 
-  it('should disable next pagination when pagination_next is null', () => {
+  it('should disable next pagination when paginationNext is null', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
-        pagination_next: null, // Explicitly disable
+        paginationNext: null, // Explicitly disable
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -194,19 +208,21 @@ describe('getPaginationInfo', () => {
     expect(pagination.next).toBeUndefined()
   })
 
-  it('should disable prev pagination when pagination_prev is null', () => {
+  it('should disable prev pagination when paginationPrev is null', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
-        pagination_prev: null, // Explicitly disable
+        paginationPrev: null, // Explicitly disable
       },
     ]
 
@@ -228,10 +244,11 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
-        pagination_next: null,
-        pagination_prev: null,
+        paginationNext: null,
+        paginationPrev: null,
       },
     ]
 
@@ -249,12 +266,14 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
         sidebarLabel: 'Intro', // Custom label
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -266,8 +285,39 @@ describe('getPaginationInfo', () => {
       docs,
     )
 
+    // sidebarLabel is used for the title, so it should be 'Intro' not 'Introduction'
     expect(pagination.prev).toEqual({
-      title: 'Introduction',
+      title: 'Intro',
+      href: '/docs/intro',
+    })
+  })
+
+  it('should use paginationLabel when available', () => {
+    const sidebar = createSidebar()
+    const docs: DocsData[] = [
+      {
+        id: 'intro.md',
+        title: 'Introduction',
+        path: '/docs/intro',
+        sidebarLabel: 'Intro',
+        paginationLabel: 'Start Here', // Custom pagination label takes priority
+      },
+      {
+        id: 'guide/getting-started.md',
+        title: 'Getting Started',
+        path: '/docs/guide/getting-started',
+        paginationPrev: 'intro.md',
+      },
+    ]
+
+    const pagination = getPaginationInfo(
+      '/docs/guide/getting-started',
+      sidebar,
+      docs,
+    )
+
+    expect(pagination.prev).toEqual({
+      title: 'Start Here',
       href: '/docs/intro',
     })
   })
@@ -306,16 +356,19 @@ describe('getPaginationInfo', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/basics/page-1.md',
+        fileId: 'guide/basics/page-1.md',
         title: 'Page 1',
         path: '/docs/guide/basics/page-1',
       },
       {
         id: 'guide/basics/page-2.md',
+        fileId: 'guide/basics/page-2.md',
         title: 'Page 2',
         path: '/docs/guide/basics/page-2',
       },
       {
         id: 'guide/advanced/page-3.md',
+        fileId: 'guide/advanced/page-3.md',
         title: 'Page 3',
         path: '/docs/guide/advanced/page-3',
       },
@@ -337,17 +390,19 @@ describe('getPaginationInfo', () => {
     })
   })
 
-  it('should handle invalid pagination_next reference gracefully', () => {
+  it('should handle invalid paginationNext reference gracefully', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
-        pagination_next: 'nonexistent.md', // Invalid reference
+        paginationNext: 'nonexistent.md', // Invalid reference
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
       },
@@ -359,19 +414,21 @@ describe('getPaginationInfo', () => {
     expect(pagination.next).toBeUndefined()
   })
 
-  it('should handle invalid pagination_prev reference gracefully', () => {
+  it('should handle invalid paginationPrev reference gracefully', () => {
     const sidebar = createSidebar()
     const docs: DocsData[] = [
       {
         id: 'intro.md',
+        fileId: 'intro.md',
         title: 'Introduction',
         path: '/docs/intro',
       },
       {
         id: 'guide/getting-started.md',
+        fileId: 'guide/getting-started.md',
         title: 'Getting Started',
         path: '/docs/guide/getting-started',
-        pagination_prev: 'nonexistent.md', // Invalid reference
+        paginationPrev: 'nonexistent.md', // Invalid reference
       },
     ]
 
@@ -383,5 +440,48 @@ describe('getPaginationInfo', () => {
 
     // Should not have a prev link because the reference is invalid
     expect(pagination.prev).toBeUndefined()
+  })
+
+  it('should exclude unlisted pages from pagination (via sidebar)', () => {
+    // Note: unlisted pages are filtered from sidebar entries before being passed
+    // to getPaginationInfo, so they won't appear in pagination
+    const sidebar: Entry = {
+      intro: {
+        label: 'Introduction',
+        href: '/docs/intro',
+      },
+      // Hidden page is NOT in sidebar
+      visible: {
+        label: 'Visible',
+        href: '/docs/visible',
+      },
+    }
+
+    const docs: DocsData[] = [
+      {
+        id: 'intro.md',
+        title: 'Introduction',
+        path: '/docs/intro',
+      },
+      {
+        id: 'hidden.md',
+        title: 'Hidden Page',
+        path: '/docs/hidden',
+        unlisted: true,
+      },
+      {
+        id: 'visible.md',
+        title: 'Visible',
+        path: '/docs/visible',
+      },
+    ]
+
+    const pagination = getPaginationInfo('/docs/intro', sidebar, docs)
+
+    // Next should be 'visible', not 'hidden'
+    expect(pagination.next).toEqual({
+      title: 'Visible',
+      href: '/docs/visible',
+    })
   })
 })

@@ -1,0 +1,10 @@
+{
+  "label": "Details & Examples",
+  "position": 100,
+  "collapsible": true,
+  "collapsed": false,
+  "className": "details-category",
+  "customProps": {
+    "description": "Detailed examples and advanced topics"
+  }
+}

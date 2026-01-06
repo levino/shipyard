@@ -1,0 +1,39 @@
+---
+/**
+ * TabItem component for use inside Tabs.
+ *
+ * @example
+ * ```astro
+ * <Tabs items={['Tab 1', 'Tab 2']}>
+ *   <TabItem value="Tab 1">
+ *     Content for tab 1
+ *   </TabItem>
+ *   <TabItem value="Tab 2">
+ *     Content for tab 2
+ *   </TabItem>
+ * </Tabs>
+ * ```
+ */
+
+interface Props {
+  /**
+   * The value that matches the tab button label
+   */
+  value: string
+  /**
+   * Whether this tab is shown by default
+   */
+  default?: boolean
+}
+
+const { value, default: isDefault } = Astro.props
+---
+
+<div
+  class="shipyard-tab-panel"
+  role="tabpanel"
+  data-tab-value={value}
+  hidden={!isDefault}
+>
+  <slot />
+</div>
