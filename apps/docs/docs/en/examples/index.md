@@ -14,4 +14,5 @@ Ready-to-use code examples for common shipyard configurations. Copy, paste, and 
 
 - **[Basic Versioning](./basic-versioning)** - Minimal setup for versioned documentation with two versions
 - **[Versioning with i18n](./versioning-with-i18n)** - Combine documentation versioning with internationalization
+- **[Version Lifecycle](./version-lifecycle)** - Managing the complete lifecycle: adding, deprecating, and archiving versions
 

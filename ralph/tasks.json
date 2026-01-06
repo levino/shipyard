@@ -259,12 +259,21 @@
       "id": "version-cross-version-links",
       "title": "Handle cross-version link resolution",
       "description": "When a page links to another page, resolve within same version by default. Provide syntax for explicit cross-version links. Validate links exist in target version during build",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T21:00:00Z",
       "dependsOn": ["version-route-helpers"],
-      "notes": []
+      "notes": [
+        "Created rehypeVersionLinks rehype plugin for version-aware link resolution",
+        "Cross-version link syntax: @version:/path (e.g., @v2:/configuration -> /docs/v2/configuration)",
+        "Auto-versioning: absolute docs paths without version get current version added",
+        "Relative links pass through unchanged (browser handles same-version navigation)",
+        "Added 30 unit tests for the rehype plugin (179 total unit tests pass)",
+        "Added 13 E2E tests for cross-version links (136 versioned E2E tests pass)",
+        "Updated demo content to use cross-version link syntax",
+        "Added comprehensive documentation to versioning guide"
+      ]
     },
     {
       "id": "demo-versioned-docs",
@@ -593,12 +602,19 @@
       "id": "example-version-lifecycle",
       "title": "Create version lifecycle example",
       "description": "Add example showing full version lifecycle: adding new version, marking stable, deprecating old. Include in docs examples section",
-      "status": "pending",
+      "status": "completed",
       "priority": "low",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:30:00Z",
       "dependsOn": ["docs-versioning-guide-en"],
-      "notes": []
+      "notes": [
+        "Created apps/docs/docs/en/examples/version-lifecycle.md with comprehensive lifecycle documentation",
+        "Created German translation at apps/docs/docs/de/examples/version-lifecycle.md",
+        "Covers: version states (unreleased, current, stable, deprecated, archived), v3 release scenario walkthrough, configuration timeline, best practices for deprecation/archiving, edge cases (RC, LTS, parallel versions)",
+        "Updated both English and German examples index pages",
+        "Docs app builds successfully (48 pages)",
+        "All 179 unit tests pass, E2E tests pass"
+      ]
     },
     {
       "id": "changeset-versioned-docs",
