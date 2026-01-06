@@ -72,7 +72,11 @@ After completing work:
 
 ### Step 6: Exit
 
-Print "RALPH_SESSION_COMPLETE" on its own line when done. This signals the loop to restart.
+If there are **no more pending tasks** (all completed or blocked), output:
+```
+<promise>COMPLETE</promise>
+```
+This signals the loop to stop. Otherwise, just end your session normally and the loop will continue.
 
 ## Important Rules
 
@@ -111,17 +115,16 @@ Place unit tests next to the source files: `*.test.ts` or `*.spec.ts`
 ## Example Session Output
 
 ```
-Reading ralph/tasks.json...
-Found 3 pending tasks.
 Selecting task: fix-footer-alignment (priority: high)
-Updating task status to in_progress...
 
-Working on task...
 [... work happens ...]
 
-Task completed. Updating tasks.json...
-Appending to history.md...
-Committing changes...
+Task completed. Committing changes...
+```
 
-RALPH_SESSION_COMPLETE
+When all tasks are done:
+```
+All tasks completed!
+
+<promise>COMPLETE</promise>
 ```
