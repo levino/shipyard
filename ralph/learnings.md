@@ -149,4 +149,46 @@ cd apps/demo && npm run dev
 
 ---
 
+## Docusaurus Counterpart Demos
+
+### Docusaurus Versioning Structure
+- **Current version**: Docs go in `/docs/` (no version folder)
+- **Previous versions**: Go in `/versioned_docs/version-X.X/` folders
+- **versions.json**: Must list all versioned versions (NOT the current one)
+- **versioned_sidebars/**: Each version needs `version-X.X-sidebars.json`
+
+### Docusaurus Version Configuration
+```typescript
+// docusaurus.config.ts
+docs: {
+  versions: {
+    current: {
+      label: 'Version 2.0 (Latest)',
+      badge: true,  // Shows badge in version dropdown
+    },
+    '1.0': {
+      label: 'Version 1.0',
+      banner: 'unmaintained',  // Shows deprecation banner
+    },
+  },
+  lastVersion: 'current',  // Makes current docs the default
+}
+```
+
+### Key Differences from Shipyard
+| Aspect | Shipyard | Docusaurus |
+|--------|----------|------------|
+| Current docs location | `docs/v2/` | `docs/` |
+| Versioned docs location | `docs/v1/` | `versioned_docs/version-1.0/` |
+| Version tracking | `content.config.ts` | `versions.json` |
+| Deprecation banner | `banner: 'unmaintained'` | `banner: 'unmaintained'` |
+| URL pattern | `/docs/v2/page` | `/docs/page` (current) or `/docs/1.0/page` (versioned) |
+
+### Docusaurus Demo Builds
+- No E2E tests for Docusaurus demos (they're for comparison only)
+- Build with `npm run build` in the demo directory
+- Build includes `git fetch --unshallow || true` for shallow clone compatibility
+
+---
+
 <!-- Add new learnings below as you discover them -->

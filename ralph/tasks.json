@@ -304,12 +304,22 @@
       "id": "demo-docusaurus-counterpart",
       "title": "Create Docusaurus counterpart for versioned docs demo",
       "description": "Per CLAUDE.md, all demos need Docusaurus counterparts. Create matching Docusaurus demo with same content/versions. Ensure identical content for framework comparison",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:30:00Z",
       "dependsOn": ["demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Created apps/demos/versioned-docs-docusaurus/ with full Docusaurus versioning setup",
+        "Configured docusaurus.config.ts with version dropdown, v2 as current, v1 as deprecated with unmaintained banner",
+        "Created v2 (current) docs: index, installation, configuration, migration pages",
+        "Created v1 versioned docs in versioned_docs/version-1.0/: index, installation, configuration",
+        "Created versions.json and versioned_sidebars for proper version tracking",
+        "Created static pages: index.md and about.md matching shipyard demo content",
+        "Docusaurus build succeeds with no errors",
+        "All unit tests pass (149 tests)",
+        "All E2E tests pass: i18n (177) + single-language (11) + versioned-docs (98) + versioned-i18n (25)"
+      ]
     },
     {
       "id": "test-version-routing-e2e",
