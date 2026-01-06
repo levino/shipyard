@@ -1,30 +1,11 @@
 ---
-title: Code Style Guide
-sidebar_position: 1
-sidebar_label: Code Style
-description: Coding conventions for shipyard contributors
+title: Functional Programming
+sidebar_position: 2
+sidebar_label: Functional Programming
+description: Functional programming conventions for shipyard
 ---
 
-# Code Style Guide
-
-This guide establishes the coding conventions for the shipyard project.
-
-## Quick Reference
-
-| Topic | Key Point |
-|-------|-----------|
-| Functional Programming | Use `flow` and `pipe` to compose transformations; avoid intermediary variables |
-| Naming Conventions | Use descriptive, full-word names that make code self-documenting |
-| Documentation Through Code | Let clear names and TypeScript types serve as documentation; avoid JSDoc comments |
-| Web Components and Native APIs | Use custom elements and native browser APIs instead of frameworks for interactivity |
-| Integration Testing | Every feature requires meaningful tests using demo apps as fixtures |
-| Effect-TS Usage | Use Effect for functional pipes, compositions, and option handling |
-| TypeScript Standards | Write all code in strict TypeScript; types are living documentation |
-| Astro Content Loaders | Use Astro content collections instead of direct file system access |
-
----
-
-## Functional Programming
+# Functional Programming
 
 Use `flow` from Effect to compose transformations point-free. Prefer expression bodies (no curly braces) over function bodies.
 
@@ -94,7 +75,41 @@ const femaleAdults = adults.filter((user) => user.gender === 'female') // See th
 const minorMales = minors.filter((user) => user.gender === 'male')
 ```
 
-### Avoid Mutation
+## Prefer Functions Over Methods
+
+Use `flow` with Effect's `Array` functions instead of method chaining. This enables better composition and point-free style.
+
+✅ Good:
+
+```typescript
+import { Array, flow } from 'effect'
+
+const getActiveUsersSorted = flow(
+  Array.filter((user: User) => user.isActive),
+  Array.sort((a, b) => a.registrationDate - b.registrationDate),
+)
+```
+
+✅ Acceptable (simple cases):
+
+```typescript
+const getActiveUsersSorted = (users: User[]) =>
+  users
+    .filter((user) => user.isActive)
+    .sort((a, b) => a.registrationDate - b.registrationDate)
+```
+
+❌ Avoid:
+
+```typescript
+const getActiveUsersSorted = (users: User[]) => {
+  const active = users.filter((user) => user.isActive)
+  const sorted = active.sort((a, b) => a.registrationDate - b.registrationDate)
+  return sorted
+}
+```
+
+## Avoid Mutation
 
 Never mutate data. Always create new arrays and objects. We accept any runtime penalty for immutability — only optimize after measuring.
 
