@@ -1,16 +1,4 @@
 {
   "$schema": "./tasks.schema.json",
-  "version": 1,
-  "tasks": [
-    {
-      "id": "example-task-1",
-      "title": "Example: Fix a bug in component X",
-      "description": "Detailed description of what needs to be done",
-      "status": "pending",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
-      "notes": []
-    }
-  ]
+  "tasks": []
 }
