@@ -1,0 +1,122 @@
+---
+/**
+ * Blog archive page - shows all posts organized by year.
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import type { GetStaticPaths } from 'astro'
+import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
+import Layout from './Layout.astro'
+
+const { includeDraftsInDev, routeBasePath } = blogConfig
+
+// Filter out draft and unlisted posts
+const isDev = import.meta.env.DEV
+const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+  if (post.data.unlisted) return false
+  if (post.data.draft && !(isDev && includeDraftsInDev)) return false
+  return true
+}
+
+export const getStaticPaths = (() => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return { params: { locale } }
+    })
+  } else {
+    return [{ params: {} }]
+  }
+}) satisfies GetStaticPaths
+
+const allPosts = await getCollection('blog')
+const filteredPosts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
+  if (i18n) {
+    const [postLocale] = id.split('/')
+    return postLocale === Astro.currentLocale
+  }
+  return true
+})
+
+// Sort posts by date descending
+const sortedPosts = filteredPosts.toSorted(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+)
+
+// Group posts by year
+type YearPosts = {
+  year: string
+  posts: CollectionEntry<'blog'>[]
+}
+
+const getYearFromPost = (post: CollectionEntry<'blog'>): string =>
+  post.data.date.getFullYear().toString()
+
+const groupPostsByYear = pipe(
+  groupBy(getYearFromPost),
+  toPairs,
+  map(([year, posts]): YearPosts => ({ year, posts: posts ?? [] })),
+  sortBy(prop('year')),
+  reverse,
+) as (posts: CollectionEntry<'blog'>[]) => YearPosts[]
+
+const postsByYear = groupPostsByYear(sortedPosts)
+
+const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
+  month: 'short',
+  day: 'numeric',
+}).format
+
+const getBlogPostLink = (id: string, locale?: string) => {
+  if (i18n && locale) {
+    return id.replace(`${locale}/`, `${locale}/${routeBasePath}/`)
+  } else {
+    return `${routeBasePath}/${id}`
+  }
+}
+---
+
+<Layout title="Archive">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Archive</h1>
+    <p class="text-base-content/60 mb-8">
+      {sortedPosts.length} post{sortedPosts.length === 1 ? '' : 's'} total
+    </p>
+
+    {postsByYear.length > 0 ? (
+      <div class="space-y-12">
+        {postsByYear.map(({ year, posts }) => (
+          <section>
+            <h2 class="text-2xl font-bold mb-4 text-primary">{year}</h2>
+            <ul class="space-y-3">
+              {posts.map((post) => (
+                <li class="flex items-baseline gap-4">
+                  <time
+                    datetime={post.data.date.toISOString()}
+                    class="text-sm text-base-content/60 font-mono w-16 flex-shrink-0"
+                  >
+                    {formatDate(post.data.date)}
+                  </time>
+                  <a
+                    href={`/${getBlogPostLink(post.id, Astro.currentLocale)}`}
+                    class="hover:text-primary transition-colors"
+                  >
+                    {post.data.draft && (
+                      <span class="badge badge-warning badge-sm mr-2">Draft</span>
+                    )}
+                    {post.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+    ) : (
+      <p class="text-base-content/60">No posts found.</p>
+    )}
+  </div>
+</Layout>

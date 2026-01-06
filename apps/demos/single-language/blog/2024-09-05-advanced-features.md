@@ -1,7 +1,18 @@
 ---
 title: Advanced Features in Single-Language Mode
+title_meta: "Advanced shipyard Features | Blog"
+sidebar_label: Advanced Features
 description: Explore advanced shipyard features that work great with single-language sites
 date: 2024-09-05
+tags:
+  - features
+  - customization
+  - performance
+authors:
+  - name: Levin Keller
+    title: Creator of shipyard
+    url: https://github.com/levino
+    image_url: https://avatars.githubusercontent.com/u/8216068
 ---
 
 # Advanced Features in Single-Language Mode

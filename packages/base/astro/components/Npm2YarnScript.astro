@@ -1,0 +1,54 @@
+---
+/**
+ * Client-side script for npm2yarn tabs functionality.
+ * Include this component once in your layout to enable tab switching.
+ */
+---
+
+<script>
+  // Initialize npm2yarn tabs
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabContainers = document.querySelectorAll('.npm2yarn-tabs')
+
+    tabContainers.forEach((container) => {
+      const buttons = container.querySelectorAll('.tab-button')
+      const contents = container.querySelectorAll('.tab-content')
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const tabId = button.getAttribute('data-tab')
+
+          // Update buttons
+          buttons.forEach((btn) => btn.classList.remove('active'))
+          button.classList.add('active')
+
+          // Update content
+          contents.forEach((content) => {
+            const contentId = content.getAttribute('data-tab-content')
+            if (contentId === tabId) {
+              content.classList.add('active')
+            } else {
+              content.classList.remove('active')
+            }
+          })
+
+          // Store preference in localStorage
+          if (tabId) {
+            localStorage.setItem('shipyard-package-manager', tabId)
+          }
+        })
+      })
+
+      // Restore preference from localStorage
+      const savedPm = localStorage.getItem('shipyard-package-manager')
+      if (savedPm) {
+        const savedButton = container.querySelector(
+          `.tab-button[data-tab="${savedPm}"]`,
+        )
+        if (savedButton) {
+          ;(savedButton as HTMLButtonElement).click()
+        }
+      }
+    })
+  })
+</script>

@@ -1,0 +1,30 @@
+---
+/**
+ * Displays blog post tags as clickable badges.
+ */
+interface Props {
+  /**
+   * Array of tag strings
+   */
+  tags: string[]
+  /**
+   * Base URL for tag pages (e.g., "/blog/tags")
+   */
+  baseUrl?: string
+}
+
+const { tags, baseUrl = '/blog/tags' } = Astro.props
+---
+
+{tags.length > 0 && (
+  <div class="flex flex-wrap gap-2">
+    {tags.map((tag) => (
+      <a
+        href={`${baseUrl}/${encodeURIComponent(tag.toLowerCase())}`}
+        class="badge badge-outline hover:badge-primary transition-colors"
+      >
+        {tag}
+      </a>
+    ))}
+  </div>
+)}

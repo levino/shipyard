@@ -1,0 +1,160 @@
+---
+/**
+ * Authors index page showing all blog authors.
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import Layout from '@levino/shipyard-base/layouts/Page.astro'
+import {
+  filter,
+  flatten,
+  groupBy,
+  map,
+  pipe,
+  prop,
+  reverse,
+  sortBy,
+  uniqBy,
+  values,
+} from 'ramda'
+import type { Author } from '../src/index'
+
+export async function getStaticPaths() {
+  const { authorsEnabled } = blogConfig
+
+  if (!authorsEnabled) {
+    return []
+  }
+
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return { params: { locale } }
+    })
+  } else {
+    return [{ params: {} }]
+  }
+}
+
+const allPosts = await getCollection('blog')
+const { includeDraftsInDev, routeBasePath } = blogConfig
+const isDev = import.meta.env.DEV
+
+// Filter posts
+const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+  if (post.data.unlisted) return false
+  if (post.data.draft && !(isDev && includeDraftsInDev)) return false
+  return true
+}
+
+const posts = pipe(
+  filter(shouldIncludePost),
+  filter((post: CollectionEntry<'blog'>) => {
+    if (i18n) {
+      const [postLocale] = post.id.split('/')
+      return postLocale === Astro.currentLocale
+    }
+    return true
+  }),
+)(allPosts) as CollectionEntry<'blog'>[]
+
+// Extract authors from posts
+const normalizeAuthor = (author: string | Author): Author => {
+  if (typeof author === 'string') {
+    return { name: author }
+  }
+  return author
+}
+
+const getAuthorsFromPost = (post: CollectionEntry<'blog'>): Author[] => {
+  const authors = post.data.authors
+  if (!authors) return []
+  if (Array.isArray(authors)) {
+    return authors.map(normalizeAuthor)
+  }
+  return [normalizeAuthor(authors)]
+}
+
+// Get all unique authors
+const allAuthors = pipe(
+  map(getAuthorsFromPost),
+  flatten,
+  uniqBy(prop('name')),
+  sortBy(prop('name')),
+)(posts) as Author[]
+
+// Count posts per author
+const getPostCountForAuthor = (authorName: string): number =>
+  posts.filter((post) => {
+    const authors = getAuthorsFromPost(post)
+    return authors.some((a) => a.name === authorName)
+  }).length
+
+// Generate author URL slug
+const getAuthorSlug = (name: string): string =>
+  name.toLowerCase().replace(/\s+/g, '-')
+
+const baseUrl = i18n
+  ? `/${Astro.currentLocale}/${routeBasePath}/authors`
+  : `/${routeBasePath}/authors`
+---
+
+<Layout title="Blog Authors">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Authors</h1>
+    <p class="text-lg text-base-content/70 mb-8">
+      Meet the authors who contribute to our blog.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {
+        allAuthors.map((author) => {
+          const postCount = getPostCountForAuthor(author.name)
+          const authorUrl = `${baseUrl}/${getAuthorSlug(author.name)}`
+
+          return (
+            <a
+              href={authorUrl}
+              class="card bg-base-200 hover:bg-base-300 transition-colors"
+            >
+              <div class="card-body flex-row items-center gap-4">
+                {author.image_url ? (
+                  <div class="avatar">
+                    <div class="w-16 h-16 rounded-full">
+                      <img src={author.image_url} alt={author.name} />
+                    </div>
+                  </div>
+                ) : (
+                  <div class="avatar placeholder">
+                    <div class="bg-primary text-primary-content w-16 h-16 rounded-full">
+                      <span class="text-xl">
+                        {author.name
+                          .split(' ')
+                          .map((n) => n[0])
+                          .join('')
+                          .toUpperCase()
+                          .slice(0, 2)}
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div class="flex-1">
+                  <h2 class="card-title">{author.name}</h2>
+                  {author.title && (
+                    <p class="text-sm text-base-content/70">{author.title}</p>
+                  )}
+                  <p class="text-sm text-base-content/50">
+                    {postCount} {postCount === 1 ? 'post' : 'posts'}
+                  </p>
+                </div>
+              </div>
+            </a>
+          )
+        })
+      }
+    </div>
+  </div>
+</Layout>
