@@ -475,12 +475,20 @@
       "id": "docs-versioning-guide-de",
       "title": "Translate versioning guide to German",
       "description": "Translate the versioning guide from English to German. Place in docs/de/guides/versioning.md. Ensure technical terms are appropriately translated or kept in English where standard",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:35:00Z",
       "dependsOn": ["docs-versioning-guide-en"],
-      "notes": []
+      "notes": [
+        "Created apps/docs/docs/de/guides/ directory",
+        "Translated versioning.md with comprehensive German translation",
+        "Created German guides index page (index.md)",
+        "Technical terms kept in English where standard (Content Collection, label, path, etc.)",
+        "Docs app builds successfully (39 pages)",
+        "All 158 unit tests pass (9 base + 149 docs)",
+        "All E2E tests pass across all demos"
+      ]
     },
     {
       "id": "docs-api-reference-update",
