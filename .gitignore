@@ -134,3 +134,6 @@ gha-creds-*.json
 # Playwright
 playwright-report/
 test-results/
+
+# Ralph Wiggum session history (local only)
+ralph/history.md

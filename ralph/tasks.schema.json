@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Ralph Tasks",
+  "type": "object",
+  "required": ["version", "tasks"],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "description": "Schema version"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "title", "status", "priority", "createdAt"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique task identifier (kebab-case)"
+          },
+          "title": {
+            "type": "string",
+            "description": "Short task title"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of what needs to be done"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["pending", "in_progress", "completed", "blocked"],
+            "description": "Current task status"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"],
+            "description": "Task priority level"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the task was created"
+          },
+          "completedAt": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "When the task was completed"
+          },
+          "notes": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Progress notes and observations"
+          },
+          "blockedBy": {
+            "type": "string",
+            "description": "ID of task blocking this one (use when stuck)"
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "IDs of tasks that must be completed before this one can start"
+          }
+        }
+      }
+    }
+  }
+}
