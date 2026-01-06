@@ -266,3 +266,39 @@ This file tracks session progress and outcomes.
 - i18n demo has pre-existing blog pagination test failures (unrelated to this work)
 
 ---
+
+## Session 2026-01-06T20:10:00Z
+
+### Task Completed
+- **ID**: fix-title-meta-frontmatter
+- **Title**: Fix failing test: title_meta
+
+### What Was Done
+1. Added `title_meta` field to the docs schema in `packages/docs/src/index.ts`
+   - Docusaurus uses snake_case convention for this field, so we keep it as `title_meta` (not titleMeta)
+2. Updated the generated entry file template to extract `title_meta` as `titleMeta` and pass it to the Layout
+3. Added `titleMeta` prop to `packages/docs/astro/Layout.astro`
+4. Passed `titleMeta` to BaseLayout as the `title` prop
+5. BaseLayout's `getTitle` function combines the site title with `titleMeta` to create the full `<title>` tag
+6. Added unit test for `title_meta` schema field
+
+### Files Modified
+- `packages/docs/src/index.ts` - Added title_meta field to docsSchema, updated entry file template
+- `packages/docs/astro/Layout.astro` - Added titleMeta prop and passed to BaseLayout as title
+- `packages/docs/src/schema.test.ts` - Added unit test for title_meta
+
+### Tips for Next Developer
+- The `title_meta` field in Docusaurus allows specifying a different title for the browser tab than what's displayed in the sidebar
+- Unlike most snake_case aliases in this codebase, `title_meta` is kept as-is because that's the Docusaurus convention
+- The BaseLayout's `getTitle(siteTitle, pageTitle)` function combines both: `{siteTitle} - {pageTitle}`
+- When `titleMeta` is undefined (page doesn't have it), nothing is passed to BaseLayout's title prop
+- The sidebar still uses the regular `title` field - `title_meta` only affects the `<title>` tag
+
+### Tests
+- Both Title Meta tests pass:
+  - `page with title_meta uses it for the page title instead of regular title`
+  - `page with title_meta still shows regular title in sidebar`
+- 101 tests pass in single-language demo
+- 1 test still fails (pending task: blog sidebar_label)
+
+---

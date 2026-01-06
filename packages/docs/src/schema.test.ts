@@ -442,4 +442,18 @@ describe('docsSchema', () => {
       expect(result.data.paginationPrev).toBeNull()
     }
   })
+
+  it('should accept title_meta for SEO title override', () => {
+    const validData = {
+      title: 'Display Title',
+      title_meta: 'SEO Optimized Title | Site Name',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.title).toBe('Display Title')
+      expect(result.data.title_meta).toBe('SEO Optimized Title | Site Name')
+    }
+  })
 })

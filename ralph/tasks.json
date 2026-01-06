@@ -199,10 +199,17 @@
       "id": "fix-title-meta-frontmatter",
       "title": "Fix failing test: title_meta",
       "description": "E2E test fails: 'page with title_meta uses it for the page title instead of regular title'. The test expects page title to be 'SEO Optimized Title' but found 'Site Title Demo'. When title_meta is set, it should be used for the <title> tag instead of the regular title. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:615",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T20:10:00Z",
+      "notes": [
+        "Added title_meta field to docs schema (Docusaurus uses snake_case convention)",
+        "Updated generated entry file template to extract title_meta and pass it as titleMeta prop",
+        "Added titleMeta prop to docs Layout.astro and pass it to BaseLayout as title",
+        "BaseLayout's getTitle function combines site title with titleMeta for the <title> tag",
+        "Added unit test for title_meta schema field"
+      ]
     },
     {
       "id": "fix-blog-sidebar-label",

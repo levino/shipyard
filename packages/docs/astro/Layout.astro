@@ -71,6 +71,10 @@ interface Props {
    * @default false
    */
   hideTitle?: boolean
+  /**
+   * Override title for SEO/browser tab (overrides the regular title in <title> tag).
+   */
+  titleMeta?: string
 }
 
 const {
@@ -86,6 +90,7 @@ const {
   image,
   canonicalUrl,
   customMetaTags,
+  titleMeta,
 } = Astro.props
 
 // Normalize the route base path
@@ -187,7 +192,7 @@ if (docsConfig?.llmsTxtEnabled) {
 }
 ---
 
-<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
+<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} title={titleMeta}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
       <div class:list={['prose', 'max-w-none', { 'hide-title': hideTitle }]}>

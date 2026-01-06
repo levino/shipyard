@@ -53,6 +53,8 @@ export const docsSchema = z
     id: z.string().optional(),
     /** Reference title for SEO, pagination, previews (default: H1) */
     title: z.string().optional(),
+    /** Override title for SEO/browser tab (default: title) - Docusaurus snake_case convention */
+    title_meta: z.string().optional(),
     /** Meta description (default: first paragraph) */
     description: z.string().optional(),
     /** SEO keywords */
@@ -443,7 +445,7 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title_meta: titleMeta } = entry.data
 
 let editUrl
 if (customEditUrl === null) {
@@ -483,7 +485,7 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} titleMeta={titleMeta}>
   <Content />
 </Layout>
 `
