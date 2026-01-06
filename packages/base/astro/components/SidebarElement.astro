@@ -35,6 +35,19 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
   // Auto-expand if has active child, otherwise use collapsed setting (default true)
   const shouldBeOpen = hasActiveChild || !(entryValue.collapsed ?? true);
 
+  // Extract badge info from customProps
+  const badge = entryValue.customProps?.badge as string | undefined;
+  const badgeType = (entryValue.customProps?.badgeType as string) ?? 'info';
+  const badgeClass = badge ? `badge badge-${badgeType} badge-sm` : undefined;
+
+  // Helper to render label with optional badge
+  const renderLabelWithBadge = (labelContent: any, extraClass?: string) => (
+    <span class={cn('flex items-center gap-2', extraClass)}>
+      {labelContent}
+      {badge && <span class={badgeClass}>{badge}</span>}
+    </span>
+  );
+
   return (
     <li class={entryValue.className}>
       {hasChildren && isCollapsible ? (
@@ -44,11 +57,11 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
             {entryValue.href ? (
               entryValue.labelHtml
                 ? <Fragment set:html={entryValue.labelHtml} />
-                : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+                : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{renderLabelWithBadge(label)}</a>
             ) : (
               entryValue.labelHtml
                 ? <Fragment set:html={entryValue.labelHtml} />
-                : <span class='menu-title'>{label}</span>
+                : <span class='menu-title'>{renderLabelWithBadge(label)}</span>
             )}
           </summary>
           <ul>
@@ -61,11 +74,11 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
           {entryValue.href ? (
             entryValue.labelHtml
               ? <Fragment set:html={entryValue.labelHtml} />
-              : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+              : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{renderLabelWithBadge(label)}</a>
           ) : (
             entryValue.labelHtml
               ? <Fragment set:html={entryValue.labelHtml} />
-              : <span class='menu-title'>{label}</span>
+              : <span class='menu-title'>{renderLabelWithBadge(label)}</span>
           )}
           <ul>
             <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
@@ -76,11 +89,11 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
         entryValue.href ? (
           entryValue.labelHtml
             ? <Fragment set:html={entryValue.labelHtml} />
-            : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+            : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{renderLabelWithBadge(label)}</a>
         ) : (
           entryValue.labelHtml
             ? <Fragment set:html={entryValue.labelHtml} />
-            : <span class='menu-title'>{label}</span>
+            : <span class='menu-title'>{renderLabelWithBadge(label)}</span>
         )
       )}
     </li>

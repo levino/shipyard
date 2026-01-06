@@ -105,20 +105,32 @@
       "id": "fix-sidebar-badge",
       "title": "Fix failing test: sidebar badge",
       "description": "E2E test fails: 'sidebar item with badge shows badge element'. The test expects a .badge element when sidebar.badge is configured. Currently no badge is rendered. Implement sidebar badge support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:359",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:50:00Z",
+      "notes": [
+        "Added sidebar_custom_props, sidebar_position, sidebar_label, sidebar_class_name snake_case aliases to docs schema",
+        "Added Zod transform to merge snake_case sidebar fields into nested sidebar object",
+        "Added customProps field to Entry type in @levino/shipyard-base",
+        "Added customProps to TreeNode and passed through sidebarEntries pipeline",
+        "Updated SidebarElement.astro to render badges with DaisyUI badge classes",
+        "Badge text comes from customProps.badge, style from customProps.badgeType",
+        "Added unit tests for sidebar_custom_props transformation"
+      ]
     },
     {
       "id": "fix-sidebar-badge-style",
       "title": "Fix failing test: sidebar badge style",
       "description": "E2E test fails: 'badge has correct style class'. The test expects .badge-warning class but found .badge-primary. The badge style from sidebar.badge.style is not being applied correctly. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:368",
-      "status": "pending",
+      "status": "completed",
       "priority": "low",
       "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:50:00Z",
       "dependsOn": ["fix-sidebar-badge"],
-      "notes": []
+      "notes": [
+        "Fixed as part of fix-sidebar-badge - badgeType from customProps is used as badge-{type} class"
+      ]
     },
     {
       "id": "fix-custom-meta-tags-robots",

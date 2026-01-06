@@ -180,3 +180,48 @@ This file tracks session progress and outcomes.
 - 6 tests still fail - corresponding to remaining pending tasks
 
 ---
+
+## Session 2026-01-06T19:50:00Z
+
+### Tasks Completed
+- **ID**: fix-sidebar-badge - Fix failing test: sidebar badge
+- **ID**: fix-sidebar-badge-style - Fix failing test: sidebar badge style
+
+### What Was Done
+1. Added Docusaurus-compatible snake_case sidebar aliases to docs schema:
+   - `sidebar_position` → `sidebar.position`
+   - `sidebar_label` → `sidebar.label`
+   - `sidebar_class_name` → `sidebar.className`
+   - `sidebar_custom_props` → `sidebar.customProps`
+2. Added Zod transform to merge snake_case sidebar fields into the nested sidebar object
+3. Added `customProps` field to Entry type in `@levino/shipyard-base/astro/components/types.ts`
+4. Updated TreeNode interface in `sidebarEntries.ts` to include customProps
+5. Passed customProps through `createLeafNode`, `mergeNodeWithDoc`, and `treeNodeToEntry`
+6. Updated `SidebarElement.astro` to render badges:
+   - Extracts badge text from `customProps.badge`
+   - Extracts badge style from `customProps.badgeType` (defaults to 'info')
+   - Renders with DaisyUI classes: `badge badge-{type} badge-sm`
+7. Added 5 unit tests for sidebar snake_case transformations
+8. Fixed pre-existing broken test for pagination_label (wrong page URL)
+
+### Files Modified
+- `packages/docs/src/index.ts` - Added snake_case sidebar aliases and schema transform
+- `packages/base/astro/components/types.ts` - Added customProps to Entry type
+- `packages/docs/src/sidebarEntries.ts` - Added customProps to TreeNode and pipeline
+- `packages/base/astro/components/SidebarElement.astro` - Added badge rendering
+- `packages/docs/src/schema.test.ts` - Added unit tests for sidebar snake_case transforms
+- `apps/demos/single-language/tests/e2e/new-features.spec.ts` - Fixed pagination_label test URL
+
+### Tips for Next Developer
+- The sidebar badge feature uses `sidebar_custom_props.badge` for text and `sidebar_custom_props.badgeType` for style
+- Available badge types: info (default), success, warning, error, primary, secondary, accent
+- The schema transform runs AFTER defaults are applied, so snake_case aliases override nested sidebar values
+- When adding new Docusaurus-compatible frontmatter fields, follow the snake_case alias pattern established here
+- Some i18n demo tests are failing due to content/test mismatches (unrelated to this work)
+
+### Tests
+- 98 tests pass in single-language demo
+- 4 tests still fail (pending tasks: custom document id, title_meta, blog sidebar_label)
+- Sidebar badge tests now pass
+
+---

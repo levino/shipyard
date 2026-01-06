@@ -259,8 +259,8 @@ test.describe('Hide Sidebar', () => {
 test.describe('Pagination Label', () => {
   test('pagination uses custom label when set', async ({ page }) => {
     // Go to a page that comes before hide-sidebar-example in sidebar order
-    // The sidebar is sorted alphabetically, so my-custom-url comes before hide-sidebar-example
-    await page.goto('/docs/my-custom-url')
+    // toc-levels-example (position 62) is just before hide-sidebar-example (position 63)
+    await page.goto('/docs/toc-levels-example')
     // The "Next" link should use the pagination_label "Full Width Page"
     // instead of the full title "Full-Width Page Example"
     const nextLink = page.locator('.pagination-nav__link--next')

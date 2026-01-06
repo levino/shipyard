@@ -23,6 +23,7 @@ interface TreeNode {
   readonly href?: string
   readonly position: number
   readonly className?: string
+  readonly customProps?: Record<string, unknown>
   readonly collapsible: boolean
   readonly collapsed: boolean
   readonly children: Readonly<Record<string, TreeNode>>
@@ -36,6 +37,7 @@ const createLeafNode = (key: string, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : undefined,
   position: doc.sidebarPosition ?? DEFAULT_POSITION,
   className: doc.sidebarClassName,
+  customProps: doc.sidebarCustomProps,
   collapsible: doc.collapsible ?? true,
   collapsed: doc.collapsed ?? true,
   children: {},
@@ -56,6 +58,7 @@ const mergeNodeWithDoc = (node: TreeNode, doc: DocsData): TreeNode => ({
   href: doc.link !== false ? doc.path : node.href,
   position: doc.sidebarPosition ?? node.position,
   className: doc.sidebarClassName ?? node.className,
+  customProps: doc.sidebarCustomProps ?? node.customProps,
   collapsible: doc.collapsible ?? node.collapsible,
   collapsed: doc.collapsed ?? node.collapsed,
 })
@@ -113,6 +116,7 @@ const treeNodeToEntry = (node: TreeNode): Entry[string] => {
     label: node.label,
     ...(node.href && { href: node.href }),
     ...(node.className && { className: node.className }),
+    ...(node.customProps && { customProps: node.customProps }),
     ...(subEntry && { subEntry }),
     ...(hasChildren && { collapsible: node.collapsible }),
     ...(hasChildren && { collapsed: node.collapsed }),

@@ -318,4 +318,78 @@ describe('docsSchema', () => {
       })
     }
   })
+
+  it('should transform sidebar_position to sidebar.position', () => {
+    const validData = {
+      sidebar_position: 42,
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sidebar.position).toBe(42)
+    }
+  })
+
+  it('should transform sidebar_label to sidebar.label', () => {
+    const validData = {
+      sidebar_label: 'My Custom Label',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sidebar.label).toBe('My Custom Label')
+    }
+  })
+
+  it('should transform sidebar_class_name to sidebar.className', () => {
+    const validData = {
+      sidebar_class_name: 'my-custom-class',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sidebar.className).toBe('my-custom-class')
+    }
+  })
+
+  it('should transform sidebar_custom_props to sidebar.customProps', () => {
+    const validData = {
+      sidebar_custom_props: {
+        badge: 'New',
+        badgeType: 'success',
+      },
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sidebar.customProps).toEqual({
+        badge: 'New',
+        badgeType: 'success',
+      })
+    }
+  })
+
+  it('should allow mixing snake_case sidebar fields with sidebar object', () => {
+    const validData = {
+      sidebar: {
+        collapsible: false,
+        collapsed: false,
+      },
+      sidebar_position: 10,
+      sidebar_custom_props: { featured: true },
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.sidebar.position).toBe(10)
+      expect(result.data.sidebar.collapsible).toBe(false)
+      expect(result.data.sidebar.collapsed).toBe(false)
+      expect(result.data.sidebar.customProps).toEqual({ featured: true })
+    }
+  })
 })

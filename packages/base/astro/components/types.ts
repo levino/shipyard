@@ -16,5 +16,10 @@ export type Entry = Record<
     collapsible?: boolean
     /** Initial collapsed state (default: true) */
     collapsed?: boolean
+    /**
+     * Custom properties for the sidebar entry.
+     * Used for badges and other custom styling.
+     */
+    customProps?: Record<string, unknown>
   }
 >
