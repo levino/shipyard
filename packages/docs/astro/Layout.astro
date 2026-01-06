@@ -39,6 +39,11 @@ interface Props {
    * The name of the author who last updated this page.
    */
   lastAuthor?: string
+  /**
+   * Whether to hide the table of contents on this page.
+   * @default false
+   */
+  hideTableOfContents?: boolean
 }
 
 const {
@@ -48,6 +53,7 @@ const {
   editUrl,
   lastUpdated,
   lastAuthor,
+  hideTableOfContents = false,
 } = Astro.props
 
 // Normalize the route base path
@@ -149,19 +155,21 @@ if (docsConfig?.llmsTxtEnabled) {
 
 <BaseLayout sidebarNavigation={entries}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
-    <div class="col-span-12 xl:col-span-9">
+    <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
       <div class="prose max-w-none">
         <Breadcrumbs navigation={entries} />
-        <TableOfContents links={headings} class="xl:hidden" />
+        {!hideTableOfContents && <TableOfContents links={headings} class="xl:hidden" />}
         <slot />
         <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
         <DocPagination prev={pagination.prev} next={pagination.next} />
       </div>
     </div>
-    <div class="hidden xl:block col-span-3">
-      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
-        <TableOfContents links={headings} desktopOnly />
+    {!hideTableOfContents && (
+      <div class="hidden xl:block col-span-3">
+        <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <TableOfContents links={headings} desktopOnly />
+        </div>
       </div>
-    </div>
+    )}
   </div>
 </BaseLayout>

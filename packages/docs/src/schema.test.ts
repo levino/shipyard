@@ -251,4 +251,28 @@ describe('docsSchema', () => {
       expect(result.data.tocMaxHeadingLevel).toBe(6)
     }
   })
+
+  it('should transform hide_table_of_contents to hideTableOfContents', () => {
+    const validData = {
+      hide_table_of_contents: true,
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.hideTableOfContents).toBe(true)
+    }
+  })
+
+  it('should transform hide_title to hideTitle', () => {
+    const validData = {
+      hide_title: true,
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.hideTitle).toBe(true)
+    }
+  })
 })

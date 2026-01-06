@@ -1,4 +1,157 @@
 {
   "$schema": "./tasks.schema.json",
-  "tasks": []
+  "version": 1,
+  "tasks": [
+    {
+      "id": "fix-hide-table-of-contents",
+      "title": "Fix failing test: hide_table_of_contents",
+      "description": "E2E test fails: 'page with hide_table_of_contents does not show TOC'. The test expects that when a page has hide_table_of_contents: true in its frontmatter, the TOC should be hidden. Currently it remains visible. Implement this feature in the docs layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:70",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:07:00Z",
+      "notes": [
+        "Added hide_table_of_contents snake_case alias to docs schema with transform to merge into hideTableOfContents",
+        "Updated generated entry file to pass hideTableOfContents to Layout",
+        "Modified Layout.astro to conditionally render TOC based on hideTableOfContents prop"
+      ]
+    },
+    {
+      "id": "fix-keywords-meta-tag",
+      "title": "Fix failing test: keywords meta tag",
+      "description": "E2E test fails: 'page with keywords has keywords meta tag'. The test expects meta[name='keywords'] to exist when a page has keywords in frontmatter. Currently the meta tag is not rendered. Add keywords support to the page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:132",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-og-image-meta-tag",
+      "title": "Fix failing test: og:image meta tag",
+      "description": "E2E test fails: 'page with image has og:image meta tag'. The test expects meta[property='og:image'] when a page has an image in frontmatter. Currently not rendered. Add og:image support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:141",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-twitter-card-meta-tag",
+      "title": "Fix failing test: twitter:card meta tag",
+      "description": "E2E test fails: 'page with image has twitter:card meta tag'. The test expects meta[name='twitter:card'] when a page has an image. Currently not rendered. Add twitter:card support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:147",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-hide-title",
+      "title": "Fix failing test: hide_title",
+      "description": "E2E test fails: 'page with hide_title hides the H1'. The test expects the H1 heading to be hidden when hide_title: true is set in frontmatter. Currently the H1 remains visible. Implement hide_title support in the layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:161",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-pagination-label",
+      "title": "Fix failing test: pagination_label",
+      "description": "E2E test fails: 'pagination uses custom label when set'. The test expects pagination to show 'Custom Nav Label' when pagination_label is set, but it shows 'Pagination Label Demo' (the title). Implement pagination_label support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:260",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-canonical-url",
+      "title": "Fix failing test: canonical_url",
+      "description": "E2E test fails: 'page with canonical_url has canonical link tag'. The test expects link[rel='canonical'] when canonical_url is set in frontmatter. Currently not rendered. Add canonical URL support to page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:314",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-sidebar-badge",
+      "title": "Fix failing test: sidebar badge",
+      "description": "E2E test fails: 'sidebar item with badge shows badge element'. The test expects a .badge element when sidebar.badge is configured. Currently no badge is rendered. Implement sidebar badge support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:359",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-sidebar-badge-style",
+      "title": "Fix failing test: sidebar badge style",
+      "description": "E2E test fails: 'badge has correct style class'. The test expects .badge-warning class but found .badge-primary. The badge style from sidebar.badge.style is not being applied correctly. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:368",
+      "status": "pending",
+      "priority": "low",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "dependsOn": ["fix-sidebar-badge"],
+      "notes": []
+    },
+    {
+      "id": "fix-custom-meta-tags-robots",
+      "title": "Fix failing test: custom robots meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom robots meta tag'. The test expects meta[name='robots'] with content 'noindex, nofollow' when custom_meta_tags is set. Currently not rendered. Implement custom_meta_tags support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:379",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-custom-meta-tags-author",
+      "title": "Fix failing test: custom author meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom author meta tag'. The test expects meta[name='author'] with content 'Custom Author'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:387",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-custom-meta-tags-og-locale",
+      "title": "Fix failing test: custom og:locale meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom og:locale property'. The test expects meta[property='og:locale'] with content 'en_GB'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:395",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-custom-document-id-pagination",
+      "title": "Fix failing test: custom document id pagination",
+      "description": "E2E test fails: 'pagination_next using custom id links to correct page'. The test expects pagination to link to /docs/pagination-label-demo when pagination_next references a custom document id. Currently link not found. Implement custom id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:423",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-custom-document-id-title",
+      "title": "Fix failing test: custom document id title",
+      "description": "E2E test fails: 'pagination next link shows correct title from custom id page'. The pagination link exists but is hidden. Related to custom document id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:435",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "dependsOn": ["fix-custom-document-id-pagination"],
+      "notes": []
+    },
+    {
+      "id": "fix-title-meta-frontmatter",
+      "title": "Fix failing test: title_meta",
+      "description": "E2E test fails: 'page with title_meta uses it for the page title instead of regular title'. The test expects page title to be 'SEO Optimized Title' but found 'Site Title Demo'. When title_meta is set, it should be used for the <title> tag instead of the regular title. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:615",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    },
+    {
+      "id": "fix-blog-sidebar-label",
+      "title": "Fix failing test: blog sidebar_label",
+      "description": "E2E test fails: 'blog post with sidebar_label uses it in sidebar'. The test expects 'Advanced Features' link to be visible in sidebar-navigation but it's hidden. Blog posts should support sidebar_label for custom sidebar display. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:637",
+      "status": "pending",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "notes": []
+    }
+  ]
 }

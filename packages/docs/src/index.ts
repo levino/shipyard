@@ -75,8 +75,12 @@ export const docsSchema = z
     // === Layout Options ===
     /** Hide the H1 heading (default: false) */
     hideTitle: z.boolean().default(false),
+    /** Hide the H1 heading (default: false) - snake_case alias for Docusaurus compatibility */
+    hide_title: z.boolean().optional(),
     /** Hide the TOC (default: false) */
     hideTableOfContents: z.boolean().default(false),
+    /** Hide the TOC (default: false) - snake_case alias for Docusaurus compatibility */
+    hide_table_of_contents: z.boolean().optional(),
     /** Full-width page without sidebar (default: false) */
     hideSidebar: z.boolean().default(false),
     /** Min heading level in TOC (default: 2) */
@@ -123,6 +127,13 @@ export const docsSchema = z
       )
       .optional(),
   })
+  .transform((data) => ({
+    ...data,
+    // Merge snake_case aliases into camelCase fields
+    hideTitle: data.hide_title ?? data.hideTitle,
+    hideTableOfContents:
+      data.hide_table_of_contents ?? data.hideTableOfContents,
+  }))
   .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
     message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
   })
@@ -387,7 +398,7 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents } = entry.data
 
 let editUrl
 if (customEditUrl === null) {
@@ -427,7 +438,7 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents}>
   <Content />
 </Layout>
 `
