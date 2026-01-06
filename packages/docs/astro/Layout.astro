@@ -20,6 +20,12 @@ import DocMetadata from './DocMetadata.astro'
 import DocPagination from './DocPagination.astro'
 import LlmsTxtSidebarLabel from './LlmsTxtSidebarLabel.astro'
 
+type CustomMetaTag = {
+  name?: string
+  property?: string
+  content: string
+}
+
 interface Props {
   headings?: { depth: number; text: string; slug: string }[]
   /**
@@ -50,6 +56,36 @@ interface Props {
    * If not provided, it will be extracted from the URL.
    */
   currentVersion?: string
+  /**
+   * Whether to hide the table of contents on this page.
+   * @default false
+   */
+  hideTableOfContents?: boolean
+  /**
+   * SEO keywords for the page.
+   */
+  keywords?: string[]
+  /**
+   * Social preview image URL (og:image).
+   */
+  image?: string
+  /**
+   * Custom canonical URL for the page.
+   */
+  canonicalUrl?: string
+  /**
+   * Custom meta tags to add to the page head.
+   */
+  customMetaTags?: CustomMetaTag[]
+  /**
+   * Whether to hide the H1 title heading on this page.
+   * @default false
+   */
+  hideTitle?: boolean
+  /**
+   * Override title for SEO/browser tab (overrides the regular title in <title> tag).
+   */
+  titleMeta?: string
 }
 
 const {
@@ -60,6 +96,13 @@ const {
   lastUpdated,
   lastAuthor,
   currentVersion: currentVersionProp,
+  hideTableOfContents = false,
+  hideTitle = false,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
+  titleMeta,
 } = Astro.props
 
 // Normalize the route base path
@@ -128,21 +171,22 @@ const docs =
         const {
           id,
           data: {
+            id: customId,
             title,
-            sidebar: { render: shouldBeRendered, label },
-            sidebar_position,
-            sidebar_label,
-            sidebar_class_name,
-            sidebar_custom_props,
-            pagination_next,
-            pagination_prev,
+            sidebar,
+            render: shouldRender,
+            unlisted,
+            paginationLabel,
+            paginationNext,
+            paginationPrev,
           },
         } = doc
         return {
           id,
+          customId,
           path: getPath(id),
           title:
-            label ??
+            sidebar.label ??
             title ??
             Option.getOrUndefined(
               EffectArray.findFirst(
@@ -151,13 +195,17 @@ const docs =
               ),
             )?.text ??
             id,
-          link: shouldBeRendered,
-          sidebarPosition: sidebar_position,
-          sidebarLabel: sidebar_label,
-          sidebarClassName: sidebar_class_name,
-          sidebarCustomProps: sidebar_custom_props,
-          pagination_next,
-          pagination_prev,
+          link: shouldRender,
+          sidebarPosition: sidebar.position,
+          sidebarLabel: sidebar.label,
+          sidebarClassName: sidebar.className,
+          sidebarCustomProps: sidebar.customProps,
+          collapsible: sidebar.collapsible,
+          collapsed: sidebar.collapsed,
+          unlisted,
+          paginationLabel,
+          paginationNext,
+          paginationPrev,
         }
       }),
     )
@@ -270,7 +318,7 @@ const deprecationBannerProps =
     : null
 ---
 
-<BaseLayout sidebarNavigation={entries}>
+<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} title={titleMeta}>
   {
     versionSelectorProps && (
       <VersionSelector
@@ -290,29 +338,31 @@ const deprecationBannerProps =
     )
   }
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
-    <div class="col-span-12 xl:col-span-9">
+    <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
       {deprecationBannerProps && (
         <div class="not-prose mb-4">
           <DeprecationBanner {...deprecationBannerProps} />
         </div>
       )}
-      <div class="prose max-w-none">
+      <div class:list={['prose', 'max-w-none', { 'hide-title': hideTitle }]}>
         <div class="flex items-center gap-3 flex-wrap not-prose mb-2">
           <Breadcrumbs navigation={entries} />
           {versionBadgeProps && (
             <VersionBadge {...versionBadgeProps} size="sm" />
           )}
         </div>
-        <TableOfContents links={headings} class="xl:hidden" />
+        {!hideTableOfContents && <TableOfContents links={headings} class="xl:hidden" />}
         <slot />
         <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
         <DocPagination prev={pagination.prev} next={pagination.next} />
       </div>
     </div>
-    <div class="hidden xl:block col-span-3">
-      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
-        <TableOfContents links={headings} desktopOnly />
+    {!hideTableOfContents && (
+      <div class="hidden xl:block col-span-3">
+        <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+          <TableOfContents links={headings} desktopOnly />
+        </div>
       </div>
-    </div>
+    )}
   </div>
 </BaseLayout>

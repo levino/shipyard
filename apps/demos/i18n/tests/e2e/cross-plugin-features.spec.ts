@@ -125,7 +125,7 @@ test.describe('Cross-Plugin Features', () => {
     test('custom CSS class via frontmatter works', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
-      // sidebar_class_name: "font-bold text-warning" should be applied
+      // sidebar.className: "font-bold text-warning" should be applied
       const customClassItem = page.locator(
         '.drawer-side li.font-bold.text-warning',
       )

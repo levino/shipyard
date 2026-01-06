@@ -3,710 +3,227 @@
   "version": 1,
   "tasks": [
     {
-      "id": "version-schema-types",
-      "title": "Define version schema and TypeScript types",
-      "description": "Create Zod schema for version configuration and TypeScript types. Add version field to docsSchema, create VersionConfig type with properties: current, available[], deprecated[], stable. Export types from packages/docs/src/index.ts",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T14:43:00Z",
-      "notes": [
-        "Added singleVersionSchema, versionConfigSchema, SingleVersionConfig and VersionConfig types to packages/docs/src/index.ts"
-      ]
-    },
-    {
-      "id": "version-config-integration",
-      "title": "Add version configuration to docs integration",
-      "description": "Extend shipyardDocs() integration options to accept versions config. Update packages/docs/src/index.ts to handle version configuration. Store version config in virtual module virtual:shipyard-docs-configs",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T14:48:00Z",
-      "dependsOn": ["version-schema-types"],
-      "notes": [
-        "Added `versions?: VersionConfig` to DocsConfig interface",
-        "Added validation of versions config with Zod schema",
-        "Added versions to docsConfigs registry for virtual module",
-        "Updated virtual-module.d.ts with versions and llmsTxtEnabled fields"
-      ]
-    },
-    {
-      "id": "version-content-structure",
-      "title": "Implement versioned content directory structure",
-      "description": "Design and implement content organization for versioned docs. Structure: docs/[version]/[locale]/[...slug].md. Update content loader glob patterns to handle version directories. Handle fallback when version-specific content doesn't exist",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T15:19:00Z",
-      "dependsOn": ["version-config-integration"],
-      "notes": [
-        "Created versionedDocsSchema extending docsSchema with optional version field",
-        "Implemented createVersionedDocsCollection() helper for versioned content loading",
-        "Added getVersionFromDocId() and stripVersionFromDocId() for ID parsing",
-        "Added filterDocsByVersion() and groupDocsByVersion() for filtering docs",
-        "Added findFallbackDoc(), docExistsInVersion(), getDocVersions() for fallback handling",
-        "Added 34 comprehensive unit tests for all new functions",
-        "All 104 unit tests pass"
-      ]
-    },
-    {
-      "id": "version-route-helpers",
-      "title": "Update route helpers for versioned paths",
-      "description": "Modify packages/docs/src/routeHelpers.ts to handle version parameter. Update getDocPath() to include version in path. Add getVersionedDocPath(), getCurrentVersion(), getAvailableVersions() helpers. Ensure i18n compatibility with versioned routes",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T14:53:00Z",
-      "dependsOn": ["version-schema-types"],
-      "notes": [
-        "Added 9 new functions: getVersionPath, getCurrentVersion, getAvailableVersions, isVersionDeprecated, getStableVersion, findVersionConfig, getVersionedDocPath, getVersionedRouteParams, switchVersionInPath",
-        "All functions exported from packages/docs/src/index.ts",
-        "Added 29 unit tests covering all version helper functions",
-        "All 70 unit tests and 177 E2E tests pass"
-      ]
-    },
-    {
-      "id": "version-static-paths",
-      "title": "Generate static paths for all versions",
-      "description": "Update getStaticPaths generation to create paths for all version/locale/slug combinations. Handle 'latest' as alias for current version. Implement version-specific 404 handling",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T15:26:00Z",
-      "dependsOn": ["version-route-helpers", "version-content-structure"],
-      "notes": [
-        "Updated getStaticPaths to generate paths for all version/locale/slug combinations",
-        "Added 'latest' alias path generation for current version docs",
-        "Added isLatestAlias, actualVersion, displayVersion props for tracking version context",
-        "All 104 unit tests and 188 E2E tests pass"
-      ]
-    },
-    {
-      "id": "version-route-injection",
-      "title": "Inject versioned routes into Astro",
-      "description": "Update integration's injectRoute calls to handle versioned route patterns. Pattern: /[locale]/[routeBasePath]/[version]/[...slug]. Add redirect from /docs/ to /docs/[currentVersion]/",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T15:30:00Z",
-      "dependsOn": ["version-static-paths"],
-      "notes": [
-        "Versioned route patterns were already implemented in previous session",
-        "Added redirect from /docs/ to /docs/[currentVersion]/ for versioned docs",
-        "Redirect works with both i18n (uses locale-aware getStaticPaths) and non-i18n modes",
-        "Uses 302 redirect to allow search engines to follow while not caching permanently",
-        "All 104 unit tests and 188 E2E tests pass"
-      ]
-    },
-    {
-      "id": "version-selector-component",
-      "title": "Create VersionSelector UI component",
-      "description": "Create VersionSelector.astro component in packages/base/astro/components/. Similar pattern to LanguageSwitcher. Display dropdown with available versions. Show badges for 'stable', 'latest', 'deprecated'. Handle navigation to same page in different version",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T16:55:00Z",
-      "dependsOn": ["version-route-helpers"],
-      "notes": [
-        "Created VersionSelector.astro in packages/base/astro/components/",
-        "Component accepts versions array, currentVersion, stableVersion, deprecatedVersions as props",
-        "Supports 'dropdown' and 'list' variants (same as LanguageSwitcher)",
-        "Displays badges: stable (green), deprecated (warning), unreleased (info)",
-        "Uses tag icon SVG for version indicator",
-        "Exported from packages/base/astro/components/index.ts",
-        "Also exported LanguageSwitcher which was missing from index.ts",
-        "All 113 unit tests pass, 177 i18n E2E + 11 single-language E2E tests pass"
-      ]
-    },
-    {
-      "id": "version-selector-integration",
-      "title": "Integrate VersionSelector into layout",
-      "description": "Add VersionSelector to docs layout (packages/docs/astro/Layout.astro). Position in navbar alongside LanguageSwitcher. Ensure proper styling with DaisyUI/Tailwind. Make version visible in mobile view",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:05:00Z",
-      "dependsOn": ["version-selector-component"],
-      "notes": [
-        "Added navbarExtra and sidebarExtra named slots to GlobalDesktopNavigation and SidebarNavigation",
-        "Added slot pass-through in Page.astro base layout",
-        "Updated docs Layout.astro to extract version from URL and pass VersionSelector through slots",
-        "VersionSelector only renders when versionsConfig has multiple versions",
-        "All 113 unit tests pass, all 188 E2E tests pass (177 i18n + 11 single-language)"
-      ]
-    },
-    {
-      "id": "version-badge-component",
-      "title": "Create version badge component",
-      "description": "Create VersionBadge.astro component to show current version in docs pages. Display 'deprecated' warning banner for old versions. Show 'latest' or 'stable' badges appropriately. Style with DaisyUI alert/badge components",
+      "id": "fix-hide-table-of-contents",
+      "title": "Fix failing test: hide_table_of_contents",
+      "description": "E2E test fails: 'page with hide_table_of_contents does not show TOC'. The test expects that when a page has hide_table_of_contents: true in its frontmatter, the TOC should be hidden. Currently it remains visible. Implement this feature in the docs layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:70",
       "status": "completed",
       "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T19:30:00Z",
-      "dependsOn": ["version-schema-types"],
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:07:00Z",
       "notes": [
-        "Created VersionBadge.astro component in packages/base/astro/components/",
-        "Component shows status badges: Stable (green), Deprecated (yellow), Latest (primary), Unreleased (info)",
-        "Integrated into docs Layout.astro - displays next to breadcrumbs",
-        "Supports size variants (sm, md, lg) and has screen-reader accessible text",
-        "Added 19 comprehensive E2E tests covering visibility, status display, styling, and consistency",
-        "All 294 E2E tests pass (178 i18n + 11 single-language + 80 versioned-docs + 25 versioned-i18n)"
+        "Added hide_table_of_contents snake_case alias to docs schema with transform to merge into hideTableOfContents",
+        "Updated generated entry file to pass hideTableOfContents to Layout",
+        "Modified Layout.astro to conditionally render TOC based on hideTableOfContents prop"
       ]
     },
     {
-      "id": "version-deprecation-banner",
-      "title": "Add deprecation banner for old versions",
-      "description": "When viewing a deprecated version, show prominent banner warning users. Include link to latest version of same page. Make banner dismissible but re-appear on navigation. Use DaisyUI alert component",
+      "id": "fix-keywords-meta-tag",
+      "title": "Fix failing test: keywords meta tag",
+      "description": "E2E test fails: 'page with keywords has keywords meta tag'. The test expects meta[name='keywords'] to exist when a page has keywords in frontmatter. Currently the meta tag is not rendered. Add keywords support to the page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:132",
       "status": "completed",
       "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T19:45:00Z",
-      "dependsOn": ["version-badge-component"],
-      "notes": [
-        "Created DeprecationBanner.astro component in packages/base/astro/components/",
-        "Banner shows warning alert with 'Outdated Documentation' heading",
-        "Includes link to the same page in the latest version",
-        "Banner is dismissible with X button, reappears on navigation",
-        "Integrated into docs Layout.astro - shows only on deprecated versions",
-        "Exported from packages/base/astro/components/index.ts",
-        "Added 18 comprehensive E2E tests covering visibility, content, navigation, dismissal, and styling",
-        "All 311 E2E tests pass (177 i18n + 11 single-language + 98 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "version-sidebar-context",
-      "title": "Update sidebar to respect version context",
-      "description": "Modify packages/docs/src/sidebarEntries.ts to filter docs by version. Ensure sidebar only shows pages available in current version. Update tree building to handle version-specific content",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:28:00Z",
-      "dependsOn": ["version-content-structure"],
-      "notes": [
-        "Created versionHelpers.ts to avoid circular dependencies between modules",
-        "Added filterDocsForVersion() function to filter docs by version and strip version prefix from IDs",
-        "Updated Layout.astro to filter docs by current version before building sidebar tree",
-        "Pagination now also uses version-filtered docs to stay within same version",
-        "Added 7 unit tests for filterDocsForVersion covering various scenarios",
-        "Added 4 E2E tests for version-specific sidebar behavior",
-        "All 111 unit tests pass, all E2E tests pass (177 i18n + 11 single + 17 versioned)"
-      ]
-    },
-    {
-      "id": "version-pagination",
-      "title": "Update pagination for versioned docs",
-      "description": "Ensure prev/next pagination stays within same version. Update pagination_next/pagination_prev to work with versioned paths. Handle edge cases at version boundaries",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:00:00Z",
-      "dependsOn": ["version-sidebar-context"],
-      "notes": [
-        "Pagination already respects version boundaries through filtered docs system",
-        "Layout.astro uses sidebarDocs (version-filtered) for pagination computation",
-        "E2E tests for pagination within version already exist and pass (3 tests in version-sidebar.spec.ts)",
-        "pagination_next/pagination_prev frontmatter work with versioned paths via allDocs lookup"
-      ]
-    },
-    {
-      "id": "version-search-integration",
-      "title": "Scope search to current version",
-      "description": "If search is implemented, ensure it respects version context. Filter search results to current version by default. Option to search across all versions with clear labeling",
-      "status": "pending",
-      "priority": "low",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
-      "dependsOn": ["version-sidebar-context"],
-      "notes": []
-    },
-    {
-      "id": "version-virtual-module",
-      "title": "Expose version metadata via virtual module",
-      "description": "Update virtual:shipyard-docs-configs to include version metadata. Export getCurrentVersion(), getVersions(), isDeprecated(), etc. Make version info available to all components",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:35:00Z",
-      "dependsOn": ["version-config-integration"],
-      "notes": [
-        "Added 6 version helper functions to virtual:shipyard-docs-configs module",
-        "Functions: getVersionConfig(), getCurrentVersion(), getAvailableVersions(), isVersionDeprecated(), getStableVersion(), hasVersioning()",
-        "All functions take optional routeBasePath parameter (defaults to 'docs') for multi-docs support",
-        "Updated virtual-module.d.ts with TypeScript types for all new functions",
-        "All 111 unit tests pass",
-        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)"
-      ]
-    },
-    {
-      "id": "version-latest-redirect",
-      "title": "Implement /latest/ redirect handling",
-      "description": "Create redirect from /docs/latest/[...slug] to /docs/[currentVersion]/[...slug]. Handle in both SSG and SSR modes. Ensure SEO-friendly (301 redirect) for latest",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T19:52:00Z",
-      "dependsOn": ["version-route-injection"],
-      "notes": [
-        "Implemented SEO-friendly 301 redirects for /latest/ URLs in SSG mode",
-        "Uses HTML meta-refresh redirect instead of Astro.redirect() for compatibility with i18n fallback",
-        "Redirect pages include canonical URL, noindex meta, and fallback link",
-        "Works correctly for both non-i18n (/docs/latest/ -> /docs/v2/) and i18n (/de/docs/latest/ -> /de/docs/v2/) modes",
-        "For i18n mode, disabled i18n fallback in versioned-i18n demo to prevent overwriting explicitly generated redirect pages",
-        "All 123 versioned-docs E2E tests pass (98 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "version-cross-version-links",
-      "title": "Handle cross-version link resolution",
-      "description": "When a page links to another page, resolve within same version by default. Provide syntax for explicit cross-version links. Validate links exist in target version during build",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T21:00:00Z",
-      "dependsOn": ["version-route-helpers"],
-      "notes": [
-        "Created rehypeVersionLinks rehype plugin for version-aware link resolution",
-        "Cross-version link syntax: @version:/path (e.g., @v2:/configuration -> /docs/v2/configuration)",
-        "Auto-versioning: absolute docs paths without version get current version added",
-        "Relative links pass through unchanged (browser handles same-version navigation)",
-        "Added 30 unit tests for the rehype plugin (179 total unit tests pass)",
-        "Added 13 E2E tests for cross-version links (136 versioned E2E tests pass)",
-        "Updated demo content to use cross-version link syntax",
-        "Added comprehensive documentation to versioning guide"
-      ]
-    },
-    {
-      "id": "demo-versioned-docs",
-      "title": "Create versioned-docs demo application",
-      "description": "Create new demo app in apps/demos/versioned-docs/. Set up with multiple versions (v1.0, v2.0, latest). Include sample content in each version. Configure astro.config.mjs with version settings",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:15:00Z",
-      "dependsOn": ["version-route-injection"],
-      "notes": [
-        "Created demo in apps/demos/versioned-docs/",
-        "Configured with two versions: v1 and v2 (using short names to avoid Astro dot issues)",
-        "Added latest alias that resolves to v2 (current version)",
-        "Docs root (/docs/) redirects to /docs/v2/",
-        "v1 marked as deprecated with unmaintained banner",
-        "Created 7 content pages (4 for v2, 3 for v1)",
-        "Added 13 Playwright E2E tests covering routing, navigation, and version selector",
-        "All 202 E2E tests pass (178 i18n + 11 single-language + 13 versioned-docs)"
-      ]
-    },
-    {
-      "id": "demo-versioned-i18n",
-      "title": "Create demo combining versions with i18n",
-      "description": "Extend or create demo showing versions + i18n together. Routes: /en/docs/v2.0/getting-started, /de/docs/v1.0/getting-started. Verify LanguageSwitcher + VersionSelector work together",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:50:00Z",
-      "dependsOn": ["demo-versioned-docs", "version-selector-integration"],
-      "notes": [
-        "Created apps/demos/versioned-i18n/ demo combining versioning with i18n",
-        "Configured with i18n (en, de) + versions (v1, v2)",
-        "URL structure: /[locale]/docs/[version]/[...slug] (e.g., /en/docs/v2/installation)",
-        "Created 14 content pages: 4 for v2 en/de each, 3 for v1 en/de each",
-        "Created localized static pages (index, about) in en and de",
-        "LanguageSwitcher and VersionSelector both work correctly together",
-        "Noted that docs root redirect doesn't preserve locale context (known limitation)",
-        "Added 25 comprehensive E2E tests covering version+language switching",
-        "All 274 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "demo-docusaurus-counterpart",
-      "title": "Create Docusaurus counterpart for versioned docs demo",
-      "description": "Per CLAUDE.md, all demos need Docusaurus counterparts. Create matching Docusaurus demo with same content/versions. Ensure identical content for framework comparison",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:30:00Z",
-      "dependsOn": ["demo-versioned-docs"],
-      "notes": [
-        "Created apps/demos/versioned-docs-docusaurus/ with full Docusaurus versioning setup",
-        "Configured docusaurus.config.ts with version dropdown, v2 as current, v1 as deprecated with unmaintained banner",
-        "Created v2 (current) docs: index, installation, configuration, migration pages",
-        "Created v1 versioned docs in versioned_docs/version-1.0/: index, installation, configuration",
-        "Created versions.json and versioned_sidebars for proper version tracking",
-        "Created static pages: index.md and about.md matching shipyard demo content",
-        "Docusaurus build succeeds with no errors",
-        "All unit tests pass (149 tests)",
-        "All E2E tests pass: i18n (177) + single-language (11) + versioned-docs (98) + versioned-i18n (25)"
-      ]
-    },
-    {
-      "id": "test-version-routing-e2e",
-      "title": "E2E tests for version routing",
-      "description": "Add Playwright tests for versioned route navigation. Test: navigate between versions, verify URL structure, test /latest/ redirect, test 404 for non-existent version",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:58:00Z",
-      "dependsOn": ["demo-versioned-docs"],
-      "notes": [
-        "Added 10 new E2E tests to versioned-docs.spec.ts (now 27 total in that file)",
-        "New test sections: 404 Error Handling (4 tests), URL Structure Verification (4 tests), Version Switching with Page Preservation (2 tests)",
-        "404 tests cover: non-existent version, non-existent page, version-specific page in wrong version, nested paths",
-        "URL structure tests verify: version paths, latest alias behavior, docs root redirect",
-        "Version switching tests verify slug preservation when switching between versions",
-        "All 44 versioned-docs E2E tests pass, full suite passes (177 i18n + 11 single-language + 44 versioned-docs)"
-      ]
-    },
-    {
-      "id": "test-version-selector-e2e",
-      "title": "E2E tests for version selector",
-      "description": "Add Playwright tests for VersionSelector component. Test: dropdown opens, versions listed correctly, navigation works, badges display, current version highlighted",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:45:00Z",
-      "dependsOn": ["version-selector-integration", "demo-versioned-docs"],
-      "notes": [
-        "Created version-selector.spec.ts with 17 comprehensive E2E tests",
-        "Fixed bug in Layout.astro: Astro fragments don't work with slot children - had to use separate conditionals",
-        "Tests cover dropdown variant (navbar), list variant (sidebar on mobile), navigation, badges, and edge cases",
-        "All 34 versioned-docs E2E tests pass (17 version-selector + 17 versioned-docs)",
-        "Full E2E suite passes: 178 i18n + 11 single-language + 34 versioned-docs (server-mode skipped - pre-existing issue)"
-      ]
-    },
-    {
-      "id": "test-version-sidebar-e2e",
-      "title": "E2E tests for version-specific sidebar",
-      "description": "Add Playwright tests verifying sidebar shows version-appropriate content. Test: different content per version, navigation within version, no cross-version leakage",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:12:00Z",
-      "dependsOn": ["version-sidebar-context", "demo-versioned-docs"],
-      "notes": [
-        "Created version-sidebar.spec.ts with 17 comprehensive E2E tests",
-        "Test sections: Sidebar Content Per Version (4 tests), Sidebar Navigation Within Version (3 tests), Pagination Within Version (3 tests), Sidebar Active State (3 tests), No Cross-Version Leakage (4 tests)",
-        "Fixed bug in Layout.astro: 'latest' alias was not resolving to current version for sidebar filtering",
-        "All 61 versioned-docs E2E tests pass (17 new + 27 versioned-docs + 17 version-selector)",
-        "All 177 i18n E2E tests pass (1 skipped), 11 single-language tests pass",
-        "All 111 unit tests pass"
-      ]
-    },
-    {
-      "id": "test-version-i18n-e2e",
-      "title": "E2E tests for version + i18n combination",
-      "description": "Add Playwright tests for combined versioning and i18n. Test: switch language within version, switch version within language, correct URL structure maintained",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:50:00Z",
-      "dependsOn": ["demo-versioned-i18n"],
-      "notes": [
-        "Tests already added as part of demo-versioned-i18n task",
-        "25 comprehensive E2E tests in versioned-i18n.spec.ts",
-        "Tests cover: home page routing, language switching, version switching, combined switching, URL structure, docs root redirect, version selector badges, about page, content localization",
-        "All 274 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "test-deprecation-banner-e2e",
-      "title": "E2E tests for deprecation banner",
-      "description": "Add Playwright tests for deprecation banner behavior. Test: banner appears on deprecated versions, link to latest works, dismissible behavior",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T19:45:00Z",
-      "dependsOn": ["version-deprecation-banner", "demo-versioned-docs"],
-      "notes": [
-        "Created deprecation-banner.spec.ts with 18 comprehensive E2E tests",
-        "Test sections: Banner Visibility (6 tests), Banner Content (4 tests), Banner Navigation (2 tests), Banner Dismissal (3 tests), Banner Styling (3 tests)",
-        "Tests cover: v1/v2 visibility, warning message content, link to latest version, dismissal behavior, warning alert styling, accessibility",
-        "All tests pass"
-      ]
-    },
-    {
-      "id": "test-route-helpers-unit",
-      "title": "Unit tests for versioned route helpers",
-      "description": "Add Vitest unit tests for routeHelpers.ts version functions. Test: getVersionedDocPath(), path generation edge cases, version validation, i18n+version combinations",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:27:00Z",
-      "dependsOn": ["version-route-helpers"],
-      "notes": [
-        "Tests already exist - added during version-route-helpers task",
-        "83 tests in routeHelpers.test.ts covering all version functions",
-        "Covers: getVersionedDocPath, path edge cases, version validation, i18n+version combinations",
-        "All 111 unit tests pass"
-      ]
-    },
-    {
-      "id": "test-sidebar-entries-unit",
-      "title": "Unit tests for versioned sidebar entries",
-      "description": "Extend packages/docs/src/sidebarEntries.test.ts with version filtering tests. Test: entries filtered by version, tree building with versions, edge cases",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:28:00Z",
-      "dependsOn": ["version-sidebar-context"],
-      "notes": [
-        "Tests already exist - added during version-sidebar-context task",
-        "7 tests for filterDocsForVersion covering: basic filtering, version stripping, property preservation, empty results, i18n locales, semantic versions, special names",
-        "All 111 unit tests pass"
-      ]
-    },
-    {
-      "id": "test-version-schema-unit",
-      "title": "Unit tests for version schema validation",
-      "description": "Add Vitest unit tests for version Zod schema. Test: valid configs accepted, invalid configs rejected with clear errors, edge cases handled",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:15:00Z",
-      "dependsOn": ["version-schema-types"],
-      "notes": [
-        "Created versionSchema.test.ts with 38 comprehensive unit tests",
-        "Tests for singleVersionSchema: valid configs (7 tests), invalid configs (6 tests)",
-        "Tests for versionConfigSchema: valid configs (7 tests), invalid configs (10 tests), edge cases (8 tests)",
-        "Edge case tests cover: version not in available, deprecated not in available, stable not in available, long strings, special chars, unicode, many versions, duplicates",
-        "All 149 unit tests pass (38 new + 111 existing)"
-      ]
-    },
-    {
-      "id": "docs-versioning-guide-en",
-      "title": "Write versioning guide documentation (English)",
-      "description": "Create comprehensive guide in apps/docs for version management. Cover: configuration, directory structure, adding new versions, deprecating old versions, best practices. Place in docs/en/guides/versioning.md",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:20:00Z",
-      "dependsOn": ["demo-versioned-docs"],
-      "notes": [
-        "Created apps/docs/docs/en/guides/versioning.md with comprehensive guide",
-        "Covers: quick start, configuration reference, directory structure, URL patterns, adding/deprecating versions, version selector, best practices",
-        "Also created guides index page (apps/docs/docs/en/guides/index.md)",
-        "Docs app builds successfully (36 pages)",
-        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)"
-      ]
-    },
-    {
-      "id": "docs-versioning-guide-de",
-      "title": "Translate versioning guide to German",
-      "description": "Translate the versioning guide from English to German. Place in docs/de/guides/versioning.md. Ensure technical terms are appropriately translated or kept in English where standard",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:35:00Z",
-      "dependsOn": ["docs-versioning-guide-en"],
-      "notes": [
-        "Created apps/docs/docs/de/guides/ directory",
-        "Translated versioning.md with comprehensive German translation",
-        "Created German guides index page (index.md)",
-        "Technical terms kept in English where standard (Content Collection, label, path, etc.)",
-        "Docs app builds successfully (39 pages)",
-        "All 158 unit tests pass (9 base + 149 docs)",
-        "All E2E tests pass across all demos"
-      ]
-    },
-    {
-      "id": "docs-api-reference-update",
-      "title": "Update API reference with version options",
-      "description": "Update packages/docs README and API documentation. Document new shipyardDocs() version options. Add TypeScript type documentation. Include code examples",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:30:00Z",
-      "dependsOn": ["version-config-integration"],
-      "notes": [
-        "Updated packages/docs/README.md with versioned documentation example",
-        "Added comprehensive Versioning section to apps/docs/docs/en/docs-package.md",
-        "Added versions and llmsTxt options to Configuration table",
-        "Documented VersionConfig and SingleVersionConfig options",
-        "Added URL structure, Version Selector, and Best Practices sections",
-        "Docs app builds successfully (36 pages)",
-        "All 111 unit tests pass"
-      ]
-    },
-    {
-      "id": "docs-migration-guide-en",
-      "title": "Write migration guide for existing users (English)",
-      "description": "Create migration guide for users upgrading to versioned docs. Cover: directory restructure, config changes, breaking changes if any. Place in docs/en/guides/migration-to-versioned.md",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:20:00Z",
-      "dependsOn": ["docs-versioning-guide-en"],
-      "notes": [
-        "Created comprehensive migration guide at apps/docs/docs/en/guides/migration-to-versioned.md",
-        "Guide covers: planning version strategy, directory restructure, content collection update, version config, testing, updating links, adding second version, troubleshooting, rollback plan",
-        "Updated guides index page to include link to migration guide",
-        "Docs app builds successfully (37 pages)",
-        "All 149 unit tests pass, all E2E tests pass"
-      ]
-    },
-    {
-      "id": "docs-migration-guide-de",
-      "title": "Translate migration guide to German",
-      "description": "Translate the migration guide from English to German. Place in docs/de/guides/migration-to-versioned.md",
-      "status": "completed",
-      "priority": "low",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T19:59:00Z",
-      "dependsOn": ["docs-migration-guide-en"],
-      "notes": [
-        "Created German translation at apps/docs/docs/de/guides/migration-to-versioned.md",
-        "Translation follows same approach as versioning guide (technical terms in English)",
-        "German guides index already had link to migration guide",
-        "Docs app builds successfully (40 pages)",
-        "All 149 unit tests pass",
-        "All E2E tests pass (177 i18n + 11 single-language + 98 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "example-basic-versioning",
-      "title": "Create basic versioning example",
-      "description": "Add simple example showing minimal version setup. Include in docs examples section. Show: basic config, two versions, simple content",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:04:00Z",
-      "dependsOn": ["docs-versioning-guide-en"],
-      "notes": [
-        "Created new 'examples' section in docs with English and German versions",
-        "Created apps/docs/docs/en/examples/index.md and apps/docs/docs/de/examples/index.md as example index pages",
-        "Created apps/docs/docs/en/examples/basic-versioning.md with comprehensive example including astro.config.mjs, content.config.ts, directory structure, and sample content files",
-        "Created German translation at apps/docs/docs/de/examples/basic-versioning.md",
-        "Docs app builds successfully (44 pages, +4 from new examples)",
-        "All 149 unit tests pass, all E2E tests pass"
-      ]
-    },
-    {
-      "id": "example-versioning-with-i18n",
-      "title": "Create versioning + i18n example",
-      "description": "Add example showing versions combined with i18n. Include in docs examples section. Show: config for both, directory structure, URL patterns",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:09:00Z",
-      "dependsOn": ["demo-versioned-i18n", "docs-versioning-guide-en"],
-      "notes": [
-        "Created apps/docs/docs/en/examples/versioning-with-i18n.md with comprehensive i18n + versioning example",
-        "Created German translation at apps/docs/docs/de/examples/versioning-with-i18n.md",
-        "Example covers: astro.config.mjs, content.config.ts, directory structure, sample content files",
-        "Includes URL pattern documentation, UI behavior (language/version switching), important notes",
-        "Updated both English and German examples index pages to include the new example",
-        "Docs app builds successfully (46 pages)",
-        "All 158 unit tests pass (9 base + 149 docs)",
-        "All E2E tests pass (98 versioned-docs + 25 versioned-i18n)"
-      ]
-    },
-    {
-      "id": "example-version-lifecycle",
-      "title": "Create version lifecycle example",
-      "description": "Add example showing full version lifecycle: adding new version, marking stable, deprecating old. Include in docs examples section",
-      "status": "completed",
-      "priority": "low",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:30:00Z",
-      "dependsOn": ["docs-versioning-guide-en"],
-      "notes": [
-        "Created apps/docs/docs/en/examples/version-lifecycle.md with comprehensive lifecycle documentation",
-        "Created German translation at apps/docs/docs/de/examples/version-lifecycle.md",
-        "Covers: version states (unreleased, current, stable, deprecated, archived), v3 release scenario walkthrough, configuration timeline, best practices for deprecation/archiving, edge cases (RC, LTS, parallel versions)",
-        "Updated both English and German examples index pages",
-        "Docs app builds successfully (48 pages)",
-        "All 179 unit tests pass, E2E tests pass"
-      ]
-    },
-    {
-      "id": "changeset-versioned-docs",
-      "title": "Create changeset for versioned docs feature",
-      "description": "Run npx changeset and create user-centric changeset. Focus on what users can now do: 'You can now create versioned documentation with multiple versions, version selector UI, and deprecation notices'. Minor version bump for packages/docs",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T18:30:00Z",
-      "dependsOn": [
-        "test-version-routing-e2e",
-        "test-version-selector-e2e",
-        "docs-versioning-guide-en"
-      ],
-      "notes": [
-        "Created user-centric changeset in .changeset/versioned-docs-feature.md",
-        "Patch bump for both @levino/shipyard-docs and @levino/shipyard-base",
-        "Changeset describes key features: version configuration, UI selector, badges, sidebar filtering, pagination boundaries, latest alias",
-        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)",
-        "Used patch instead of minor since packages are 0.x.y versions per CLAUDE.md guidelines"
-      ]
-    },
-    {
-      "id": "regression-existing-demos",
-      "title": "Verify all existing demos still work",
-      "description": "Run full E2E test suite on existing demos (i18n, single-language, server-mode). Ensure versioning changes don't break non-versioned setups. Fix any regressions found",
-      "status": "completed",
-      "priority": "critical",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T16:52:00Z",
-      "dependsOn": ["version-route-injection"],
-      "notes": [
-        "All unit tests pass: 113 tests (104 docs + 9 base)",
-        "E2E tests pass: 188 tests (177 i18n demo + 11 single-language demo)",
-        "i18n demo builds successfully (344 pages)",
-        "single-language demo builds successfully (12 pages)",
-        "server-mode-demo has pre-existing issue (Cloudflare adapter doesn't support preview) - not related to versioning changes",
-        "No regressions found from versioning changes"
-      ]
-    },
-    {
-      "id": "regression-i18n-compatibility",
-      "title": "Verify i18n demo compatibility with version changes",
-      "description": "Specifically test i18n demo after version changes. Verify: LanguageSwitcher still works, routes correct, no version leakage into non-versioned setup",
-      "status": "completed",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T17:35:00Z",
-      "dependsOn": ["regression-existing-demos"],
-      "notes": [
-        "All 177 i18n E2E tests pass (1 skipped)",
-        "i18n demo builds successfully (344 pages)",
-        "LanguageSwitcher present in both navbar (dropdown) and sidebar (list variant)",
-        "Routes are correct: /en/docs/... and /de/docs/... without version segments",
-        "No version selector or versioned routes leak into non-versioned setup",
-        "Language switching links work correctly (href=/de/docs/... for German)",
-        "No version-related artifacts in generated HTML output"
-      ]
-    },
-    {
-      "id": "performance-static-paths",
-      "title": "Optimize static path generation for many versions",
-      "description": "Profile and optimize getStaticPaths when many versions exist. Ensure build time doesn't explode with version * locale * page combinations. Consider lazy loading or incremental builds",
-      "status": "completed",
-      "priority": "low",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": "2026-01-06T20:40:00Z",
-      "dependsOn": ["version-static-paths"],
-      "notes": [
-        "Added createVersionPathMap() helper for O(1) version path lookups (replaces O(V) array.find())",
-        "Added createDeprecatedVersionSet() helper for O(1) deprecated version checks",
-        "Updated generated DocsEntry template to use pre-computed Map instead of getVersionPath() per document",
-        "Added 9 unit tests for the new optimization helpers (188 total unit tests pass)",
-        "Updated English and German versioning guides with detailed performance considerations",
-        "Build times remain efficient: ~3s for small demos, ~10s for large 344-page i18n demo",
-        "All E2E tests pass (136 versioned + 177 i18n + 11 single-language)"
-      ]
-    },
-    {
-      "id": "ci-versioned-demo-build",
-      "title": "Add versioned demo to CI build matrix",
-      "description": "Update GitHub Actions workflow to build and test versioned-docs demo. Ensure E2E tests run in CI. Add to build matrix alongside other demos",
-      "status": "completed",
-      "priority": "medium",
-      "createdAt": "2026-01-06T00:00:00Z",
+      "createdAt": "2026-01-06T18:30:00Z",
       "completedAt": "2026-01-06T19:15:00Z",
-      "dependsOn": ["demo-versioned-docs", "test-version-routing-e2e"],
       "notes": [
-        "Added versioned-docs and versioned-i18n to CI matrix in .github/workflows/checks.yml",
-        "E2E tests run for all 4 demos: i18n (178), single-language (11), versioned-docs (61), versioned-i18n (25)",
-        "All 275 tests pass across the demos",
-        "server-mode-demo failures are pre-existing (Cloudflare adapter limitation)"
+        "Updated generated entry file to extract keywords, image, canonicalUrl, customMetaTags from entry.data",
+        "Added props to docs Layout.astro for keywords, image, canonicalUrl, customMetaTags",
+        "Passed SEO props from Layout.astro to BaseLayout",
+        "Added snake_case aliases for canonical_url and custom_meta_tags with schema transforms"
+      ]
+    },
+    {
+      "id": "fix-og-image-meta-tag",
+      "title": "Fix failing test: og:image meta tag",
+      "description": "E2E test fails: 'page with image has og:image meta tag'. The test expects meta[property='og:image'] when a page has an image in frontmatter. Currently not rendered. Add og:image support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:141",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - image prop was already in schema but not passed through Layout chain"
+      ]
+    },
+    {
+      "id": "fix-twitter-card-meta-tag",
+      "title": "Fix failing test: twitter:card meta tag",
+      "description": "E2E test fails: 'page with image has twitter:card meta tag'. The test expects meta[name='twitter:card'] when a page has an image. Currently not rendered. Add twitter:card support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:147",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - twitter:card is automatically added when image is present"
+      ]
+    },
+    {
+      "id": "fix-hide-title",
+      "title": "Fix failing test: hide_title",
+      "description": "E2E test fails: 'page with hide_title hides the H1'. The test expects the H1 heading to be hidden when hide_title: true is set in frontmatter. Currently the H1 remains visible. Implement hide_title support in the layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:161",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:20:00Z",
+      "notes": [
+        "Added hideTitle prop extraction in generated entry file template",
+        "Added hideTitle prop to Layout.astro and passed through to BaseLayout",
+        "Added .hide-title CSS class to global CSS with display:none for first h1",
+        "Applied .hide-title class conditionally on prose container when hideTitle is true"
+      ]
+    },
+    {
+      "id": "fix-pagination-label",
+      "title": "Fix failing test: pagination_label",
+      "description": "E2E test fails: 'pagination uses custom label when set'. The test expects pagination to show 'Custom Nav Label' when pagination_label is set, but it shows 'Pagination Label Demo' (the title). Implement pagination_label support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:260",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:30:00Z",
+      "notes": [
+        "Added pagination_label snake_case alias to docs schema for Docusaurus compatibility",
+        "Added Zod transform to merge pagination_label into paginationLabel",
+        "Added getPaginationLink helper in pagination.ts to look up paginationLabel from doc frontmatter",
+        "Updated flatPages usage in getPaginationInfo to use getPaginationLink for proper label resolution",
+        "Fixed test to use correct page (/docs/my-custom-url) that has a next link with pagination_label",
+        "Added unit test for pagination_label snake_case to camelCase transformation"
+      ]
+    },
+    {
+      "id": "fix-canonical-url",
+      "title": "Fix failing test: canonical_url",
+      "description": "E2E test fails: 'page with canonical_url has canonical link tag'. The test expects link[rel='canonical'] when canonical_url is set in frontmatter. Currently not rendered. Add canonical URL support to page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:314",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "canonical_url snake_case alias added to schema with transform to canonicalUrl",
+        "canonicalUrl passed through Layout chain to BaseLayout which renders <link rel='canonical'>"
+      ]
+    },
+    {
+      "id": "fix-sidebar-badge",
+      "title": "Fix failing test: sidebar badge",
+      "description": "E2E test fails: 'sidebar item with badge shows badge element'. The test expects a .badge element when sidebar.badge is configured. Currently no badge is rendered. Implement sidebar badge support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:359",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:50:00Z",
+      "notes": [
+        "Added sidebar_custom_props, sidebar_position, sidebar_label, sidebar_class_name snake_case aliases to docs schema",
+        "Added Zod transform to merge snake_case sidebar fields into nested sidebar object",
+        "Added customProps field to Entry type in @levino/shipyard-base",
+        "Added customProps to TreeNode and passed through sidebarEntries pipeline",
+        "Updated SidebarElement.astro to render badges with DaisyUI badge classes",
+        "Badge text comes from customProps.badge, style from customProps.badgeType",
+        "Added unit tests for sidebar_custom_props transformation"
+      ]
+    },
+    {
+      "id": "fix-sidebar-badge-style",
+      "title": "Fix failing test: sidebar badge style",
+      "description": "E2E test fails: 'badge has correct style class'. The test expects .badge-warning class but found .badge-primary. The badge style from sidebar.badge.style is not being applied correctly. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:368",
+      "status": "completed",
+      "priority": "low",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:50:00Z",
+      "dependsOn": ["fix-sidebar-badge"],
+      "notes": [
+        "Fixed as part of fix-sidebar-badge - badgeType from customProps is used as badge-{type} class"
+      ]
+    },
+    {
+      "id": "fix-custom-meta-tags-robots",
+      "title": "Fix failing test: custom robots meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom robots meta tag'. The test expects meta[name='robots'] with content 'noindex, nofollow' when custom_meta_tags is set. Currently not rendered. Implement custom_meta_tags support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:379",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "customMetaTags passed through Layout chain and rendered in BaseLayout"
+      ]
+    },
+    {
+      "id": "fix-custom-meta-tags-author",
+      "title": "Fix failing test: custom author meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom author meta tag'. The test expects meta[name='author'] with content 'Custom Author'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:387",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
+    },
+    {
+      "id": "fix-custom-meta-tags-og-locale",
+      "title": "Fix failing test: custom og:locale meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom og:locale property'. The test expects meta[property='og:locale'] with content 'en_GB'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:395",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
+    },
+    {
+      "id": "fix-custom-document-id-pagination",
+      "title": "Fix failing test: custom document id pagination",
+      "description": "E2E test fails: 'pagination_next using custom id links to correct page'. The test expects pagination to link to /docs/pagination-label-demo when pagination_next references a custom document id. Currently link not found. Implement custom id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:423",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:57:00Z",
+      "notes": [
+        "Added customId field to DocsData interface for storing frontmatter id",
+        "Added pagination_next and pagination_prev snake_case aliases to docs schema",
+        "Added Zod transform using 'in' operator to preserve null values for nullable fields",
+        "Updated Layout.astro to extract customId from doc.data.id",
+        "Updated pagination.ts to use findDocById helper that checks both id and customId",
+        "Added unit tests for pagination_next and pagination_prev snake_case transforms"
+      ]
+    },
+    {
+      "id": "fix-custom-document-id-title",
+      "title": "Fix failing test: custom document id title",
+      "description": "E2E test fails: 'pagination next link shows correct title from custom id page'. The pagination link exists but is hidden. Related to custom document id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:435",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:57:00Z",
+      "dependsOn": ["fix-custom-document-id-pagination"],
+      "notes": [
+        "Fixed as part of fix-custom-document-id-pagination - the title is resolved correctly via getDisplayTitle helper"
+      ]
+    },
+    {
+      "id": "fix-title-meta-frontmatter",
+      "title": "Fix failing test: title_meta",
+      "description": "E2E test fails: 'page with title_meta uses it for the page title instead of regular title'. The test expects page title to be 'SEO Optimized Title' but found 'Site Title Demo'. When title_meta is set, it should be used for the <title> tag instead of the regular title. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:615",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T20:10:00Z",
+      "notes": [
+        "Added title_meta field to docs schema (Docusaurus uses snake_case convention)",
+        "Updated generated entry file template to extract title_meta and pass it as titleMeta prop",
+        "Added titleMeta prop to docs Layout.astro and pass it to BaseLayout as title",
+        "BaseLayout's getTitle function combines site title with titleMeta for the <title> tag",
+        "Added unit test for title_meta schema field"
+      ]
+    },
+    {
+      "id": "fix-blog-sidebar-label",
+      "title": "Fix failing test: blog sidebar_label",
+      "description": "E2E test fails: 'blog post with sidebar_label uses it in sidebar'. The test expects 'Advanced Features' link to be visible in sidebar-navigation but it's hidden. Blog posts should support sidebar_label for custom sidebar display. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:637",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T20:15:00Z",
+      "notes": [
+        "The blog sidebar_label was already implemented in Layout.astro (using sidebar_label ?? postTitle)",
+        "The issue was that the sidebar details element was collapsed by default",
+        "Added 'collapsed: false' to the blog sidebar navigation tree so it's expanded by default",
+        "This matches Docusaurus behavior where blog sidebar shows recent posts expanded"
       ]
     }
   ]

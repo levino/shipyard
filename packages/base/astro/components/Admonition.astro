@@ -1,0 +1,44 @@
+---
+/**
+ * Admonition component for displaying callouts/alerts.
+ * Supports: note, tip, info, warning, danger
+ *
+ * @example
+ * ```astro
+ * <Admonition type="note">
+ *   This is a note
+ * </Admonition>
+ *
+ * <Admonition type="warning" title="Be Careful">
+ *   This is a warning with custom title
+ * </Admonition>
+ * ```
+ */
+export type AdmonitionType = 'note' | 'tip' | 'info' | 'warning' | 'danger'
+
+interface Props {
+  type: AdmonitionType
+  title?: string
+}
+
+const { type, title } = Astro.props
+
+const defaultTitles: Record<AdmonitionType, string> = {
+  note: 'Note',
+  tip: 'Tip',
+  info: 'Info',
+  warning: 'Warning',
+  danger: 'Danger',
+}
+
+const displayTitle = title ?? defaultTitles[type]
+---
+
+<div class={`admonition admonition-${type}`} data-admonition-type={type}>
+  <div class="admonition-heading">
+    {displayTitle}
+  </div>
+  <div class="admonition-content">
+    <slot />
+  </div>
+</div>

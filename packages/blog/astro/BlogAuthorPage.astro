@@ -1,0 +1,278 @@
+---
+/**
+ * Individual author page showing author info and their posts.
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import Layout from '@levino/shipyard-base/layouts/Page.astro'
+import {
+  filter,
+  flatten,
+  map,
+  pipe,
+  prop,
+  reverse,
+  sortBy,
+  uniqBy,
+} from 'ramda'
+import type { Author } from '../src/index'
+import { getReadingTime } from '../src/readingTime'
+
+const {
+  showReadingTime,
+  includeDraftsInDev: includeDraftsInDevConfig,
+  routeBasePath,
+} = blogConfig
+
+export async function getStaticPaths() {
+  // Must inline all helper functions and values because Astro hoists getStaticPaths to a separate module
+  const { authorsEnabled, includeDraftsInDev } = blogConfig
+  const isDev = import.meta.env.DEV
+
+  const normalizeAuthorInner = (
+    author:
+      | string
+      | {
+          name: string
+          title?: string
+          url?: string
+          image_url?: string
+          email?: string
+        },
+  ): {
+    name: string
+    title?: string
+    url?: string
+    image_url?: string
+    email?: string
+  } => {
+    if (typeof author === 'string') {
+      return { name: author }
+    }
+    return author
+  }
+
+  const getAuthorsFromPostInner = (
+    post: CollectionEntry<'blog'>,
+  ): {
+    name: string
+    title?: string
+    url?: string
+    image_url?: string
+    email?: string
+  }[] => {
+    const authors = post.data.authors
+    if (!authors) return []
+    if (Array.isArray(authors)) {
+      return authors.map(normalizeAuthorInner)
+    }
+    return [
+      normalizeAuthorInner(
+        authors as
+          | string
+          | {
+              name: string
+              title?: string
+              url?: string
+              image_url?: string
+              email?: string
+            },
+      ),
+    ]
+  }
+
+  const getAuthorSlugInner = (name: string): string =>
+    name.toLowerCase().replace(/\s+/g, '-')
+
+  const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+    if (post.data.unlisted) return false
+    if (post.data.draft && !(isDev && includeDraftsInDev)) return false
+    return true
+  }
+
+  if (!authorsEnabled) {
+    return []
+  }
+
+  const allPosts = await getCollection('blog')
+
+  // Get all unique authors
+  const getAllAuthors = pipe(
+    filter(shouldIncludePost),
+    map(getAuthorsFromPostInner),
+    flatten,
+    uniqBy(prop('name')),
+  )
+
+  if (i18n) {
+    const paths: {
+      params: { locale: string; author: string }
+      props: { author: Author }
+    }[] = []
+
+    for (const locale of i18n.locales) {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+
+      const localePosts = allPosts.filter((post) => {
+        const [postLocale] = post.id.split('/')
+        return postLocale === locale
+      })
+
+      const authors = getAllAuthors(localePosts) as Author[]
+
+      for (const author of authors) {
+        paths.push({
+          params: { locale, author: getAuthorSlugInner(author.name) },
+          props: { author },
+        })
+      }
+    }
+
+    return paths
+  } else {
+    const authors = getAllAuthors(allPosts) as Author[]
+    return authors.map((author) => ({
+      params: { author: getAuthorSlugInner(author.name) },
+      props: { author },
+    }))
+  }
+}
+
+const { author } = Astro.props
+
+const allPosts = await getCollection('blog')
+const isDev = import.meta.env.DEV
+
+// Component-level helper functions
+const normalizeAuthor = (authorArg: string | Author): Author => {
+  if (typeof authorArg === 'string') {
+    return { name: authorArg }
+  }
+  return authorArg
+}
+
+const getAuthorsFromPost = (post: CollectionEntry<'blog'>): Author[] => {
+  const authors = post.data.authors
+  if (!authors) return []
+  if (Array.isArray(authors)) {
+    return authors.map(normalizeAuthor)
+  }
+  return [normalizeAuthor(authors)]
+}
+
+// Filter posts (component-level)
+const shouldIncludePostComponent = (post: CollectionEntry<'blog'>) => {
+  if (post.data.unlisted) return false
+  if (post.data.draft && !(isDev && includeDraftsInDevConfig)) return false
+  return true
+}
+
+// Get posts by this author
+const authorPosts = pipe(
+  filter(shouldIncludePostComponent),
+  filter((post: CollectionEntry<'blog'>) => {
+    if (i18n) {
+      const [postLocale] = post.id.split('/')
+      return postLocale === Astro.currentLocale
+    }
+    return true
+  }),
+  filter((post: CollectionEntry<'blog'>) => {
+    const authors = getAuthorsFromPost(post)
+    return authors.some((a) => a.name === author.name)
+  }),
+  sortBy((post: CollectionEntry<'blog'>) => post.data.date.getTime()),
+  reverse,
+)(allPosts) as CollectionEntry<'blog'>[]
+
+// Generate post URL
+const getPostUrl = (post: CollectionEntry<'blog'>): string => {
+  if (i18n && Astro.currentLocale) {
+    const slug = post.id.replace(`${Astro.currentLocale}/`, '')
+    return `/${Astro.currentLocale}/${routeBasePath}/${slug}`
+  }
+  return `/${routeBasePath}/${post.id}`
+}
+---
+
+<Layout title={`Posts by ${author.name}`}>
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8 flex items-center gap-6">
+      {
+        author.image_url ? (
+          <div class="avatar">
+            <div class="w-24 h-24 rounded-full">
+              <img src={author.image_url} alt={author.name} />
+            </div>
+          </div>
+        ) : (
+          <div class="avatar placeholder">
+            <div class="bg-primary text-primary-content w-24 h-24 rounded-full">
+              <span class="text-3xl">
+                {author.name
+                  .split(' ')
+                  .map((n) => n[0])
+                  .join('')
+                  .toUpperCase()
+                  .slice(0, 2)}
+              </span>
+            </div>
+          </div>
+        )
+      }
+      <div>
+        <h1 class="text-4xl font-bold">{author.name}</h1>
+        {author.title && <p class="text-lg text-base-content/70 mt-1">{author.title}</p>}
+        {
+          author.url && (
+            <a
+              href={author.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="link link-primary text-sm"
+            >
+              Website
+            </a>
+          )
+        }
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold mb-6">
+      Posts by {author.name} ({authorPosts.length})
+    </h2>
+
+    <div class="space-y-6">
+      {
+        authorPosts.map((post) => {
+          const readingTime =
+            showReadingTime && post.body ? getReadingTime(post.body) : undefined
+
+          return (
+            <article class="border-b border-base-300 pb-6 last:border-b-0">
+              <a href={getPostUrl(post)} class="group">
+                <h3 class="text-xl font-semibold group-hover:text-primary transition-colors">
+                  {post.data.title}
+                </h3>
+              </a>
+              <div class="flex items-center gap-4 text-sm text-base-content/60 mt-2">
+                <time datetime={post.data.date.toISOString()}>
+                  {post.data.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                {readingTime && <span>{readingTime.text}</span>}
+              </div>
+              <p class="mt-2 text-base-content/80">{post.data.description}</p>
+            </article>
+          )
+        })
+      }
+    </div>
+  </div>
+</Layout>

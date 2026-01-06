@@ -1,7 +1,8 @@
 ---
 title: Getting Started with Gardening
 description: A comprehensive guide for new gardeners
-sidebar_position: 2
+sidebar:
+  position: 2
 ---
 
 # Getting Started with Gardening
