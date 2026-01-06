@@ -95,16 +95,6 @@ export const docsSchema = z
     // === Sidebar Configuration (grouped) ===
     sidebar: sidebarSchema.default({ collapsible: true, collapsed: true }),
 
-    // === Sidebar Configuration (Docusaurus snake_case aliases) ===
-    /** Sort order in sidebar - snake_case alias for Docusaurus compatibility */
-    sidebar_position: z.number().optional(),
-    /** Display label in sidebar - snake_case alias for Docusaurus compatibility */
-    sidebar_label: z.string().optional(),
-    /** CSS class(es) for styling - snake_case alias for Docusaurus compatibility */
-    sidebar_class_name: z.string().optional(),
-    /** Custom props for sidebar entry - snake_case alias for Docusaurus compatibility */
-    sidebar_custom_props: z.record(z.any()).optional(),
-
     // === Pagination ===
     /** Label shown in prev/next buttons */
     paginationLabel: z.string().optional(),
@@ -172,14 +162,6 @@ export const docsSchema = z
       'pagination_next' in data ? data.pagination_next : data.paginationNext,
     paginationPrev:
       'pagination_prev' in data ? data.pagination_prev : data.paginationPrev,
-    // Merge snake_case sidebar aliases into sidebar object
-    sidebar: {
-      ...data.sidebar,
-      position: data.sidebar_position ?? data.sidebar.position,
-      label: data.sidebar_label ?? data.sidebar.label,
-      className: data.sidebar_class_name ?? data.sidebar.className,
-      customProps: data.sidebar_custom_props ?? data.sidebar.customProps,
-    },
   }))
   .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
     message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',

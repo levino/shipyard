@@ -37,7 +37,7 @@ describe('toSidebarEntries', () => {
     })
   })
 
-  it('should respect sidebar_label', () => {
+  it('should respect sidebar.label', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/intro.md',
@@ -51,7 +51,7 @@ describe('toSidebarEntries', () => {
     expect(entries.guide.subEntry?.intro.label).toBe('Intro')
   })
 
-  it('should respect sidebar_position', () => {
+  it('should respect sidebar.position', () => {
     const docs: DocsData[] = [
       {
         id: 'guide/b.md',
@@ -80,7 +80,7 @@ describe('toSidebarEntries', () => {
     expect(keys).toEqual(['a', 'b', 'c'])
   })
 
-  it('should apply sidebar_class_name', () => {
+  it('should apply sidebar.className', () => {
     const docs: DocsData[] = [
       {
         id: 'page.md',
@@ -117,9 +117,9 @@ describe('toSidebarEntries', () => {
     expect(keys).toEqual(['a', 'z'])
   })
 
-  it('should apply index.md sidebar_position to parent category for top-level sorting', () => {
+  it('should apply index.md sidebar.position to parent category for top-level sorting', () => {
     const docs: DocsData[] = [
-      // "zebra" folder with index.md that has sidebar_position: 1
+      // "zebra" folder with index.md that has sidebar.position: 1
       {
         id: 'zebra/index.md',
         title: 'Zebra Section',
@@ -144,9 +144,9 @@ describe('toSidebarEntries', () => {
     expect(keys).toEqual(['zebra', 'apple'])
   })
 
-  it('should position category first when index.md has explicit sidebar_position', () => {
+  it('should position category first when index.md has explicit sidebar.position', () => {
     const docs: DocsData[] = [
-      // A category with index.md having sidebar_position: 0
+      // A category with index.md having sidebar.position: 0
       {
         id: 'sidebar-demo/index.md',
         title: 'Sidebar Demo',

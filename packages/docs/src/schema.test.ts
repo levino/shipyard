@@ -319,9 +319,11 @@ describe('docsSchema', () => {
     }
   })
 
-  it('should transform sidebar_position to sidebar.position', () => {
+  it('should accept sidebar.position in nested sidebar object', () => {
     const validData = {
-      sidebar_position: 42,
+      sidebar: {
+        position: 42,
+      },
     }
 
     const result = docsSchema.safeParse(validData)
@@ -331,9 +333,11 @@ describe('docsSchema', () => {
     }
   })
 
-  it('should transform sidebar_label to sidebar.label', () => {
+  it('should accept sidebar.label in nested sidebar object', () => {
     const validData = {
-      sidebar_label: 'My Custom Label',
+      sidebar: {
+        label: 'My Custom Label',
+      },
     }
 
     const result = docsSchema.safeParse(validData)
@@ -343,9 +347,11 @@ describe('docsSchema', () => {
     }
   })
 
-  it('should transform sidebar_class_name to sidebar.className', () => {
+  it('should accept sidebar.className in nested sidebar object', () => {
     const validData = {
-      sidebar_class_name: 'my-custom-class',
+      sidebar: {
+        className: 'my-custom-class',
+      },
     }
 
     const result = docsSchema.safeParse(validData)
@@ -355,11 +361,13 @@ describe('docsSchema', () => {
     }
   })
 
-  it('should transform sidebar_custom_props to sidebar.customProps', () => {
+  it('should accept sidebar.customProps in nested sidebar object', () => {
     const validData = {
-      sidebar_custom_props: {
-        badge: 'New',
-        badgeType: 'success',
+      sidebar: {
+        customProps: {
+          badge: 'New',
+          badgeType: 'success',
+        },
       },
     }
 
@@ -373,14 +381,14 @@ describe('docsSchema', () => {
     }
   })
 
-  it('should allow mixing snake_case sidebar fields with sidebar object', () => {
+  it('should accept full sidebar configuration object', () => {
     const validData = {
       sidebar: {
+        position: 10,
         collapsible: false,
         collapsed: false,
+        customProps: { featured: true },
       },
-      sidebar_position: 10,
-      sidebar_custom_props: { featured: true },
     }
 
     const result = docsSchema.safeParse(validData)
