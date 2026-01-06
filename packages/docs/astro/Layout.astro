@@ -82,6 +82,11 @@ const extractVersionFromUrl = (): string | undefined => {
   const afterBasePath = path.substring(basePathIndex + basePath.length + 2)
   const nextSegment = afterBasePath.split('/')[0]
 
+  // Handle 'latest' alias - resolve to current version
+  if (nextSegment === 'latest') {
+    return versionsConfig.current
+  }
+
   // Check if this segment matches a known version path
   const matchingVersion = versionsConfig.available.find(
     (v) => v.path === nextSegment || v.version === nextSegment,

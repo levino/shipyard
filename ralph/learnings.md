@@ -133,6 +133,13 @@ cd apps/demo && npm run dev
 - When testing redirects in E2E tests, use `await page.waitForURL(pattern, { timeout: 5000 })` to wait for the redirect
 - For immediate redirects in SSG, consider generating the redirect page at the target URL instead
 
+### Latest Alias Handling
+- The 'latest' alias is auto-generated for docs in the current version
+- **IMPORTANT**: In `extractVersionFromUrl()`, the 'latest' segment must be explicitly handled
+- When URL contains `/docs/latest/...`, it should resolve to the `versionsConfig.current` version
+- Without this handling, sidebar filtering and pagination won't work on latest alias pages
+- Sidebar links on latest alias pages point to canonical version URLs (e.g., `/docs/v2/...`), not `/docs/latest/...`
+
 ---
 
 <!-- Add new learnings below as you discover them -->

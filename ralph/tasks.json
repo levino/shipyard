@@ -312,12 +312,19 @@
       "id": "test-version-sidebar-e2e",
       "title": "E2E tests for version-specific sidebar",
       "description": "Add Playwright tests verifying sidebar shows version-appropriate content. Test: different content per version, navigation within version, no cross-version leakage",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:12:00Z",
       "dependsOn": ["version-sidebar-context", "demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Created version-sidebar.spec.ts with 17 comprehensive E2E tests",
+        "Test sections: Sidebar Content Per Version (4 tests), Sidebar Navigation Within Version (3 tests), Pagination Within Version (3 tests), Sidebar Active State (3 tests), No Cross-Version Leakage (4 tests)",
+        "Fixed bug in Layout.astro: 'latest' alias was not resolving to current version for sidebar filtering",
+        "All 61 versioned-docs E2E tests pass (17 new + 27 versioned-docs + 17 version-selector)",
+        "All 177 i18n E2E tests pass (1 skipped), 11 single-language tests pass",
+        "All 111 unit tests pass"
+      ]
     },
     {
       "id": "test-version-i18n-e2e",
