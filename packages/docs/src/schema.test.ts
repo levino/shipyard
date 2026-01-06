@@ -392,4 +392,54 @@ describe('docsSchema', () => {
       expect(result.data.sidebar.customProps).toEqual({ featured: true })
     }
   })
+
+  it('should transform pagination_next snake_case to camelCase', () => {
+    const validData = {
+      pagination_next: 'my-custom-doc-id',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.paginationNext).toBe('my-custom-doc-id')
+    }
+  })
+
+  it('should transform pagination_prev snake_case to camelCase', () => {
+    const validData = {
+      pagination_prev: 'another-doc-id',
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.paginationPrev).toBe('another-doc-id')
+    }
+  })
+
+  it('should handle pagination_prev: null to disable pagination', () => {
+    const validData = {
+      pagination_prev: null,
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.paginationPrev).toBeNull()
+    }
+  })
+
+  it('should transform pagination_next and pagination_prev together', () => {
+    const validData = {
+      pagination_next: 'next-doc',
+      pagination_prev: null,
+    }
+
+    const result = docsSchema.safeParse(validData)
+    expect(result.success).toBe(true)
+    if (result.success) {
+      expect(result.data.paginationNext).toBe('next-doc')
+      expect(result.data.paginationPrev).toBeNull()
+    }
+  })
 })

@@ -125,6 +125,13 @@ export const getPaginationInfo = (
     doc.paginationLabel ?? doc.sidebarLabel ?? doc.title
 
   /**
+   * Finds a doc by its ID, checking both the content collection ID and custom frontmatter ID.
+   * This supports Docusaurus-style custom document IDs for pagination references.
+   */
+  const findDocById = (targetId: string): DocsData | undefined =>
+    allDocs.find((doc) => doc.id === targetId || doc.customId === targetId)
+
+  /**
    * Gets the pagination link for a page, using paginationLabel for the title
    * if available in the doc's frontmatter.
    */
@@ -143,7 +150,7 @@ export const getPaginationInfo = (
   if (isIndexPage) {
     // Index page has no previous, and first sidebar item as next
     if (paginationPrev !== null && typeof paginationPrev === 'string') {
-      const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
+      const targetDoc = findDocById(paginationPrev)
       if (targetDoc?.path) {
         result.prev = {
           title: getDisplayTitle(targetDoc),
@@ -157,7 +164,7 @@ export const getPaginationInfo = (
       // Explicitly disabled
       result.next = undefined
     } else if (typeof paginationNext === 'string') {
-      const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
+      const targetDoc = findDocById(paginationNext)
       if (targetDoc?.path) {
         result.next = {
           title: getDisplayTitle(targetDoc),
@@ -177,8 +184,8 @@ export const getPaginationInfo = (
     // Explicitly disabled
     result.prev = undefined
   } else if (typeof paginationPrev === 'string') {
-    // Explicitly set to a specific page ID
-    const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
+    // Explicitly set to a specific page ID (supports custom frontmatter IDs)
+    const targetDoc = findDocById(paginationPrev)
     if (targetDoc?.path) {
       result.prev = {
         title: getDisplayTitle(targetDoc),
@@ -195,8 +202,8 @@ export const getPaginationInfo = (
     // Explicitly disabled
     result.next = undefined
   } else if (typeof paginationNext === 'string') {
-    // Explicitly set to a specific page ID
-    const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
+    // Explicitly set to a specific page ID (supports custom frontmatter IDs)
+    const targetDoc = findDocById(paginationNext)
     if (targetDoc?.path) {
       result.next = {
         title: getDisplayTitle(targetDoc),

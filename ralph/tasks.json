@@ -169,20 +169,31 @@
       "id": "fix-custom-document-id-pagination",
       "title": "Fix failing test: custom document id pagination",
       "description": "E2E test fails: 'pagination_next using custom id links to correct page'. The test expects pagination to link to /docs/pagination-label-demo when pagination_next references a custom document id. Currently link not found. Implement custom id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:423",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
-      "notes": []
+      "completedAt": "2026-01-06T19:57:00Z",
+      "notes": [
+        "Added customId field to DocsData interface for storing frontmatter id",
+        "Added pagination_next and pagination_prev snake_case aliases to docs schema",
+        "Added Zod transform using 'in' operator to preserve null values for nullable fields",
+        "Updated Layout.astro to extract customId from doc.data.id",
+        "Updated pagination.ts to use findDocById helper that checks both id and customId",
+        "Added unit tests for pagination_next and pagination_prev snake_case transforms"
+      ]
     },
     {
       "id": "fix-custom-document-id-title",
       "title": "Fix failing test: custom document id title",
       "description": "E2E test fails: 'pagination next link shows correct title from custom id page'. The pagination link exists but is hidden. Related to custom document id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:435",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:57:00Z",
       "dependsOn": ["fix-custom-document-id-pagination"],
-      "notes": []
+      "notes": [
+        "Fixed as part of fix-custom-document-id-pagination - the title is resolved correctly via getDisplayTitle helper"
+      ]
     },
     {
       "id": "fix-title-meta-frontmatter",

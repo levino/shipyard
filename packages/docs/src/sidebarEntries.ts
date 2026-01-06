@@ -2,6 +2,8 @@ import type { Entry } from '@levino/shipyard-base'
 
 export interface DocsData {
   id: string
+  /** Custom document ID from frontmatter (for referencing in pagination) */
+  customId?: string
   title: string
   path: string
   link?: boolean

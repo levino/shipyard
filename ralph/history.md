@@ -225,3 +225,44 @@ This file tracks session progress and outcomes.
 - Sidebar badge tests now pass
 
 ---
+
+## Session 2026-01-06T19:57:00Z
+
+### Tasks Completed
+- **ID**: fix-custom-document-id-pagination - Fix failing test: custom document id pagination
+- **ID**: fix-custom-document-id-title - Fix failing test: custom document id title
+
+### What Was Done
+1. Added `customId` field to `DocsData` interface in `sidebarEntries.ts` to store the custom document ID from frontmatter
+2. Added `pagination_next` and `pagination_prev` snake_case aliases to the docs schema for Docusaurus compatibility
+3. Fixed Zod transform for nullable fields: used `'key' in data` check instead of `??` operator
+   - Problem: `null ?? undefined = undefined` doesn't preserve the explicit `null` value
+   - Solution: Check if the key exists using `'pagination_next' in data` before applying
+4. Updated `Layout.astro` to extract `customId` from `doc.data.id` and include it in the docs array
+5. Added `findDocById` helper function in `pagination.ts` that looks up docs by either:
+   - Content collection ID (file path based)
+   - Custom frontmatter ID (`doc.data.id`)
+6. Updated all pagination ID lookups to use `findDocById` instead of direct `doc.id` comparisons
+7. Added 4 unit tests for `pagination_next` and `pagination_prev` snake_case transforms
+
+### Files Modified
+- `packages/docs/src/sidebarEntries.ts` - Added customId field to DocsData interface
+- `packages/docs/src/index.ts` - Added pagination_next/pagination_prev aliases and fixed nullable transform
+- `packages/docs/src/pagination.ts` - Added findDocById helper and updated all ID lookups
+- `packages/docs/astro/Layout.astro` - Extract customId from doc.data.id
+- `packages/docs/src/schema.test.ts` - Added unit tests for pagination snake_case transforms
+
+### Tips for Next Developer
+- When adding nullable snake_case aliases (where `null` has special meaning), use `'key' in data` check
+- The `??` operator doesn't work for preserving `null` because `null ?? undefined = undefined`
+- Custom document IDs can be referenced in `pagination_next`/`pagination_prev` frontmatter
+- The demo has pages demonstrating this: `custom-id-example.md` has `id: my-custom-doc-id`
+- Clear ALL Astro caches when debugging schema changes: `.astro`, `node_modules/.astro`, `node_modules/.shipyard-docs`
+
+### Tests
+- All 4 Custom Document ID tests pass
+- 100 tests pass in single-language demo
+- 2 tests still fail (pending tasks: title_meta, blog sidebar_label)
+- i18n demo has pre-existing blog pagination test failures (unrelated to this work)
+
+---

@@ -110,8 +110,12 @@ export const docsSchema = z
     pagination_label: z.string().optional(),
     /** Next page ID, or null to disable */
     paginationNext: z.string().nullable().optional(),
+    /** Next page ID - snake_case alias for Docusaurus compatibility */
+    pagination_next: z.string().nullable().optional(),
     /** Previous page ID, or null to disable */
     paginationPrev: z.string().nullable().optional(),
+    /** Previous page ID - snake_case alias for Docusaurus compatibility */
+    pagination_prev: z.string().nullable().optional(),
 
     // === Git Metadata Overrides ===
     /**
@@ -160,6 +164,12 @@ export const docsSchema = z
     canonicalUrl: data.canonical_url ?? data.canonicalUrl,
     customMetaTags: data.custom_meta_tags ?? data.customMetaTags,
     paginationLabel: data.pagination_label ?? data.paginationLabel,
+    // For nullable fields, we need to check if the snake_case key exists (not just use ??)
+    // because null ?? undefined = undefined, but we want null to be preserved
+    paginationNext:
+      'pagination_next' in data ? data.pagination_next : data.paginationNext,
+    paginationPrev:
+      'pagination_prev' in data ? data.pagination_prev : data.paginationPrev,
     // Merge snake_case sidebar aliases into sidebar object
     sidebar: {
       ...data.sidebar,
