@@ -68,7 +68,7 @@ export default defineConfig({
 })
 ```
 
-**[Read the full Getting Started guide →](./feature)**
+**[Read the full Getting Started guide →](./getting-started)**
 
 ---
 
@@ -90,8 +90,8 @@ Each demo showcases different shipyard capabilities. The source code for all dem
 
 ### Getting Started
 
-- **[Why Shipyard?](./why-shipyard)** – The motivation and philosophy behind shipyard
-- **[Getting Started](./feature)** – Installation, configuration, and project setup
+- **[Why shipyard?](./why-shipyard)** – The motivation and philosophy behind shipyard
+- **[Getting Started](./getting-started)** – Installation, configuration, and project setup
 
 ### Package Reference
 
