@@ -1,7 +1,7 @@
 ---
 title: Custom Label Demo
 sidebar:
-  label: Fancy Label
+  label: Fancy Label ✨
   position: 30
 ---
 
@@ -13,6 +13,6 @@ Despite being alphabetically first (`custom-label.md`), this page appears **seco
 
 ```yaml
 sidebar:
-  label: Fancy Label
+  label: Fancy Label ✨
   position: 30
 ```

@@ -145,8 +145,8 @@ const tagBaseUrl = i18n
           const tags = entry.data.tags ?? []
 
           return (
-            <article class="border-b border-base-300 pb-8 last:border-b-0">
-              <a class="block no-underline hover:text-primary transition-colors" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
+            <article class="border-b border-base-300 pb-8 last:border-b-0" data-testid="blog-post-item">
+              <a class="block no-underline hover:text-primary transition-colors" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`} data-testid="blog-post-link">
                 {entry.data.draft && (
                   <span class="badge badge-warning mb-2">Draft</span>
                 )}

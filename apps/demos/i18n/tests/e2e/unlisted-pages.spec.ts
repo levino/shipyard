@@ -17,7 +17,7 @@ test.describe('Non-Rendered Pages (render: false)', () => {
     const categoryLabel = page.locator(
       '[data-testid="sidebar-local-nav"] summary:has-text("Category Only"), [data-testid="sidebar-local-nav"] span.menu-title:has-text("Category Only")',
     )
-    await expect(categoryLabel).toBeVisible()
+    await expect(categoryLabel.first()).toBeVisible()
 
     // There should be no <a> tag with href for the category itself
     const categoryLink = page.locator(
@@ -124,6 +124,6 @@ test.describe('Unlisted Pages (unlisted: true)', () => {
     await expect(
       page.locator('h2:has-text("What does unlisted mean?")'),
     ).toBeVisible()
-    await expect(page.locator('text=does not appear')).toBeVisible()
+    await expect(page.locator('text=does not appear').first()).toBeVisible()
   })
 })
