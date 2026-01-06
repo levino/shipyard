@@ -1,6 +1,20 @@
 {
   "name": "@levino/shipyard-base",
   "version": "0.5.11",
+  "description": "Core layouts, components, and configuration for shipyard - a composable page builder for Astro",
+  "keywords": [
+    "astro",
+    "astro-integration",
+    "withastro",
+    "frameworks",
+    "documentation",
+    "blog",
+    "tailwind",
+    "daisyui"
+  ],
+  "author": "Levin Keller",
+  "license": "MIT",
+  "homepage": "https://shipyard.levinkeller.de",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {

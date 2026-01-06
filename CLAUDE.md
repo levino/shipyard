@@ -74,27 +74,22 @@ npx biome check
 
 ### Code Style Guidelines
 
+For comprehensive coding conventions, see the [Code Style Guide](apps/docs/docs/en/contributing/code-style.md).
+
+**Key tooling:**
+
 1. **Formatting & Linting**: Use Biome (configured in `biome.json`)
-   - Semicolons as needed
-   - Single quotes for JavaScript
-   - Import organization enabled
-   - Special rules for `.astro`, `.svelte`, and `.vue` files
+   - Run `npx @biomejs/biome@2.2.3 check --write .` before committing
 
-2. **Variable Naming**: Always use descriptive, full-word variable names
-   - Never use single letters or abbreviations like `e`, `i`, `arr`, `obj`
-   - Use meaningful names that describe the purpose: `entryValue`, `index`, `itemList`, `configObject`
-   - Exception: Standard conventions like `i`/`j` in simple loop counters are acceptable only when context is obvious
+2. **TypeScript**: Strict mode enabled with Astro's strictest TypeScript config
 
-3. **TypeScript**: Strict mode enabled with Astro's strict TypeScript config
+3. **Testing**: Playwright E2E tests verify all features
+   - Run `npm run test:e2e` before pushing
 
-4. **Astro Components**: Follow Astro's component conventions
-   - Use `.astro` extension for Astro components
-   - TypeScript for logic, CSS for styling within components
-
-5. **Package Structure**: Each package in `packages/` exports:
-   - Main entry point (`src/index.ts`)
-   - Astro-specific exports (`src/astro.ts`)
-   - Component and layout exports
+**Package Structure**: Each package in `packages/` exports:
+- Main entry point (`src/index.ts`)
+- Astro-specific exports (`src/astro.ts`)
+- Component and layout exports
 
 ## Package Details
 

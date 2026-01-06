@@ -1,7 +1,7 @@
 {
   "name": "@levino/shipyard-blog",
   "version": "0.5.1",
-  "description": "",
+  "description": "Blog plugin for shipyard with pagination, sidebar, and git metadata",
   "type": "module",
   "main": "src/index.ts",
   "exports": {
@@ -13,9 +13,17 @@
     "astro",
     "src"
   ],
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "astro",
+    "astro-integration",
+    "withastro",
+    "frameworks",
+    "blog",
+    "markdown"
+  ],
+  "author": "Levin Keller",
+  "license": "MIT",
+  "homepage": "https://shipyard.levinkeller.de",
   "dependencies": {
     "@levino/shipyard-base": "^0.5.9",
     "ramda": "^0.31"
