@@ -13,10 +13,13 @@ You are operating in a Ralph Wiggum loop. Each session you will:
 
 ### Step 1: Load Context
 
-Read these files:
+The following files are automatically sourced when you start (via @filename):
 - `ralph/tasks.json` - Current task list
-- `ralph/history.md` - Recent session history (last 5 sessions)
-- Recent git log (last 10 commits)
+- `ralph/history.md` - Recent session history
+- `ralph/learnings.md` - Permanent knowledge base (patterns, gotchas, tips)
+
+Additionally, check:
+- Recent git log (last 10 commits) - run `git log --oneline -10`
 
 ### Step 2: Select Task
 
@@ -46,7 +49,15 @@ After completing work:
   - `in_progress` if more work needed
   - `blocked` if stuck
 - Add notes about what was done
-- Append session summary to `ralph/history.md`
+- Append session summary to `ralph/history.md` including:
+  - What was done
+  - **Tips for the next developer** - gotchas, things to watch out for, context that would help
+  - Any decisions made and why
+- Update `ralph/learnings.md` if you discovered something permanently useful:
+  - Patterns that work well in this codebase
+  - Common pitfalls and how to avoid them
+  - Useful commands or workflows
+  - Architectural insights
 
 ### Step 5: Commit Changes
 
@@ -66,6 +77,30 @@ Print "RALPH_SESSION_COMPLETE" on its own line when done. This signals the loop 
 - **Always commit**: Leave the codebase in a clean, working state
 - **Run tests**: Verify your changes work before committing
 - **Update history**: Document what you did for future sessions
+
+## Testing Requirements (MANDATORY)
+
+### Integration/E2E Tests - MUST ADD
+For **every** new feature or functionality:
+- Add Playwright E2E tests in the appropriate demo app (`apps/demos/*/tests/e2e/`)
+- Tests MUST verify all functionality works correctly
+- Tests MUST cover both happy paths and edge cases
+- Tests MUST pass before marking a task as complete
+- Run `npm run test:e2e` to verify all tests pass
+
+### Unit Tests - SHOULD ADD
+Add unit tests with Vitest when:
+- Implementing utility functions or business logic
+- Working with data transformations or parsing
+- Creating reusable helpers or algorithms
+- The logic is complex enough to benefit from isolated testing
+
+Place unit tests next to the source files: `*.test.ts` or `*.spec.ts`
+
+### Regression Testing
+- Before completing any task, run the full test suite
+- If existing tests fail, fix them as part of the task
+- Never commit with failing tests
 
 ## Example Session Output
 

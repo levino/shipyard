@@ -91,20 +91,39 @@ check_pending_tasks() {
   return 0
 }
 
+# Build the prompt with file references
+build_prompt() {
+  local prompt_file="$SCRIPT_DIR/PROMPT.md"
+  local tasks_file="$SCRIPT_DIR/tasks.json"
+  local learnings_file="$SCRIPT_DIR/learnings.md"
+  local history_file="$SCRIPT_DIR/history.md"
+
+  # Build prompt with @ file references for Claude to source
+  echo "Please read these files and follow the instructions:"
+  echo ""
+  echo "@$prompt_file"
+  echo "@$tasks_file"
+  echo "@$learnings_file"
+  if [[ -f "$history_file" ]]; then
+    echo "@$history_file"
+  fi
+  echo ""
+  echo "Now execute the Ralph workflow as described in the PROMPT.md."
+}
+
 # Run a single Claude session
 run_session() {
   local session_num=$1
-  local prompt_file="$SCRIPT_DIR/PROMPT.md"
 
   log_info "Starting session #$session_num"
   log_info "$(date '+%Y-%m-%d %H:%M:%S')"
 
+  local prompt
+  prompt=$(build_prompt)
+
   if [[ "$DRY_RUN" == "true" ]]; then
-    if [[ "$INTERACTIVE" == "true" ]]; then
-      log_warn "[DRY RUN] Would execute: claude --prompt-file $prompt_file"
-    else
-      log_warn "[DRY RUN] Would execute: cat $prompt_file | claude --print"
-    fi
+    log_warn "[DRY RUN] Would execute claude with prompt:"
+    echo "$prompt"
     return 0
   fi
 
@@ -113,9 +132,9 @@ run_session() {
   if [[ "$INTERACTIVE" == "true" ]]; then
     # Interactive mode - user can talk to Claude
     log_info "Starting interactive session. You can talk to Claude."
-    log_info "Claude will read the Ralph prompt and work on tasks."
+    log_info "Sourcing: PROMPT.md, tasks.json, learnings.md, history.md"
     echo ""
-    if claude --prompt-file "$prompt_file"; then
+    if echo "$prompt" | claude; then
       log_success "Interactive session completed"
       return 0
     else
@@ -123,8 +142,9 @@ run_session() {
       return 1
     fi
   else
-    # Autonomous mode - pipe prompt to Claude
-    if cat "$prompt_file" | claude --print; then
+    # Autonomous mode - run with --print for clean output
+    log_info "Sourcing: PROMPT.md, tasks.json, learnings.md, history.md"
+    if echo "$prompt" | claude --print; then
       log_success "Session #$session_num completed successfully"
       return 0
     else
