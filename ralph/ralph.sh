@@ -14,7 +14,7 @@ for ((i=1; i<=$1; i++)); do
       echo -n "$text"
       output+="$text"
     fi
-  done < <(claude -p --dangerously-skip-permissions --output-format stream-json "Read these files and follow the instructions in PROMPT.md:
+  done < <(claude -p --verbose --dangerously-skip-permissions --output-format stream-json "Read these files and follow the instructions in PROMPT.md:
 @$REPO_ROOT/CLAUDE.md
 @$SCRIPT_DIR/PROMPT.md
 @$SCRIPT_DIR/tasks.json
