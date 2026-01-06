@@ -42,14 +42,14 @@ npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
 Ready to dive deeper? Our comprehensive documentation covers everything from basic setup to advanced customization:
 
-- **[🚀 Getting Started](/en/docs/feature)** - Install and configure shipyard
-- **[📚 Multiple Docs](/en/docs/multi-docs)** - Set up multiple documentation sections
-- **[📖 Pagination](/en/docs/pagination)** - Customize navigation between pages
+- **[🚀 Getting Started](/en/docs/getting-started)** - Install and configure shipyard
+- **[📚 Multiple Docs](/en/docs/docs-package#multiple-documentation-instances)** - Set up multiple documentation sections
+- **[📖 Pagination](/en/docs/docs-package#pagination)** - Customize navigation between pages
 - **[🗺️ Roadmap](/en/docs/roadmap)** - See the feature roadmap
 
 ## 🌟 See It in Action
 
-**[🚀 Explore the Live Demo →](https://shipyard-demo.levinkeller.de)**
+**[🚀 Explore the Live Demo →](https://i18n.demos.shipyard.levinkeller.de/en/)**
 
 See shipyard in action with a fully-featured example site showcasing:
 - Responsive documentation layouts
@@ -64,8 +64,8 @@ Explore our demo deployments showcasing different configurations:
 | Demo | Description |
 |------|-------------|
 | **[i18n Demo](https://i18n.demos.shipyard.levinkeller.de/docs/)** | Multi-language support with locale-based routing |
-| **[Single Locale Demo](https://single-locale.demos.shipyard.levinkeller.de/docs/)** | Simplified setup for single-language sites |
+| **[Single Locale Demo](https://i18n.demos.shipyard.levinkeller.de/en//docs/)** | Simplified setup for single-language sites |
 
 ---
 
-**Ready to build something amazing?** Start with our [Quick Start Guide](/en/docs/) or explore the [Live Demo](https://shipyard-demo.levinkeller.de) to see what's possible.
+**Ready to build something amazing?** Start with our [Quick Start Guide](/en/docs/) or explore the [Live Demo](https://i18n.demos.shipyard.levinkeller.de/en/) to see what's possible.
