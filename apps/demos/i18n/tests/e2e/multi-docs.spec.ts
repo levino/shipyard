@@ -75,10 +75,12 @@ test.describe('Multi-Docs Feature with i18n', () => {
       await expect(advancedLink).toBeAttached()
     })
 
-    test('sidebar_position controls item order in guides', async ({ page }) => {
+    test('sidebar.position controls item order in guides', async ({ page }) => {
       await page.goto('/en/guides/')
 
-      const sidebarLinks = page.locator('.drawer-side a[href*="/guides/"]')
+      const sidebarLinks = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href*="/guides/"]',
+      )
       const hrefs: string[] = []
       const count = await sidebarLinks.count()
       for (let index = 0; index < count; index++) {
@@ -88,7 +90,7 @@ test.describe('Multi-Docs Feature with i18n', () => {
         }
       }
 
-      // index (position 1) should come before getting-started (position 2) and advanced-techniques (position 3)
+      // index (sidebar.position: 1) should come before getting-started (sidebar.position: 2) and advanced-techniques (sidebar.position: 3)
       const indexPosition = hrefs.findIndex((href) => href.endsWith('/guides/'))
       const gettingStartedPosition = hrefs.findIndex((href) =>
         href.includes('getting-started'),

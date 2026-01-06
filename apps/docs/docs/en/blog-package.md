@@ -1,6 +1,7 @@
 ---
 title: '@levino/shipyard-blog'
-sidebar_position: 5
+sidebar:
+  position: 5
 description: Blog plugin for shipyard with pagination and sidebar
 ---
 

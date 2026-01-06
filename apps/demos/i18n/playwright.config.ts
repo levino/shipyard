@@ -9,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 4 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:4321',
+    baseURL: 'http://localhost:4332',
     trace: 'on-first-retry',
   },
 
@@ -21,8 +21,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4321',
+    command: 'npx astro preview --host 0.0.0.0 --port 4332',
+    url: 'http://localhost:4332',
     reuseExistingServer: !process.env.CI,
   },
 })

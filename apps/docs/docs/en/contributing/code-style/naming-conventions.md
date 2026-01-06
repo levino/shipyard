@@ -1,7 +1,8 @@
 ---
 title: Naming Conventions
-sidebar_position: 3
-sidebar_label: Naming Conventions
+sidebar:
+  position: 3
+  label: Naming Conventions
 description: Naming conventions for shipyard
 ---
 

@@ -1,7 +1,8 @@
 ---
 title: Vergleich mit anderen Tools
 slug: 'de/why-shipyard/comparison'
-sidebar_position: 1
+sidebar:
+  position: 1
 ---
 
 # Vergleich mit anderen Tools

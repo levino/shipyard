@@ -2,12 +2,12 @@ import { expect, test } from '@playwright/test'
 
 test.describe('Sidebar Demo - Docusaurus-like Features', () => {
   test.describe('Category-level Sidebar Position', () => {
-    test('category with sidebar_position in index.md appears first in top-level navigation', async ({
+    test('category with sidebar.position in index.md appears first in top-level navigation', async ({
       page,
     }) => {
       await page.goto('/en/docs/')
 
-      // The sidebar-demo/index.md has sidebar_position: 0
+      // The sidebar-demo/index.md has sidebar.position: 0
       // Other top-level items (garden-beds, harvesting, vegetables, feature) have no position (default Infinity)
       // So sidebar-demo should appear FIRST in the top-level navigation
 
@@ -53,7 +53,7 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
   })
 
   test.describe('Sidebar Position Ordering', () => {
-    test('items are ordered by sidebar_position, not alphabetically', async ({
+    test('items are ordered by sidebar.position, not alphabetically', async ({
       page,
     }) => {
       await page.goto('/en/docs/sidebar-demo/')
@@ -63,7 +63,7 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
       await expect(localNav).toBeAttached()
 
       // Find all links to sidebar-demo subpages in the local nav
-      // These should be ordered by sidebar_position: custom-class (10), custom-label (30)
+      // These should be ordered by sidebar.position: custom-class (10), custom-label (30)
       const sidebarDemoLinks = localNav.locator(
         'a[href*="/en/docs/sidebar-demo/"]',
       )
@@ -80,14 +80,14 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
 
       expect(hrefs.length).toBe(3)
 
-      // Expected order by sidebar_position: custom-class (10), custom-label (30), pagination-demo (40)
+      // Expected order by sidebar.position: custom-class (10), custom-label (30), pagination-demo (40)
       // NOT alphabetical order: custom-class, custom-label, pagination-demo
       expect(hrefs[0]).toContain('custom-class')
       expect(hrefs[1]).toContain('custom-label')
       expect(hrefs[2]).toContain('pagination-demo')
     })
 
-    test('lower sidebar_position appears first', async ({ page }) => {
+    test('lower sidebar.position appears first', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
       // custom-class has position 10 (lowest among subpages), should be first after index
@@ -109,10 +109,10 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
   })
 
   test.describe('Sidebar Label', () => {
-    test('custom sidebar_label overrides default title', async ({ page }) => {
+    test('custom sidebar.label overrides default title', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
-      // The custom-label.md has sidebar_label: "Fancy Label ✨"
+      // The custom-label.md has sidebar.label: "Fancy Label ✨"
       // This should appear in the sidebar instead of the page title
       const localNav = page.locator('[data-testid="sidebar-local-nav"]')
       await expect(localNav).toBeAttached()
@@ -135,12 +135,12 @@ test.describe('Sidebar Demo - Docusaurus-like Features', () => {
   })
 
   test.describe('Sidebar Class Name', () => {
-    test('custom sidebar_class_name is applied to sidebar item', async ({
+    test('custom sidebar.className is applied to sidebar item', async ({
       page,
     }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
-      // The custom-class.md has sidebar_class_name: "font-bold text-warning"
+      // The custom-class.md has sidebar.className: "font-bold text-warning"
       // These Tailwind/DaisyUI classes should be applied to the parent <li> element
       const localNav = page.locator('[data-testid="sidebar-local-nav"]')
       await expect(localNav).toBeAttached()

@@ -3,14 +3,228 @@
   "version": 1,
   "tasks": [
     {
-      "id": "example-task-1",
-      "title": "Example: Fix a bug in component X",
-      "description": "Detailed description of what needs to be done",
-      "status": "pending",
-      "priority": "high",
-      "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
-      "notes": []
+      "id": "fix-hide-table-of-contents",
+      "title": "Fix failing test: hide_table_of_contents",
+      "description": "E2E test fails: 'page with hide_table_of_contents does not show TOC'. The test expects that when a page has hide_table_of_contents: true in its frontmatter, the TOC should be hidden. Currently it remains visible. Implement this feature in the docs layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:70",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:07:00Z",
+      "notes": [
+        "Added hide_table_of_contents snake_case alias to docs schema with transform to merge into hideTableOfContents",
+        "Updated generated entry file to pass hideTableOfContents to Layout",
+        "Modified Layout.astro to conditionally render TOC based on hideTableOfContents prop"
+      ]
+    },
+    {
+      "id": "fix-keywords-meta-tag",
+      "title": "Fix failing test: keywords meta tag",
+      "description": "E2E test fails: 'page with keywords has keywords meta tag'. The test expects meta[name='keywords'] to exist when a page has keywords in frontmatter. Currently the meta tag is not rendered. Add keywords support to the page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:132",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Updated generated entry file to extract keywords, image, canonicalUrl, customMetaTags from entry.data",
+        "Added props to docs Layout.astro for keywords, image, canonicalUrl, customMetaTags",
+        "Passed SEO props from Layout.astro to BaseLayout",
+        "Added snake_case aliases for canonical_url and custom_meta_tags with schema transforms"
+      ]
+    },
+    {
+      "id": "fix-og-image-meta-tag",
+      "title": "Fix failing test: og:image meta tag",
+      "description": "E2E test fails: 'page with image has og:image meta tag'. The test expects meta[property='og:image'] when a page has an image in frontmatter. Currently not rendered. Add og:image support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:141",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - image prop was already in schema but not passed through Layout chain"
+      ]
+    },
+    {
+      "id": "fix-twitter-card-meta-tag",
+      "title": "Fix failing test: twitter:card meta tag",
+      "description": "E2E test fails: 'page with image has twitter:card meta tag'. The test expects meta[name='twitter:card'] when a page has an image. Currently not rendered. Add twitter:card support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:147",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Fixed as part of fix-keywords-meta-tag - twitter:card is automatically added when image is present"
+      ]
+    },
+    {
+      "id": "fix-hide-title",
+      "title": "Fix failing test: hide_title",
+      "description": "E2E test fails: 'page with hide_title hides the H1'. The test expects the H1 heading to be hidden when hide_title: true is set in frontmatter. Currently the H1 remains visible. Implement hide_title support in the layout. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:161",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:20:00Z",
+      "notes": [
+        "Added hideTitle prop extraction in generated entry file template",
+        "Added hideTitle prop to Layout.astro and passed through to BaseLayout",
+        "Added .hide-title CSS class to global CSS with display:none for first h1",
+        "Applied .hide-title class conditionally on prose container when hideTitle is true"
+      ]
+    },
+    {
+      "id": "fix-pagination-label",
+      "title": "Fix failing test: pagination_label",
+      "description": "E2E test fails: 'pagination uses custom label when set'. The test expects pagination to show 'Custom Nav Label' when pagination_label is set, but it shows 'Pagination Label Demo' (the title). Implement pagination_label support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:260",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:30:00Z",
+      "notes": [
+        "Added pagination_label snake_case alias to docs schema for Docusaurus compatibility",
+        "Added Zod transform to merge pagination_label into paginationLabel",
+        "Added getPaginationLink helper in pagination.ts to look up paginationLabel from doc frontmatter",
+        "Updated flatPages usage in getPaginationInfo to use getPaginationLink for proper label resolution",
+        "Fixed test to use correct page (/docs/my-custom-url) that has a next link with pagination_label",
+        "Added unit test for pagination_label snake_case to camelCase transformation"
+      ]
+    },
+    {
+      "id": "fix-canonical-url",
+      "title": "Fix failing test: canonical_url",
+      "description": "E2E test fails: 'page with canonical_url has canonical link tag'. The test expects link[rel='canonical'] when canonical_url is set in frontmatter. Currently not rendered. Add canonical URL support to page head. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:314",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "canonical_url snake_case alias added to schema with transform to canonicalUrl",
+        "canonicalUrl passed through Layout chain to BaseLayout which renders <link rel='canonical'>"
+      ]
+    },
+    {
+      "id": "fix-sidebar-badge",
+      "title": "Fix failing test: sidebar badge",
+      "description": "E2E test fails: 'sidebar item with badge shows badge element'. The test expects a .badge element when sidebar.badge is configured. Currently no badge is rendered. Implement sidebar badge support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:359",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:50:00Z",
+      "notes": [
+        "Added sidebar_custom_props, sidebar_position, sidebar_label, sidebar_class_name snake_case aliases to docs schema",
+        "Added Zod transform to merge snake_case sidebar fields into nested sidebar object",
+        "Added customProps field to Entry type in @levino/shipyard-base",
+        "Added customProps to TreeNode and passed through sidebarEntries pipeline",
+        "Updated SidebarElement.astro to render badges with DaisyUI badge classes",
+        "Badge text comes from customProps.badge, style from customProps.badgeType",
+        "Added unit tests for sidebar_custom_props transformation"
+      ]
+    },
+    {
+      "id": "fix-sidebar-badge-style",
+      "title": "Fix failing test: sidebar badge style",
+      "description": "E2E test fails: 'badge has correct style class'. The test expects .badge-warning class but found .badge-primary. The badge style from sidebar.badge.style is not being applied correctly. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:368",
+      "status": "completed",
+      "priority": "low",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:50:00Z",
+      "dependsOn": ["fix-sidebar-badge"],
+      "notes": [
+        "Fixed as part of fix-sidebar-badge - badgeType from customProps is used as badge-{type} class"
+      ]
+    },
+    {
+      "id": "fix-custom-meta-tags-robots",
+      "title": "Fix failing test: custom robots meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom robots meta tag'. The test expects meta[name='robots'] with content 'noindex, nofollow' when custom_meta_tags is set. Currently not rendered. Implement custom_meta_tags support. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:379",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": [
+        "Already implemented as part of fix-keywords-meta-tag session",
+        "customMetaTags passed through Layout chain and rendered in BaseLayout"
+      ]
+    },
+    {
+      "id": "fix-custom-meta-tags-author",
+      "title": "Fix failing test: custom author meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom author meta tag'. The test expects meta[name='author'] with content 'Custom Author'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:387",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
+    },
+    {
+      "id": "fix-custom-meta-tags-og-locale",
+      "title": "Fix failing test: custom og:locale meta tag",
+      "description": "E2E test fails: 'page with custom_meta_tags has custom og:locale property'. The test expects meta[property='og:locale'] with content 'en_GB'. Part of custom_meta_tags feature. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:395",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:15:00Z",
+      "notes": ["Already implemented as part of fix-keywords-meta-tag session"]
+    },
+    {
+      "id": "fix-custom-document-id-pagination",
+      "title": "Fix failing test: custom document id pagination",
+      "description": "E2E test fails: 'pagination_next using custom id links to correct page'. The test expects pagination to link to /docs/pagination-label-demo when pagination_next references a custom document id. Currently link not found. Implement custom id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:423",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:57:00Z",
+      "notes": [
+        "Added customId field to DocsData interface for storing frontmatter id",
+        "Added pagination_next and pagination_prev snake_case aliases to docs schema",
+        "Added Zod transform using 'in' operator to preserve null values for nullable fields",
+        "Updated Layout.astro to extract customId from doc.data.id",
+        "Updated pagination.ts to use findDocById helper that checks both id and customId",
+        "Added unit tests for pagination_next and pagination_prev snake_case transforms"
+      ]
+    },
+    {
+      "id": "fix-custom-document-id-title",
+      "title": "Fix failing test: custom document id title",
+      "description": "E2E test fails: 'pagination next link shows correct title from custom id page'. The pagination link exists but is hidden. Related to custom document id resolution. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:435",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T19:57:00Z",
+      "dependsOn": ["fix-custom-document-id-pagination"],
+      "notes": [
+        "Fixed as part of fix-custom-document-id-pagination - the title is resolved correctly via getDisplayTitle helper"
+      ]
+    },
+    {
+      "id": "fix-title-meta-frontmatter",
+      "title": "Fix failing test: title_meta",
+      "description": "E2E test fails: 'page with title_meta uses it for the page title instead of regular title'. The test expects page title to be 'SEO Optimized Title' but found 'Site Title Demo'. When title_meta is set, it should be used for the <title> tag instead of the regular title. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:615",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T20:10:00Z",
+      "notes": [
+        "Added title_meta field to docs schema (Docusaurus uses snake_case convention)",
+        "Updated generated entry file template to extract title_meta and pass it as titleMeta prop",
+        "Added titleMeta prop to docs Layout.astro and pass it to BaseLayout as title",
+        "BaseLayout's getTitle function combines site title with titleMeta for the <title> tag",
+        "Added unit test for title_meta schema field"
+      ]
+    },
+    {
+      "id": "fix-blog-sidebar-label",
+      "title": "Fix failing test: blog sidebar_label",
+      "description": "E2E test fails: 'blog post with sidebar_label uses it in sidebar'. The test expects 'Advanced Features' link to be visible in sidebar-navigation but it's hidden. Blog posts should support sidebar_label for custom sidebar display. Test: apps/demos/single-language/tests/e2e/new-features.spec.ts:637",
+      "status": "completed",
+      "priority": "medium",
+      "createdAt": "2026-01-06T18:30:00Z",
+      "completedAt": "2026-01-06T20:15:00Z",
+      "notes": [
+        "The blog sidebar_label was already implemented in Layout.astro (using sidebar_label ?? postTitle)",
+        "The issue was that the sidebar details element was collapsed by default",
+        "Added 'collapsed: false' to the blog sidebar navigation tree so it's expanded by default",
+        "This matches Docusaurus behavior where blog sidebar shows recent posts expanded"
+      ]
     }
   ]
 }

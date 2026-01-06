@@ -10,17 +10,36 @@ import type {
   Script,
 } from '../../src/schemas/config'
 import { getTitle } from '../../src/tools/title'
-import { GlobalDesktopNavigation, SidebarNavigation } from '../components'
+import {
+  AnnouncementBar,
+  GlobalDesktopNavigation,
+  Npm2YarnScript,
+  SidebarNavigation,
+} from '../components'
+
+type CustomMetaTag = {
+  name?: string
+  property?: string
+  content: string
+}
 
 type Props = {
   frontmatter?: {
     title?: string
     description?: string
+    keywords?: string[]
+    image?: string
+    canonicalUrl?: string
+    customMetaTags?: CustomMetaTag[]
     sidebarNavigation?: NavigationTree
   }
 } & {
   title?: string
   description?: string
+  keywords?: string[]
+  image?: string
+  canonicalUrl?: string
+  customMetaTags?: CustomMetaTag[]
   sidebarNavigation?: NavigationTree
 }
 
@@ -60,15 +79,36 @@ const renderScriptAttributes = (script: Script) => {
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={props.description} />
+    {props.keywords && props.keywords.length > 0 && (
+      <meta name="keywords" content={props.keywords.join(', ')} />
+    )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={props.description} />
-    
+    {props.image && (
+      <>
+        <meta property="og:image" content={props.image} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={props.image} />
+      </>
+    )}
+    {props.canonicalUrl && (
+      <link rel="canonical" href={props.canonicalUrl} />
+    )}
+    {props.customMetaTags?.map((tag) => (
+      <meta
+        {...(tag.name && { name: tag.name })}
+        {...(tag.property && { property: tag.property })}
+        content={tag.content}
+      />
+    ))}
+
     {config.scripts?.map((script) => {
       const attrs = renderScriptAttributes(script)
       return <script is:inline {...attrs}></script>
     })}
   </head>
   <body>
+    {config.announcementBar && <AnnouncementBar config={config.announcementBar} />}
     <div class="drawer lg:drawer-open">
       <input id="drawer" type="checkbox" class="drawer-toggle" />
       <div class="drawer-content overflow-x-hidden">
@@ -99,5 +139,6 @@ const renderScriptAttributes = (script: Script) => {
         </div>
       </div>
     </div>
+    <Npm2YarnScript />
   </body>
 </html>

@@ -2,17 +2,92 @@
 import type { NavigationTree } from '../../src/schemas/config'
 import Base from './Page.astro'
 
+type CustomMetaTag = {
+  name?: string
+  property?: string
+  content: string
+}
+
 type Props = {
   frontmatter?: {
     title?: string
     description?: string
+    /**
+     * Keywords for SEO.
+     */
+    keywords?: string[]
+    /**
+     * Social card/preview image.
+     */
+    image?: string
+    /**
+     * Custom canonical URL.
+     */
+    canonical_url?: string
+    /**
+     * Custom meta tags for the page.
+     */
+    custom_meta_tags?: CustomMetaTag[]
+    /**
+     * Custom wrapper class for styling.
+     */
+    wrapperClassName?: string
     sidebarNavigation?: NavigationTree
+    /**
+     * Mark page as draft (excluded from production builds).
+     * Draft pages return 404 in production but render normally in dev.
+     */
+    draft?: boolean
+    /**
+     * Mark page as unlisted (accessible but hidden from navigation).
+     * Unlisted pages render normally but won't appear in sitemaps or listings.
+     */
+    unlisted?: boolean
   }
 }
 
 const props = Astro.props
+const frontmatter = props.frontmatter
+
+// Check if this is a draft page in production
+const isDraft = frontmatter?.draft === true
+const isProduction = import.meta.env.PROD
+
+// Return 404 for draft pages in production
+if (isDraft && isProduction) {
+  return Astro.redirect('/404')
+}
+
+// Map frontmatter to Page.astro props
+const pageProps = {
+  title: frontmatter?.title,
+  description: frontmatter?.description,
+  keywords: frontmatter?.keywords,
+  image: frontmatter?.image,
+  canonicalUrl: frontmatter?.canonical_url,
+  customMetaTags: frontmatter?.custom_meta_tags,
+  sidebarNavigation: frontmatter?.sidebarNavigation,
+}
+
+const wrapperClass = frontmatter?.wrapperClassName
+  ? `prose mx-auto ${frontmatter.wrapperClassName}`
+  : 'prose mx-auto'
+
+// Add noindex for unlisted pages
+const unlistedMetaTags = frontmatter?.unlisted
+  ? [{ name: 'robots', content: 'noindex, nofollow' }]
+  : []
+const allMetaTags = [
+  ...(frontmatter?.custom_meta_tags ?? []),
+  ...unlistedMetaTags,
+]
 ---
 
-<Base {...props}>
-  <div class="prose mx-auto"><slot /></div>
+<Base {...pageProps} customMetaTags={allMetaTags}>
+  {isDraft && (
+    <div class="alert alert-warning mb-4">
+      <span>This page is a draft and will not be visible in production.</span>
+    </div>
+  )}
+  <div class={wrapperClass}><slot /></div>
 </Base>

@@ -1,7 +1,8 @@
 ---
 title: Web Components and Native APIs
-sidebar_position: 5
-sidebar_label: Web Components
+sidebar:
+  position: 5
+  label: Web Components
 description: Use custom elements instead of frameworks for interactivity
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: '@levino/shipyard-base'
-sidebar_position: 3
+sidebar:
+  position: 3
 description: Kern-Paket mit Layouts und Konfiguration für shipyard
 ---
 

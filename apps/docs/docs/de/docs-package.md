@@ -1,6 +1,7 @@
 ---
 title: '@levino/shipyard-docs'
-sidebar_position: 4
+sidebar:
+  position: 4
 description: Dokumentations-Plugin für shipyard mit automatischer Sidebar und Paginierung
 ---
 
@@ -86,7 +87,8 @@ Füge Markdown-Dateien zum `docs/`-Verzeichnis hinzu:
 ```markdown
 ---
 title: Erste Schritte
-sidebar_position: 1
+sidebar:
+  position: 1
 ---
 
 # Erste Schritte
@@ -134,8 +136,8 @@ shipyardDocs({
 
 | Feld | Typ | Standard | Beschreibung |
 |------|-----|----------|--------------|
-| `sidebar_position` | `number` | `Infinity` | Position in Sidebar (niedriger = früher) |
-| `sidebar_label` | `string` | `title` | Benutzerdefiniertes Label für Sidebar |
+| `sidebar.position` | `number` | `Infinity` | Position in Sidebar (niedriger = früher) |
+| `sidebar.label` | `string` | `title` | Benutzerdefiniertes Label für Sidebar |
 | `sidebar.render` | `boolean` | `true` | Ob in Sidebar angezeigt |
 
 ### Paginierung

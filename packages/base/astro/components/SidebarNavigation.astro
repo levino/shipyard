@@ -2,6 +2,7 @@
 import { cn } from '../../src/tools/cn'
 import LanguageSwitcher from './LanguageSwitcher.astro'
 import SidebarElement from './SidebarElement.astro'
+import ThemeToggle from './ThemeToggle.astro'
 import type { Entry } from './types'
 
 interface Props {
@@ -36,6 +37,10 @@ const withLocale = (path: string) =>
       }
     </li>
     <LanguageSwitcher variant="list" />
+    <li class="flex flex-row items-center gap-2 px-4 py-2">
+      <span class="text-sm opacity-70">Theme</span>
+      <ThemeToggle />
+    </li>
     <div class={cn("divider my-1 block md:hidden", { hidden: !local })}></div>
   </div>
   {local && <div data-testid="sidebar-local-nav"><SidebarElement entry={local} /></div>}

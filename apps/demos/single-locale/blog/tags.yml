@@ -1,0 +1,27 @@
+# Blog tag definitions with labels, descriptions, and permalinks
+# Each tag key should match what's used in blog post frontmatter (case-insensitive)
+
+features:
+  label: Features
+  description: Posts about shipyard features and capabilities
+  permalink: features
+
+customization:
+  label: Customization
+  description: Learn how to customize and extend shipyard for your needs
+
+performance:
+  label: Performance
+  description: Tips and techniques for optimizing your shipyard site
+
+content:
+  label: Content
+  description: Content management and authoring tips
+
+tutorial:
+  label: Tutorials
+  description: Step-by-step guides for learning shipyard
+
+getting-started:
+  label: Getting Started
+  description: Beginner-friendly guides for new shipyard users

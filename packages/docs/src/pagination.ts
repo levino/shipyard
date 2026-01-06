@@ -78,9 +78,9 @@ export const getPaginationInfo = (
     (doc) => normalizePath(doc.path) === normalizedCurrentPath,
   )
 
-  // Check for explicit pagination overrides in frontmatter
-  const paginationNext = currentDoc?.['pagination_next' as keyof DocsData]
-  const paginationPrev = currentDoc?.['pagination_prev' as keyof DocsData]
+  // Check for explicit pagination overrides in frontmatter (using camelCase field names)
+  const paginationNext = currentDoc?.paginationNext
+  const paginationPrev = currentDoc?.paginationPrev
 
   // If explicitly disabled (null), return empty pagination
   if (paginationNext === null && paginationPrev === null) {
@@ -88,6 +88,7 @@ export const getPaginationInfo = (
   }
 
   // Flatten the sidebar to get ordered list of pages
+  // Note: unlisted pages are already excluded from sidebar entries
   const flatPages = flattenSidebarEntries(sidebarEntries)
 
   // Find current page index (using normalized paths for comparison)
@@ -116,16 +117,43 @@ export const getPaginationInfo = (
     return {}
   }
 
+  /**
+   * Gets the display title for a doc, using paginationLabel if available,
+   * then falling back to sidebarLabel, then title.
+   */
+  const getDisplayTitle = (doc: DocsData): string =>
+    doc.paginationLabel ?? doc.sidebarLabel ?? doc.title
+
+  /**
+   * Finds a doc by its ID, checking both the content collection ID and custom frontmatter ID.
+   * This supports Docusaurus-style custom document IDs for pagination references.
+   */
+  const findDocById = (targetId: string): DocsData | undefined =>
+    allDocs.find((doc) => doc.id === targetId || doc.customId === targetId)
+
+  /**
+   * Gets the pagination link for a page, using paginationLabel for the title
+   * if available in the doc's frontmatter.
+   */
+  const getPaginationLink = (page: FlattenedEntry): PaginationLink => {
+    const normalizedHref = normalizePath(page.href)
+    const doc = allDocs.find((d) => normalizePath(d.path) === normalizedHref)
+    return {
+      title: doc ? getDisplayTitle(doc) : page.title,
+      href: page.href,
+    }
+  }
+
   const result: PaginationInfo = {}
 
   // Special handling for index pages: they come before all sidebar items
   if (isIndexPage) {
     // Index page has no previous, and first sidebar item as next
     if (paginationPrev !== null && typeof paginationPrev === 'string') {
-      const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
+      const targetDoc = findDocById(paginationPrev)
       if (targetDoc?.path) {
         result.prev = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
@@ -136,16 +164,16 @@ export const getPaginationInfo = (
       // Explicitly disabled
       result.next = undefined
     } else if (typeof paginationNext === 'string') {
-      const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
+      const targetDoc = findDocById(paginationNext)
       if (targetDoc?.path) {
         result.next = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
     } else if (flatPages.length > 0) {
       // Use the first sidebar item as next
-      result.next = flatPages[0]
+      result.next = getPaginationLink(flatPages[0])
     }
 
     return result
@@ -156,17 +184,17 @@ export const getPaginationInfo = (
     // Explicitly disabled
     result.prev = undefined
   } else if (typeof paginationPrev === 'string') {
-    // Explicitly set to a specific page ID
-    const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
+    // Explicitly set to a specific page ID (supports custom frontmatter IDs)
+    const targetDoc = findDocById(paginationPrev)
     if (targetDoc?.path) {
       result.prev = {
-        title: targetDoc.sidebarLabel ?? targetDoc.title,
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }
   } else if (currentIndex > 0) {
     // Use the previous page in sidebar order
-    result.prev = flatPages[currentIndex - 1]
+    result.prev = getPaginationLink(flatPages[currentIndex - 1])
   }
 
   // Handle next page
@@ -174,17 +202,17 @@ export const getPaginationInfo = (
     // Explicitly disabled
     result.next = undefined
   } else if (typeof paginationNext === 'string') {
-    // Explicitly set to a specific page ID
-    const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
+    // Explicitly set to a specific page ID (supports custom frontmatter IDs)
+    const targetDoc = findDocById(paginationNext)
     if (targetDoc?.path) {
       result.next = {
-        title: targetDoc.sidebarLabel ?? targetDoc.title,
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }
   } else if (currentIndex < flatPages.length - 1) {
     // Use the next page in sidebar order
-    result.next = flatPages[currentIndex + 1]
+    result.next = getPaginationLink(flatPages[currentIndex + 1])
   }
 
   return result
