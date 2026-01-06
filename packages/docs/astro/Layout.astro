@@ -6,6 +6,7 @@ import type { NavigationTree } from '@levino/shipyard-base'
 import {
   Breadcrumbs,
   TableOfContents,
+  VersionBadge,
   VersionSelector,
 } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
@@ -205,6 +206,21 @@ const versionSelectorProps = hasVersions
       deprecatedVersions: versionsConfig.deprecated,
     }
   : null
+
+// Prepare version badge props (show if versioning is enabled)
+const versionBadgeProps =
+  versionsConfig && currentVersion
+    ? {
+        version: currentVersion,
+        stableVersion: versionsConfig.stable,
+        currentVersion: versionsConfig.current,
+        deprecatedVersions: versionsConfig.deprecated,
+        banner: versionsConfig.available.find(
+          (v) => v.version === currentVersion,
+        )?.banner,
+        isLatestAlias: Astro.url.pathname.includes('/latest/'),
+      }
+    : null
 ---
 
 <BaseLayout sidebarNavigation={entries}>
@@ -229,7 +245,12 @@ const versionSelectorProps = hasVersions
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class="col-span-12 xl:col-span-9">
       <div class="prose max-w-none">
-        <Breadcrumbs navigation={entries} />
+        <div class="flex items-center gap-3 flex-wrap not-prose mb-2">
+          <Breadcrumbs navigation={entries} />
+          {versionBadgeProps && (
+            <VersionBadge {...versionBadgeProps} size="sm" />
+          )}
+        </div>
         <TableOfContents links={headings} class="xl:hidden" />
         <slot />
         <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />

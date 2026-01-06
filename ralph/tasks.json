@@ -139,12 +139,19 @@
       "id": "version-badge-component",
       "title": "Create version badge component",
       "description": "Create VersionBadge.astro component to show current version in docs pages. Display 'deprecated' warning banner for old versions. Show 'latest' or 'stable' badges appropriately. Style with DaisyUI alert/badge components",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:30:00Z",
       "dependsOn": ["version-schema-types"],
-      "notes": []
+      "notes": [
+        "Created VersionBadge.astro component in packages/base/astro/components/",
+        "Component shows status badges: Stable (green), Deprecated (yellow), Latest (primary), Unreleased (info)",
+        "Integrated into docs Layout.astro - displays next to breadcrumbs",
+        "Supports size variants (sm, md, lg) and has screen-reader accessible text",
+        "Added 19 comprehensive E2E tests covering visibility, status display, styling, and consistency",
+        "All 294 E2E tests pass (178 i18n + 11 single-language + 80 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "version-deprecation-banner",
