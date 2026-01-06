@@ -147,4 +147,97 @@ test.describe('Versioned Documentation Demo', () => {
       await expect(page.locator('h1')).toContainText('Installation Guide')
     })
   })
+
+  test.describe('404 Error Handling', () => {
+    test('non-existent version returns 404', async ({ page }) => {
+      const response = await page.goto('/docs/v99/')
+      // Should return 404 status
+      expect(response?.status()).toBe(404)
+      // Check for 404 content in the page
+      await expect(page.locator('h1')).toContainText('404')
+    })
+
+    test('non-existent page in valid version returns 404', async ({ page }) => {
+      const response = await page.goto('/docs/v2/non-existent-page/')
+      expect(response?.status()).toBe(404)
+      await expect(page.locator('h1')).toContainText('404')
+    })
+
+    test('page that only exists in v2 returns 404 in v1', async ({ page }) => {
+      // Migration page only exists in v2, not v1
+      const response = await page.goto('/docs/v1/migration/')
+      expect(response?.status()).toBe(404)
+      await expect(page.locator('h1')).toContainText('404')
+    })
+
+    test('non-existent nested path returns 404', async ({ page }) => {
+      const response = await page.goto('/docs/v2/deeply/nested/path/')
+      expect(response?.status()).toBe(404)
+      await expect(page.locator('h1')).toContainText('404')
+    })
+  })
+
+  test.describe('URL Structure Verification', () => {
+    test('v2 docs have correct URL structure', async ({ page }) => {
+      await page.goto('/docs/v2/installation/')
+      // Verify canonical URL structure
+      expect(page.url()).toMatch(/\/docs\/v2\/installation\/?$/)
+    })
+
+    test('v1 docs have correct URL structure', async ({ page }) => {
+      await page.goto('/docs/v1/configuration/')
+      expect(page.url()).toMatch(/\/docs\/v1\/configuration\/?$/)
+    })
+
+    test('latest alias has correct URL structure', async ({ page }) => {
+      await page.goto('/docs/latest/installation/')
+      // Should keep the 'latest' in URL (no redirect)
+      expect(page.url()).toMatch(/\/docs\/latest\/installation\/?$/)
+      // But should show v2 content
+      await expect(page.locator('h1')).toContainText('Installation Guide (v2)')
+    })
+
+    test('docs root redirect preserves path structure', async ({ page }) => {
+      await page.goto('/docs/')
+      // Astro's static redirect uses meta refresh - wait for the redirect to complete
+      await page.waitForURL(/\/docs\/v2\/?$/, { timeout: 5000 })
+      expect(page.url()).toMatch(/\/docs\/v2\/?$/)
+    })
+  })
+
+  test.describe('Version Switching with Page Preservation', () => {
+    test('switching from v2 to v1 on shared page preserves slug', async ({
+      page,
+    }) => {
+      await page.goto('/docs/v2/configuration/')
+      const dropdown = page.locator('[data-testid="version-selector"].dropdown')
+      const dropdownButton = dropdown.locator('button, [role="button"]')
+
+      await dropdownButton.click()
+
+      const v1Link = dropdown.locator('.dropdown-content a', {
+        hasText: 'Version 1.0',
+      })
+      const href = await v1Link.getAttribute('href')
+      // URL should point to same page in v1
+      expect(href).toMatch(/\/docs\/v1\/configuration\/?/)
+    })
+
+    test('switching from v1 to v2 on shared page preserves slug', async ({
+      page,
+    }) => {
+      await page.goto('/docs/v1/installation/')
+      const dropdown = page.locator('[data-testid="version-selector"].dropdown')
+      const dropdownButton = dropdown.locator('button, [role="button"]')
+
+      await dropdownButton.click()
+
+      const v2Link = dropdown.locator('.dropdown-content a', {
+        hasText: 'Version 2.0',
+      })
+      const href = await v2Link.getAttribute('href')
+      // URL should point to same page in v2
+      expect(href).toMatch(/\/docs\/v2\/installation\/?/)
+    })
+  })
 })

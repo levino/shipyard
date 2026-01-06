@@ -127,6 +127,12 @@ cd apps/demo && npm run dev
   ```
 - This is a subtle bug that's hard to debug - the component appears to not render at all
 
+### Astro Static Redirects
+- `Astro.redirect()` in static output mode generates HTML with meta refresh, not HTTP redirects
+- The meta refresh has a 2-second delay by default: `<meta http-equiv="refresh" content="2;url=/target/">`
+- When testing redirects in E2E tests, use `await page.waitForURL(pattern, { timeout: 5000 })` to wait for the redirect
+- For immediate redirects in SSG, consider generating the redirect page at the target URL instead
+
 ---
 
 <!-- Add new learnings below as you discover them -->

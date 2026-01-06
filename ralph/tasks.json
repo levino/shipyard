@@ -277,12 +277,19 @@
       "id": "test-version-routing-e2e",
       "title": "E2E tests for version routing",
       "description": "Add Playwright tests for versioned route navigation. Test: navigate between versions, verify URL structure, test /latest/ redirect, test 404 for non-existent version",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:58:00Z",
       "dependsOn": ["demo-versioned-docs"],
-      "notes": []
+      "notes": [
+        "Added 10 new E2E tests to versioned-docs.spec.ts (now 27 total in that file)",
+        "New test sections: 404 Error Handling (4 tests), URL Structure Verification (4 tests), Version Switching with Page Preservation (2 tests)",
+        "404 tests cover: non-existent version, non-existent page, version-specific page in wrong version, nested paths",
+        "URL structure tests verify: version paths, latest alias behavior, docs root redirect",
+        "Version switching tests verify slug preservation when switching between versions",
+        "All 44 versioned-docs E2E tests pass, full suite passes (177 i18n + 11 single-language + 44 versioned-docs)"
+      ]
     },
     {
       "id": "test-version-selector-e2e",
