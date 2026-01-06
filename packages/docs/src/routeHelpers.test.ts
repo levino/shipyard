@@ -10,6 +10,8 @@ import {
   stripVersionFromDocId,
 } from './index'
 import {
+  createDeprecatedVersionSet,
+  createVersionPathMap,
   findVersionConfig,
   getAvailableVersions,
   getCurrentVersion,
@@ -654,5 +656,122 @@ describe('getDocVersions', () => {
   it('should handle empty docs array', () => {
     const versions = getDocVersions([], 'en/intro')
     expect(versions).toHaveLength(0)
+  })
+})
+
+// Performance optimization helpers
+describe('createVersionPathMap', () => {
+  const testVersions: VersionConfig = {
+    current: 'v2',
+    available: [
+      { version: 'v2', label: 'Version 2.0' },
+      { version: 'v1', label: 'Version 1.0' },
+    ],
+    deprecated: ['v1'],
+    stable: 'v2',
+  }
+
+  it('should create a Map from version to path', () => {
+    const map = createVersionPathMap(testVersions)
+    expect(map.get('v2')).toBe('v2')
+    expect(map.get('v1')).toBe('v1')
+  })
+
+  it('should use custom path when specified', () => {
+    const versionsWithCustomPaths: VersionConfig = {
+      current: 'v2.0.0',
+      available: [
+        { version: 'v2.0.0', label: 'Version 2.0', path: 'v2' },
+        { version: 'v1.0.0', label: 'Version 1.0', path: 'v1' },
+      ],
+      stable: 'v2.0.0',
+    }
+    const map = createVersionPathMap(versionsWithCustomPaths)
+    expect(map.get('v2.0.0')).toBe('v2')
+    expect(map.get('v1.0.0')).toBe('v1')
+  })
+
+  it('should return undefined for non-existent version', () => {
+    const map = createVersionPathMap(testVersions)
+    expect(map.get('v3')).toBeUndefined()
+  })
+
+  it('should handle empty available array', () => {
+    const emptyVersions: VersionConfig = {
+      current: 'v1',
+      available: [],
+      stable: 'v1',
+    }
+    const map = createVersionPathMap(emptyVersions)
+    expect(map.size).toBe(0)
+  })
+
+  it('should handle many versions efficiently', () => {
+    const manyVersions: VersionConfig = {
+      current: 'v10',
+      available: Array.from({ length: 10 }, (_, i) => ({
+        version: `v${i + 1}`,
+        label: `Version ${i + 1}`,
+      })),
+      stable: 'v10',
+    }
+    const map = createVersionPathMap(manyVersions)
+    expect(map.size).toBe(10)
+    expect(map.get('v1')).toBe('v1')
+    expect(map.get('v10')).toBe('v10')
+  })
+})
+
+describe('createDeprecatedVersionSet', () => {
+  it('should create a Set from deprecated versions array', () => {
+    const versions: VersionConfig = {
+      current: 'v3',
+      available: [{ version: 'v3' }, { version: 'v2' }, { version: 'v1' }],
+      deprecated: ['v1', 'v2'],
+      stable: 'v3',
+    }
+    const set = createDeprecatedVersionSet(versions)
+    expect(set.has('v1')).toBe(true)
+    expect(set.has('v2')).toBe(true)
+    expect(set.has('v3')).toBe(false)
+  })
+
+  it('should return empty Set when deprecated is undefined', () => {
+    const versions: VersionConfig = {
+      current: 'v1',
+      available: [{ version: 'v1' }],
+      stable: 'v1',
+    }
+    const set = createDeprecatedVersionSet(versions)
+    expect(set.size).toBe(0)
+  })
+
+  it('should return empty Set when deprecated is empty array', () => {
+    const versions: VersionConfig = {
+      current: 'v1',
+      available: [{ version: 'v1' }],
+      deprecated: [],
+      stable: 'v1',
+    }
+    const set = createDeprecatedVersionSet(versions)
+    expect(set.size).toBe(0)
+  })
+
+  it('should provide O(1) lookup for many deprecated versions', () => {
+    const versions: VersionConfig = {
+      current: 'v20',
+      available: Array.from({ length: 20 }, (_, i) => ({
+        version: `v${i + 1}`,
+      })),
+      deprecated: Array.from({ length: 15 }, (_, i) => `v${i + 1}`),
+      stable: 'v20',
+    }
+    const set = createDeprecatedVersionSet(versions)
+    expect(set.size).toBe(15)
+    // Check O(1) lookups
+    expect(set.has('v1')).toBe(true)
+    expect(set.has('v15')).toBe(true)
+    expect(set.has('v16')).toBe(false)
+    expect(set.has('v20')).toBe(false)
   })
 })

@@ -678,12 +678,20 @@
       "id": "performance-static-paths",
       "title": "Optimize static path generation for many versions",
       "description": "Profile and optimize getStaticPaths when many versions exist. Ensure build time doesn't explode with version * locale * page combinations. Consider lazy loading or incremental builds",
-      "status": "pending",
+      "status": "completed",
       "priority": "low",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:40:00Z",
       "dependsOn": ["version-static-paths"],
-      "notes": []
+      "notes": [
+        "Added createVersionPathMap() helper for O(1) version path lookups (replaces O(V) array.find())",
+        "Added createDeprecatedVersionSet() helper for O(1) deprecated version checks",
+        "Updated generated DocsEntry template to use pre-computed Map instead of getVersionPath() per document",
+        "Added 9 unit tests for the new optimization helpers (188 total unit tests pass)",
+        "Updated English and German versioning guides with detailed performance considerations",
+        "Build times remain efficient: ~3s for small demos, ~10s for large 344-page i18n demo",
+        "All E2E tests pass (136 versioned + 177 i18n + 11 single-language)"
+      ]
     },
     {
       "id": "ci-versioned-demo-build",

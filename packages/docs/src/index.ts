@@ -19,6 +19,8 @@ export { rehypeVersionLinks } from './rehypeVersionLinks'
 export type { DocsEntry, DocsRouteConfig } from './routeHelpers'
 // Re-export route helpers
 export {
+  createDeprecatedVersionSet,
+  createVersionPathMap,
   findVersionConfig,
   getAvailableVersions,
   getCurrentVersion,
@@ -660,7 +662,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
 import { i18n } from 'astro:config/server'
 import { getCollection, render } from 'astro:content'
 import { docsConfigs } from 'virtual:shipyard-docs-configs'
-import { getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId, getVersionPath } from '@levino/shipyard-docs'
+import { createVersionPathMap, getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId } from '@levino/shipyard-docs'
 import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 
 export async function getStaticPaths() {
@@ -669,6 +671,11 @@ export async function getStaticPaths() {
   const hasVersions = ${JSON.stringify(hasVersions)}
   const versionsConfig = ${JSON.stringify(versions || null)}
   const docs = await getCollection(collectionName)
+
+  // Pre-compute version path map for O(1) lookups instead of O(V) per document
+  const versionPathMap = hasVersions && versionsConfig
+    ? createVersionPathMap(versionsConfig)
+    : null
 
   const getParams = (slug, version) => {
     if (i18n) {
@@ -693,10 +700,11 @@ export async function getStaticPaths() {
     let version = null
     let docIdWithoutVersion = entry.id
 
-    if (hasVersions && versionsConfig) {
+    if (hasVersions && versionsConfig && versionPathMap) {
       const extractedVersion = getVersionFromDocId(entry.id)
       if (extractedVersion) {
-        version = getVersionPath(extractedVersion, versionsConfig) || extractedVersion
+        // Use pre-computed map for O(1) lookup instead of array.find()
+        version = versionPathMap.get(extractedVersion) ?? extractedVersion
         docIdWithoutVersion = stripVersionFromDocId(entry.id)
       }
     }

@@ -257,3 +257,43 @@ export const switchVersionInPath = (
 const escapeRegex = (str: string): string => {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
+
+/**
+ * Creates a Map for efficient version path lookups.
+ * Use this when processing many documents to avoid repeated array.find() calls.
+ *
+ * @param versions - The version configuration
+ * @returns A Map from version string to URL path segment
+ *
+ * @example
+ * ```ts
+ * const versionPathMap = createVersionPathMap(versionsConfig)
+ * // Now use versionPathMap.get(version) instead of getVersionPath(version, versionsConfig)
+ * for (const doc of docs) {
+ *   const version = getVersionFromDocId(doc.id)
+ *   const versionPath = versionPathMap.get(version) ?? version
+ * }
+ * ```
+ */
+export const createVersionPathMap = (
+  versions: VersionConfig,
+): Map<string, string> => {
+  const map = new Map<string, string>()
+  for (const v of versions.available) {
+    map.set(v.version, v.path ?? v.version)
+  }
+  return map
+}
+
+/**
+ * Creates a Set of deprecated versions for efficient lookup.
+ * Use this when checking many documents for deprecation status.
+ *
+ * @param versions - The version configuration
+ * @returns A Set of deprecated version strings
+ */
+export const createDeprecatedVersionSet = (
+  versions: VersionConfig,
+): Set<string> => {
+  return new Set(versions.deprecated ?? [])
+}

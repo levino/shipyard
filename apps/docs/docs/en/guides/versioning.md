@@ -349,11 +349,26 @@ The version selector shows badges to help users identify version status:
 
 ### Performance Considerations
 
-Each version generates a complete set of static pages. For large documentation sites with many versions:
+Each version generates a complete set of static pages. The total number of pages grows multiplicatively:
 
-- Consider limiting the number of maintained versions
-- Remove deprecated versions after a reasonable deprecation period
-- Use meaningful page boundaries to avoid very large single pages
+**Total pages = (pages × versions × locales) + (pages × locales for latest alias)**
+
+For example, 100 pages × 5 versions × 3 locales = 1,500+ static HTML files.
+
+**Optimization tips:**
+
+1. **Limit maintained versions**: Only keep versions that are actively supported. Remove versions after a reasonable deprecation period.
+
+2. **Consider version archiving**: For very old versions, consider:
+   - Hosting archived docs separately
+   - Providing downloadable PDF/offline versions
+   - Linking to a static archive instead of generating dynamically
+
+3. **Page structure**: Large single pages are more efficient than many small pages. Consider combining related content.
+
+4. **Build performance**: shipyard uses optimized internal data structures (Maps and Sets) for O(1) version lookups during build. Path generation is efficient even with many versions.
+
+5. **Incremental adoption**: Start with versioning only when you need it. A single-version site has no overhead from the versioning system.
 
 ---
 

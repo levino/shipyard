@@ -349,11 +349,26 @@ Der Version Selector zeigt Badges an, um Benutzern den Versionsstatus zu verdeut
 
 ### Performance-Überlegungen
 
-Jede Version generiert einen vollständigen Satz statischer Seiten. Bei großen Dokumentationsseiten mit vielen Versionen:
+Jede Version generiert einen vollständigen Satz statischer Seiten. Die Gesamtzahl der Seiten wächst multiplikativ:
 
-- Erwägen Sie, die Anzahl der gepflegten Versionen zu begrenzen
-- Entfernen Sie deprecated Versionen nach einem angemessenen Deprecation-Zeitraum
-- Verwenden Sie sinnvolle Seitengrenzen, um sehr große einzelne Seiten zu vermeiden
+**Gesamtseiten = (Seiten × Versionen × Sprachen) + (Seiten × Sprachen für latest-Alias)**
+
+Zum Beispiel: 100 Seiten × 5 Versionen × 3 Sprachen = 1.500+ statische HTML-Dateien.
+
+**Optimierungstipps:**
+
+1. **Gepflegte Versionen begrenzen**: Behalten Sie nur Versionen, die aktiv unterstützt werden. Entfernen Sie Versionen nach einem angemessenen Deprecation-Zeitraum.
+
+2. **Versionsarchivierung erwägen**: Für sehr alte Versionen:
+   - Archivierte Docs separat hosten
+   - Herunterladbare PDF/Offline-Versionen bereitstellen
+   - Auf ein statisches Archiv verlinken statt dynamisch zu generieren
+
+3. **Seitenstruktur**: Große einzelne Seiten sind effizienter als viele kleine. Erwägen Sie, verwandte Inhalte zu kombinieren.
+
+4. **Build-Performance**: shipyard verwendet optimierte interne Datenstrukturen (Maps und Sets) für O(1)-Versions-Lookups während des Builds. Die Pfadgenerierung ist effizient, auch mit vielen Versionen.
+
+5. **Inkrementelle Einführung**: Beginnen Sie mit Versionierung erst, wenn Sie sie benötigen. Eine Single-Version-Site hat keinen Overhead durch das Versionierungssystem.
 
 ---
 
