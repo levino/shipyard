@@ -7,6 +7,7 @@ cd "$(dirname "$SCRIPT_DIR")"
 
 # Run Claude interactively with full permissions
 claude --dangerously-skip-permissions "Read these files and follow the instructions in PROMPT.md:
+@CLAUDE.md
 @$SCRIPT_DIR/PROMPT.md
 @$SCRIPT_DIR/tasks.json
 @$SCRIPT_DIR/learnings.md
