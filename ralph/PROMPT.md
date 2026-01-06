@@ -48,10 +48,11 @@ After completing work:
   - `completed` if done (set completedAt to current timestamp)
   - `in_progress` if more work needed
   - `blocked` if stuck
-- **Add new tasks** if you discover work that needs to be done later:
-  - Create new task entries in tasks.json with appropriate priority
-  - Set dependencies if the new task depends on other tasks
-  - This keeps the task list comprehensive and up-to-date
+- **Add new tasks** ONLY if strictly necessary for completing existing tasks:
+  - Only add tasks that are direct prerequisites or blockers for current work
+  - Do NOT invent new features or expand scope - stick to what's already in the task list
+  - Example OK: "Need to fix type export" discovered while implementing a task
+  - Example NOT OK: "Would be nice to add dark mode" - this is scope creep
 - Add notes about what was done
 - Append session summary to `ralph/history.md` including:
   - What was done
@@ -78,7 +79,7 @@ Print "RALPH_SESSION_COMPLETE" on its own line when done. This signals the loop 
 - **One task, completed fully**: Pick one task and finish it completely before the session ends
 - **Use judgment for task selection**: Consider dependencies, logical ordering, and what makes sense - not just priority numbers
 - **Never leave tasks half-done**: If you start a task, finish it. Only mark as `blocked` if truly stuck.
-- **Add new tasks as you discover them**: If you find work that needs doing later, add it to tasks.json - don't try to do everything now
+- **No scope creep**: Only add new tasks if strictly required to complete existing work. Do NOT invent features.
 - **Always commit**: Leave the codebase in a clean, working state
 - **Run tests**: Verify your changes work before committing
 - **Update history**: Document what you did for future sessions
