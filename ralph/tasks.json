@@ -202,12 +202,19 @@
       "id": "version-virtual-module",
       "title": "Expose version metadata via virtual module",
       "description": "Update virtual:shipyard-docs-configs to include version metadata. Export getCurrentVersion(), getVersions(), isDeprecated(), etc. Make version info available to all components",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:35:00Z",
       "dependsOn": ["version-config-integration"],
-      "notes": []
+      "notes": [
+        "Added 6 version helper functions to virtual:shipyard-docs-configs module",
+        "Functions: getVersionConfig(), getCurrentVersion(), getAvailableVersions(), isVersionDeprecated(), getStableVersion(), hasVersioning()",
+        "All functions take optional routeBasePath parameter (defaults to 'docs') for multi-docs support",
+        "Updated virtual-module.d.ts with TypeScript types for all new functions",
+        "All 111 unit tests pass",
+        "All 249 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs)"
+      ]
     },
     {
       "id": "version-latest-redirect",

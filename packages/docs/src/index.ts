@@ -799,7 +799,69 @@ if (
                 },
                 load(id) {
                   if (id === RESOLVED_VIRTUAL_MODULE_ID) {
-                    return `export const docsConfigs = ${JSON.stringify(docsConfigs)};`
+                    // Generate the virtual module with docsConfigs and version helper functions
+                    const virtualModuleCode = `export const docsConfigs = ${JSON.stringify(docsConfigs)};
+
+/**
+ * Get the version configuration for a specific docs instance.
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {import('./index').VersionConfig | undefined}
+ */
+export function getVersionConfig(routeBasePath = 'docs') {
+  return docsConfigs[routeBasePath]?.versions;
+}
+
+/**
+ * Get the current/default version for a docs instance.
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {string | undefined}
+ */
+export function getCurrentVersion(routeBasePath = 'docs') {
+  return docsConfigs[routeBasePath]?.versions?.current;
+}
+
+/**
+ * Get all available versions for a docs instance.
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {import('./index').SingleVersionConfig[]}
+ */
+export function getAvailableVersions(routeBasePath = 'docs') {
+  return docsConfigs[routeBasePath]?.versions?.available ?? [];
+}
+
+/**
+ * Check if a version is deprecated.
+ * @param {string} version - The version string to check
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {boolean}
+ */
+export function isVersionDeprecated(version, routeBasePath = 'docs') {
+  const config = docsConfigs[routeBasePath]?.versions;
+  if (!config) return false;
+  return config.deprecated?.includes(version) ?? false;
+}
+
+/**
+ * Get the stable version for a docs instance.
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {string | undefined}
+ */
+export function getStableVersion(routeBasePath = 'docs') {
+  const config = docsConfigs[routeBasePath]?.versions;
+  if (!config) return undefined;
+  return config.stable ?? config.current;
+}
+
+/**
+ * Check if versioning is enabled for a docs instance.
+ * @param {string} [routeBasePath='docs'] - The route base path
+ * @returns {boolean}
+ */
+export function hasVersioning(routeBasePath = 'docs') {
+  return !!docsConfigs[routeBasePath]?.versions;
+}
+`
+                    return virtualModuleCode
                   }
                   if (id === resolvedRouteConfigVirtualId) {
                     return `export const routeBasePath = ${JSON.stringify(normalizedBasePath)};\nexport const collectionName = ${JSON.stringify(resolvedCollectionName)};`
