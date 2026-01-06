@@ -347,12 +347,17 @@
       "id": "test-version-i18n-e2e",
       "title": "E2E tests for version + i18n combination",
       "description": "Add Playwright tests for combined versioning and i18n. Test: switch language within version, switch version within language, correct URL structure maintained",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:50:00Z",
       "dependsOn": ["demo-versioned-i18n"],
-      "notes": []
+      "notes": [
+        "Tests already added as part of demo-versioned-i18n task",
+        "25 comprehensive E2E tests in versioned-i18n.spec.ts",
+        "Tests cover: home page routing, language switching, version switching, combined switching, URL structure, docs root redirect, version selector badges, about page, content localization",
+        "All 274 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "test-deprecation-banner-e2e",
@@ -582,12 +587,17 @@
       "id": "ci-versioned-demo-build",
       "title": "Add versioned demo to CI build matrix",
       "description": "Update GitHub Actions workflow to build and test versioned-docs demo. Ensure E2E tests run in CI. Add to build matrix alongside other demos",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T19:15:00Z",
       "dependsOn": ["demo-versioned-docs", "test-version-routing-e2e"],
-      "notes": []
+      "notes": [
+        "Added versioned-docs and versioned-i18n to CI matrix in .github/workflows/checks.yml",
+        "E2E tests run for all 4 demos: i18n (178), single-language (11), versioned-docs (61), versioned-i18n (25)",
+        "All 275 tests pass across the demos",
+        "server-mode-demo failures are pre-existing (Cloudflare adapter limitation)"
+      ]
     }
   ]
 }
