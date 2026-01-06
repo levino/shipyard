@@ -573,12 +573,21 @@
       "id": "example-versioning-with-i18n",
       "title": "Create versioning + i18n example",
       "description": "Add example showing versions combined with i18n. Include in docs examples section. Show: config for both, directory structure, URL patterns",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T20:09:00Z",
       "dependsOn": ["demo-versioned-i18n", "docs-versioning-guide-en"],
-      "notes": []
+      "notes": [
+        "Created apps/docs/docs/en/examples/versioning-with-i18n.md with comprehensive i18n + versioning example",
+        "Created German translation at apps/docs/docs/de/examples/versioning-with-i18n.md",
+        "Example covers: astro.config.mjs, content.config.ts, directory structure, sample content files",
+        "Includes URL pattern documentation, UI behavior (language/version switching), important notes",
+        "Updated both English and German examples index pages to include the new example",
+        "Docs app builds successfully (46 pages)",
+        "All 158 unit tests pass (9 base + 149 docs)",
+        "All E2E tests pass (98 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "example-version-lifecycle",

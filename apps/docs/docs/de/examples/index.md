@@ -13,4 +13,5 @@ Sofort einsatzfähige Code-Beispiele für gängige shipyard-Konfigurationen. Kop
 ### Versionierung
 
 - **[Einfache Versionierung](./basic-versioning)** - Minimale Einrichtung für versionierte Dokumentation mit zwei Versionen
+- **[Versionierung mit i18n](./versioning-with-i18n)** - Dokumentations-Versionierung mit Internationalisierung kombinieren
 
