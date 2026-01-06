@@ -44,6 +44,13 @@ export default defineConfig({
       title: 'shipyard',
       tagline: 'A universal page builder for astro',
       brand: 'shipyard',
+      scripts: [
+        {
+          src: 'https://analytics.levinkeller.de/js/script.js',
+          defer: true,
+          'data-domain': 'shipyard.levinkeller.de',
+        },
+      ],
     }),
     shipyardDocs({
       llmsTxt: {
