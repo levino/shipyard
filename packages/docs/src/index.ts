@@ -731,7 +731,9 @@ export async function getStaticPaths() {
     }
   }
 
-  return docs.map((entry) => {
+  const paths = []
+
+  for (const entry of docs) {
     // For versioned docs, extract version from the doc ID (e.g., "v1.0/en/getting-started")
     let version = null
     let docIdWithoutVersion = entry.id
@@ -744,14 +746,29 @@ export async function getStaticPaths() {
       }
     }
 
-    return {
+    // Add the main path for this doc
+    paths.push({
       params: getParams(docIdWithoutVersion, version),
-      props: { entry, routeBasePath, version },
+      props: { entry, routeBasePath, version, isLatestAlias: false },
+    })
+
+    // If this doc is in the current version, also generate a 'latest' alias path
+    if (hasVersions && versionsConfig && version) {
+      const extractedVersion = getVersionFromDocId(entry.id)
+      const currentVersion = versionsConfig.current
+      if (extractedVersion === currentVersion) {
+        paths.push({
+          params: getParams(docIdWithoutVersion, 'latest'),
+          props: { entry, routeBasePath, version: 'latest', actualVersion: version, isLatestAlias: true },
+        })
+      }
     }
-  })
+  }
+
+  return paths
 }
 
-const { entry, routeBasePath, version } = Astro.props
+const { entry, routeBasePath, version, actualVersion, isLatestAlias } = Astro.props
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,
@@ -761,7 +778,9 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 }
 
 // Version is available for use in Layout/components if needed
-const currentVersion = version
+// For 'latest' alias URLs, actualVersion contains the real version
+const currentVersion = isLatestAlias ? actualVersion : version
+const displayVersion = version // The version shown in the URL
 
 const { Content, headings } = await render(entry)
 

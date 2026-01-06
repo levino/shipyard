@@ -69,12 +69,17 @@
       "id": "version-static-paths",
       "title": "Generate static paths for all versions",
       "description": "Update getStaticPaths generation to create paths for all version/locale/slug combinations. Handle 'latest' as alias for current version. Implement version-specific 404 handling",
-      "status": "pending",
+      "status": "completed",
       "priority": "critical",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T15:26:00Z",
       "dependsOn": ["version-route-helpers", "version-content-structure"],
-      "notes": []
+      "notes": [
+        "Updated getStaticPaths to generate paths for all version/locale/slug combinations",
+        "Added 'latest' alias path generation for current version docs",
+        "Added isLatestAlias, actualVersion, displayVersion props for tracking version context",
+        "All 104 unit tests and 188 E2E tests pass"
+      ]
     },
     {
       "id": "version-route-injection",
