@@ -486,12 +486,20 @@
       "id": "regression-i18n-compatibility",
       "title": "Verify i18n demo compatibility with version changes",
       "description": "Specifically test i18n demo after version changes. Verify: LanguageSwitcher still works, routes correct, no version leakage into non-versioned setup",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:35:00Z",
       "dependsOn": ["regression-existing-demos"],
-      "notes": []
+      "notes": [
+        "All 177 i18n E2E tests pass (1 skipped)",
+        "i18n demo builds successfully (344 pages)",
+        "LanguageSwitcher present in both navbar (dropdown) and sidebar (list variant)",
+        "Routes are correct: /en/docs/... and /de/docs/... without version segments",
+        "No version selector or versioned routes leak into non-versioned setup",
+        "Language switching links work correctly (href=/de/docs/... for German)",
+        "No version-related artifacts in generated HTML output"
+      ]
     },
     {
       "id": "performance-static-paths",
