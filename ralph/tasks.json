@@ -262,12 +262,22 @@
       "id": "demo-versioned-i18n",
       "title": "Create demo combining versions with i18n",
       "description": "Extend or create demo showing versions + i18n together. Routes: /en/docs/v2.0/getting-started, /de/docs/v1.0/getting-started. Verify LanguageSwitcher + VersionSelector work together",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T18:50:00Z",
       "dependsOn": ["demo-versioned-docs", "version-selector-integration"],
-      "notes": []
+      "notes": [
+        "Created apps/demos/versioned-i18n/ demo combining versioning with i18n",
+        "Configured with i18n (en, de) + versions (v1, v2)",
+        "URL structure: /[locale]/docs/[version]/[...slug] (e.g., /en/docs/v2/installation)",
+        "Created 14 content pages: 4 for v2 en/de each, 3 for v1 en/de each",
+        "Created localized static pages (index, about) in en and de",
+        "LanguageSwitcher and VersionSelector both work correctly together",
+        "Noted that docs root redirect doesn't preserve locale context (known limitation)",
+        "Added 25 comprehensive E2E tests covering version+language switching",
+        "All 274 E2E tests pass (177 i18n + 11 single-language + 61 versioned-docs + 25 versioned-i18n)"
+      ]
     },
     {
       "id": "demo-docusaurus-counterpart",

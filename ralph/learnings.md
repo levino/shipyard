@@ -140,6 +140,13 @@ cd apps/demo && npm run dev
 - Without this handling, sidebar filtering and pagination won't work on latest alias pages
 - Sidebar links on latest alias pages point to canonical version URLs (e.g., `/docs/v2/...`), not `/docs/latest/...`
 
+### Docs Root Redirect with i18n
+- **Known Limitation**: The docs root redirect (`/[locale]/docs/`) doesn't preserve the locale context
+- When visiting `/de/docs/`, it redirects to `/en/docs/v2/` instead of `/de/docs/v2/`
+- This happens because the redirect page is generated without awareness of the current locale
+- Workaround: Users should link directly to versioned paths (e.g., `/de/docs/v2/`) instead of `/de/docs/`
+- Future improvement: Generate locale-aware redirect pages or use middleware/SSR for smarter redirects
+
 ---
 
 <!-- Add new learnings below as you discover them -->
