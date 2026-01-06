@@ -161,12 +161,20 @@
       "id": "version-sidebar-context",
       "title": "Update sidebar to respect version context",
       "description": "Modify packages/docs/src/sidebarEntries.ts to filter docs by version. Ensure sidebar only shows pages available in current version. Update tree building to handle version-specific content",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T17:28:00Z",
       "dependsOn": ["version-content-structure"],
-      "notes": []
+      "notes": [
+        "Created versionHelpers.ts to avoid circular dependencies between modules",
+        "Added filterDocsForVersion() function to filter docs by version and strip version prefix from IDs",
+        "Updated Layout.astro to filter docs by current version before building sidebar tree",
+        "Pagination now also uses version-filtered docs to stay within same version",
+        "Added 7 unit tests for filterDocsForVersion covering various scenarios",
+        "Added 4 E2E tests for version-specific sidebar behavior",
+        "All 111 unit tests pass, all E2E tests pass (177 i18n + 11 single + 17 versioned)"
+      ]
     },
     {
       "id": "version-pagination",

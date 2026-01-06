@@ -13,7 +13,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { Array as EffectArray, Option } from 'effect'
 import { getPaginationInfo } from '../src/pagination'
 import type { DocsData } from '../src/sidebarEntries'
-import { toSidebarEntries } from '../src/sidebarEntries'
+import { filterDocsForVersion, toSidebarEntries } from '../src/sidebarEntries'
 import DocMetadata from './DocMetadata.astro'
 import DocPagination from './DocPagination.astro'
 import LlmsTxtSidebarLabel from './LlmsTxtSidebarLabel.astro'
@@ -156,7 +156,14 @@ const docs =
     )
     .then((promises) => Promise.all(promises)))
 
-const fullTree = toSidebarEntries(docs)
+// Filter docs by version for sidebar if versioning is enabled
+// This ensures the sidebar only shows docs from the current version
+const sidebarDocs =
+  currentVersion && versionsConfig
+    ? filterDocsForVersion(docs, currentVersion)
+    : docs
+
+const fullTree = toSidebarEntries(sidebarDocs)
 
 const entries: NavigationTree =
   i18n && Astro.currentLocale
@@ -165,7 +172,8 @@ const entries: NavigationTree =
 
 // Compute pagination info for the current page BEFORE adding llms.txt
 // (llms.txt should not be part of pagination navigation)
-const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
+// Use sidebarDocs for versioned docs to keep pagination within the same version
+const pagination = getPaginationInfo(Astro.url.pathname, entries, sidebarDocs)
 
 // Add llms.txt link to sidebar if enabled for this docs instance
 // This is added AFTER pagination computation so it doesn't affect prev/next navigation

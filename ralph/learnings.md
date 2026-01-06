@@ -95,6 +95,19 @@ cd apps/demo && npm run dev
 - Prop-based design - must pass version config from parent
 - Uses named slots `navbarExtra` and `sidebarExtra` in layouts
 
+### Version-aware Sidebar
+- Sidebar filtering happens in `Layout.astro` using `filterDocsForVersion()`
+- The function filters docs by version AND strips version prefix from IDs
+- Stripping the prefix is crucial for correct tree building (otherwise docs appear nested under version name)
+- Paths are preserved as-is (they already contain version from initial doc transformation)
+- Pagination also uses filtered docs to stay within same version
+
+### Avoiding Circular Dependencies
+- `packages/docs/src/index.ts` re-exports from multiple modules and also contains the integration
+- Modules like `sidebarEntries.ts` and `routeHelpers.ts` can't import from index.ts without creating cycles
+- Solution: Extract shared utilities to separate files like `versionHelpers.ts`
+- Then both sidebarEntries.ts and index.ts can safely import from the helper file
+
 ---
 
 <!-- Add new learnings below as you discover them -->

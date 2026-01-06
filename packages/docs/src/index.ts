@@ -30,7 +30,13 @@ export {
 } from './routeHelpers'
 // Re-export types and utilities from sidebarEntries
 export type { DocsData } from './sidebarEntries'
-export { toSidebarEntries } from './sidebarEntries'
+export { filterDocsForVersion, toSidebarEntries } from './sidebarEntries'
+// Re-export version helpers
+export {
+  getVersionFromDocId,
+  isVersionLikeString,
+  stripVersionFromDocId,
+} from './versionHelpers'
 
 export const docsSchema = z.object({
   sidebar: z
@@ -373,65 +379,11 @@ export const createVersionedDocsCollection = (
   }
 }
 
-/**
- * Extracts the version from a versioned document ID.
- * The version is expected to be the first path segment.
- *
- * @param docId - The document ID (e.g., "v1.0/en/getting-started")
- * @returns The version string or undefined if not found
- *
- * @example
- * ```ts
- * getVersionFromDocId("v1.0/en/getting-started") // "v1.0"
- * getVersionFromDocId("latest/en/index") // "latest"
- * getVersionFromDocId("en/getting-started") // undefined (non-versioned)
- * ```
- */
-export const getVersionFromDocId = (docId: string): string | undefined => {
-  const parts = docId.split('/')
-  // For versioned docs, first part is the version
-  // We check if it looks like a version (starts with 'v' and has numbers, or is 'latest', 'next', etc.)
-  if (parts.length > 0) {
-    const potentialVersion = parts[0]
-    if (isVersionLikeString(potentialVersion)) {
-      return potentialVersion
-    }
-  }
-  return undefined
-}
-
-/**
- * Checks if a string looks like a version identifier.
- * Matches: v1.0, v2.0.0, latest, next, main, etc.
- */
-const isVersionLikeString = (str: string): boolean => {
-  // Match common version patterns
-  return /^(v?\d+(\.\d+)*|latest|next|main|master|canary|beta|alpha|rc\d*|stable)$/i.test(
-    str,
-  )
-}
-
-/**
- * Strips the version prefix from a versioned document ID.
- * Returns the ID without the version for use in routing.
- *
- * @param docId - The document ID (e.g., "v1.0/en/getting-started")
- * @returns The ID without version prefix (e.g., "en/getting-started")
- *
- * @example
- * ```ts
- * stripVersionFromDocId("v1.0/en/getting-started") // "en/getting-started"
- * stripVersionFromDocId("latest/en/index") // "en/index"
- * stripVersionFromDocId("en/getting-started") // "en/getting-started" (unchanged)
- * ```
- */
-export const stripVersionFromDocId = (docId: string): string => {
-  const version = getVersionFromDocId(docId)
-  if (version) {
-    return docId.slice(version.length + 1) // +1 for the slash
-  }
-  return docId
-}
+// Import version helpers for use in document filter functions
+import {
+  getVersionFromDocId as getVersionFromDocIdHelper,
+  stripVersionFromDocId as stripVersionFromDocIdHelper,
+} from './versionHelpers'
 
 /**
  * Filters versioned docs to return only documents for a specific version.
@@ -453,7 +405,7 @@ export const filterDocsByVersion = <T extends { id: string }>(
   version: string,
 ): T[] => {
   return docs.filter((doc) => {
-    const docVersion = getVersionFromDocId(doc.id)
+    const docVersion = getVersionFromDocIdHelper(doc.id)
     return docVersion === version
   })
 }
@@ -477,7 +429,7 @@ export const groupDocsByVersion = <T extends { id: string }>(
 ): Map<string | undefined, T[]> => {
   const groups = new Map<string | undefined, T[]>()
   for (const doc of docs) {
-    const version = getVersionFromDocId(doc.id)
+    const version = getVersionFromDocIdHelper(doc.id)
     const existing = groups.get(version) ?? []
     existing.push(doc)
     groups.set(version, existing)
@@ -575,9 +527,9 @@ export const getDocVersions = <T extends { id: string }>(
 ): string[] => {
   const versions: string[] = []
   for (const doc of docs) {
-    const docVersion = getVersionFromDocId(doc.id)
+    const docVersion = getVersionFromDocIdHelper(doc.id)
     if (docVersion) {
-      const docSlug = stripVersionFromDocId(doc.id)
+      const docSlug = stripVersionFromDocIdHelper(doc.id)
       if (docSlug === slug && !versions.includes(docVersion)) {
         versions.push(docVersion)
       }
