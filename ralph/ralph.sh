@@ -17,8 +17,8 @@ while true; do
 
   echo "$pending tasks remaining"
 
-  # Run Claude non-interactively
-  claude -p "Read these files and follow the instructions in PROMPT.md:
+  # Run Claude non-interactively with full permissions
+  claude -p --dangerously-skip-permissions "Read these files and follow the instructions in PROMPT.md:
 @$SCRIPT_DIR/PROMPT.md
 @$SCRIPT_DIR/tasks.json
 @$SCRIPT_DIR/learnings.md
