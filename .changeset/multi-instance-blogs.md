@@ -10,10 +10,10 @@ A new `remarkNpm2Yarn` remark plugin is now available that transforms npm code b
 
 Standalone markdown pages in `src/pages/` now support `draft` and `unlisted` frontmatter options. Draft pages render an empty document in production builds, while unlisted pages are accessible but include `noindex, nofollow` meta tags to prevent search engine indexing.
 
-Category metadata can be configured via `index.md` frontmatter in category folders. You can set `sidebar_label`, `sidebar_position`, `collapsed`, `collapsible`, `sidebar_class_name`, and `sidebar_custom_props` for any docs category folder.
+Category metadata can be configured via `index.md` frontmatter in category folders using the nested `sidebar` object. You can set `sidebar.label`, `sidebar.position`, `sidebar.collapsed`, `sidebar.collapsible`, `sidebar.className`, and `sidebar.customProps` for any docs category folder.
 
 New SEO frontmatter options are available for both docs and blog:
 - `title_meta` - Override the page title used in `<title>` tags and meta tags for SEO, while keeping the regular `title` for sidebar display
-- `sidebar_label` (blog) - Customize how blog posts appear in the blog sidebar without changing the post title
+- `sidebar_label` (blog only) - Customize how blog posts appear in the blog sidebar without changing the post title
 
 Math equations (KaTeX) and Mermaid diagrams are now supported via Astro's standard remark/rehype plugin ecosystem.
