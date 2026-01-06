@@ -30,43 +30,59 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
   const label = entryValue.label ?? key;
   const isActive = entryValue.href && normalizePath(entryValue.href) === normalizePath(currentPath);
   const hasActiveChild = entryValue.subEntry && Object.values(entryValue.subEntry).some(isActiveOrHasActiveChild);
-  const badge = entryValue.customProps?.badge as string | undefined;
-  const badgeType = (entryValue.customProps?.badgeType as string) ?? 'info';
-  const badgeClass = {
-    'info': 'badge-info',
-    'success': 'badge-success',
-    'warning': 'badge-warning',
-    'error': 'badge-error',
-    'primary': 'badge-primary',
-    'secondary': 'badge-secondary',
-    'accent': 'badge-accent',
-  }[badgeType] ?? 'badge-info';
-  // For HTML type items with defaultStyle, wrap in a styled container
-  const htmlDefaultStyleClass = entryValue.defaultStyle ? 'menu-title' : '';
+  const hasChildren = entryValue.subEntry && Object.keys(entryValue.subEntry).length > 0;
+  const isCollapsible = hasChildren && (entryValue.collapsible !== false);
+  // Auto-expand if has active child, otherwise use collapsed setting (default true)
+  const shouldBeOpen = hasActiveChild || !(entryValue.collapsed ?? true);
+
   return (
     <li class={entryValue.className}>
-      {entryValue.href
-        ? entryValue.labelHtml
-          ? entryValue.defaultStyle
-            ? <a href={entryValue.href} class={cn('flex items-center justify-between gap-2', { 'bg-base-200/50 font-medium text-primary': isActive })}><span set:html={entryValue.labelHtml} /></a>
-            : <Fragment set:html={entryValue.labelHtml} />
-          : <a href={entryValue.href} class={cn('flex items-center justify-between gap-2', { 'bg-base-200/50 font-medium text-primary': isActive })}>
-              <span>{label}</span>
-              {badge && <span class={cn('badge badge-sm', badgeClass)}>{badge}</span>}
-            </a>
-        : entryValue.labelHtml
-          ? entryValue.defaultStyle
-            ? <span class='menu-title'><span set:html={entryValue.labelHtml} /></span>
-            : <Fragment set:html={entryValue.labelHtml} />
-          : <span class='menu-title flex items-center gap-2'>
-              {label}
-              {badge && <span class={cn('badge badge-sm', badgeClass)}>{badge}</span>}
-            </span>}
-      {entryValue.subEntry ? (
-        <ul>
-          <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
-        </ul>
-      ) : null}
+      {hasChildren && isCollapsible ? (
+        // Collapsible category with children
+        <details open={shouldBeOpen}>
+          <summary>
+            {entryValue.href ? (
+              entryValue.labelHtml
+                ? <Fragment set:html={entryValue.labelHtml} />
+                : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+            ) : (
+              entryValue.labelHtml
+                ? <Fragment set:html={entryValue.labelHtml} />
+                : <span class='menu-title'>{label}</span>
+            )}
+          </summary>
+          <ul>
+            <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
+          </ul>
+        </details>
+      ) : hasChildren ? (
+        // Non-collapsible category with children (always expanded)
+        <>
+          {entryValue.href ? (
+            entryValue.labelHtml
+              ? <Fragment set:html={entryValue.labelHtml} />
+              : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+          ) : (
+            entryValue.labelHtml
+              ? <Fragment set:html={entryValue.labelHtml} />
+              : <span class='menu-title'>{label}</span>
+          )}
+          <ul>
+            <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
+          </ul>
+        </>
+      ) : (
+        // Leaf node (no children)
+        entryValue.href ? (
+          entryValue.labelHtml
+            ? <Fragment set:html={entryValue.labelHtml} />
+            : <a href={entryValue.href} class={cn({ 'bg-base-200/50 font-medium text-primary': isActive })}>{label}</a>
+        ) : (
+          entryValue.labelHtml
+            ? <Fragment set:html={entryValue.labelHtml} />
+            : <span class='menu-title'>{label}</span>
+        )
+      )}
     </li>
   )
 })}

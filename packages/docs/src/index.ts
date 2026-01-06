@@ -4,13 +4,8 @@ import type { AstroIntegration } from 'astro'
 import { glob } from 'astro/loaders'
 import { z } from 'astro/zod'
 
-// Re-export category metadata utilities
-export type { CategoryMetadata } from './categoryMetadata'
-export {
-  buildCategoryMetadataMap,
-  clearCategoryMetadataCache,
-  readCategoryMetadata,
-} from './categoryMetadata'
+// Re-export fallback utilities
+export { extractFirstParagraph } from './fallbacks'
 // Re-export git metadata utilities
 export type { GitMetadata } from './gitMetadata'
 export { getEditUrl, getGitMetadata } from './gitMetadata'
@@ -27,130 +22,110 @@ export { getDocPath, getRouteParams } from './routeHelpers'
 export type { DocsData } from './sidebarEntries'
 export { toSidebarEntries } from './sidebarEntries'
 
-export const docsSchema = z.object({
-  /**
-   * Custom document ID for referencing this page.
-   * Used in pagination_next/pagination_prev and sidebar configuration.
-   * Defaults to the file path-based ID if not specified.
-   */
-  id: z.string().optional(),
-  /**
-   * SEO title override for the page's <title> and meta tags.
-   * If not provided, uses the title field.
-   */
-  title_meta: z.string().optional(),
-  sidebar: z
-    .object({
-      render: z.boolean().default(true),
-      label: z.string().optional(),
-    })
-    .default({ render: true }),
-  title: z.string().optional(),
-  description: z.string().optional(),
-  sidebar_position: z.number().optional(),
-  sidebar_label: z.string().optional(),
-  sidebar_class_name: z.string().optional(),
-  sidebar_custom_props: z.record(z.any()).optional(),
-  /**
-   * Custom URL slug for this page.
-   * Overrides the default URL generated from the file path.
-   */
-  slug: z.string().optional(),
-  pagination_next: z.string().nullable().optional(),
-  pagination_prev: z.string().nullable().optional(),
-  /**
-   * Custom label to display in pagination when this page is shown as "Next".
-   */
-  pagination_label: z.string().optional(),
-  /**
-   * Tags for categorizing documentation pages.
-   */
-  tags: z.array(z.string()).optional(),
-  /**
-   * Keywords for SEO.
-   */
-  keywords: z.array(z.string()).optional(),
-  /**
-   * Social card/preview image for the page.
-   */
-  image: z.string().optional(),
-  /**
-   * Mark page as draft (excluded from production builds).
-   */
-  draft: z.boolean().default(false),
-  /**
-   * Mark page as unlisted (accessible but hidden from sidebar).
-   */
-  unlisted: z.boolean().default(false),
-  /**
-   * Hide the table of contents for this page.
-   */
-  hide_table_of_contents: z.boolean().default(false),
-  /**
-   * Hide the sidebar for this page.
-   * When true, the page content spans the full width.
-   */
-  hide_sidebar: z.boolean().default(false),
-  /**
-   * Hide the title (H1) heading for this page.
-   * Useful when the content already contains a title.
-   */
-  hide_title: z.boolean().default(false),
-  /**
-   * Manual last update information.
-   * Overrides git-based detection.
-   */
-  last_update: z
-    .object({
-      date: z.coerce.date().optional(),
-      author: z.string().optional(),
-    })
-    .optional(),
-  /**
-   * Minimum heading level to include in table of contents.
-   * @default 2
-   */
-  toc_min_heading_level: z.number().int().min(1).max(6).default(2),
-  /**
-   * Maximum heading level to include in table of contents.
-   * @default 3
-   */
-  toc_max_heading_level: z.number().int().min(1).max(6).default(3),
-  /**
-   * Override the last update author for this specific page.
-   * Set to false to hide the author for this page.
-   */
-  last_update_author: z.union([z.string(), z.literal(false)]).optional(),
-  /**
-   * Override the last update timestamp for this specific page.
-   * Set to false to hide the timestamp for this page.
-   */
-  last_update_time: z.union([z.coerce.date(), z.literal(false)]).optional(),
-  /**
-   * Custom edit URL for this specific page.
-   * Set to null to disable edit link for this page.
-   */
-  custom_edit_url: z.string().nullable().optional(),
-  /**
-   * Custom canonical URL for this page.
-   * Useful when content is duplicated or when migrating URLs.
-   */
-  canonical_url: z.string().optional(),
-  /**
-   * Custom meta tags for this page.
-   * Each entry should have a name or property key and a content value.
-   * @example [{ name: "robots", content: "noindex" }, { property: "og:locale", content: "en_US" }]
-   */
-  custom_meta_tags: z
-    .array(
-      z.object({
-        name: z.string().optional(),
-        property: z.string().optional(),
-        content: z.string(),
-      }),
-    )
-    .optional(),
-})
+/**
+ * Schema for sidebar configuration grouped under a single object.
+ * Contains all sidebar-related fields for categories and pages.
+ */
+const sidebarSchema = z
+  .object({
+    /** Sort order in sidebar (default: Infinity - sorted alphabetically after positioned items) */
+    position: z.number().optional(),
+    /** Display label in sidebar (default: title -> H1 -> filename) */
+    label: z.string().optional(),
+    /** CSS class(es) for styling the sidebar entry */
+    className: z.string().optional(),
+    /** Arbitrary metadata for custom sidebar components */
+    customProps: z.record(z.any()).optional(),
+    /** Can category be collapsed (default: true) */
+    collapsible: z.boolean().default(true),
+    /** Start collapsed (default: true) */
+    collapsed: z.boolean().default(true),
+  })
+  .refine((data) => !(data.collapsed === true && data.collapsible === false), {
+    message:
+      'sidebar.collapsed cannot be true when sidebar.collapsible is false',
+  })
+
+export const docsSchema = z
+  .object({
+    // === Page Metadata ===
+    /** Custom document ID (default: file path) */
+    id: z.string().optional(),
+    /** Reference title for SEO, pagination, previews (default: H1) */
+    title: z.string().optional(),
+    /** Meta description (default: first paragraph) */
+    description: z.string().optional(),
+    /** SEO keywords */
+    keywords: z.array(z.string()).optional(),
+    /** Social preview image (og:image) */
+    image: z.string().optional(),
+    /** Custom canonical URL */
+    canonicalUrl: z.string().optional(),
+
+    // === Page Rendering ===
+    /** Whether to render a page (default: true) */
+    render: z.boolean().default(true),
+    /** Exclude from production builds (default: false) */
+    draft: z.boolean().default(false),
+    /** Render page but hide from sidebar (default: false) */
+    unlisted: z.boolean().default(false),
+    /** Custom URL slug */
+    slug: z.string().optional(),
+
+    // === Layout Options ===
+    /** Hide the H1 heading (default: false) */
+    hideTitle: z.boolean().default(false),
+    /** Hide the TOC (default: false) */
+    hideTableOfContents: z.boolean().default(false),
+    /** Full-width page without sidebar (default: false) */
+    hideSidebar: z.boolean().default(false),
+    /** Min heading level in TOC (default: 2) */
+    tocMinHeadingLevel: z.number().min(1).max(6).default(2),
+    /** Max heading level in TOC (default: 3) */
+    tocMaxHeadingLevel: z.number().min(1).max(6).default(3),
+
+    // === Sidebar Configuration (grouped) ===
+    sidebar: sidebarSchema.default({ collapsible: true, collapsed: true }),
+
+    // === Pagination ===
+    /** Label shown in prev/next buttons */
+    paginationLabel: z.string().optional(),
+    /** Next page ID, or null to disable */
+    paginationNext: z.string().nullable().optional(),
+    /** Previous page ID, or null to disable */
+    paginationPrev: z.string().nullable().optional(),
+
+    // === Git Metadata Overrides ===
+    /**
+     * Override the last update author for this specific page.
+     * Set to false to hide the author for this page.
+     */
+    lastUpdateAuthor: z.union([z.string(), z.literal(false)]).optional(),
+    /**
+     * Override the last update timestamp for this specific page.
+     * Set to false to hide the timestamp for this page.
+     */
+    lastUpdateTime: z.union([z.literal(false), z.coerce.date()]).optional(),
+    /**
+     * Custom edit URL for this specific page.
+     * Set to null to disable edit link for this page.
+     */
+    customEditUrl: z.string().nullable().optional(),
+
+    // === Custom Meta Tags ===
+    customMetaTags: z
+      .array(
+        z.object({
+          name: z.string().optional(),
+          property: z.string().optional(),
+          content: z.string(),
+        }),
+      )
+      .optional(),
+  })
+  .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
+    message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
+  })
 
 /**
  * Configuration for llms.txt generation.
@@ -376,19 +351,19 @@ import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 export async function getStaticPaths() {
   const collectionName = ${JSON.stringify(resolvedCollectionName)}
   const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-  const docs = await getCollection(collectionName)
+  const allDocs = await getCollection(collectionName)
 
-  const getParams = (entryId, customSlug) => {
-    // Use custom slug if provided, otherwise derive from entry ID
+  // Filter out pages with render: false - they should not generate pages
+  const docs = allDocs.filter((doc) => doc.data.render !== false)
+
+  const getParams = (slug) => {
     if (i18n) {
-      const [locale, ...rest] = entryId.split('/')
-      const slug = customSlug ?? (rest.length ? rest.join('/') : undefined)
+      const [locale, ...rest] = slug.split('/')
       return {
-        slug: slug || undefined,
+        slug: rest.length ? rest.join('/') : undefined,
         locale,
       }
     } else {
-      const slug = customSlug ?? entryId
       return {
         slug: slug || undefined,
       }
@@ -396,7 +371,7 @@ export async function getStaticPaths() {
   }
 
   return docs.map((entry) => ({
-    params: getParams(entry.id, entry.data.slug),
+    params: getParams(entry.id),
     props: { entry, routeBasePath },
   }))
 }
@@ -412,16 +387,13 @@ const docsConfig = docsConfigs[routeBasePath] ?? {
 
 const { Content, headings } = await render(entry)
 
-const { custom_edit_url, last_update_author, last_update_time, hide_table_of_contents, hide_sidebar, hide_title, toc_min_heading_level, toc_max_heading_level, keywords, image, last_update, canonical_url, custom_meta_tags, title_meta, title } = entry.data
-
-// Use title_meta for SEO if provided, otherwise use title
-const seoTitle = title_meta ?? title
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime } = entry.data
 
 let editUrl
-if (custom_edit_url === null) {
+if (customEditUrl === null) {
   editUrl = undefined
-} else if (custom_edit_url) {
-  editUrl = custom_edit_url
+} else if (customEditUrl) {
+  editUrl = customEditUrl
 } else {
   editUrl = getEditUrl(docsConfig.editUrl, entry.id)
 }
@@ -430,40 +402,32 @@ let lastUpdated
 let lastAuthor
 
 if (
-  (docsConfig.showLastUpdateTime && last_update_time !== false) ||
-  (docsConfig.showLastUpdateAuthor && last_update_author !== false)
+  (docsConfig.showLastUpdateTime && lastUpdateTime !== false) ||
+  (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false)
 ) {
   const filePath = entry.filePath
 
   if (filePath) {
     const gitMetadata = getGitMetadata(filePath)
 
-    if (docsConfig.showLastUpdateTime && last_update_time !== false) {
-      // Priority: last_update_time > last_update.date > git metadata
-      if (last_update_time instanceof Date) {
-        lastUpdated = last_update_time
-      } else if (last_update?.date) {
-        lastUpdated = last_update.date
-      } else {
-        lastUpdated = gitMetadata.lastUpdated
-      }
+    if (docsConfig.showLastUpdateTime && lastUpdateTime !== false) {
+      lastUpdated =
+        lastUpdateTime instanceof Date
+          ? lastUpdateTime
+          : gitMetadata.lastUpdated
     }
 
-    if (docsConfig.showLastUpdateAuthor && last_update_author !== false) {
-      // Priority: last_update_author > last_update.author > git metadata
-      if (typeof last_update_author === 'string') {
-        lastAuthor = last_update_author
-      } else if (last_update?.author) {
-        lastAuthor = last_update.author
-      } else {
-        lastAuthor = gitMetadata.lastAuthor
-      }
+    if (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false) {
+      lastAuthor =
+        typeof lastUpdateAuthor === 'string'
+          ? lastUpdateAuthor
+          : gitMetadata.lastAuthor
     }
   }
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hide_table_of_contents} hideSidebar={hide_sidebar} hideTitle={hide_title} tocMinLevel={toc_min_heading_level} tocMaxLevel={toc_max_heading_level} keywords={keywords} image={image} canonicalUrl={canonical_url} customMetaTags={custom_meta_tags} seoTitle={seoTitle}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor}>
   <Content />
 </Layout>
 `
@@ -538,9 +502,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   // When i18n is enabled, only include docs from the default locale
   const defaultLocale = i18n?.defaultLocale
-  const docs = defaultLocale
+  const localeDocs = defaultLocale
     ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
     : allDocs
+
+  // Filter out unlisted and non-rendered pages
+  const docs = localeDocs.filter((doc) => !doc.data.unlisted && doc.data.render !== false)
 
   return docs.map((doc) => {
     const cleanId = doc.id.replace(/\\.md$/, '')
@@ -605,9 +572,12 @@ export const GET: APIRoute = async ({ site }) => {
 
   // When i18n is enabled, only include docs from the default locale
   const defaultLocale = i18n?.defaultLocale
-  const docs = defaultLocale
+  const localeDocs = defaultLocale
     ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
     : allDocs
+
+  // Filter out unlisted and non-rendered pages
+  const docs = localeDocs.filter((doc) => !doc.data.unlisted && doc.data.render !== false)
 
   const entries = await Promise.all(
     docs.map(async (doc) => {
@@ -635,7 +605,7 @@ export const GET: APIRoute = async ({ site }) => {
         path,
         title: doc.data.title ?? h1?.text ?? doc.id,
         description: doc.data.description,
-        position: doc.data.sidebar_position,
+        position: doc.data.sidebar?.position,
       }
     })
   )
@@ -670,9 +640,12 @@ export const GET: APIRoute = async ({ site }) => {
 
   // When i18n is enabled, only include docs from the default locale
   const defaultLocale = i18n?.defaultLocale
-  const docs = defaultLocale
+  const localeDocs = defaultLocale
     ? allDocs.filter((doc) => doc.id.startsWith(defaultLocale + '/') || doc.id === defaultLocale)
     : allDocs
+
+  // Filter out unlisted and non-rendered pages
+  const docs = localeDocs.filter((doc) => !doc.data.unlisted && doc.data.render !== false)
 
   const entries = await Promise.all(
     docs.map(async (doc) => {
@@ -703,7 +676,7 @@ export const GET: APIRoute = async ({ site }) => {
         path,
         title: doc.data.title ?? h1?.text ?? doc.id,
         description: doc.data.description,
-        position: doc.data.sidebar_position,
+        position: doc.data.sidebar?.position,
         content: rawContent,
       }
     })

@@ -78,9 +78,9 @@ export const getPaginationInfo = (
     (doc) => normalizePath(doc.path) === normalizedCurrentPath,
   )
 
-  // Check for explicit pagination overrides in frontmatter
-  const paginationNext = currentDoc?.['pagination_next' as keyof DocsData]
-  const paginationPrev = currentDoc?.['pagination_prev' as keyof DocsData]
+  // Check for explicit pagination overrides in frontmatter (using camelCase field names)
+  const paginationNext = currentDoc?.paginationNext
+  const paginationPrev = currentDoc?.paginationPrev
 
   // If explicitly disabled (null), return empty pagination
   if (paginationNext === null && paginationPrev === null) {
@@ -88,6 +88,7 @@ export const getPaginationInfo = (
   }
 
   // Flatten the sidebar to get ordered list of pages
+  // Note: unlisted pages are already excluded from sidebar entries
   const flatPages = flattenSidebarEntries(sidebarEntries)
 
   // Find current page index (using normalized paths for comparison)
@@ -99,23 +100,29 @@ export const getPaginationInfo = (
   // Index pages are identified by having a doc but not being in the sidebar.
   // They typically have a path like /en/docs or /docs (the base docs path).
   // We detect this by checking if the current doc exists but isn't in flatPages.
-  // Additionally, check if the file path matches common index patterns:
+  // Additionally, check if the doc ID matches common index patterns:
   // - Just a locale (e.g., 'en' from 'en/index.md')
   // - Empty or 'index'
-  // Note: We use fileId (the file path) not id (which may be customized) for index detection
-  const docFileIdParts = currentDoc?.fileId?.split('/') ?? []
-  const lastIdPart = docFileIdParts[docFileIdParts.length - 1]
+  const docIdParts = currentDoc?.id?.split('/') ?? []
+  const lastIdPart = docIdParts[docIdParts.length - 1]
   const isIndexPage =
     currentIndex === -1 &&
     currentDoc &&
     // Doc exists but not in sidebar - could be an index page
-    // Check if the file path suggests it's an index (locale-only ID, 'index', or empty after locale)
-    (docFileIdParts.length === 1 || lastIdPart === 'index' || lastIdPart === '')
+    // Check if the doc ID suggests it's an index (locale-only ID, 'index', or empty after locale)
+    (docIdParts.length === 1 || lastIdPart === 'index' || lastIdPart === '')
 
   if (currentIndex === -1 && !isIndexPage) {
     // Current page not found in sidebar and not an index page - no pagination
     return {}
   }
+
+  /**
+   * Gets the display title for a doc, using paginationLabel if available,
+   * then falling back to sidebarLabel, then title.
+   */
+  const getDisplayTitle = (doc: DocsData): string =>
+    doc.paginationLabel ?? doc.sidebarLabel ?? doc.title
 
   const result: PaginationInfo = {}
 
@@ -126,7 +133,7 @@ export const getPaginationInfo = (
       const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
       if (targetDoc?.path) {
         result.prev = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
@@ -140,7 +147,7 @@ export const getPaginationInfo = (
       const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
       if (targetDoc?.path) {
         result.next = {
-          title: targetDoc.sidebarLabel ?? targetDoc.title,
+          title: getDisplayTitle(targetDoc),
           href: targetDoc.path,
         }
       }
@@ -152,11 +159,6 @@ export const getPaginationInfo = (
     return result
   }
 
-  // Helper to get the display title for pagination
-  // Uses pagination_label if set, otherwise falls back to sidebarLabel or title
-  const getPaginationTitle = (doc: DocsData): string =>
-    doc.pagination_label ?? doc.sidebarLabel ?? doc.title
-
   // Handle previous page
   if (paginationPrev === null) {
     // Explicitly disabled
@@ -166,20 +168,13 @@ export const getPaginationInfo = (
     const targetDoc = allDocs.find((doc) => doc.id === paginationPrev)
     if (targetDoc?.path) {
       result.prev = {
-        title: getPaginationTitle(targetDoc),
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }
   } else if (currentIndex > 0) {
     // Use the previous page in sidebar order
-    const prevPage = flatPages[currentIndex - 1]
-    const prevDoc = allDocs.find(
-      (doc) => normalizePath(doc.path) === normalizePath(prevPage.href),
-    )
-    result.prev = {
-      title: prevDoc ? getPaginationTitle(prevDoc) : prevPage.title,
-      href: prevPage.href,
-    }
+    result.prev = flatPages[currentIndex - 1]
   }
 
   // Handle next page
@@ -191,20 +186,13 @@ export const getPaginationInfo = (
     const targetDoc = allDocs.find((doc) => doc.id === paginationNext)
     if (targetDoc?.path) {
       result.next = {
-        title: getPaginationTitle(targetDoc),
+        title: getDisplayTitle(targetDoc),
         href: targetDoc.path,
       }
     }
   } else if (currentIndex < flatPages.length - 1) {
     // Use the next page in sidebar order
-    const nextPage = flatPages[currentIndex + 1]
-    const nextDoc = allDocs.find(
-      (doc) => normalizePath(doc.path) === normalizePath(nextPage.href),
-    )
-    result.next = {
-      title: nextDoc ? getPaginationTitle(nextDoc) : nextPage.title,
-      href: nextPage.href,
-    }
+    result.next = flatPages[currentIndex + 1]
   }
 
   return result

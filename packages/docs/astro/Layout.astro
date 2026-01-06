@@ -39,53 +39,6 @@ interface Props {
    * The name of the author who last updated this page.
    */
   lastAuthor?: string
-  /**
-   * Whether to hide the table of contents for this page.
-   * @default false
-   */
-  hideTableOfContents?: boolean
-  /**
-   * Whether to hide the title (H1) heading.
-   * @default false
-   */
-  hideTitle?: boolean
-  /**
-   * Minimum heading level to include in TOC.
-   * @default 2
-   */
-  tocMinLevel?: number
-  /**
-   * Maximum heading level to include in TOC.
-   * @default 3
-   */
-  tocMaxLevel?: number
-  /**
-   * Keywords for SEO.
-   */
-  keywords?: string[]
-  /**
-   * Social card/preview image.
-   */
-  image?: string
-  /**
-   * Whether to hide the sidebar for this page.
-   * When true, the page content spans the full width.
-   * @default false
-   */
-  hideSidebar?: boolean
-  /**
-   * Custom canonical URL for SEO.
-   */
-  canonicalUrl?: string
-  /**
-   * Custom meta tags for the page.
-   */
-  customMetaTags?: Array<{ name?: string; property?: string; content: string }>
-  /**
-   * SEO title override for the page's <title> and meta tags.
-   * If not provided, uses the default title from heading.
-   */
-  seoTitle?: string
 }
 
 const {
@@ -95,22 +48,7 @@ const {
   editUrl,
   lastUpdated,
   lastAuthor,
-  hideTableOfContents = false,
-  hideSidebar = false,
-  hideTitle = false,
-  tocMinLevel = 2,
-  tocMaxLevel = 3,
-  keywords,
-  image,
-  canonicalUrl,
-  customMetaTags,
-  seoTitle,
 } = Astro.props
-
-// Filter headings based on toc_min/max_heading_level
-const filteredHeadings = headings.filter(
-  (h) => h.depth >= tocMinLevel && h.depth <= tocMaxLevel,
-)
 
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
@@ -119,15 +57,7 @@ const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
 const collectionName =
   docsConfigs[normalizedBasePath]?.collectionName ?? normalizedBasePath
 
-const getPath = (id: string, customSlug?: string) => {
-  // Use custom slug if provided
-  if (customSlug) {
-    if (i18n) {
-      return `/${Astro.currentLocale}/${normalizedBasePath}/${customSlug}`
-    }
-    return `/${normalizedBasePath}/${customSlug}`
-  }
-
+const getPath = (id: string) => {
   // Remove the .md extension if present and handle index pages
   const cleanId = id.replace(/\.md$/, '')
   const isIndex = cleanId.endsWith('/index') || cleanId === 'index'
@@ -150,29 +80,22 @@ const docs =
     .then(
       EffectArray.map(async (doc) => {
         const {
-          id: fileId,
+          id,
           data: {
-            id: customId,
             title,
-            sidebar: { render: shouldBeRendered, label },
-            sidebar_position,
-            sidebar_label,
-            sidebar_class_name,
-            sidebar_custom_props,
-            slug: customSlug,
-            pagination_next,
-            pagination_prev,
-            pagination_label,
+            sidebar,
+            render: shouldRender,
+            unlisted,
+            paginationLabel,
+            paginationNext,
+            paginationPrev,
           },
         } = doc
         return {
-          // Use custom id from frontmatter if provided, otherwise use file path-based id
-          id: customId ?? fileId,
-          fileId,
-          path: getPath(fileId, customSlug),
-          slug: customSlug,
+          id,
+          path: getPath(id),
           title:
-            label ??
+            sidebar.label ??
             title ??
             Option.getOrUndefined(
               EffectArray.findFirst(
@@ -180,15 +103,18 @@ const docs =
                 ({ depth }) => depth === 1,
               ),
             )?.text ??
-            fileId,
-          link: shouldBeRendered,
-          sidebarPosition: sidebar_position,
-          sidebarLabel: sidebar_label,
-          sidebarClassName: sidebar_class_name,
-          sidebarCustomProps: sidebar_custom_props,
-          pagination_next,
-          pagination_prev,
-          pagination_label,
+            id,
+          link: shouldRender,
+          sidebarPosition: sidebar.position,
+          sidebarLabel: sidebar.label,
+          sidebarClassName: sidebar.className,
+          sidebarCustomProps: sidebar.customProps,
+          collapsible: sidebar.collapsible,
+          collapsed: sidebar.collapsed,
+          unlisted,
+          paginationLabel,
+          paginationNext,
+          paginationPrev,
         }
       }),
     )
@@ -221,29 +147,21 @@ if (docsConfig?.llmsTxtEnabled) {
 }
 ---
 
-<BaseLayout title={seoTitle} sidebarNavigation={hideSidebar ? undefined : entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags}>
-  <div class={`grid grid-cols-12 gap-6 max-w-7xl mx-auto`}>
-    <div class={hideTableOfContents ? 'col-span-12' : 'col-span-12 xl:col-span-9'}>
-      <div class:list={['prose max-w-none', { 'hide-title': hideTitle }]}>
+<BaseLayout sidebarNavigation={entries}>
+  <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
+    <div class="col-span-12 xl:col-span-9">
+      <div class="prose max-w-none">
         <Breadcrumbs navigation={entries} />
-        {!hideTableOfContents && <TableOfContents links={filteredHeadings} class="xl:hidden" />}
+        <TableOfContents links={headings} class="xl:hidden" />
         <slot />
         <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />
         <DocPagination prev={pagination.prev} next={pagination.next} />
       </div>
     </div>
-    {!hideTableOfContents && (
-      <div class="hidden xl:block col-span-3">
-        <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
-          <TableOfContents links={filteredHeadings} desktopOnly />
-        </div>
+    <div class="hidden xl:block col-span-3">
+      <div class="sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto">
+        <TableOfContents links={headings} desktopOnly />
       </div>
-    )}
+    </div>
   </div>
 </BaseLayout>
-
-<style>
-  .hide-title :global(h1:first-of-type) {
-    display: none;
-  }
-</style>

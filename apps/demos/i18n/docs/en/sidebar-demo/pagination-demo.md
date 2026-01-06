@@ -1,6 +1,8 @@
 ---
 title: Pagination Demo
-sidebar_position: 40
+sidebar:
+  position: 40
+paginationLabel: Navigation Demo
 ---
 
 # Pagination Demo
@@ -23,8 +25,9 @@ You can customize pagination using frontmatter:
 
 ```yaml
 ---
-pagination_next: path/to/next/page.md
-pagination_prev: path/to/previous/page.md
+paginationNext: path/to/next/page.md
+paginationPrev: path/to/previous/page.md
+paginationLabel: Custom Label for Prev/Next Buttons
 ---
 ```
 
@@ -33,22 +36,22 @@ pagination_prev: path/to/previous/page.md
 To disable the next button:
 ```yaml
 ---
-pagination_next: null
+paginationNext: null
 ---
 ```
 
 To disable the previous button:
 ```yaml
 ---
-pagination_prev: null
+paginationPrev: null
 ---
 ```
 
 To disable both:
 ```yaml
 ---
-pagination_next: null
-pagination_prev: null
+paginationNext: null
+paginationPrev: null
 ---
 ```
 
