@@ -1,15 +1,25 @@
 {
   "name": "@levino/shipyard-docs",
   "version": "0.5.2",
-  "description": "",
+  "description": "Documentation plugin for shipyard with automatic sidebar, pagination, and git metadata",
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
     "test:unit": "vitest run"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "astro",
+    "astro-integration",
+    "withastro",
+    "frameworks",
+    "documentation",
+    "docs",
+    "sidebar",
+    "markdown"
+  ],
+  "author": "Levin Keller",
+  "license": "MIT",
+  "homepage": "https://shipyard.levinkeller.de",
   "peerDependencies": {
     "astro": "^5.15"
   },
