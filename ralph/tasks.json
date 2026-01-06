@@ -102,12 +102,21 @@
       "id": "version-selector-component",
       "title": "Create VersionSelector UI component",
       "description": "Create VersionSelector.astro component in packages/base/astro/components/. Similar pattern to LanguageSwitcher. Display dropdown with available versions. Show badges for 'stable', 'latest', 'deprecated'. Handle navigation to same page in different version",
-      "status": "pending",
+      "status": "completed",
       "priority": "high",
       "createdAt": "2026-01-06T00:00:00Z",
-      "completedAt": null,
+      "completedAt": "2026-01-06T16:55:00Z",
       "dependsOn": ["version-route-helpers"],
-      "notes": []
+      "notes": [
+        "Created VersionSelector.astro in packages/base/astro/components/",
+        "Component accepts versions array, currentVersion, stableVersion, deprecatedVersions as props",
+        "Supports 'dropdown' and 'list' variants (same as LanguageSwitcher)",
+        "Displays badges: stable (green), deprecated (warning), unreleased (info)",
+        "Uses tag icon SVG for version indicator",
+        "Exported from packages/base/astro/components/index.ts",
+        "Also exported LanguageSwitcher which was missing from index.ts",
+        "All 113 unit tests pass, 177 i18n E2E + 11 single-language E2E tests pass"
+      ]
     },
     {
       "id": "version-selector-integration",
