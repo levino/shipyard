@@ -7,7 +7,7 @@ cd "$(dirname "$SCRIPT_DIR")"
 
 for ((i=1; i<=$1; i++)); do
   echo "=== Session $i/$1 ==="
-  claude -p --dangerously-skip-permissions "Read these files and follow the instructions in PROMPT.md:
+  claude -p --verbose --dangerously-skip-permissions "Read these files and follow the instructions in PROMPT.md:
 @$SCRIPT_DIR/PROMPT.md
 @$SCRIPT_DIR/tasks.json
 @$SCRIPT_DIR/learnings.md
