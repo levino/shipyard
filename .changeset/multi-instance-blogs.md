@@ -1,7 +1,7 @@
 ---
-"@levino/shipyard-blog": patch
-"@levino/shipyard-base": patch
-"@levino/shipyard-docs": patch
+"@levino/shipyard-blog": minor
+"@levino/shipyard-base": minor
+"@levino/shipyard-docs": minor
 ---
 
 You can now host multiple blog instances with custom URL paths using the `routeBasePath` configuration option. This allows you to have separate blogs at different URLs (e.g., `/blog` and `/news`) within the same site. Additionally, sidebar items can now display custom HTML content using the `labelHtml` property with optional `defaultStyle` for consistent styling.
@@ -10,7 +10,7 @@ A new `remarkNpm2Yarn` remark plugin is now available that transforms npm code b
 
 Standalone markdown pages in `src/pages/` now support `draft` and `unlisted` frontmatter options. Draft pages render an empty document in production builds, while unlisted pages are accessible but include `noindex, nofollow` meta tags to prevent search engine indexing.
 
-Category metadata files (`_category_.json` or `_category_.yml`) are now supported for customizing sidebar categories. You can set `label`, `position`, `collapsed`, `collapsible`, `className`, and `customProps` for any docs category folder.
+Category metadata can be configured via `index.md` frontmatter in category folders. You can set `sidebar_label`, `sidebar_position`, `collapsed`, `collapsible`, `sidebar_class_name`, and `sidebar_custom_props` for any docs category folder.
 
 New SEO frontmatter options are available for both docs and blog:
 - `title_meta` - Override the page title used in `<title>` tags and meta tags for SEO, while keeping the regular `title` for sidebar display
