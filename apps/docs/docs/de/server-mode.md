@@ -1,6 +1,7 @@
 ---
 title: Server-Modus (SSR)
-sidebar_position: 7
+sidebar:
+  position: 7
 description: Lerne wie du shipyard mit Astros Server-Side Rendering (SSR) Modus verwendest
 ---
 

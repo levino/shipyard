@@ -1,7 +1,8 @@
 ---
 title: The shipyard Philosophy
 slug: 'en/why-shipyard/philosophy'
-sidebar_position: 2
+sidebar:
+  position: 2
 ---
 
 # The shipyard Philosophy

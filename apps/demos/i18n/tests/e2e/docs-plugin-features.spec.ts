@@ -77,17 +77,17 @@ test.describe('Documentation Plugin Features', () => {
       await expect(metaDescription).toBeAttached()
     })
 
-    test('sidebar_label overrides title in sidebar', async ({ page }) => {
+    test('sidebar.label overrides title in sidebar', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
-      // custom-label.md has sidebar_label: "Fancy Label ✨"
+      // custom-label.md has sidebar.label: "Fancy Label ✨"
       const fancyLabel = page.locator(
         '.drawer-side a:has-text("Fancy Label ✨")',
       )
       await expect(fancyLabel).toBeAttached()
     })
 
-    test('sidebar_position controls item order', async ({ page }) => {
+    test('sidebar.position controls item order', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
       // Get sidebar items order
@@ -108,10 +108,10 @@ test.describe('Documentation Plugin Features', () => {
       expect(hrefs[1]).toContain('custom-label')
     })
 
-    test('sidebar_class_name applies custom CSS classes', async ({ page }) => {
+    test('sidebar.className applies custom CSS classes', async ({ page }) => {
       await page.goto('/en/docs/sidebar-demo/')
 
-      // custom-class.md has sidebar_class_name: "font-bold text-warning"
+      // custom-class.md has sidebar.className: "font-bold text-warning"
       const boldItem = page.locator('.drawer-side li.font-bold')
       await expect(boldItem).toBeAttached()
 
@@ -264,6 +264,28 @@ test.describe('Documentation Plugin Features', () => {
       const editLink = page.locator('a.edit-link')
       await expect(editLink).toHaveAttribute('target', '_blank')
       await expect(editLink).toHaveAttribute('rel', /noopener/)
+    })
+
+    test('edit link for index pages points to index.md file', async ({
+      page,
+    }) => {
+      // Test docs index page
+      await page.goto('/en/docs/')
+      const docsEditLink = page.locator('a.edit-link')
+      await expect(docsEditLink).toBeAttached()
+      const docsHref = await docsEditLink.getAttribute('href')
+      // Should end with /index.md, not just /en.md
+      expect(docsHref).toContain('/en/index.md')
+      expect(docsHref).not.toContain('/en.md')
+
+      // Test guides index page
+      await page.goto('/en/guides/')
+      const guidesEditLink = page.locator('a.edit-link')
+      await expect(guidesEditLink).toBeAttached()
+      const guidesHref = await guidesEditLink.getAttribute('href')
+      // Should end with /index.md, not just /en.md
+      expect(guidesHref).toContain('/en/index.md')
+      expect(guidesHref).not.toContain('/en.md')
     })
   })
 

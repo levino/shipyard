@@ -1,7 +1,8 @@
 ---
 title: Documentation Through Code
-sidebar_position: 4
-sidebar_label: Documentation Through Code
+sidebar:
+  position: 4
+  label: Documentation Through Code
 description: Let code document itself through clear names and types
 ---
 

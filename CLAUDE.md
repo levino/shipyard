@@ -183,6 +183,73 @@ Documentation features:
 - For styling issues, verify Tailwind and DaisyUI are properly configured
 - Use the demo app as a testing ground for package changes
 
+## Ralph Wiggum Loop
+
+This project uses the **Ralph Wiggum technique** for autonomous, iterative AI development. Ralph is a bash loop that repeatedly feeds prompts to Claude, allowing complex tasks to be completed across multiple sessions.
+
+### What is Ralph Wiggum?
+
+The Ralph Wiggum approach prioritizes **iteration over perfection**. Instead of trying to complete everything perfectly in one attempt, the loop allows Claude to:
+- Pick up where the previous session left off
+- Self-correct through multiple iterations
+- Build incrementally with verification at each step
+
+### Ralph Folder Structure
+
+```
+ralph/
+├── PROMPT.md          # Session instructions for Claude
+├── tasks.json         # Current task list (pending/in_progress/completed)
+├── tasks.schema.json  # JSON schema for tasks
+├── learnings.md       # Permanent knowledge base (patterns, gotchas)
+├── history.md         # Session history log
+├── ralph.sh           # Main loop script (runs N iterations)
+└── ralph-once.sh      # Single iteration script
+```
+
+### Running Ralph
+
+```bash
+# Run N iterations
+./ralph/ralph.sh 5
+
+# Or use the Claude Code plugin command
+/ralph-wiggum:ralph-loop
+```
+
+### Ralph Workflow (Each Session)
+
+1. **Read State**: Load tasks.json, history.md, learnings.md
+2. **Pick Task**: Select highest priority pending task (or continue in_progress)
+3. **Work**: Complete the task fully, run tests
+4. **Update State**: Update tasks.json, append to history.md
+5. **Commit**: Commit changes with descriptive message
+6. **Exit**: End session (loop restarts or stops if all tasks complete)
+
+### Key Rules
+
+- **One task per session**: Pick one task and finish it completely
+- **No scope creep**: Only add tasks if strictly required for current work
+- **Always commit**: Leave codebase in clean, working state
+- **Run tests**: Verify changes work before committing
+- **Update learnings**: Document useful patterns for future sessions
+
+### Completion Signal
+
+When all tasks are done, output `<promise>COMPLETE</promise>` to stop the loop.
+
+### When to Use Ralph
+
+**Good for:**
+- Well-defined tasks with automatic verification (tests, linters)
+- Multi-step implementations that can be broken into discrete tasks
+- Overnight automation of development work
+
+**Not ideal for:**
+- Subjective decisions requiring human judgment
+- Production debugging
+- Exploratory research
+
 ---
 
 *This file helps Claude understand the shipyard codebase structure and development workflow. Keep it updated as the project evolves.*

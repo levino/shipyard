@@ -1,0 +1,17 @@
+---
+/**
+ * Displays estimated reading time for a blog post.
+ */
+interface Props {
+  /**
+   * The reading time text (e.g., "5 min read")
+   */
+  text: string
+}
+
+const { text } = Astro.props
+---
+
+<span class="text-sm text-base-content/60">
+  {text}
+</span>

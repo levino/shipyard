@@ -1,5 +1,5 @@
 ---
-name: requirements-agent
+name: requirements
 description: Expert business analyst that transforms feature ideas into structured requirements documents with user stories and EARS-format acceptance criteria
 tools: Read, Write, Edit, Glob, Grep
 ---

@@ -5,7 +5,7 @@ import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
-const { postsPerPage } = blogConfig
+const { postsPerPage, routeBasePath } = blogConfig
 
 export const getStaticPaths = (async () => {
   const allPosts = await getCollection('blog')
@@ -73,14 +73,16 @@ const paginatedEntries = entries.slice(startIndex, endIndex)
 
 const getBlogPostLink = (id: string, locale?: string) => {
   if (i18n && locale) {
-    return id.replace(`${locale}/`, `${locale}/blog/`)
+    return id.replace(`${locale}/`, `${locale}/${routeBasePath}/`)
   } else {
-    return `blog/${id}`
+    return `${routeBasePath}/${id}`
   }
 }
 
 const getPageLink = (page: number) => {
-  const basePath = i18n ? `/${Astro.currentLocale}/blog` : '/blog'
+  const basePath = i18n
+    ? `/${Astro.currentLocale}/${routeBasePath}`
+    : `/${routeBasePath}`
   if (page === 1) {
     return basePath
   }

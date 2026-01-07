@@ -1,7 +1,8 @@
 ---
 title: Functional Programming
-sidebar_position: 2
-sidebar_label: Functional Programming
+sidebar:
+  position: 2
+  label: Functional Programming
 description: Functional programming conventions for shipyard
 ---
 

@@ -1,6 +1,7 @@
 ---
 title: Server Mode (SSR)
-sidebar_position: 7
+sidebar:
+  position: 7
 description: Learn how to use shipyard with Astro's server-side rendering (SSR) mode
 ---
 

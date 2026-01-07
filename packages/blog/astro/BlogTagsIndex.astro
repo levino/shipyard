@@ -1,0 +1,100 @@
+---
+/**
+ * Blog tags index page - lists all tags with post counts.
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionEntry, getCollection } from 'astro:content'
+import blogConfig from 'virtual:shipyard-blog/config'
+import tagsMap from 'virtual:shipyard-blog/tags'
+import type { GetStaticPaths } from 'astro'
+import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
+import { getTagDescription, getTagLabel, getTagPermalink } from '../src/index'
+import Layout from './Layout.astro'
+
+const { includeDraftsInDev, routeBasePath } = blogConfig
+
+// Filter out draft and unlisted posts
+const isDev = import.meta.env.DEV
+const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+  if (post.data.unlisted) return false
+  if (post.data.draft && !(isDev && includeDraftsInDev)) return false
+  return true
+}
+
+export const getStaticPaths = (() => {
+  if (i18n) {
+    return i18n.locales.map((locale) => {
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
+      return { params: { locale } }
+    })
+  } else {
+    return [{ params: {} }]
+  }
+}) satisfies GetStaticPaths
+
+const allPosts = await getCollection('blog')
+const posts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
+  if (i18n) {
+    const [postLocale] = id.split('/')
+    return postLocale === Astro.currentLocale
+  }
+  return true
+})
+
+// Collect all tags with their post counts
+type TagCount = { tag: string; count: number }
+
+const getTagCounts = pipe(
+  (posts: CollectionEntry<'blog'>[]) =>
+    posts.flatMap((post) => post.data.tags ?? []),
+  groupBy((tag: string) => tag.toLowerCase()),
+  map((tags: string[]) => tags.length),
+  toPairs,
+  map(([tag, count]): TagCount => ({ tag, count: count as number })),
+  sortBy(prop('count')),
+  reverse,
+) as (posts: CollectionEntry<'blog'>[]) => TagCount[]
+
+const tagCounts = getTagCounts(posts)
+
+const getTagUrl = (tag: string) => {
+  const baseUrl = i18n
+    ? `/${Astro.currentLocale}/${routeBasePath}/tags`
+    : `/${routeBasePath}/tags`
+  const permalink = getTagPermalink(tagsMap, tag)
+  return `${baseUrl}/${encodeURIComponent(permalink)}`
+}
+
+// Enhance tag counts with metadata
+const tagCountsWithMeta = tagCounts.map(({ tag, count }) => ({
+  tag,
+  count,
+  label: getTagLabel(tagsMap, tag),
+  description: getTagDescription(tagsMap, tag),
+}))
+---
+
+<Layout title="Tags">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Tags</h1>
+
+    {tagCountsWithMeta.length > 0 ? (
+      <div class="flex flex-wrap gap-3">
+        {tagCountsWithMeta.map(({ tag, count, label, description }) => (
+          <a
+            href={getTagUrl(tag)}
+            class="badge badge-lg badge-outline hover:badge-primary transition-colors gap-2"
+            title={description}
+          >
+            {label}
+            <span class="badge badge-sm">{count}</span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="text-base-content/60">No tags found.</p>
+    )}
+  </div>
+</Layout>

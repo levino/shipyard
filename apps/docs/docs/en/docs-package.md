@@ -1,6 +1,7 @@
 ---
 title: '@levino/shipyard-docs'
-sidebar_position: 4
+sidebar:
+  position: 4
 description: Documentation plugin for shipyard with automatic sidebar and pagination
 ---
 
@@ -86,7 +87,8 @@ Add markdown files to the `docs/` directory:
 ```markdown
 ---
 title: Getting Started
-sidebar_position: 1
+sidebar:
+  position: 1
 ---
 
 # Getting Started
@@ -134,8 +136,8 @@ shipyardDocs({
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `sidebar_position` | `number` | `Infinity` | Position in sidebar (lower = earlier) |
-| `sidebar_label` | `string` | `title` | Custom label for sidebar |
+| `sidebar.position` | `number` | `Infinity` | Position in sidebar (lower = earlier) |
+| `sidebar.label` | `string` | `title` | Custom label for sidebar |
 | `sidebar.render` | `boolean` | `true` | Whether to show in sidebar |
 
 ### Pagination

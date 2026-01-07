@@ -1,7 +1,8 @@
 ---
 title: Nachhaltigkeit & Produktionsreife
 slug: 'de/why-shipyard/sustainability'
-sidebar_position: 3
+sidebar:
+  position: 3
 ---
 
 # Nachhaltigkeit & Produktionsreife
