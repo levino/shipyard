@@ -212,3 +212,34 @@ if (docsConfig?.llmsTxtEnabled) {
     )}
   </div>
 </BaseLayout>
+
+{/* Script for llms-txt-label custom element - must be here (not in LlmsTxtSidebarLabel.astro)
+    because that component is rendered via AstroContainer.renderToString() and inserted with set:html,
+    which doesn't properly bundle inline scripts. */}
+<script>
+  class LlmsTxtLabel extends HTMLElement {
+    connectedCallback() {
+      const href = this.dataset.href
+      if (!href) return
+
+      const button = this.querySelector('button')
+      if (!button) return
+
+      button.addEventListener('click', async (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+
+        const fullUrl = new URL(href, window.location.origin).toString()
+        try {
+          await navigator.clipboard.writeText(fullUrl)
+          button.classList.add('text-success')
+          setTimeout(() => button.classList.remove('text-success'), 1500)
+        } catch (error) {
+          console.error('Failed to copy URL:', error)
+        }
+      })
+    }
+  }
+
+  customElements.define('llms-txt-label', LlmsTxtLabel)
+</script>

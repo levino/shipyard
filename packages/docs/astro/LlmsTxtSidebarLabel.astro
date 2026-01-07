@@ -1,4 +1,12 @@
 ---
+/**
+ * Sidebar label for llms.txt with copy-to-clipboard button.
+ *
+ * Note: This component is rendered using AstroContainer.renderToString()
+ * and the result is injected via set:html. Because of this, the script
+ * must be included separately in Layout.astro (not inline here) to ensure
+ * proper bundling and script paths in production builds.
+ */
 interface Props {
   href: string
 }
@@ -33,31 +41,3 @@ const { href } = Astro.props
     </button>
   </span>
 </llms-txt-label>
-
-<script>
-  class LlmsTxtLabel extends HTMLElement {
-    connectedCallback() {
-      const href = this.dataset.href
-      if (!href) return
-
-      const button = this.querySelector('button')
-      if (!button) return
-
-      button.addEventListener('click', async (event) => {
-        event.preventDefault()
-        event.stopPropagation()
-
-        const fullUrl = new URL(href, window.location.origin).toString()
-        try {
-          await navigator.clipboard.writeText(fullUrl)
-          button.classList.add('text-success')
-          setTimeout(() => button.classList.remove('text-success'), 1500)
-        } catch (error) {
-          console.error('Failed to copy URL:', error)
-        }
-      })
-    }
-  }
-
-  customElements.define('llms-txt-label', LlmsTxtLabel)
-</script>
