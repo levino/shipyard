@@ -20,6 +20,10 @@ export default defineConfig({
     locales: ['en', 'de'],
     routing: {
       prefixDefaultLocale: true,
+      fallbackType: 'rewrite',
+    },
+    fallback: {
+      de: 'en',
     },
   },
   integrations: [
