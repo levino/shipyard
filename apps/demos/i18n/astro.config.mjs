@@ -51,6 +51,11 @@ export default defineConfig({
       title: 'Metro Gardens',
       tagline: 'Growing community, one plant at a time.',
       brand: 'Metro Gardens',
+      // Use 'warn' instead of 'throw' because this demo intentionally has
+      // incomplete German translations to demonstrate i18n fallback behavior.
+      // The link checker flags language switcher links to non-existent German
+      // pages, but these work at runtime due to Astro's fallback rewrite.
+      onBrokenLinks: 'warn',
       scripts: [
         'https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js',
         {
