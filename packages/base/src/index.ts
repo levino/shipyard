@@ -1,8 +1,11 @@
+import { fileURLToPath } from 'node:url'
 import type { AstroIntegration } from 'astro'
 import type { Config } from './schemas/config'
+import { checkLinks, reportBrokenLinks } from './tools/linkChecker'
 
 export type { Entry } from '../astro/components/types'
 export type * from './schemas/config'
+export { checkLinks, reportBrokenLinks } from './tools/linkChecker'
 export { getTitle } from './tools/title'
 export * from './types'
 
@@ -40,6 +43,18 @@ export default (config: Config): AstroIntegration => ({
           ],
         },
       })
+    },
+    'astro:build:done': ({ dir, logger }) => {
+      const onBrokenLinks = config.onBrokenLinks ?? 'warn'
+
+      if (onBrokenLinks === 'ignore') {
+        return
+      }
+
+      const buildDir = fileURLToPath(dir)
+      const result = checkLinks(buildDir)
+
+      reportBrokenLinks(result, onBrokenLinks, logger)
     },
   },
 })

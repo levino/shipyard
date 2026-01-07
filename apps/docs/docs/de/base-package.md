@@ -83,6 +83,7 @@ export default defineConfig({
 | `tagline` | `string` | Ja | — | Kurze Beschreibung deiner Seite |
 | `navigation` | `NavigationTree` | Ja | — | Globale Navigationsstruktur (siehe unten) |
 | `scripts` | `Script[]` | Nein | `[]` | Skripte im Seitenkopf |
+| `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | Nein | `'warn'` | Verhalten bei defekten internen Links während des Builds |
 
 ### Navigationsstruktur
 
@@ -189,6 +190,47 @@ title: Willkommen
   <h1>Willkommen auf meiner Seite</h1>
 </div>
 ```
+
+---
+
+## Defekte Link-Erkennung
+
+Shipyard prüft während Produktions-Builds automatisch auf defekte interne Links. Dies hilft dir, Probleme zu erkennen, bevor du deine Seite veröffentlichst.
+
+### Konfiguration
+
+Verwende die `onBrokenLinks`-Option, um zu steuern, was passiert, wenn defekte Links erkannt werden:
+
+| Wert | Verhalten |
+|------|-----------|
+| `'ignore'` | Nicht auf defekte Links prüfen |
+| `'log'` | Defekte Links protokollieren, aber Build fortsetzen |
+| `'warn'` | Warnungen für defekte Links protokollieren (Standard) |
+| `'throw'` | Build bei defekten Links abbrechen |
+
+**Beispiel - Build bei defekten Links abbrechen:**
+
+```javascript
+shipyard({
+  brand: 'Meine Seite',
+  title: 'Meine Seite',
+  tagline: 'Erstellt mit shipyard',
+  navigation: { /* ... */ },
+  onBrokenLinks: 'throw',
+})
+```
+
+### Was geprüft wird
+
+- Interne Links die mit `/` beginnen (z.B. `/docs/getting-started`)
+- Links mit Query-Strings und Hash-Fragmenten (der Basispfad wird validiert)
+- Links zu HTML-Seiten, Verzeichnissen mit `index.html` und Asset-Dateien
+
+### Was ignoriert wird
+
+- Externe URLs (`https://`, `http://`)
+- Anker-Links (`#section`)
+- Spezielle Protokolle (`mailto:`, `tel:`, `javascript:`, `data:`)
 
 ---
 
