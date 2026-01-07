@@ -51,6 +51,7 @@ export default defineConfig({
         textColor: 'primary-content',
         isCloseable: true,
       },
+      onBrokenLinks: 'throw',
     }),
     shipyardDocs({
       editUrl:

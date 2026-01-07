@@ -35,6 +35,7 @@ export default defineConfig({
       title: 'Server Mode Demo',
       tagline: 'shipyard with server-side rendering',
       brand: 'Server Mode Demo',
+      onBrokenLinks: 'throw',
     }),
     shipyardDocs({
       editUrl:

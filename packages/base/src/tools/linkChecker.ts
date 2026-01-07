@@ -88,8 +88,8 @@ function extractInternalLinks(html: string): { href: string; line: number }[] {
  * Handles trailing slashes and index.html
  */
 function normalizePath(href: string): string[] {
-  // Remove query string and hash
-  const path = href.split('?')[0].split('#')[0]
+  // Remove query string and hash, and decode URL-encoded characters
+  const path = decodeURIComponent(href.split('?')[0].split('#')[0])
 
   // Generate possible file paths to check
   const paths: string[] = []
