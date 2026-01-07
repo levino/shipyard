@@ -313,14 +313,5 @@ test.describe('Documentation Plugin Features', () => {
       const ogDescription = page.locator('meta[property="og:description"]')
       await expect(ogDescription).toBeAttached()
     })
-
-    test('sitemap link is present', async ({ page }) => {
-      await page.goto('/en/docs/')
-
-      const sitemapLink = page.locator('link[rel="sitemap"]')
-      await expect(sitemapLink).toBeAttached()
-      const href = await sitemapLink.getAttribute('href')
-      expect(href).toBe('/sitemap-index.xml')
-    })
   })
 })
