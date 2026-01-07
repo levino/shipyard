@@ -50,8 +50,6 @@ function extractInternalLinks(html: string): { href: string; line: number }[] {
   const links: { href: string; line: number }[] = []
   const lines = html.split('\n')
 
-  // Match href attributes that start with /
-  // Excludes: external URLs (http/https), anchors (#), javascript:, mailto:, tel:
   const hrefRegex = /href=["']([^"']+)["']/g
 
   for (let i = 0; i < lines.length; i++) {
@@ -60,20 +58,8 @@ function extractInternalLinks(html: string): { href: string; line: number }[] {
     for (const match of line.matchAll(hrefRegex)) {
       const href = match[1]
 
-      // Skip external URLs, anchors, and special protocols
-      if (
-        href.startsWith('http://') ||
-        href.startsWith('https://') ||
-        href.startsWith('#') ||
-        href.startsWith('javascript:') ||
-        href.startsWith('mailto:') ||
-        href.startsWith('tel:') ||
-        href.startsWith('data:')
-      ) {
-        continue
-      }
-
       // Only include internal links (start with /)
+      // This automatically excludes external URLs, anchors, and special protocols
       if (href.startsWith('/')) {
         links.push({ href, line: i + 1 })
       }
