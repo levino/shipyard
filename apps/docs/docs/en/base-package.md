@@ -83,6 +83,7 @@ export default defineConfig({
 | `tagline` | `string` | Yes | — | Short description of your site |
 | `navigation` | `NavigationTree` | Yes | — | Global navigation structure (see below) |
 | `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
+| `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure
 
@@ -189,6 +190,47 @@ title: Welcome
   <h1>Welcome to My Site</h1>
 </div>
 ```
+
+---
+
+## Broken Link Detection
+
+Shipyard automatically checks for broken internal links during production builds. This helps you catch issues before deploying your site.
+
+### Configuration
+
+Use the `onBrokenLinks` option to control what happens when broken links are detected:
+
+| Value | Behavior |
+|-------|----------|
+| `'ignore'` | Don't check for broken links |
+| `'log'` | Log broken links but continue build |
+| `'warn'` | Log warnings for broken links (default) |
+| `'throw'` | Fail the build on broken links |
+
+**Example - Fail build on broken links:**
+
+```javascript
+shipyard({
+  brand: 'My Site',
+  title: 'My Site',
+  tagline: 'Built with shipyard',
+  navigation: { /* ... */ },
+  onBrokenLinks: 'throw',
+})
+```
+
+### What Gets Checked
+
+- Internal links starting with `/` (e.g., `/docs/getting-started`)
+- Links with query strings and hash fragments (the base path is validated)
+- Links to HTML pages, directories with `index.html`, and asset files
+
+### What Gets Ignored
+
+- External URLs (`https://`, `http://`)
+- Anchor links (`#section`)
+- Special protocols (`mailto:`, `tel:`, `javascript:`, `data:`)
 
 ---
 

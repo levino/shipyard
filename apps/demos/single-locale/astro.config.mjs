@@ -29,7 +29,7 @@ export default defineConfig({
       navigation: {
         docs: {
           label: 'Documentation',
-          href: '/docs/index',
+          href: '/docs/markdown-features',
         },
         blog: {
           label: 'Blog',
@@ -51,6 +51,7 @@ export default defineConfig({
         textColor: 'primary-content',
         isCloseable: true,
       },
+      onBrokenLinks: 'throw',
     }),
     shipyardDocs({
       editUrl:

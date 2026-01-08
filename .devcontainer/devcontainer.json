@@ -1,7 +1,7 @@
 {
   "name": "Node.js & TypeScript",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-  "updateContentCommand": "npm install",
+  "updateContentCommand": "npm run setup",
   "customizations": {
     "vscode": {
       "extensions": [

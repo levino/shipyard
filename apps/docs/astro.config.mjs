@@ -20,6 +20,10 @@ export default defineConfig({
     locales: ['en', 'de'],
     routing: {
       prefixDefaultLocale: true,
+      fallbackType: 'rewrite',
+    },
+    fallback: {
+      de: 'en',
     },
   },
   integrations: [
@@ -44,6 +48,7 @@ export default defineConfig({
       title: 'shipyard',
       tagline: 'A universal page builder for astro',
       brand: 'shipyard',
+      onBrokenLinks: 'throw',
       scripts: [
         {
           src: 'https://analytics.levinkeller.de/js/script.js',

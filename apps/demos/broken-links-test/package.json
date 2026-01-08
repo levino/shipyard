@@ -1,0 +1,24 @@
+{
+  "name": "broken-links-test",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev --host 0.0.0.0",
+    "build": "astro build",
+    "build:expect-fail": "astro build 2>&1 | grep -q 'Broken links found' && echo 'PASS: Build correctly failed on broken links' || (echo 'FAIL: Build should have failed on broken links' && exit 1)",
+    "preview": "astro preview --host 0.0.0.0",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/tailwind": "^5.1.4",
+    "@levino/shipyard-base": "*",
+    "@levino/shipyard-docs": "*",
+    "astro": "^5.15",
+    "daisyui": "^4.12.23",
+    "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.16"
+  }
+}
