@@ -461,3 +461,23 @@ This file tracks session progress and outcomes.
 - Build verification passed for docs site
 
 ---
+
+## Session 2026-01-08T10:29:00Z
+
+### Task Completed
+- **ID**: content-config-location - Clarified content.config.ts path in READMEs
+
+### What Was Done
+1. Updated packages/docs/README.md comment to show `src/content.config.ts (Astro 5+)`
+2. Updated packages/blog/README.md comment to show `src/content.config.ts (Astro 5+)`
+3. The main docs (getting-started.md) already had the correct path
+
+### Files Modified
+- `packages/docs/README.md` - Updated content.config.ts path
+- `packages/blog/README.md` - Updated content.config.ts path
+
+### Tips for Next Developer
+- In Astro 5, content.config.ts must be at `src/content.config.ts`
+- The main documentation site already shows the correct path
+
+---
