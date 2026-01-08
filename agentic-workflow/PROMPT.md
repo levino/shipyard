@@ -3,7 +3,7 @@
 You are operating in a Ralph Wiggum loop via the Claude Code plugin. Each iteration you will:
 
 1. **Read State**: Load the task list and history
-2. **Pick Task**: Select the next pending task (or continue an in_progress task)
+2. **Pick Task**: Select the highest priority pending task (or continue an in_progress task)
 3. **Work**: Complete the task fully
 4. **Update State**: Update tasks.json and append to history.md
 5. **Commit**: Commit your changes with a descriptive message
@@ -118,7 +118,7 @@ Place unit tests next to the source files: `*.test.ts` or `*.spec.ts`
 ```
 Reading active workflow: general-improvements
 
-Selecting task: fix-footer-alignment
+Selecting task: fix-footer-alignment (priority: high)
 
 [... work happens ...]
 

@@ -76,6 +76,13 @@ export default defineConfig({
 })
 ```
 
+**Important configuration notes:**
+
+| Setting | Why it's needed |
+|---------|-----------------|
+| `tailwind({ applyBaseStyles: false })` | Prevents Tailwind's base styles from conflicting with DaisyUI. Without this, you may see unstyled or broken components. |
+| Integration order | Tailwind must come before shipyard integrations to ensure styles are processed correctly. |
+
 ### Tailwind Configuration
 
 Create or update `tailwind.config.mjs`:
@@ -193,6 +200,57 @@ Your blog post content here...
 | `date` | `Date` | Publication date (YYYY-MM-DD) |
 
 See [@levino/shipyard-blog](./blog-package) for all frontmatter options.
+
+### Custom Pages with Layouts
+
+For standalone pages that aren't part of docs or blog collections, use shipyard's layouts directly.
+
+**Markdown pages** – Use the Markdown layout for pages with prose styling:
+
+```markdown
+---
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
+title: About Us
+description: Learn about our team
+---
+
+# About Us
+
+Your markdown content with nice typography styling...
+```
+
+**Astro component pages** – Import the Page layout for full control:
+
+```astro
+---
+// src/pages/index.astro
+import { Page } from '@levino/shipyard-base/layouts'
+---
+
+<Page title="Home" description="Welcome to our site">
+  <div class="hero min-h-[60vh] bg-base-200">
+    <div class="hero-content text-center">
+      <h1 class="text-5xl font-bold">Welcome!</h1>
+      <p>Your custom homepage content...</p>
+    </div>
+  </div>
+</Page>
+```
+
+**Landing pages** – Use Splash layout for centered content without prose styling:
+
+```markdown
+---
+layout: '@levino/shipyard-base/layouts/Splash.astro'
+title: Welcome
+---
+
+<div class="hero min-h-screen">
+  <h1 class="text-5xl font-bold">My Landing Page</h1>
+</div>
+```
+
+See [@levino/shipyard-base layouts](./base-package#layouts) for all available layouts and options.
 
 ## Adding Internationalization
 

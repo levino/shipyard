@@ -396,6 +396,12 @@ export interface DocsConfig {
    * ```
    */
   versions?: VersionConfig
+  /**
+   * Whether to prerender docs pages at build time.
+   * Set to false for SSR sites with auth middleware that need access to request headers/cookies.
+   * @default true
+   */
+  prerender?: boolean
 }
 
 /**
@@ -728,6 +734,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateAuthor = false,
     llmsTxt,
     versions,
+    prerender = true,
   } = config
 
   // Validate versions config if provided
@@ -1076,7 +1083,7 @@ export function hasVersioning(routeBasePath = 'docs') {
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}/[version]/[...slug]`,
               entrypoint: entryFilePath,
-              prerender: true,
+              prerender,
             })
 
             // Generate redirect from docs root to current version
@@ -1110,14 +1117,14 @@ return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}`,
               entrypoint: redirectFilePath,
-              prerender: true,
+              prerender,
             })
           } else {
             // Non-versioned routes: /[locale]/[routeBasePath]/[...slug]
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
               entrypoint: entryFilePath,
-              prerender: true,
+              prerender,
             })
           }
         } else {
@@ -1128,7 +1135,7 @@ return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302
             injectRoute({
               pattern: `/${normalizedBasePath}/[version]/[...slug]`,
               entrypoint: entryFilePath,
-              prerender: true,
+              prerender,
             })
 
             // Generate redirect from docs root to current version
@@ -1151,14 +1158,14 @@ return Astro.redirect(\`/\${routeBasePath}/\${currentVersion}/\`, 302)
             injectRoute({
               pattern: `/${normalizedBasePath}`,
               entrypoint: redirectFilePath,
-              prerender: true,
+              prerender,
             })
           } else {
             // Non-versioned routes: /[routeBasePath]/[...slug]
             injectRoute({
               pattern: `/${normalizedBasePath}/[...slug]`,
               entrypoint: entryFilePath,
-              prerender: true,
+              prerender,
             })
           }
         }
@@ -1383,20 +1390,20 @@ export const GET: APIRoute = async ({ site }) => {
           injectRoute({
             pattern: `/${normalizedBasePath}/_llms-txt/[...slug].txt`,
             entrypoint: llmsTxtPagesFilePath,
-            prerender: true,
+            prerender,
           })
 
           // Inject routes for llms.txt and llms-full.txt under the docs path
           injectRoute({
             pattern: `/${normalizedBasePath}/llms.txt`,
             entrypoint: llmsTxtFilePath,
-            prerender: true,
+            prerender,
           })
 
           injectRoute({
             pattern: `/${normalizedBasePath}/llms-full.txt`,
             entrypoint: llmsFullTxtFilePath,
-            prerender: true,
+            prerender,
           })
         }
       },
