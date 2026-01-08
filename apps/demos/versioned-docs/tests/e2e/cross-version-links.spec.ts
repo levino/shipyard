@@ -93,9 +93,9 @@ test.describe('Cross-Version Links', () => {
 
       // The configuration link in v2 index uses /docs/configuration (no version)
       // It should be transformed to /docs/v2/configuration
-      // Check in prose content area only
+      // Check in prose content area only, excluding pagination links
       const configLink = page.locator(
-        `${proseSelector} a[href="/docs/v2/configuration"]`,
+        `${proseSelector} ol a[href="/docs/v2/configuration"]`,
       )
       await expect(configLink).toHaveCount(1)
       await expect(configLink).toHaveAttribute('href', '/docs/v2/configuration')
@@ -106,9 +106,9 @@ test.describe('Cross-Version Links', () => {
     }) => {
       await page.goto('/docs/v2/')
 
-      // Click the configuration link (in prose content area)
+      // Click the configuration link in the content list (not pagination)
       const configLink = page.locator(
-        `${proseSelector} a[href="/docs/v2/configuration"]`,
+        `${proseSelector} ol a[href="/docs/v2/configuration"]`,
       )
       await configLink.click()
 

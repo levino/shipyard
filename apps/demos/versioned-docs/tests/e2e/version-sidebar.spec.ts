@@ -136,18 +136,18 @@ test.describe('Version-specific Sidebar E2E Tests', () => {
 
       const paginationNav = page.locator('.pagination-nav')
       if ((await paginationNav.count()) > 0) {
-        // Check prev/next links are v2 paths
+        // Check prev/next links are v2 paths (may or may not have trailing slash)
         const prevLink = paginationNav.locator('a[rel="prev"]')
         const nextLink = paginationNav.locator('a[rel="next"]')
 
         if ((await prevLink.count()) > 0) {
           const prevHref = await prevLink.getAttribute('href')
-          expect(prevHref).toMatch(/^\/docs\/v2\//)
+          expect(prevHref).toMatch(/^\/docs\/v2(\/|$)/)
         }
 
         if ((await nextLink.count()) > 0) {
           const nextHref = await nextLink.getAttribute('href')
-          expect(nextHref).toMatch(/^\/docs\/v2\//)
+          expect(nextHref).toMatch(/^\/docs\/v2(\/|$)/)
         }
       }
     })
@@ -157,18 +157,18 @@ test.describe('Version-specific Sidebar E2E Tests', () => {
 
       const paginationNav = page.locator('.pagination-nav')
       if ((await paginationNav.count()) > 0) {
-        // Check prev/next links are v1 paths
+        // Check prev/next links are v1 paths (may or may not have trailing slash)
         const prevLink = paginationNav.locator('a[rel="prev"]')
         const nextLink = paginationNav.locator('a[rel="next"]')
 
         if ((await prevLink.count()) > 0) {
           const prevHref = await prevLink.getAttribute('href')
-          expect(prevHref).toMatch(/^\/docs\/v1\//)
+          expect(prevHref).toMatch(/^\/docs\/v1(\/|$)/)
         }
 
         if ((await nextLink.count()) > 0) {
           const nextHref = await nextLink.getAttribute('href')
-          expect(nextHref).toMatch(/^\/docs\/v1\//)
+          expect(nextHref).toMatch(/^\/docs\/v1(\/|$)/)
         }
       }
     })
