@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { DocsData } from './sidebarEntries'
-import { toSidebarEntries } from './sidebarEntries'
+import { filterDocsForVersion, toSidebarEntries } from './sidebarEntries'
 
 describe('toSidebarEntries', () => {
   it('should create a basic sidebar structure from flat docs', () => {
@@ -307,5 +307,158 @@ describe('toSidebarEntries', () => {
     // Leaf nodes should not have collapsible/collapsed properties
     expect(entries.page.collapsible).toBeUndefined()
     expect(entries.page.collapsed).toBeUndefined()
+  })
+})
+
+describe('filterDocsForVersion', () => {
+  it('should filter docs to only include entries for the specified version', () => {
+    const docs: DocsData[] = [
+      { id: 'v1/intro.md', title: 'Intro v1', path: '/docs/v1/intro' },
+      { id: 'v1/guide.md', title: 'Guide v1', path: '/docs/v1/guide' },
+      { id: 'v2/intro.md', title: 'Intro v2', path: '/docs/v2/intro' },
+      { id: 'v2/guide.md', title: 'Guide v2', path: '/docs/v2/guide' },
+      {
+        id: 'v2/new-feature.md',
+        title: 'New Feature',
+        path: '/docs/v2/new-feature',
+      },
+    ]
+
+    const v1Docs = filterDocsForVersion(docs, 'v1')
+    expect(v1Docs).toHaveLength(2)
+    expect(v1Docs.map((d) => d.title)).toEqual(['Intro v1', 'Guide v1'])
+
+    const v2Docs = filterDocsForVersion(docs, 'v2')
+    expect(v2Docs).toHaveLength(3)
+    expect(v2Docs.map((d) => d.title)).toEqual([
+      'Intro v2',
+      'Guide v2',
+      'New Feature',
+    ])
+  })
+
+  it('should strip version prefix from doc IDs', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'v2/getting-started.md',
+        title: 'Getting Started',
+        path: '/docs/v2/getting-started',
+      },
+      {
+        id: 'v2/en/intro.md',
+        title: 'Introduction',
+        path: '/docs/v2/en/intro',
+      },
+    ]
+
+    const filtered = filterDocsForVersion(docs, 'v2')
+
+    expect(filtered[0].id).toBe('getting-started.md')
+    expect(filtered[1].id).toBe('en/intro.md')
+  })
+
+  it('should preserve other doc properties unchanged', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'v1/page.md',
+        title: 'Page Title',
+        path: '/docs/v1/page',
+        sidebarPosition: 5,
+        sidebarLabel: 'Custom Label',
+        sidebarClassName: 'special-class',
+        pagination_next: 'next-page',
+        pagination_prev: 'prev-page',
+        link: true,
+      },
+    ]
+
+    const filtered = filterDocsForVersion(docs, 'v1')
+    expect(filtered[0]).toEqual({
+      id: 'page.md',
+      title: 'Page Title',
+      path: '/docs/v1/page',
+      sidebarPosition: 5,
+      sidebarLabel: 'Custom Label',
+      sidebarClassName: 'special-class',
+      pagination_next: 'next-page',
+      pagination_prev: 'prev-page',
+      link: true,
+    })
+  })
+
+  it('should return empty array when no docs match the version', () => {
+    const docs: DocsData[] = [
+      { id: 'v1/intro.md', title: 'Intro', path: '/docs/v1/intro' },
+    ]
+
+    const filtered = filterDocsForVersion(docs, 'v3')
+    expect(filtered).toEqual([])
+  })
+
+  it('should handle versioned docs with i18n locale prefixes', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'v2/en/getting-started.md',
+        title: 'Getting Started (EN)',
+        path: '/en/docs/v2/getting-started',
+      },
+      {
+        id: 'v2/de/getting-started.md',
+        title: 'Erste Schritte (DE)',
+        path: '/de/docs/v2/getting-started',
+      },
+      {
+        id: 'v1/en/getting-started.md',
+        title: 'Getting Started v1',
+        path: '/en/docs/v1/getting-started',
+      },
+    ]
+
+    const filtered = filterDocsForVersion(docs, 'v2')
+    expect(filtered).toHaveLength(2)
+    // IDs should have version stripped but locale preserved
+    expect(filtered.map((d) => d.id)).toEqual([
+      'en/getting-started.md',
+      'de/getting-started.md',
+    ])
+  })
+
+  it('should work correctly with semantic version strings', () => {
+    const docs: DocsData[] = [
+      { id: 'v1.0/intro.md', title: 'Intro v1.0', path: '/docs/v1.0/intro' },
+      {
+        id: 'v2.0.0/intro.md',
+        title: 'Intro v2.0.0',
+        path: '/docs/v2.0.0/intro',
+      },
+    ]
+
+    const v1Docs = filterDocsForVersion(docs, 'v1.0')
+    expect(v1Docs).toHaveLength(1)
+    expect(v1Docs[0].title).toBe('Intro v1.0')
+
+    const v2Docs = filterDocsForVersion(docs, 'v2.0.0')
+    expect(v2Docs).toHaveLength(1)
+    expect(v2Docs[0].title).toBe('Intro v2.0.0')
+  })
+
+  it('should work with special version names like latest and next', () => {
+    const docs: DocsData[] = [
+      {
+        id: 'latest/intro.md',
+        title: 'Latest Intro',
+        path: '/docs/latest/intro',
+      },
+      { id: 'next/intro.md', title: 'Next Intro', path: '/docs/next/intro' },
+      { id: 'v1/intro.md', title: 'V1 Intro', path: '/docs/v1/intro' },
+    ]
+
+    const latestDocs = filterDocsForVersion(docs, 'latest')
+    expect(latestDocs).toHaveLength(1)
+    expect(latestDocs[0].title).toBe('Latest Intro')
+
+    const nextDocs = filterDocsForVersion(docs, 'next')
+    expect(nextDocs).toHaveLength(1)
+    expect(nextDocs[0].title).toBe('Next Intro')
   })
 })

@@ -1,0 +1,207 @@
+---
+/**
+ * Version selector component that displays available documentation versions.
+ * Allows users to switch between different versions of the documentation.
+ */
+
+interface VersionInfo {
+  /** The version identifier (e.g., "v1.0", "v2.0") */
+  version: string
+  /** Human-readable label for display */
+  label?: string
+  /** Path segment used in URLs */
+  path?: string
+  /** Banner type for this version */
+  banner?: 'unreleased' | 'unmaintained'
+}
+
+interface Props {
+  /** All available versions */
+  versions: VersionInfo[]
+  /** The current version being viewed */
+  currentVersion: string
+  /** The stable version (for badge display) */
+  stableVersion?: string
+  /** List of deprecated version identifiers */
+  deprecatedVersions?: string[]
+  /** Additional CSS classes */
+  class?: string
+  /** Variant: 'dropdown' for navbar, 'list' for sidebar */
+  variant?: 'dropdown' | 'list'
+}
+
+const {
+  versions,
+  currentVersion,
+  stableVersion,
+  deprecatedVersions = [],
+  class: className,
+  variant = 'dropdown',
+} = Astro.props
+
+const currentPath = Astro.url.pathname
+
+// Get display label for current version
+const currentVersionInfo = versions.find(
+  (v) => v.version === currentVersion || v.path === currentVersion,
+)
+const currentLabel = currentVersionInfo?.label ?? currentVersion
+
+// Build the path for other versions by replacing the current version in the URL
+const getVersionPath = (targetVersion: VersionInfo) => {
+  const targetPath = targetVersion.path ?? targetVersion.version
+  const currentVersionPath = currentVersionInfo?.path ?? currentVersion
+
+  // Replace the version segment in the current URL
+  // This handles both /docs/v1/page and /en/docs/v1/page patterns
+  return currentPath.replace(
+    new RegExp(`/${escapeRegex(currentVersionPath)}/`),
+    `/${targetPath}/`,
+  )
+}
+
+// Escape special regex characters
+function escapeRegex(str: string): string {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+}
+
+// Helper to get badge info for a version
+function getVersionBadge(version: VersionInfo): {
+  type: 'stable' | 'deprecated' | 'unreleased' | null
+  label: string
+} | null {
+  if (version.banner === 'unreleased') {
+    return { type: 'unreleased', label: 'Unreleased' }
+  }
+  if (
+    version.banner === 'unmaintained' ||
+    deprecatedVersions.includes(version.version)
+  ) {
+    return { type: 'deprecated', label: 'Deprecated' }
+  }
+  if (stableVersion && version.version === stableVersion) {
+    return { type: 'stable', label: 'Stable' }
+  }
+  return null
+}
+
+const hasMultipleVersions = versions.length > 1
+---
+
+{hasMultipleVersions && variant === 'dropdown' && (
+  <div class:list={['dropdown dropdown-end', className]} data-testid="version-selector">
+    <div tabindex="0" role="button" class="btn btn-ghost gap-1">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
+        />
+      </svg>
+      <span class="hidden sm:inline">{currentLabel}</span>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+    <ul
+      tabindex="0"
+      class="dropdown-content menu rounded-box z-50 mt-3 w-52 bg-base-100 p-2 shadow"
+    >
+      {versions.map((version) => {
+        const badge = getVersionBadge(version)
+        const isActive = version.version === currentVersion || version.path === currentVersion
+        return (
+          <li>
+            <a
+              href={getVersionPath(version)}
+              class:list={[{ active: isActive }]}
+            >
+              <span class="flex-1">{version.label ?? version.version}</span>
+              {badge && (
+                <span
+                  class:list={[
+                    'badge badge-sm',
+                    {
+                      'badge-success': badge.type === 'stable',
+                      'badge-warning': badge.type === 'deprecated',
+                      'badge-info': badge.type === 'unreleased',
+                    },
+                  ]}
+                >
+                  {badge.label}
+                </span>
+              )}
+            </a>
+          </li>
+        )
+      })}
+    </ul>
+  </div>
+)}
+
+{hasMultipleVersions && variant === 'list' && (
+  <li class={className} data-testid="version-selector">
+    <details>
+      <summary class="gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A2 2 0 013 12V7a4 4 0 014-4z"
+          />
+        </svg>
+        {currentLabel}
+      </summary>
+      <ul>
+        {versions.map((version) => {
+          const badge = getVersionBadge(version)
+          const isActive = version.version === currentVersion || version.path === currentVersion
+          return (
+            <li>
+              <a
+                href={getVersionPath(version)}
+                class:list={[{ active: isActive }]}
+              >
+                <span class="flex-1">{version.label ?? version.version}</span>
+                {badge && (
+                  <span
+                    class:list={[
+                      'badge badge-sm',
+                      {
+                        'badge-success': badge.type === 'stable',
+                        'badge-warning': badge.type === 'deprecated',
+                        'badge-info': badge.type === 'unreleased',
+                      },
+                    ]}
+                  >
+                    {badge.label}
+                  </span>
+                )}
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </details>
+  </li>
+)}

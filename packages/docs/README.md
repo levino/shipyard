@@ -56,11 +56,50 @@ export default defineConfig({
 })
 ```
 
+### Versioned Documentation
+
+```ts
+// astro.config.ts
+export default defineConfig({
+  integrations: [
+    shipyardDocs({
+      routeBasePath: 'docs',
+      versions: {
+        current: 'v2',
+        available: [
+          { version: 'v2', label: 'Version 2.0 (Latest)' },
+          { version: 'v1', label: 'Version 1.0', banner: 'unmaintained' },
+        ],
+        deprecated: ['v1'],
+        stable: 'v2',
+      },
+    }),
+  ],
+})
+```
+
+With versioned content collection:
+
+```ts
+// content.config.ts
+import { defineCollection } from 'astro:content'
+import { createVersionedDocsCollection } from '@levino/shipyard-docs'
+
+const docs = defineCollection(
+  createVersionedDocsCollection('./docs', {
+    versions: ['v1', 'v2'],
+  })
+)
+
+export const collections = { docs }
+```
+
 ### Routes
 
 The integration automatically injects these routes:
 
-- `/[routeBasePath]/[...slug]` - Documentation pages
+- `/[routeBasePath]/[...slug]` - Documentation pages (without versioning)
+- `/[routeBasePath]/[version]/[...slug]` - Versioned documentation pages
 
 With i18n enabled, routes are prefixed with `[locale]`.
 

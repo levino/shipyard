@@ -135,5 +135,7 @@ gha-creds-*.json
 playwright-report/
 test-results/
 
-# Ralph Wiggum session history (local only)
+# Ralph Wiggum / Agentic workflow local files
 ralph/history.md
+*.local.md
+agentic-workflow/active-workflow.txt

@@ -36,6 +36,7 @@ const withLocale = (path: string) =>
         )
       }
     </li>
+    <slot name="sidebarExtra" />
     <LanguageSwitcher variant="list" />
     <li class="flex flex-row items-center gap-2 px-4 py-2">
       <span class="text-sm opacity-70">Theme</span>

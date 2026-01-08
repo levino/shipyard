@@ -1,0 +1,116 @@
+---
+/**
+ * Version badge component that displays version status inline.
+ * Shows badges for stable, deprecated, latest, or unreleased versions.
+ * Can be used to indicate the version status at the top of docs pages.
+ */
+
+interface Props {
+  /** The version identifier (e.g., "v1.0", "v2.0") */
+  version: string
+  /** Human-readable label for display (defaults to version) */
+  label?: string
+  /** The stable version for comparison */
+  stableVersion?: string
+  /** The current/latest version for comparison */
+  currentVersion?: string
+  /** List of deprecated versions */
+  deprecatedVersions?: string[]
+  /** Banner type for this version (from config) */
+  banner?: 'unreleased' | 'unmaintained'
+  /** Whether this is the latest alias */
+  isLatestAlias?: boolean
+  /** Additional CSS classes */
+  class?: string
+  /** Size variant: 'sm' for small, 'md' for medium, 'lg' for large */
+  size?: 'sm' | 'md' | 'lg'
+}
+
+const {
+  version,
+  label,
+  stableVersion,
+  currentVersion,
+  deprecatedVersions = [],
+  banner,
+  isLatestAlias = false,
+  class: className,
+  size = 'md',
+} = Astro.props
+
+// Determine badge type based on version status
+type BadgeType = 'stable' | 'latest' | 'deprecated' | 'unreleased' | null
+
+const getBadgeType = (): BadgeType => {
+  // Unreleased takes precedence
+  if (banner === 'unreleased') {
+    return 'unreleased'
+  }
+  // Deprecated/unmaintained
+  if (banner === 'unmaintained' || deprecatedVersions.includes(version)) {
+    return 'deprecated'
+  }
+  // Stable version
+  if (stableVersion && version === stableVersion) {
+    return 'stable'
+  }
+  // Latest/current version (and not stable, so show as latest)
+  if (
+    currentVersion &&
+    version === currentVersion &&
+    version !== stableVersion
+  ) {
+    return 'latest'
+  }
+  // If viewing via latest alias
+  if (isLatestAlias) {
+    return 'latest'
+  }
+  return null
+}
+
+const badgeType = getBadgeType()
+const displayLabel = label ?? version
+
+// Badge styling based on type
+const getBadgeClasses = () => {
+  const sizeClass = {
+    sm: 'badge-sm',
+    md: '',
+    lg: 'badge-lg',
+  }[size]
+
+  const typeClass = {
+    stable: 'badge-success',
+    latest: 'badge-primary',
+    deprecated: 'badge-warning',
+    unreleased: 'badge-info',
+  }[badgeType ?? 'stable']
+
+  return ['badge', sizeClass, typeClass, className].filter(Boolean).join(' ')
+}
+
+const getBadgeLabel = () => {
+  switch (badgeType) {
+    case 'stable':
+      return 'Stable'
+    case 'latest':
+      return 'Latest'
+    case 'deprecated':
+      return 'Deprecated'
+    case 'unreleased':
+      return 'Unreleased'
+    default:
+      return null
+  }
+}
+
+const badgeLabel = getBadgeLabel()
+---
+
+{badgeLabel && (
+  <span class={getBadgeClasses()} data-testid="version-badge">
+    <span class="sr-only">Version {displayLabel} - </span>
+    {badgeLabel}
+  </span>
+)}

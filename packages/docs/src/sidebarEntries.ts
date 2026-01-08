@@ -1,4 +1,5 @@
 import type { Entry } from '@levino/shipyard-base'
+import { getVersionFromDocId, stripVersionFromDocId } from './versionHelpers'
 
 export interface DocsData {
   id: string
@@ -17,6 +18,38 @@ export interface DocsData {
   paginationLabel?: string
   paginationNext?: string | null
   paginationPrev?: string | null
+}
+
+/**
+ * Filters docs data to only include entries for a specific version
+ * and strips the version prefix from doc IDs for proper sidebar tree building.
+ *
+ * @param docs - Array of DocsData entries
+ * @param version - The version to filter by
+ * @returns Filtered docs with version prefix stripped from IDs
+ *
+ * @example
+ * ```ts
+ * // Input: [{ id: 'v2/getting-started', path: '/docs/v2/getting-started', ... }]
+ * // Output: [{ id: 'getting-started', path: '/docs/v2/getting-started', ... }]
+ * const sidebarDocs = filterDocsForVersion(allDocs, 'v2')
+ * ```
+ */
+export const filterDocsForVersion = (
+  docs: readonly DocsData[],
+  version: string,
+): DocsData[] => {
+  return docs
+    .filter((doc) => {
+      const docVersion = getVersionFromDocId(doc.id)
+      return docVersion === version
+    })
+    .map((doc) => ({
+      ...doc,
+      // Strip version from ID so tree builds correctly
+      // e.g., "v2/en/getting-started" -> "en/getting-started"
+      id: stripVersionFromDocId(doc.id),
+    }))
 }
 
 interface TreeNode {
