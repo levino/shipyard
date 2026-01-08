@@ -69,126 +69,144 @@ const sidebarSchema = z
       'sidebar.collapsed cannot be true when sidebar.collapsible is false',
   })
 
-export const docsSchema = z
-  .object({
-    // === Page Metadata ===
-    /** Custom document ID (default: file path) */
-    id: z.string().optional(),
-    /** Reference title for SEO, pagination, previews (default: H1) */
-    title: z.string().optional(),
-    /** Override title for SEO/browser tab (default: title) - Docusaurus snake_case convention */
-    title_meta: z.string().optional(),
-    /** Meta description (default: first paragraph) */
-    description: z.string().optional(),
-    /** SEO keywords */
-    keywords: z.array(z.string()).optional(),
-    /** Social preview image (og:image) */
-    image: z.string().optional(),
-    /** Custom canonical URL */
-    canonicalUrl: z.string().optional(),
-    /** Custom canonical URL - snake_case alias for Docusaurus compatibility */
-    canonical_url: z.string().optional(),
+/**
+ * Base docs schema object (before transforms/refinements).
+ * Used internally for extending with additional fields.
+ */
+const docsSchemaBase = z.object({
+  // === Page Metadata ===
+  /** Custom document ID (default: file path) */
+  id: z.string().optional(),
+  /** Reference title for SEO, pagination, previews (default: H1) */
+  title: z.string().optional(),
+  /** Override title for SEO/browser tab (default: title) - Docusaurus snake_case convention */
+  title_meta: z.string().optional(),
+  /** Meta description (default: first paragraph) */
+  description: z.string().optional(),
+  /** SEO keywords */
+  keywords: z.array(z.string()).optional(),
+  /** Social preview image (og:image) */
+  image: z.string().optional(),
+  /** Custom canonical URL */
+  canonicalUrl: z.string().optional(),
+  /** Custom canonical URL - snake_case alias for Docusaurus compatibility */
+  canonical_url: z.string().optional(),
 
-    // === Page Rendering ===
-    /** Whether to render a page (default: true) */
-    render: z.boolean().default(true),
-    /** Exclude from production builds (default: false) */
-    draft: z.boolean().default(false),
-    /** Render page but hide from sidebar (default: false) */
-    unlisted: z.boolean().default(false),
-    /** Custom URL slug */
-    slug: z.string().optional(),
+  // === Page Rendering ===
+  /** Whether to render a page (default: true) */
+  render: z.boolean().default(true),
+  /** Exclude from production builds (default: false) */
+  draft: z.boolean().default(false),
+  /** Render page but hide from sidebar (default: false) */
+  unlisted: z.boolean().default(false),
+  /** Custom URL slug */
+  slug: z.string().optional(),
 
-    // === Layout Options ===
-    /** Hide the H1 heading (default: false) */
-    hideTitle: z.boolean().default(false),
-    /** Hide the H1 heading (default: false) - snake_case alias for Docusaurus compatibility */
-    hide_title: z.boolean().optional(),
-    /** Hide the TOC (default: false) */
-    hideTableOfContents: z.boolean().default(false),
-    /** Hide the TOC (default: false) - snake_case alias for Docusaurus compatibility */
-    hide_table_of_contents: z.boolean().optional(),
-    /** Full-width page without sidebar (default: false) */
-    hideSidebar: z.boolean().default(false),
-    /** Min heading level in TOC (default: 2) */
-    tocMinHeadingLevel: z.number().min(1).max(6).default(2),
-    /** Max heading level in TOC (default: 3) */
-    tocMaxHeadingLevel: z.number().min(1).max(6).default(3),
+  // === Layout Options ===
+  /** Hide the H1 heading (default: false) */
+  hideTitle: z.boolean().default(false),
+  /** Hide the H1 heading (default: false) - snake_case alias for Docusaurus compatibility */
+  hide_title: z.boolean().optional(),
+  /** Hide the TOC (default: false) */
+  hideTableOfContents: z.boolean().default(false),
+  /** Hide the TOC (default: false) - snake_case alias for Docusaurus compatibility */
+  hide_table_of_contents: z.boolean().optional(),
+  /** Full-width page without sidebar (default: false) */
+  hideSidebar: z.boolean().default(false),
+  /** Min heading level in TOC (default: 2) */
+  tocMinHeadingLevel: z.number().min(1).max(6).default(2),
+  /** Max heading level in TOC (default: 3) */
+  tocMaxHeadingLevel: z.number().min(1).max(6).default(3),
 
-    // === Sidebar Configuration (grouped) ===
-    sidebar: sidebarSchema.default({ collapsible: true, collapsed: true }),
+  // === Sidebar Configuration (grouped) ===
+  sidebar: sidebarSchema.default({ collapsible: true, collapsed: true }),
 
-    // === Pagination ===
-    /** Label shown in prev/next buttons */
-    paginationLabel: z.string().optional(),
-    /** Label shown in prev/next buttons - snake_case alias for Docusaurus compatibility */
-    pagination_label: z.string().optional(),
-    /** Next page ID, or null to disable */
-    paginationNext: z.string().nullable().optional(),
-    /** Next page ID - snake_case alias for Docusaurus compatibility */
-    pagination_next: z.string().nullable().optional(),
-    /** Previous page ID, or null to disable */
-    paginationPrev: z.string().nullable().optional(),
-    /** Previous page ID - snake_case alias for Docusaurus compatibility */
-    pagination_prev: z.string().nullable().optional(),
+  // === Pagination ===
+  /** Label shown in prev/next buttons */
+  paginationLabel: z.string().optional(),
+  /** Label shown in prev/next buttons - snake_case alias for Docusaurus compatibility */
+  pagination_label: z.string().optional(),
+  /** Next page ID, or null to disable */
+  paginationNext: z.string().nullable().optional(),
+  /** Next page ID - snake_case alias for Docusaurus compatibility */
+  pagination_next: z.string().nullable().optional(),
+  /** Previous page ID, or null to disable */
+  paginationPrev: z.string().nullable().optional(),
+  /** Previous page ID - snake_case alias for Docusaurus compatibility */
+  pagination_prev: z.string().nullable().optional(),
 
-    // === Git Metadata Overrides ===
-    /**
-     * Override the last update author for this specific page.
-     * Set to false to hide the author for this page.
-     */
-    lastUpdateAuthor: z.union([z.string(), z.literal(false)]).optional(),
-    /**
-     * Override the last update timestamp for this specific page.
-     * Set to false to hide the timestamp for this page.
-     */
-    lastUpdateTime: z.union([z.literal(false), z.coerce.date()]).optional(),
-    /**
-     * Custom edit URL for this specific page.
-     * Set to null to disable edit link for this page.
-     */
-    customEditUrl: z.string().nullable().optional(),
+  // === Git Metadata Overrides ===
+  /**
+   * Override the last update author for this specific page.
+   * Set to false to hide the author for this page.
+   */
+  lastUpdateAuthor: z.union([z.string(), z.literal(false)]).optional(),
+  /**
+   * Override the last update timestamp for this specific page.
+   * Set to false to hide the timestamp for this page.
+   */
+  lastUpdateTime: z.union([z.literal(false), z.coerce.date()]).optional(),
+  /**
+   * Custom edit URL for this specific page.
+   * Set to null to disable edit link for this page.
+   */
+  customEditUrl: z.string().nullable().optional(),
 
-    // === Custom Meta Tags ===
-    customMetaTags: z
-      .array(
-        z.object({
-          name: z.string().optional(),
-          property: z.string().optional(),
-          content: z.string(),
-        }),
-      )
-      .optional(),
-    /** Custom meta tags - snake_case alias for Docusaurus compatibility */
-    custom_meta_tags: z
-      .array(
-        z.object({
-          name: z.string().optional(),
-          property: z.string().optional(),
-          content: z.string(),
-        }),
-      )
-      .optional(),
-  })
-  .transform((data) => ({
-    ...data,
-    // Merge snake_case aliases into camelCase fields
-    hideTitle: data.hide_title ?? data.hideTitle,
-    hideTableOfContents:
-      data.hide_table_of_contents ?? data.hideTableOfContents,
-    canonicalUrl: data.canonical_url ?? data.canonicalUrl,
-    customMetaTags: data.custom_meta_tags ?? data.customMetaTags,
-    paginationLabel: data.pagination_label ?? data.paginationLabel,
-    // For nullable fields, we need to check if the snake_case key exists (not just use ??)
-    // because null ?? undefined = undefined, but we want null to be preserved
-    paginationNext:
-      'pagination_next' in data ? data.pagination_next : data.paginationNext,
-    paginationPrev:
-      'pagination_prev' in data ? data.pagination_prev : data.paginationPrev,
-  }))
-  .refine((data) => data.tocMinHeadingLevel <= data.tocMaxHeadingLevel, {
-    message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
-  })
+  // === Custom Meta Tags ===
+  customMetaTags: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        property: z.string().optional(),
+        content: z.string(),
+      }),
+    )
+    .optional(),
+  /** Custom meta tags - snake_case alias for Docusaurus compatibility */
+  custom_meta_tags: z
+    .array(
+      z.object({
+        name: z.string().optional(),
+        property: z.string().optional(),
+        content: z.string(),
+      }),
+    )
+    .optional(),
+})
+
+/**
+ * Transform function for docs schema to merge snake_case aliases into camelCase fields.
+ */
+const docsSchemaTransform = <T extends z.infer<typeof docsSchemaBase>>(
+  data: T,
+) => ({
+  ...data,
+  // Merge snake_case aliases into camelCase fields
+  hideTitle: data.hide_title ?? data.hideTitle,
+  hideTableOfContents: data.hide_table_of_contents ?? data.hideTableOfContents,
+  canonicalUrl: data.canonical_url ?? data.canonicalUrl,
+  customMetaTags: data.custom_meta_tags ?? data.customMetaTags,
+  paginationLabel: data.pagination_label ?? data.paginationLabel,
+  // For nullable fields, we need to check if the snake_case key exists (not just use ??)
+  // because null ?? undefined = undefined, but we want null to be preserved
+  paginationNext:
+    'pagination_next' in data ? data.pagination_next : data.paginationNext,
+  paginationPrev:
+    'pagination_prev' in data ? data.pagination_prev : data.paginationPrev,
+})
+
+/**
+ * Refinement for docs schema to validate TOC heading levels.
+ */
+const docsSchemaRefinement = {
+  check: (data: { tocMinHeadingLevel: number; tocMaxHeadingLevel: number }) =>
+    data.tocMinHeadingLevel <= data.tocMaxHeadingLevel,
+  message: 'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
+}
+
+export const docsSchema = docsSchemaBase
+  .transform(docsSchemaTransform)
+  .refine(docsSchemaRefinement.check, { message: docsSchemaRefinement.message })
 
 /**
  * Schema for a single version entry in the versions configuration.
@@ -411,14 +429,17 @@ export const createDocsCollection = (
  * Schema for versioned docs that includes version metadata.
  * Extends docsSchema with a version field extracted from the file path.
  */
-export const versionedDocsSchema = docsSchema.extend({
-  /**
-   * The version this document belongs to.
-   * Automatically extracted from the directory structure when using createVersionedDocsCollection.
-   * @example "v1.0", "v2.0", "latest"
-   */
-  version: z.string().optional(),
-})
+export const versionedDocsSchema = docsSchemaBase
+  .extend({
+    /**
+     * The version this document belongs to.
+     * Automatically extracted from the directory structure when using createVersionedDocsCollection.
+     * @example "v1.0", "v2.0", "latest"
+     */
+    version: z.string().optional(),
+  })
+  .transform(docsSchemaTransform)
+  .refine(docsSchemaRefinement.check, { message: docsSchemaRefinement.message })
 
 /**
  * Options for configuring a versioned docs collection.
