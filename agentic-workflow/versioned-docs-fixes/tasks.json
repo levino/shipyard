@@ -29,19 +29,25 @@
       "id": "fix-test-failures",
       "title": "Fix all E2E test failures",
       "description": "All E2E tests should pass. Run the test suite and fix any failing tests.",
-      "status": "in_progress",
+      "status": "completed",
       "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:58:00Z",
       "dependsOn": ["fix-build-errors"],
-      "notes": []
+      "notes": [
+        "Fixed 4 failing tests in versioned-docs demo",
+        "cross-version-links tests: updated selectors to use 'ol a' to exclude pagination links",
+        "pagination tests: updated regex from /^\\/docs\\/v[12]\\// to /^\\/docs\\/v[12](\\/|$)/ to accept URLs without trailing slash"
+      ]
     },
     {
       "id": "pass-linting",
       "title": "Ensure code passes linting",
       "description": "Run Biome and fix any linting or formatting issues.",
-      "status": "pending",
+      "status": "completed",
       "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:59:00Z",
       "dependsOn": ["fix-test-failures"],
-      "notes": []
+      "notes": ["Biome check passed with no fixes needed"]
     }
   ]
 }
