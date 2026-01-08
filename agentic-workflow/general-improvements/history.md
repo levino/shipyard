@@ -431,3 +431,33 @@ This file tracks session progress and outcomes.
 - Build verification passed for i18n demo
 
 ---
+
+## Session 2026-01-08T10:27:00Z
+
+### Tasks Completed
+- **ID**: layout-usage-not-documented - Added "Custom Pages with Layouts" section to getting-started
+- **ID**: layout-export-path-confusion - Resolved by showing correct import paths in docs
+
+### What Was Done
+1. Added "Custom Pages with Layouts" section to getting-started.md (EN and DE)
+2. Documented three layout types with examples:
+   - Markdown.astro for prose-styled markdown pages
+   - Page layout (imported) for Astro component pages
+   - Splash.astro for landing pages without prose styling
+3. Showed correct import paths: `@levino/shipyard-base/layouts/Markdown.astro`
+4. Linked to base-package#layouts for more details
+
+### Files Modified
+- `apps/docs/docs/en/getting-started.md` - Added custom pages section
+- `apps/docs/docs/de/getting-started.md` - German translation
+
+### Tips for Next Developer
+- Layout import paths use `@levino/shipyard-base/layouts/*` not `@levino/shipyard-base/astro/layouts/*`
+- The Page layout can be imported as `{ Page } from '@levino/shipyard-base/layouts'`
+- For markdown pages, use the layout frontmatter with full path
+- The Splash layout is for content without prose styling (custom HTML/Tailwind)
+
+### Tests
+- Build verification passed for docs site
+
+---

@@ -108,16 +108,19 @@
       "title": "Document how to use Shipyard layouts in pages",
       "description": "I didn't know that existing pages should use Shipyard layouts. The llms.txt and README only show the astro.config setup, not how to actually use the layouts in .md/.mdx files. Add examples showing: 1) layout: '@levino/shipyard-base/layouts/Markdown.astro' for markdown pages, 2) layout: '@levino/shipyard-base/layouts/Page.astro' for custom pages, 3) When to use each layout type.",
       "priority": "high",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:27:00Z"
     },
     {
       "id": "layout-export-path-confusion",
       "title": "Clarify layout import paths",
       "description": "I tried '@levino/shipyard-base/astro/layouts/Markdown.astro' first (matching the file structure) but it failed because exports use './layouts/*' not './astro/layouts/*'. The correct path is '@levino/shipyard-base/layouts/Markdown.astro'. Document the correct import paths clearly, or add the /astro/ path as an alias.",
       "priority": "medium",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:27:00Z",
+      "notes": "Resolved by layout-usage-not-documented - docs now show correct import paths"
     },
     {
       "id": "delete-custom-layout-guidance",
