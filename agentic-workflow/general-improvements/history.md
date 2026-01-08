@@ -501,3 +501,31 @@ This file tracks session progress and outcomes.
 - Integration order matters: Tailwind → shipyard-base → shipyard-docs → shipyard-blog
 
 ---
+
+## Session 2026-01-08T10:34:00Z
+
+### Tasks Completed
+- **ID**: navigation-config-docs - Already well documented in base-package.md
+- **ID**: sidebar-auto-generation - Added comprehensive sidebar documentation
+
+### What Was Done
+1. Verified navigation-config-docs was already documented (marked complete)
+2. Added "Sidebar Auto-Generation" section to docs-package.md (EN and DE) covering:
+   - How folders become categories
+   - How index.md files work
+   - How sidebar.position controls ordering
+   - How sidebar.label overrides display names
+   - How sidebar.render hides pages
+   - Example folder structure with annotations
+
+### Files Modified
+- `apps/docs/docs/en/docs-package.md` - Added Sidebar Auto-Generation section
+- `apps/docs/docs/de/docs-package.md` - German translation
+
+### Tips for Next Developer
+- Folders automatically become collapsible categories
+- index.md in a folder becomes the category landing page
+- Default sort is by sidebar.position, then alphabetically by title
+- Use `sidebar.render: false` to hide pages from sidebar while keeping URL accessible
+
+---

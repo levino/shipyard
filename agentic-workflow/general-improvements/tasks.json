@@ -70,16 +70,19 @@
       "title": "Document navigation configuration options",
       "description": "The shipyard() base config accepts a navigation object but the structure isn't documented. What are all the valid keys? Can I add custom nav items? What's the href format?",
       "priority": "medium",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:32:00Z",
+      "notes": "Already documented in base-package.md with Navigation Structure section, property table, and examples"
     },
     {
       "id": "sidebar-auto-generation",
       "title": "Document sidebar auto-generation behavior",
       "description": "It wasn't clear how the sidebar is auto-generated from the docs folder structure. Document: 1) How folders become categories, 2) How index.md files work, 3) How position/label in frontmatter affects ordering, 4) Default sort behavior.",
       "priority": "medium",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:34:00Z"
     },
     {
       "id": "llms-txt-better-content",

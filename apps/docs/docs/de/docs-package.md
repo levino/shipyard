@@ -171,6 +171,63 @@ Bei `prerender: false` werden Docs-Seiten on-demand gerendert und haben vollen Z
 
 ---
 
+## Automatische Sidebar-Generierung
+
+Die Sidebar wird automatisch aus deiner Docs-Ordnerstruktur generiert.
+
+### Wie es funktioniert
+
+| Konzept | Verhalten |
+|---------|-----------|
+| **Ordner** | Werden zu einklappbaren Kategorien in der Sidebar |
+| **`index.md`** | Dient als Kategorie-Landingpage; der Titel wird zum Kategorie-Label |
+| **Dateien** | Erscheinen als Einträge unter ihrem Eltern-Ordner/Kategorie |
+| **Sortierung** | Gesteuert durch `sidebar.position` (niedriger = früher); Standard ist `Infinity` (Ende) |
+| **Labels** | Nutze `sidebar.label` um den Anzeigenamen zu überschreiben; Standard ist `title` |
+
+### Beispiel-Struktur
+
+```
+docs/
+├── index.md                  # → Docs-Landingpage
+├── getting-started.md        # → Eintrag auf oberster Ebene
+├── guides/
+│   ├── index.md              # → "Guides"-Kategorie (nutzt Titel aus dieser Datei)
+│   ├── installation.md       # → Eintrag unter Guides
+│   └── configuration.md      # → Eintrag unter Guides
+└── api/
+    ├── index.md              # → "API"-Kategorie
+    └── reference.md          # → Eintrag unter API
+```
+
+### Reihenfolge steuern
+
+Nutze `sidebar.position` im Frontmatter:
+
+```yaml
+---
+title: Installation
+sidebar:
+  position: 1    # Erscheint als erstes in seiner Kategorie
+---
+```
+
+Seiten ohne `sidebar.position` erscheinen am Ende, alphabetisch nach Titel sortiert.
+
+### Aus der Sidebar ausblenden
+
+Um eine Seite aus der Sidebar auszuschließen, aber per URL erreichbar zu halten:
+
+```yaml
+---
+title: Versteckte Seite
+sidebar:
+  render: false
+---
+```
+
+---
+
 ## Paginierung
 
 Paginierung erfolgt automatisch basierend auf Sidebar-Reihenfolge.

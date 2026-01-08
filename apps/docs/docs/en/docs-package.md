@@ -171,6 +171,63 @@ When `prerender: false`, docs pages are rendered on-demand and have full access 
 
 ---
 
+## Sidebar Auto-Generation
+
+The sidebar is automatically generated from your docs folder structure.
+
+### How It Works
+
+| Concept | Behavior |
+|---------|----------|
+| **Folders** | Become collapsible categories in the sidebar |
+| **`index.md`** | Acts as the category landing page; its title becomes the category label |
+| **Files** | Appear as entries under their parent folder/category |
+| **Ordering** | Controlled by `sidebar.position` (lower = earlier); defaults to `Infinity` (end) |
+| **Labels** | Use `sidebar.label` to override the display name; defaults to `title` |
+
+### Example Structure
+
+```
+docs/
+├── index.md                  # → Docs landing page
+├── getting-started.md        # → Top-level entry
+├── guides/
+│   ├── index.md              # → "Guides" category (uses title from this file)
+│   ├── installation.md       # → Entry under Guides
+│   └── configuration.md      # → Entry under Guides
+└── api/
+    ├── index.md              # → "API" category
+    └── reference.md          # → Entry under API
+```
+
+### Controlling Order
+
+Use `sidebar.position` in frontmatter:
+
+```yaml
+---
+title: Installation
+sidebar:
+  position: 1    # Appears first in its category
+---
+```
+
+Pages without `sidebar.position` appear at the end, sorted alphabetically by title.
+
+### Hiding from Sidebar
+
+To exclude a page from the sidebar while keeping it accessible via URL:
+
+```yaml
+---
+title: Hidden Page
+sidebar:
+  render: false
+---
+```
+
+---
+
 ## Pagination
 
 Pagination is automatic based on sidebar order.
