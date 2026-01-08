@@ -29,7 +29,7 @@
       "id": "fix-test-failures",
       "title": "Fix all E2E test failures",
       "description": "All E2E tests should pass. Run the test suite and fix any failing tests.",
-      "status": "pending",
+      "status": "in_progress",
       "createdAt": "2026-01-08T10:30:00Z",
       "dependsOn": ["fix-build-errors"],
       "notes": []
