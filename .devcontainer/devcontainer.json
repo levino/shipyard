@@ -2,6 +2,7 @@
   "name": "Node.js & TypeScript",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
   "updateContentCommand": "npm run setup",
+  "shutdownAction": "none",
   "customizations": {
     "vscode": {
       "extensions": [
