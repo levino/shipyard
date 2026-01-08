@@ -1,0 +1,142 @@
+{
+  "$schema": "../tasks.schema.json",
+  "version": 1,
+  "tasks": [
+    {
+      "id": "docs-404-routes",
+      "title": "Fix documentation route structure",
+      "description": "When trying to access docs, URLs like /docs/getting-started and /docs/docs returned 404. Only /en/docs/ worked. The llms.txt was at /docs/llms.txt but the actual docs required /en/ prefix. This is confusing for first-time users and LLMs trying to fetch documentation.",
+      "priority": "high",
+      "status": "pending",
+      "category": "bug"
+    },
+    {
+      "id": "llms-full-txt-missing",
+      "title": "Ensure llms-full.txt is accessible",
+      "description": "Tried to fetch /llms-full.txt but got 404. The llms.txt at /docs/llms.txt worked but didn't contain enough detail to understand the full API. Having a comprehensive llms-full.txt with all configuration options, code examples, and schema details would significantly help LLM-assisted integration.",
+      "priority": "high",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "readme-needs-examples",
+      "title": "Add complete code examples to README",
+      "description": "The README is minimal. Had to read the source code (index.ts) to understand: 1) Full docsSchema options (sidebar.position, sidebar.label, etc.), 2) How createDocsCollection works, 3) All available frontmatter fields. Add a 'Full Configuration Reference' section with all options documented.",
+      "priority": "high",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "content-config-location",
+      "title": "Clarify content.config.ts location for Astro 5",
+      "description": "README shows content.config.ts but doesn't specify it should be at src/content.config.ts for Astro 5. Add explicit path in documentation.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "prerender-ssr-warnings",
+      "title": "Handle SSR mode better in docs plugin",
+      "description": "When using output: 'server' in astro.config, the docs plugin still sets prerender: true which causes warnings: 'Astro.request.headers was used when rendering... not available on prerendered pages'. Consider detecting SSR mode and adjusting, or document this behavior.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "bug"
+    },
+    {
+      "id": "peer-deps-documentation",
+      "title": "Document all peer dependencies clearly",
+      "description": "Had to figure out that tailwind needs applyBaseStyles: false. Document the full recommended astro.config.ts setup including: tailwind({ applyBaseStyles: false }), correct integration order, and any other gotchas.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "starter-template",
+      "title": "Create a starter template repository",
+      "description": "Would be extremely helpful to have a minimal working example repo or npm create template. Something like 'npm create shipyard-docs' that scaffolds: astro.config.ts, content.config.ts, docs/index.md, tailwind.config.js with all the right settings.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "feature"
+    },
+    {
+      "id": "navigation-config-docs",
+      "title": "Document navigation configuration options",
+      "description": "The shipyard() base config accepts a navigation object but the structure isn't documented. What are all the valid keys? Can I add custom nav items? What's the href format?",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "sidebar-auto-generation",
+      "title": "Document sidebar auto-generation behavior",
+      "description": "It wasn't clear how the sidebar is auto-generated from the docs folder structure. Document: 1) How folders become categories, 2) How index.md files work, 3) How position/label in frontmatter affects ordering, 4) Default sort behavior.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "llms-txt-better-content",
+      "title": "Include code examples in llms.txt",
+      "description": "The llms.txt summary is good but lacks actionable code. Include: 1) Minimal astro.config.ts example, 2) Minimal content.config.ts example, 3) Example frontmatter for docs. LLMs need copy-pasteable code to integrate quickly.",
+      "priority": "high",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "tailwind-config-in-llms",
+      "title": "Include tailwind.config.js in llms.txt",
+      "description": "I initially missed the tailwind config requirement (adding shipyard paths to content array). This is documented at /en/docs/base-package/ but wasn't in llms.txt. The tailwind config is critical - without it, shipyard components have no styles. Include the full tailwind.config.js example in llms.txt with the path.join(...require.resolve('@levino/shipyard-base')...) pattern.",
+      "priority": "high",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "llms-txt-link-to-base-package",
+      "title": "llms.txt should reference base-package docs",
+      "description": "The llms.txt mentioned installing packages but didn't link to the base-package configuration page which has the critical tailwind setup. Add direct links to all required configuration pages.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "layout-usage-not-documented",
+      "title": "Document how to use Shipyard layouts in pages",
+      "description": "I didn't know that existing pages should use Shipyard layouts. The llms.txt and README only show the astro.config setup, not how to actually use the layouts in .md/.mdx files. Add examples showing: 1) layout: '@levino/shipyard-base/layouts/Markdown.astro' for markdown pages, 2) layout: '@levino/shipyard-base/layouts/Page.astro' for custom pages, 3) When to use each layout type.",
+      "priority": "high",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "layout-export-path-confusion",
+      "title": "Clarify layout import paths",
+      "description": "I tried '@levino/shipyard-base/astro/layouts/Markdown.astro' first (matching the file structure) but it failed because exports use './layouts/*' not './astro/layouts/*'. The correct path is '@levino/shipyard-base/layouts/Markdown.astro'. Document the correct import paths clearly, or add the /astro/ path as an alias.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "delete-custom-layout-guidance",
+      "title": "Add migration guide for existing Astro projects",
+      "description": "When migrating an existing Astro project, I kept my old src/layouts/Layout.astro which meant pages weren't using Shipyard. Add a migration checklist: 1) Delete or update custom layouts, 2) Update all page frontmatter to use Shipyard layouts, 3) Example find/replace commands.",
+      "priority": "medium",
+      "status": "pending",
+      "category": "docs"
+    },
+    {
+      "id": "docs-prerender-breaks-auth",
+      "title": "shipyard-docs forces prerender: true - breaks auth-protected SSR sites",
+      "description": "The shipyard-docs integration hardcodes prerender: true on all injected routes (index.ts lines 509, 516, 740, 747, 753). This breaks auth-protected SSR sites because: 1) Prerendered pages can't access Astro.request.headers, 2) Middleware still runs on requests but prerendering conflicts with it, 3) Auth cookies aren't available during prerender. Solution: Add a 'prerender' config option (default: true for backwards compat) that can be set to false for SSR sites with auth middleware.",
+      "priority": "critical",
+      "status": "pending",
+      "category": "bug"
+    },
+    {
+      "id": "export-globals-css",
+      "title": "Export globals.css from package",
+      "description": "The globals.css file exists at src/globals.css but isn't exported in package.json. Users who want to create custom layouts (e.g. public pages without navigation) can't import '@levino/shipyard-base/globals.css'. Add an export: './globals.css': './src/globals.css'",
+      "priority": "medium",
+      "status": "pending",
+      "category": "bug"
+    }
+  ]
+}
