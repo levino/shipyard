@@ -109,6 +109,7 @@ That's it! Your documentation is now available at `/docs`.
 | `editUrl` | `string` | — | Base URL for "Edit this page" links |
 | `showLastUpdateTime` | `boolean` | `false` | Show last update timestamp from git |
 | `showLastUpdateAuthor` | `boolean` | `false` | Show last update author from git |
+| `prerender` | `boolean` | `true` | Prerender docs at build time. Set to `false` for SSR sites with auth middleware |
 
 ### Example
 
@@ -120,6 +121,19 @@ shipyardDocs({
   showLastUpdateAuthor: true,
 })
 ```
+
+### SSR Mode with Authentication
+
+If you're running an SSR site with authentication middleware that needs access to request headers or cookies, you may need to disable prerendering:
+
+```javascript
+shipyardDocs({
+  routeBasePath: 'docs',
+  prerender: false, // Required for SSR sites with auth middleware
+})
+```
+
+When `prerender: false`, docs pages are rendered on-demand and have full access to `Astro.request.headers` and cookies.
 
 ---
 

@@ -127,8 +127,9 @@
       "title": "shipyard-docs forces prerender: true - breaks auth-protected SSR sites",
       "description": "The shipyard-docs integration hardcodes prerender: true on all injected routes (index.ts lines 509, 516, 740, 747, 753). This breaks auth-protected SSR sites because: 1) Prerendered pages can't access Astro.request.headers, 2) Middleware still runs on requests but prerendering conflicts with it, 3) Auth cookies aren't available during prerender. Solution: Add a 'prerender' config option (default: true for backwards compat) that can be set to false for SSR sites with auth middleware.",
       "priority": "critical",
-      "status": "pending",
-      "category": "bug"
+      "status": "completed",
+      "category": "bug",
+      "completedAt": "2026-01-08T10:12:00Z"
     },
     {
       "id": "export-globals-css",

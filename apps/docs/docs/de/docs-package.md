@@ -109,6 +109,7 @@ Das war's! Deine Dokumentation ist jetzt unter `/docs` verfügbar.
 | `editUrl` | `string` | — | Basis-URL für "Diese Seite bearbeiten"-Links |
 | `showLastUpdateTime` | `boolean` | `false` | Zeige letzten Aktualisierungszeitpunkt aus Git |
 | `showLastUpdateAuthor` | `boolean` | `false` | Zeige letzten Aktualisierungsautor aus Git |
+| `prerender` | `boolean` | `true` | Vorrendern der Docs beim Build. Setze auf `false` für SSR-Seiten mit Auth-Middleware |
 
 ### Beispiel
 
@@ -120,6 +121,19 @@ shipyardDocs({
   showLastUpdateAuthor: true,
 })
 ```
+
+### SSR-Modus mit Authentifizierung
+
+Wenn du eine SSR-Seite mit Authentifizierungs-Middleware betreibst, die Zugriff auf Request-Header oder Cookies benötigt, musst du das Prerendering deaktivieren:
+
+```javascript
+shipyardDocs({
+  routeBasePath: 'docs',
+  prerender: false, // Erforderlich für SSR-Seiten mit Auth-Middleware
+})
+```
+
+Bei `prerender: false` werden Docs-Seiten on-demand gerendert und haben vollen Zugriff auf `Astro.request.headers` und Cookies.
 
 ---
 

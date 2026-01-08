@@ -335,3 +335,40 @@ This file tracks session progress and outcomes.
 - All tasks in tasks.json are now completed!
 
 ---
+
+## Session 2026-01-08T10:12:00Z
+
+### Task Completed
+- **ID**: docs-prerender-breaks-auth
+- **Title**: shipyard-docs forces prerender: true - breaks auth-protected SSR sites
+
+### What Was Done
+1. Added `prerender` configuration option to `DocsConfig` interface with default value `true`
+2. Extracted `prerender` from config in the integration function
+3. Updated all 5 `injectRoute()` calls to use the configurable `prerender` value instead of hardcoded `true`:
+   - Line 526: i18n docs route
+   - Line 533: non-i18n docs route
+   - Line 757: llms-txt pages route
+   - Line 764: llms.txt route
+   - Line 770: llms-full.txt route
+4. Documented the new option in both English and German docs (`apps/docs/docs/en/docs-package.md` and `apps/docs/docs/de/docs-package.md`)
+5. Added SSR Mode with Authentication section showing the use case
+6. Created changeset for the patch release
+
+### Files Modified
+- `packages/docs/src/index.ts` - Added prerender config option to DocsConfig interface and integration
+- `apps/docs/docs/en/docs-package.md` - Added prerender to configuration table and SSR section
+- `apps/docs/docs/de/docs-package.md` - German translation of documentation updates
+- `.changeset/prerender-config-option.md` - Changeset for patch release
+
+### Tips for Next Developer
+- The `prerender` option defaults to `true` for backwards compatibility
+- When `prerender: false`, docs pages are rendered on-demand (SSR) and have full access to `Astro.request.headers` and cookies
+- This is useful for sites with authentication middleware that needs to check cookies/headers
+- The same `prerender` value is applied to all routes injected by the docs plugin (main docs, llms.txt files)
+
+### Tests
+- Build verification passed for i18n demo
+- No E2E tests specifically test the prerender option as it's a build-time configuration
+
+---
