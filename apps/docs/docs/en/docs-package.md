@@ -405,4 +405,4 @@ When versioning is enabled with multiple versions, a version selector dropdown a
 2. Add the version to the `deprecated` array
 3. Consider removing very old versions to reduce maintenance
 
-For a complete guide, see the [Versioning Guide](/en/guides/versioning).
+For a complete guide, see the [Versioning Guide](/en/docs/guides/versioning).

@@ -459,8 +459,7 @@ Absolute links to docs without a version are automatically versioned to the curr
 <!-- In any versioned doc -->
 See the [installation guide](/docs/installation)
 
-<!-- With currentVersion: 'v2', renders as: -->
-<a href="/docs/v2/installation">...
+<!-- With currentVersion: 'v2', the href becomes: /docs/v2/installation -->
 ```
 
 This is useful when migrating existing docs to versioning.
