@@ -138,3 +138,4 @@ test-results/
 # Ralph Wiggum / Agentic workflow local files
 ralph/history.md
 *.local.md
+agentic-workflow/active-workflow.txt
