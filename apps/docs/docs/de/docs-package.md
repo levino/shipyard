@@ -231,6 +231,28 @@ docs/
 
 Locale-basiertes Routing erfolgt automatisch wenn Astros i18n konfiguriert ist.
 
+### Weiterleitungen für i18n-Seiten
+
+Bei Verwendung von Astros i18n mit `prefixDefaultLocale: true` benötigen Dokumentationsseiten das Locale-Präfix (z.B. `/de/docs/` statt `/docs/`). Für eine bessere Benutzererfahrung füge Weiterleitungen in deiner `astro.config.mjs` hinzu:
+
+```javascript
+export default defineConfig({
+  redirects: {
+    '/': { status: 302, destination: '/de' },
+    '/docs': { status: 302, destination: '/de/docs' },
+    '/blog': { status: 302, destination: '/de/blog' },
+  },
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    routing: { prefixDefaultLocale: true },
+  },
+  // ...
+})
+```
+
+Hinweis: Astros statische Weiterleitungen funktionieren nur für exakte Pfade. Für Wildcard-Weiterleitungen (z.B. `/docs/*` → `/de/docs/*`) konfiguriere die Weiterleitungsregeln deines Hosting-Providers oder nutze den SSR-Modus mit Middleware.
+
 ---
 
 ## LLMs.txt-Unterstützung

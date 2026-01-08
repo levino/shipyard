@@ -12,7 +12,16 @@ export default defineConfig({
   redirects: {
     '/': {
       status: 302,
-      destination: 'en',
+      destination: '/en',
+    },
+    // Redirect root section paths to default locale for users who forget the locale prefix
+    '/docs': {
+      status: 302,
+      destination: '/en/docs',
+    },
+    '/blog': {
+      status: 302,
+      destination: '/en/blog',
     },
   },
   i18n: {

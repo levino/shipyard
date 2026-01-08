@@ -198,10 +198,10 @@ The Ralph Wiggum approach prioritizes **iteration over perfection**. Instead of 
 
 ```
 agentic-workflow/
-├── PROMPT.md              # Template for new workflows
+├── PROMPT.md              # Shared workflow instructions
+├── active-workflow.txt    # Contains name of current workflow folder
 ├── tasks.schema.json      # JSON schema for tasks (shared)
 ├── general-improvements/  # Example workflow
-│   ├── PROMPT.md          # Workflow-specific instructions
 │   ├── tasks.json         # Current task list
 │   ├── history.md         # Session history log
 │   └── learnings.md       # Permanent knowledge base
@@ -211,8 +211,8 @@ agentic-workflow/
 ### Running a Workflow
 
 ```bash
-# Start the Ralph loop for a specific workflow
-/ralph-loop @agentic-workflow/general-improvements/PROMPT.md --completion-promise "COMPLETE" --max-iterations 20
+# Start the Ralph loop (uses workflow specified in active-workflow.txt)
+/ralph-loop @agentic-workflow/PROMPT.md --completion-promise "COMPLETE" --max-iterations 20
 
 # Cancel an active Ralph loop
 /cancel-ralph
@@ -221,9 +221,9 @@ agentic-workflow/
 ### Creating a New Workflow
 
 1. Create folder: `agentic-workflow/<workflow-name>/`
-2. Copy `PROMPT.md` from an existing workflow and update paths
-3. Create `tasks.json`, `history.md`, and `learnings.md`
-4. Run with `/ralph-loop @agentic-workflow/<workflow-name>/PROMPT.md`
+2. Create `tasks.json`, `history.md`, and `learnings.md`
+3. Update `active-workflow.txt` to contain the folder name
+4. Run with `/ralph-loop @agentic-workflow/PROMPT.md`
 
 ### Workflow Process (Each Iteration)
 

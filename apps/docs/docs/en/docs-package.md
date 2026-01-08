@@ -231,6 +231,28 @@ docs/
 
 Locale-based routing is automatic when Astro's i18n is configured.
 
+### Redirects for i18n Sites
+
+When using Astro's i18n with `prefixDefaultLocale: true`, documentation pages require the locale prefix (e.g., `/en/docs/` instead of `/docs/`). To improve user experience, add redirects in your `astro.config.mjs`:
+
+```javascript
+export default defineConfig({
+  redirects: {
+    '/': { status: 302, destination: '/en' },
+    '/docs': { status: 302, destination: '/en/docs' },
+    '/blog': { status: 302, destination: '/en/blog' },
+  },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+    routing: { prefixDefaultLocale: true },
+  },
+  // ...
+})
+```
+
+Note: Astro's static redirects only work for exact paths. For wildcard redirects (e.g., `/docs/*` → `/en/docs/*`), configure your hosting provider's redirect rules or use SSR mode with middleware.
+
 ---
 
 ## LLMs.txt Support

@@ -7,8 +7,9 @@
       "title": "Fix documentation route structure",
       "description": "When trying to access docs, URLs like /docs/getting-started and /docs/docs returned 404. Only /en/docs/ worked. The llms.txt was at /docs/llms.txt but the actual docs required /en/ prefix. This is confusing for first-time users and LLMs trying to fetch documentation.",
       "priority": "high",
-      "status": "pending",
-      "category": "bug"
+      "status": "completed",
+      "category": "bug",
+      "completedAt": "2026-01-08T10:18:00Z"
     },
     {
       "id": "llms-full-txt-missing",

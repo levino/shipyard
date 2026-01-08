@@ -372,3 +372,36 @@ This file tracks session progress and outcomes.
 - No E2E tests specifically test the prerender option as it's a build-time configuration
 
 ---
+
+## Session 2026-01-08T10:18:00Z
+
+### Task Completed
+- **ID**: docs-404-routes
+- **Title**: Fix documentation route structure
+
+### What Was Done
+1. Investigated the issue: with i18n `prefixDefaultLocale: true`, docs are at `/en/docs/` but users expect `/docs/` to work
+2. llms.txt files are intentionally served at `/docs/llms.txt` (locale-agnostic) which is correct for LLM consumption
+3. Added redirects to docs site's `astro.config.mjs`:
+   - `/` → `/en`
+   - `/docs` → `/en/docs`
+   - `/blog` → `/en/blog`
+4. Documented the redirect pattern in both English and German docs under "Internationalization" section
+5. Explained that Astro static redirects only work for exact paths, and wildcard redirects require hosting provider config or SSR
+
+### Files Modified
+- `apps/docs/astro.config.mjs` - Added redirects for /docs and /blog
+- `apps/docs/docs/en/docs-package.md` - Added "Redirects for i18n Sites" section
+- `apps/docs/docs/de/docs-package.md` - German translation of redirect documentation
+
+### Tips for Next Developer
+- Astro's i18n with `prefixDefaultLocale: true` requires locale prefix for all pages
+- Static redirects in Astro only work for exact paths (no wildcards like `/docs/*`)
+- For wildcard redirects, users need to configure their hosting provider (Vercel, Netlify) or use SSR with middleware
+- llms.txt files are intentionally served without locale prefix for LLM accessibility
+
+### Tests
+- Build verification passed
+- Link check passed with 1380 links verified
+
+---
