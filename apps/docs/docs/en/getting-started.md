@@ -76,6 +76,13 @@ export default defineConfig({
 })
 ```
 
+**Important configuration notes:**
+
+| Setting | Why it's needed |
+|---------|-----------------|
+| `tailwind({ applyBaseStyles: false })` | Prevents Tailwind's base styles from conflicting with DaisyUI. Without this, you may see unstyled or broken components. |
+| Integration order | Tailwind must come before shipyard integrations to ensure styles are processed correctly. |
+
 ### Tailwind Configuration
 
 Create or update `tailwind.config.mjs`:

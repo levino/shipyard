@@ -481,3 +481,23 @@ This file tracks session progress and outcomes.
 - The main documentation site already shows the correct path
 
 ---
+
+## Session 2026-01-08T10:31:00Z
+
+### Task Completed
+- **ID**: peer-deps-documentation - Added explanation of why applyBaseStyles: false is needed
+
+### What Was Done
+1. Added "Important configuration notes" table to getting-started.md (EN and DE)
+2. Explained why `applyBaseStyles: false` is required (prevents DaisyUI conflicts)
+3. Documented that Tailwind must come before shipyard integrations
+
+### Files Modified
+- `apps/docs/docs/en/getting-started.md` - Added configuration notes table
+- `apps/docs/docs/de/getting-started.md` - German translation
+
+### Tips for Next Developer
+- `applyBaseStyles: false` prevents Tailwind's Preflight from conflicting with DaisyUI
+- Integration order matters: Tailwind → shipyard-base → shipyard-docs → shipyard-blog
+
+---

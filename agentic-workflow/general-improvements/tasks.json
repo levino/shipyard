@@ -53,8 +53,9 @@
       "title": "Document all peer dependencies clearly",
       "description": "Had to figure out that tailwind needs applyBaseStyles: false. Document the full recommended astro.config.ts setup including: tailwind({ applyBaseStyles: false }), correct integration order, and any other gotchas.",
       "priority": "medium",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:31:00Z"
     },
     {
       "id": "starter-template",
