@@ -1,22 +1,24 @@
-# Ralph Session Instructions
+# Agentic Workflow Session
 
-You are operating in a Ralph Wiggum loop. Each session you will:
+You are operating in a Ralph Wiggum loop via the Claude Code plugin. Each iteration you will:
 
 1. **Read State**: Load the task list and history
 2. **Pick Task**: Select the highest priority pending task (or continue an in_progress task)
-3. **Work**: Make incremental progress on the task
+3. **Work**: Complete the task fully
 4. **Update State**: Update tasks.json and append to history.md
 5. **Commit**: Commit your changes with a descriptive message
-6. **Exit**: End session cleanly so the loop can restart
+6. **Exit or Signal Completion**: End the iteration (the loop will restart automatically)
 
 ## Your Workflow
 
 ### Step 1: Load Context
 
-The following files are automatically sourced when you start (via @filename):
-- `ralph/tasks.json` - Current task list
-- `ralph/history.md` - Recent session history
-- `ralph/learnings.md` - Permanent knowledge base (patterns, gotchas, tips)
+**FIRST**: Read `agentic-workflow/active-workflow.txt` to get the current workflow folder name.
+
+Then read these files (replace `{workflow}` with the folder name from above):
+- `agentic-workflow/{workflow}/tasks.json` - Current task list
+- `agentic-workflow/{workflow}/history.md` - Recent session history
+- `agentic-workflow/{workflow}/learnings.md` - Permanent knowledge base
 
 Additionally, check:
 - Recent git log (last 10 commits) - run `git log --oneline -10`
@@ -43,8 +45,8 @@ If no pending/in_progress tasks remain, output `<promise>COMPLETE</promise>` and
 
 ### Step 4: Update State
 
-After completing work:
-- Update task status in `ralph/tasks.json`:
+After completing work (using the `{workflow}` folder from Step 1):
+- Update task status in `agentic-workflow/{workflow}/tasks.json`:
   - `completed` if done (set completedAt to current timestamp)
   - `in_progress` if more work needed
   - `blocked` if stuck
@@ -54,11 +56,11 @@ After completing work:
   - Example OK: "Need to fix type export" discovered while implementing a task
   - Example NOT OK: "Would be nice to add dark mode" - this is scope creep
 - Add notes about what was done
-- Append session summary to `ralph/history.md` including:
+- Append session summary to `agentic-workflow/{workflow}/history.md` including:
   - What was done
   - **Tips for the next developer** - gotchas, things to watch out for, context that would help
   - Any decisions made and why
-- Update `ralph/learnings.md` if you discovered something permanently useful:
+- Update `agentic-workflow/{workflow}/learnings.md` if you discovered something permanently useful:
   - Patterns that work well in this codebase
   - Common pitfalls and how to avoid them
   - Useful commands or workflows
@@ -115,6 +117,8 @@ Place unit tests next to the source files: `*.test.ts` or `*.spec.ts`
 ## Example Session Output
 
 ```
+Reading active workflow: general-improvements
+
 Selecting task: fix-footer-alignment (priority: high)
 
 [... work happens ...]

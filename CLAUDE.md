@@ -183,9 +183,9 @@ Documentation features:
 - For styling issues, verify Tailwind and DaisyUI are properly configured
 - Use the demo app as a testing ground for package changes
 
-## Ralph Wiggum Loop
+## Agentic Workflow (Ralph Wiggum Loop)
 
-This project uses the **Ralph Wiggum technique** for autonomous, iterative AI development. Ralph is a bash loop that repeatedly feeds prompts to Claude, allowing complex tasks to be completed across multiple sessions.
+This project uses the **Ralph Wiggum technique** for autonomous, iterative AI development via the Claude Code Ralph Loop plugin.
 
 ### What is Ralph Wiggum?
 
@@ -194,41 +194,49 @@ The Ralph Wiggum approach prioritizes **iteration over perfection**. Instead of 
 - Self-correct through multiple iterations
 - Build incrementally with verification at each step
 
-### Ralph Folder Structure
+### Folder Structure
 
 ```
-ralph/
-├── PROMPT.md          # Session instructions for Claude
-├── tasks.json         # Current task list (pending/in_progress/completed)
-├── tasks.schema.json  # JSON schema for tasks
-├── learnings.md       # Permanent knowledge base (patterns, gotchas)
-├── history.md         # Session history log
-├── ralph.sh           # Main loop script (runs N iterations)
-└── ralph-once.sh      # Single iteration script
+agentic-workflow/
+├── PROMPT.md              # Shared workflow instructions
+├── active-workflow.txt    # Contains name of current workflow folder
+├── tasks.schema.json      # JSON schema for tasks (shared)
+├── general-improvements/  # Example workflow
+│   ├── tasks.json         # Current task list
+│   ├── history.md         # Session history log
+│   └── learnings.md       # Permanent knowledge base
+└── completed/             # Archive for finished workflows
 ```
 
-### Running Ralph
+### Running a Workflow
 
 ```bash
-# Run N iterations
-./ralph/ralph.sh 5
+# Start the Ralph loop (uses workflow specified in active-workflow.txt)
+/ralph-loop @agentic-workflow/PROMPT.md --completion-promise "COMPLETE" --max-iterations 20
 
-# Or use the Claude Code plugin command
-/ralph-wiggum:ralph-loop
+# Cancel an active Ralph loop
+/cancel-ralph
 ```
 
-### Ralph Workflow (Each Session)
+### Creating a New Workflow
+
+1. Create folder: `agentic-workflow/<workflow-name>/`
+2. Create `tasks.json`, `history.md`, and `learnings.md`
+3. Update `active-workflow.txt` to contain the folder name
+4. Run with `/ralph-loop @agentic-workflow/PROMPT.md`
+
+### Workflow Process (Each Iteration)
 
 1. **Read State**: Load tasks.json, history.md, learnings.md
 2. **Pick Task**: Select highest priority pending task (or continue in_progress)
 3. **Work**: Complete the task fully, run tests
 4. **Update State**: Update tasks.json, append to history.md
 5. **Commit**: Commit changes with descriptive message
-6. **Exit**: End session (loop restarts or stops if all tasks complete)
+6. **Exit**: End iteration (loop restarts or stops if all tasks complete)
 
 ### Key Rules
 
-- **One task per session**: Pick one task and finish it completely
+- **One task per iteration**: Pick one task and finish it completely
 - **No scope creep**: Only add tasks if strictly required for current work
 - **Always commit**: Leave codebase in clean, working state
 - **Run tests**: Verify changes work before committing
@@ -238,7 +246,7 @@ ralph/
 
 When all tasks are done, output `<promise>COMPLETE</promise>` to stop the loop.
 
-### When to Use Ralph
+### When to Use Agentic Workflows
 
 **Good for:**
 - Well-defined tasks with automatic verification (tests, linters)

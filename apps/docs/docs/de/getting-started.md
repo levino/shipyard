@@ -76,6 +76,13 @@ export default defineConfig({
 })
 ```
 
+**Wichtige Konfigurationshinweise:**
+
+| Einstellung | Warum sie benötigt wird |
+|-------------|-------------------------|
+| `tailwind({ applyBaseStyles: false })` | Verhindert Konflikte zwischen Tailwinds Basis-Styles und DaisyUI. Ohne diese Einstellung können Komponenten ungestylt oder fehlerhaft erscheinen. |
+| Integrations-Reihenfolge | Tailwind muss vor den shipyard-Integrationen kommen, damit Styles korrekt verarbeitet werden. |
+
 ### Tailwind-Konfiguration
 
 Erstelle oder aktualisiere `tailwind.config.mjs`:
@@ -193,6 +200,57 @@ Dein Blog-Beitragsinhalt hier...
 | `date` | `Date` | Veröffentlichungsdatum (YYYY-MM-DD) |
 
 Siehe [@levino/shipyard-blog](./blog-package) für alle Frontmatter-Optionen.
+
+### Benutzerdefinierte Seiten mit Layouts
+
+Für eigenständige Seiten, die nicht Teil von Docs oder Blog Collections sind, verwende die Layouts von shipyard direkt.
+
+**Markdown-Seiten** – Verwende das Markdown-Layout für Seiten mit Prosa-Styling:
+
+```markdown
+---
+layout: '@levino/shipyard-base/layouts/Markdown.astro'
+title: Über uns
+description: Erfahre mehr über unser Team
+---
+
+# Über uns
+
+Dein Markdown-Inhalt mit schönem Typografie-Styling...
+```
+
+**Astro-Komponenten-Seiten** – Importiere das Page-Layout für volle Kontrolle:
+
+```astro
+---
+// src/pages/index.astro
+import { Page } from '@levino/shipyard-base/layouts'
+---
+
+<Page title="Startseite" description="Willkommen auf unserer Seite">
+  <div class="hero min-h-[60vh] bg-base-200">
+    <div class="hero-content text-center">
+      <h1 class="text-5xl font-bold">Willkommen!</h1>
+      <p>Dein benutzerdefinierter Startseiten-Inhalt...</p>
+    </div>
+  </div>
+</Page>
+```
+
+**Landing Pages** – Verwende das Splash-Layout für zentrierten Inhalt ohne Prosa-Styling:
+
+```markdown
+---
+layout: '@levino/shipyard-base/layouts/Splash.astro'
+title: Willkommen
+---
+
+<div class="hero min-h-screen">
+  <h1 class="text-5xl font-bold">Meine Landing Page</h1>
+</div>
+```
+
+Siehe [@levino/shipyard-base Layouts](./base-package#layouts) für alle verfügbaren Layouts und Optionen.
 
 ## Internationalisierung hinzufügen
 

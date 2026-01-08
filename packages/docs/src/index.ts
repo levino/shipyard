@@ -251,6 +251,12 @@ export interface DocsConfig {
    * ```
    */
   llmsTxt?: LlmsTxtDocsConfig
+  /**
+   * Whether to prerender docs pages at build time.
+   * Set to false for SSR sites with auth middleware that need access to request headers/cookies.
+   * @default true
+   */
+  prerender?: boolean
 }
 
 /**
@@ -327,6 +333,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
     llmsTxt,
+    prerender = true,
   } = config
 
   // Normalize the route base path (remove leading/trailing slashes safely)
@@ -516,14 +523,14 @@ if (
           injectRoute({
             pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
-            prerender: true,
+            prerender,
           })
         } else {
           // Without i18n: direct path
           injectRoute({
             pattern: `/${normalizedBasePath}/[...slug]`,
             entrypoint: entryFilePath,
-            prerender: true,
+            prerender,
           })
         }
 
@@ -747,20 +754,20 @@ export const GET: APIRoute = async ({ site }) => {
           injectRoute({
             pattern: `/${normalizedBasePath}/_llms-txt/[...slug].txt`,
             entrypoint: llmsTxtPagesFilePath,
-            prerender: true,
+            prerender,
           })
 
           // Inject routes for llms.txt and llms-full.txt under the docs path
           injectRoute({
             pattern: `/${normalizedBasePath}/llms.txt`,
             entrypoint: llmsTxtFilePath,
-            prerender: true,
+            prerender,
           })
 
           injectRoute({
             pattern: `/${normalizedBasePath}/llms-full.txt`,
             entrypoint: llmsFullTxtFilePath,
-            prerender: true,
+            prerender,
           })
         }
       },

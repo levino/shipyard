@@ -17,5 +17,8 @@
         "editor.defaultFormatter": "biomejs.biome"
       }
     }
+  },
+  "features": {
+    "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {}
   }
 }

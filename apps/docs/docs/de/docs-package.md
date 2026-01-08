@@ -109,6 +109,7 @@ Das war's! Deine Dokumentation ist jetzt unter `/docs` verfügbar.
 | `editUrl` | `string` | — | Basis-URL für "Diese Seite bearbeiten"-Links |
 | `showLastUpdateTime` | `boolean` | `false` | Zeige letzten Aktualisierungszeitpunkt aus Git |
 | `showLastUpdateAuthor` | `boolean` | `false` | Zeige letzten Aktualisierungsautor aus Git |
+| `prerender` | `boolean` | `true` | Vorrendern der Docs beim Build. Setze auf `false` für SSR-Seiten mit Auth-Middleware |
 
 ### Beispiel
 
@@ -120,6 +121,19 @@ shipyardDocs({
   showLastUpdateAuthor: true,
 })
 ```
+
+### SSR-Modus mit Authentifizierung
+
+Wenn du eine SSR-Seite mit Authentifizierungs-Middleware betreibst, die Zugriff auf Request-Header oder Cookies benötigt, musst du das Prerendering deaktivieren:
+
+```javascript
+shipyardDocs({
+  routeBasePath: 'docs',
+  prerender: false, // Erforderlich für SSR-Seiten mit Auth-Middleware
+})
+```
+
+Bei `prerender: false` werden Docs-Seiten on-demand gerendert und haben vollen Zugriff auf `Astro.request.headers` und Cookies.
 
 ---
 
@@ -154,6 +168,63 @@ shipyardDocs({
 | `last_update_author` | `string \| false` | Override Autor, oder `false` zum Verstecken |
 | `last_update_time` | `Date \| false` | Override Zeitstempel, oder `false` zum Verstecken |
 | `custom_edit_url` | `string \| null` | Benutzerdefinierte Edit-URL, oder `null` zum Deaktivieren |
+
+---
+
+## Automatische Sidebar-Generierung
+
+Die Sidebar wird automatisch aus deiner Docs-Ordnerstruktur generiert.
+
+### Wie es funktioniert
+
+| Konzept | Verhalten |
+|---------|-----------|
+| **Ordner** | Werden zu einklappbaren Kategorien in der Sidebar |
+| **`index.md`** | Dient als Kategorie-Landingpage; der Titel wird zum Kategorie-Label |
+| **Dateien** | Erscheinen als Einträge unter ihrem Eltern-Ordner/Kategorie |
+| **Sortierung** | Gesteuert durch `sidebar.position` (niedriger = früher); Standard ist `Infinity` (Ende) |
+| **Labels** | Nutze `sidebar.label` um den Anzeigenamen zu überschreiben; Standard ist `title` |
+
+### Beispiel-Struktur
+
+```
+docs/
+├── index.md                  # → Docs-Landingpage
+├── getting-started.md        # → Eintrag auf oberster Ebene
+├── guides/
+│   ├── index.md              # → "Guides"-Kategorie (nutzt Titel aus dieser Datei)
+│   ├── installation.md       # → Eintrag unter Guides
+│   └── configuration.md      # → Eintrag unter Guides
+└── api/
+    ├── index.md              # → "API"-Kategorie
+    └── reference.md          # → Eintrag unter API
+```
+
+### Reihenfolge steuern
+
+Nutze `sidebar.position` im Frontmatter:
+
+```yaml
+---
+title: Installation
+sidebar:
+  position: 1    # Erscheint als erstes in seiner Kategorie
+---
+```
+
+Seiten ohne `sidebar.position` erscheinen am Ende, alphabetisch nach Titel sortiert.
+
+### Aus der Sidebar ausblenden
+
+Um eine Seite aus der Sidebar auszuschließen, aber per URL erreichbar zu halten:
+
+```yaml
+---
+title: Versteckte Seite
+sidebar:
+  render: false
+---
+```
 
 ---
 
@@ -216,6 +287,28 @@ docs/
 ```
 
 Locale-basiertes Routing erfolgt automatisch wenn Astros i18n konfiguriert ist.
+
+### Weiterleitungen für i18n-Seiten
+
+Bei Verwendung von Astros i18n mit `prefixDefaultLocale: true` benötigen Dokumentationsseiten das Locale-Präfix (z.B. `/de/docs/` statt `/docs/`). Für eine bessere Benutzererfahrung füge Weiterleitungen in deiner `astro.config.mjs` hinzu:
+
+```javascript
+export default defineConfig({
+  redirects: {
+    '/': { status: 302, destination: '/de' },
+    '/docs': { status: 302, destination: '/de/docs' },
+    '/blog': { status: 302, destination: '/de/blog' },
+  },
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    routing: { prefixDefaultLocale: true },
+  },
+  // ...
+})
+```
+
+Hinweis: Astros statische Weiterleitungen funktionieren nur für exakte Pfade. Für Wildcard-Weiterleitungen (z.B. `/docs/*` → `/de/docs/*`) konfiguriere die Weiterleitungsregeln deines Hosting-Providers oder nutze den SSR-Modus mit Middleware.
 
 ---
 

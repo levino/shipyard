@@ -335,3 +335,231 @@ This file tracks session progress and outcomes.
 - All tasks in tasks.json are now completed!
 
 ---
+
+## Session 2026-01-08T10:12:00Z
+
+### Task Completed
+- **ID**: docs-prerender-breaks-auth
+- **Title**: shipyard-docs forces prerender: true - breaks auth-protected SSR sites
+
+### What Was Done
+1. Added `prerender` configuration option to `DocsConfig` interface with default value `true`
+2. Extracted `prerender` from config in the integration function
+3. Updated all 5 `injectRoute()` calls to use the configurable `prerender` value instead of hardcoded `true`:
+   - Line 526: i18n docs route
+   - Line 533: non-i18n docs route
+   - Line 757: llms-txt pages route
+   - Line 764: llms.txt route
+   - Line 770: llms-full.txt route
+4. Documented the new option in both English and German docs (`apps/docs/docs/en/docs-package.md` and `apps/docs/docs/de/docs-package.md`)
+5. Added SSR Mode with Authentication section showing the use case
+6. Created changeset for the patch release
+
+### Files Modified
+- `packages/docs/src/index.ts` - Added prerender config option to DocsConfig interface and integration
+- `apps/docs/docs/en/docs-package.md` - Added prerender to configuration table and SSR section
+- `apps/docs/docs/de/docs-package.md` - German translation of documentation updates
+- `.changeset/prerender-config-option.md` - Changeset for patch release
+
+### Tips for Next Developer
+- The `prerender` option defaults to `true` for backwards compatibility
+- When `prerender: false`, docs pages are rendered on-demand (SSR) and have full access to `Astro.request.headers` and cookies
+- This is useful for sites with authentication middleware that needs to check cookies/headers
+- The same `prerender` value is applied to all routes injected by the docs plugin (main docs, llms.txt files)
+
+### Tests
+- Build verification passed for i18n demo
+- No E2E tests specifically test the prerender option as it's a build-time configuration
+
+---
+
+## Session 2026-01-08T10:18:00Z
+
+### Task Completed
+- **ID**: docs-404-routes
+- **Title**: Fix documentation route structure
+
+### What Was Done
+1. Investigated the issue: with i18n `prefixDefaultLocale: true`, docs are at `/en/docs/` but users expect `/docs/` to work
+2. llms.txt files are intentionally served at `/docs/llms.txt` (locale-agnostic) which is correct for LLM consumption
+3. Added redirects to docs site's `astro.config.mjs`:
+   - `/` → `/en`
+   - `/docs` → `/en/docs`
+   - `/blog` → `/en/blog`
+4. Documented the redirect pattern in both English and German docs under "Internationalization" section
+5. Explained that Astro static redirects only work for exact paths, and wildcard redirects require hosting provider config or SSR
+
+### Files Modified
+- `apps/docs/astro.config.mjs` - Added redirects for /docs and /blog
+- `apps/docs/docs/en/docs-package.md` - Added "Redirects for i18n Sites" section
+- `apps/docs/docs/de/docs-package.md` - German translation of redirect documentation
+
+### Tips for Next Developer
+- Astro's i18n with `prefixDefaultLocale: true` requires locale prefix for all pages
+- Static redirects in Astro only work for exact paths (no wildcards like `/docs/*`)
+- For wildcard redirects, users need to configure their hosting provider (Vercel, Netlify) or use SSR with middleware
+- llms.txt files are intentionally served without locale prefix for LLM accessibility
+
+### Tests
+- Build verification passed
+- Link check passed with 1380 links verified
+
+---
+
+## Session 2026-01-08T10:24:00Z
+
+### Tasks Completed
+- **ID**: llms-full-txt-missing - Already resolved, file exists at /docs/llms-full.txt
+- **ID**: prerender-ssr-warnings - Resolved by prerender config option from earlier task
+- **ID**: export-globals-css - Added export for globals.css
+
+### What Was Done
+1. Verified llms-full.txt exists at /docs/llms-full.txt (76KB) - marked as complete
+2. Verified prerender-ssr-warnings is resolved by the prerender config option - marked as complete
+3. Added `"./globals.css": "./src/globals.css"` export to @levino/shipyard-base package.json
+4. Created changeset for the globals.css export
+
+### Files Modified
+- `packages/base/package.json` - Added globals.css export
+- `.changeset/export-globals-css.md` - Changeset for patch release
+
+### Tips for Next Developer
+- The globals.css can now be imported as `@levino/shipyard-base/globals.css`
+- This is useful for custom layouts that need base styles without using Shipyard's built-in layouts
+
+### Tests
+- Build verification passed for i18n demo
+
+---
+
+## Session 2026-01-08T10:27:00Z
+
+### Tasks Completed
+- **ID**: layout-usage-not-documented - Added "Custom Pages with Layouts" section to getting-started
+- **ID**: layout-export-path-confusion - Resolved by showing correct import paths in docs
+
+### What Was Done
+1. Added "Custom Pages with Layouts" section to getting-started.md (EN and DE)
+2. Documented three layout types with examples:
+   - Markdown.astro for prose-styled markdown pages
+   - Page layout (imported) for Astro component pages
+   - Splash.astro for landing pages without prose styling
+3. Showed correct import paths: `@levino/shipyard-base/layouts/Markdown.astro`
+4. Linked to base-package#layouts for more details
+
+### Files Modified
+- `apps/docs/docs/en/getting-started.md` - Added custom pages section
+- `apps/docs/docs/de/getting-started.md` - German translation
+
+### Tips for Next Developer
+- Layout import paths use `@levino/shipyard-base/layouts/*` not `@levino/shipyard-base/astro/layouts/*`
+- The Page layout can be imported as `{ Page } from '@levino/shipyard-base/layouts'`
+- For markdown pages, use the layout frontmatter with full path
+- The Splash layout is for content without prose styling (custom HTML/Tailwind)
+
+### Tests
+- Build verification passed for docs site
+
+---
+
+## Session 2026-01-08T10:29:00Z
+
+### Task Completed
+- **ID**: content-config-location - Clarified content.config.ts path in READMEs
+
+### What Was Done
+1. Updated packages/docs/README.md comment to show `src/content.config.ts (Astro 5+)`
+2. Updated packages/blog/README.md comment to show `src/content.config.ts (Astro 5+)`
+3. The main docs (getting-started.md) already had the correct path
+
+### Files Modified
+- `packages/docs/README.md` - Updated content.config.ts path
+- `packages/blog/README.md` - Updated content.config.ts path
+
+### Tips for Next Developer
+- In Astro 5, content.config.ts must be at `src/content.config.ts`
+- The main documentation site already shows the correct path
+
+---
+
+## Session 2026-01-08T10:31:00Z
+
+### Task Completed
+- **ID**: peer-deps-documentation - Added explanation of why applyBaseStyles: false is needed
+
+### What Was Done
+1. Added "Important configuration notes" table to getting-started.md (EN and DE)
+2. Explained why `applyBaseStyles: false` is required (prevents DaisyUI conflicts)
+3. Documented that Tailwind must come before shipyard integrations
+
+### Files Modified
+- `apps/docs/docs/en/getting-started.md` - Added configuration notes table
+- `apps/docs/docs/de/getting-started.md` - German translation
+
+### Tips for Next Developer
+- `applyBaseStyles: false` prevents Tailwind's Preflight from conflicting with DaisyUI
+- Integration order matters: Tailwind → shipyard-base → shipyard-docs → shipyard-blog
+
+---
+
+## Session 2026-01-08T10:34:00Z
+
+### Tasks Completed
+- **ID**: navigation-config-docs - Already well documented in base-package.md
+- **ID**: sidebar-auto-generation - Added comprehensive sidebar documentation
+
+### What Was Done
+1. Verified navigation-config-docs was already documented (marked complete)
+2. Added "Sidebar Auto-Generation" section to docs-package.md (EN and DE) covering:
+   - How folders become categories
+   - How index.md files work
+   - How sidebar.position controls ordering
+   - How sidebar.label overrides display names
+   - How sidebar.render hides pages
+   - Example folder structure with annotations
+
+### Files Modified
+- `apps/docs/docs/en/docs-package.md` - Added Sidebar Auto-Generation section
+- `apps/docs/docs/de/docs-package.md` - German translation
+
+### Tips for Next Developer
+- Folders automatically become collapsible categories
+- index.md in a folder becomes the category landing page
+- Default sort is by sidebar.position, then alphabetically by title
+- Use `sidebar.render: false` to hide pages from sidebar while keeping URL accessible
+
+---
+
+## Session 2026-01-08T10:40:00Z
+
+### Tasks Completed
+- **ID**: llms-txt-better-content - Added code examples to llms.txt
+- **ID**: tailwind-config-in-llms - Added tailwind.config.mjs to llms.txt
+- **ID**: llms-txt-link-to-base-package - Added links to key documentation pages
+
+### What Was Done
+1. Updated the `llmsTxt.description` field in `apps/docs/astro.config.mjs` with comprehensive Quick Start guide
+2. The description now includes:
+   - Package installation commands
+   - astro.config.mjs example with required integrations
+   - src/content.config.ts (Astro 5+) example
+   - tailwind.config.mjs example with CRITICAL note about styles
+   - Example frontmatter for docs/index.md
+   - Key Documentation Pages section with links to Getting Started, Base Package, and Docs Package
+3. Verified the description appears correctly in the generated `/docs/llms.txt` output
+
+### Files Modified
+- `apps/docs/astro.config.mjs` - Expanded llmsTxt.description with full Quick Start guide
+
+### Tips for Next Developer
+- The `llmsTxt.description` field in the config is rendered directly after the blockquote summary in llms.txt
+- Multi-line markdown content including code blocks is fully supported
+- The llmsTxt generation is in `packages/docs/src/llmsTxt.ts` - `generateLlmsTxt()` function
+- Links in the description can use relative paths that work in the documentation site context
+- The simplified tailwind content pattern `node_modules/@levino/shipyard-*/**/*.{astro,js,ts}` is easier than require.resolve
+
+### Tests
+- Build verification passed
+- Generated llms.txt contains all Quick Start content (lines 5-75)
+
+---

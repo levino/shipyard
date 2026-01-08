@@ -37,7 +37,7 @@ export default defineConfig({
 ### Content Collection Schema
 
 ```ts
-// content.config.ts
+// src/content.config.ts (Astro 5+)
 import { defineCollection } from 'astro:content'
 import { blogSchema } from '@levino/shipyard-blog'
 

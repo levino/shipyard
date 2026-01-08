@@ -109,6 +109,7 @@ That's it! Your documentation is now available at `/docs`.
 | `editUrl` | `string` | — | Base URL for "Edit this page" links |
 | `showLastUpdateTime` | `boolean` | `false` | Show last update timestamp from git |
 | `showLastUpdateAuthor` | `boolean` | `false` | Show last update author from git |
+| `prerender` | `boolean` | `true` | Prerender docs at build time. Set to `false` for SSR sites with auth middleware |
 
 ### Example
 
@@ -120,6 +121,19 @@ shipyardDocs({
   showLastUpdateAuthor: true,
 })
 ```
+
+### SSR Mode with Authentication
+
+If you're running an SSR site with authentication middleware that needs access to request headers or cookies, you may need to disable prerendering:
+
+```javascript
+shipyardDocs({
+  routeBasePath: 'docs',
+  prerender: false, // Required for SSR sites with auth middleware
+})
+```
+
+When `prerender: false`, docs pages are rendered on-demand and have full access to `Astro.request.headers` and cookies.
 
 ---
 
@@ -154,6 +168,63 @@ shipyardDocs({
 | `last_update_author` | `string \| false` | Override author, or `false` to hide |
 | `last_update_time` | `Date \| false` | Override timestamp, or `false` to hide |
 | `custom_edit_url` | `string \| null` | Custom edit URL, or `null` to disable |
+
+---
+
+## Sidebar Auto-Generation
+
+The sidebar is automatically generated from your docs folder structure.
+
+### How It Works
+
+| Concept | Behavior |
+|---------|----------|
+| **Folders** | Become collapsible categories in the sidebar |
+| **`index.md`** | Acts as the category landing page; its title becomes the category label |
+| **Files** | Appear as entries under their parent folder/category |
+| **Ordering** | Controlled by `sidebar.position` (lower = earlier); defaults to `Infinity` (end) |
+| **Labels** | Use `sidebar.label` to override the display name; defaults to `title` |
+
+### Example Structure
+
+```
+docs/
+├── index.md                  # → Docs landing page
+├── getting-started.md        # → Top-level entry
+├── guides/
+│   ├── index.md              # → "Guides" category (uses title from this file)
+│   ├── installation.md       # → Entry under Guides
+│   └── configuration.md      # → Entry under Guides
+└── api/
+    ├── index.md              # → "API" category
+    └── reference.md          # → Entry under API
+```
+
+### Controlling Order
+
+Use `sidebar.position` in frontmatter:
+
+```yaml
+---
+title: Installation
+sidebar:
+  position: 1    # Appears first in its category
+---
+```
+
+Pages without `sidebar.position` appear at the end, sorted alphabetically by title.
+
+### Hiding from Sidebar
+
+To exclude a page from the sidebar while keeping it accessible via URL:
+
+```yaml
+---
+title: Hidden Page
+sidebar:
+  render: false
+---
+```
 
 ---
 
@@ -216,6 +287,28 @@ docs/
 ```
 
 Locale-based routing is automatic when Astro's i18n is configured.
+
+### Redirects for i18n Sites
+
+When using Astro's i18n with `prefixDefaultLocale: true`, documentation pages require the locale prefix (e.g., `/en/docs/` instead of `/docs/`). To improve user experience, add redirects in your `astro.config.mjs`:
+
+```javascript
+export default defineConfig({
+  redirects: {
+    '/': { status: 302, destination: '/en' },
+    '/docs': { status: 302, destination: '/en/docs' },
+    '/blog': { status: 302, destination: '/en/blog' },
+  },
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'de'],
+    routing: { prefixDefaultLocale: true },
+  },
+  // ...
+})
+```
+
+Note: Astro's static redirects only work for exact paths. For wildcard redirects (e.g., `/docs/*` → `/en/docs/*`), configure your hosting provider's redirect rules or use SSR mode with middleware.
 
 ---
 
