@@ -89,24 +89,30 @@
       "title": "Include code examples in llms.txt",
       "description": "The llms.txt summary is good but lacks actionable code. Include: 1) Minimal astro.config.ts example, 2) Minimal content.config.ts example, 3) Example frontmatter for docs. LLMs need copy-pasteable code to integrate quickly.",
       "priority": "high",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:40:00Z",
+      "notes": "Updated llmsTxt description in astro.config.mjs with comprehensive Quick Start guide including all code examples"
     },
     {
       "id": "tailwind-config-in-llms",
       "title": "Include tailwind.config.js in llms.txt",
       "description": "I initially missed the tailwind config requirement (adding shipyard paths to content array). This is documented at /en/docs/base-package/ but wasn't in llms.txt. The tailwind config is critical - without it, shipyard components have no styles. Include the full tailwind.config.js example in llms.txt with the path.join(...require.resolve('@levino/shipyard-base')...) pattern.",
       "priority": "high",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:40:00Z",
+      "notes": "Included in llmsTxt description with CRITICAL note and simplified pattern using glob: node_modules/@levino/shipyard-*/**/*.{astro,js,ts}"
     },
     {
       "id": "llms-txt-link-to-base-package",
       "title": "llms.txt should reference base-package docs",
       "description": "The llms.txt mentioned installing packages but didn't link to the base-package configuration page which has the critical tailwind setup. Add direct links to all required configuration pages.",
       "priority": "medium",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:40:00Z",
+      "notes": "Added Key Documentation Pages section in llmsTxt description with links to Getting Started, Base Package, and Docs Package"
     },
     {
       "id": "layout-usage-not-documented",

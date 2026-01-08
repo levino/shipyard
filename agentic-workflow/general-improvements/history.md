@@ -529,3 +529,37 @@ This file tracks session progress and outcomes.
 - Use `sidebar.render: false` to hide pages from sidebar while keeping URL accessible
 
 ---
+
+## Session 2026-01-08T10:40:00Z
+
+### Tasks Completed
+- **ID**: llms-txt-better-content - Added code examples to llms.txt
+- **ID**: tailwind-config-in-llms - Added tailwind.config.mjs to llms.txt
+- **ID**: llms-txt-link-to-base-package - Added links to key documentation pages
+
+### What Was Done
+1. Updated the `llmsTxt.description` field in `apps/docs/astro.config.mjs` with comprehensive Quick Start guide
+2. The description now includes:
+   - Package installation commands
+   - astro.config.mjs example with required integrations
+   - src/content.config.ts (Astro 5+) example
+   - tailwind.config.mjs example with CRITICAL note about styles
+   - Example frontmatter for docs/index.md
+   - Key Documentation Pages section with links to Getting Started, Base Package, and Docs Package
+3. Verified the description appears correctly in the generated `/docs/llms.txt` output
+
+### Files Modified
+- `apps/docs/astro.config.mjs` - Expanded llmsTxt.description with full Quick Start guide
+
+### Tips for Next Developer
+- The `llmsTxt.description` field in the config is rendered directly after the blockquote summary in llms.txt
+- Multi-line markdown content including code blocks is fully supported
+- The llmsTxt generation is in `packages/docs/src/llmsTxt.ts` - `generateLlmsTxt()` function
+- Links in the description can use relative paths that work in the documentation site context
+- The simplified tailwind content pattern `node_modules/@levino/shipyard-*/**/*.{astro,js,ts}` is easier than require.resolve
+
+### Tests
+- Build verification passed
+- Generated llms.txt contains all Quick Start content (lines 5-75)
+
+---
