@@ -16,8 +16,10 @@
       "title": "Ensure llms-full.txt is accessible",
       "description": "Tried to fetch /llms-full.txt but got 404. The llms.txt at /docs/llms.txt worked but didn't contain enough detail to understand the full API. Having a comprehensive llms-full.txt with all configuration options, code examples, and schema details would significantly help LLM-assisted integration.",
       "priority": "high",
-      "status": "pending",
-      "category": "docs"
+      "status": "completed",
+      "category": "docs",
+      "completedAt": "2026-01-08T10:20:00Z",
+      "notes": "Already resolved - llms-full.txt exists at /docs/llms-full.txt (76KB). The 404 was from looking at wrong path."
     },
     {
       "id": "readme-needs-examples",
@@ -40,8 +42,10 @@
       "title": "Handle SSR mode better in docs plugin",
       "description": "When using output: 'server' in astro.config, the docs plugin still sets prerender: true which causes warnings: 'Astro.request.headers was used when rendering... not available on prerendered pages'. Consider detecting SSR mode and adjusting, or document this behavior.",
       "priority": "medium",
-      "status": "pending",
-      "category": "bug"
+      "status": "completed",
+      "category": "bug",
+      "completedAt": "2026-01-08T10:12:00Z",
+      "notes": "Resolved by docs-prerender-breaks-auth task - added prerender config option (default: true, set false for SSR)"
     },
     {
       "id": "peer-deps-documentation",
@@ -137,8 +141,9 @@
       "title": "Export globals.css from package",
       "description": "The globals.css file exists at src/globals.css but isn't exported in package.json. Users who want to create custom layouts (e.g. public pages without navigation) can't import '@levino/shipyard-base/globals.css'. Add an export: './globals.css': './src/globals.css'",
       "priority": "medium",
-      "status": "pending",
-      "category": "bug"
+      "status": "completed",
+      "category": "bug",
+      "completedAt": "2026-01-08T10:24:00Z"
     }
   ]
 }

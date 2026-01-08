@@ -405,3 +405,29 @@ This file tracks session progress and outcomes.
 - Link check passed with 1380 links verified
 
 ---
+
+## Session 2026-01-08T10:24:00Z
+
+### Tasks Completed
+- **ID**: llms-full-txt-missing - Already resolved, file exists at /docs/llms-full.txt
+- **ID**: prerender-ssr-warnings - Resolved by prerender config option from earlier task
+- **ID**: export-globals-css - Added export for globals.css
+
+### What Was Done
+1. Verified llms-full.txt exists at /docs/llms-full.txt (76KB) - marked as complete
+2. Verified prerender-ssr-warnings is resolved by the prerender config option - marked as complete
+3. Added `"./globals.css": "./src/globals.css"` export to @levino/shipyard-base package.json
+4. Created changeset for the globals.css export
+
+### Files Modified
+- `packages/base/package.json` - Added globals.css export
+- `.changeset/export-globals-css.md` - Changeset for patch release
+
+### Tips for Next Developer
+- The globals.css can now be imported as `@levino/shipyard-base/globals.css`
+- This is useful for custom layouts that need base styles without using Shipyard's built-in layouts
+
+### Tests
+- Build verification passed for i18n demo
+
+---
