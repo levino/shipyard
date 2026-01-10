@@ -1,6 +1,7 @@
 import { mkdirSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
+import type { AstroIntegrationLogger } from 'astro'
 import { afterEach, beforeEach, describe, expect, test, vi } from 'vitest'
 import type { LinkCheckResult } from './linkChecker'
 import { checkLinks, reportBrokenLinks } from './linkChecker'
@@ -168,15 +169,19 @@ describe('checkLinks', () => {
 })
 
 describe('reportBrokenLinks', () => {
-  const createMockLogger = () => ({
-    info: vi.fn(),
-    warn: vi.fn(),
-    error: vi.fn(),
-    debug: vi.fn(),
-    label: 'test',
-    options: {},
-    fork: vi.fn(),
-  })
+  const createMockLogger = () =>
+    ({
+      info: vi.fn(),
+      warn: vi.fn(),
+      error: vi.fn(),
+      debug: vi.fn(),
+      label: 'test',
+      options: {},
+      fork: vi.fn(),
+    }) as unknown as AstroIntegrationLogger & {
+      info: ReturnType<typeof vi.fn>
+      warn: ReturnType<typeof vi.fn>
+    }
 
   test('logs success message when no broken links and action is not ignore', () => {
     const logger = createMockLogger()
@@ -186,7 +191,7 @@ describe('reportBrokenLinks', () => {
       brokenLinks: [],
     }
 
-    reportBrokenLinks(result, 'warn', logger as any)
+    reportBrokenLinks(result, 'warn', logger)
 
     expect(logger.info).toHaveBeenCalledWith(
       'Link check passed: 10 links verified',
@@ -204,7 +209,7 @@ describe('reportBrokenLinks', () => {
       ],
     }
 
-    reportBrokenLinks(result, 'ignore', logger as any)
+    reportBrokenLinks(result, 'ignore', logger)
 
     expect(logger.info).not.toHaveBeenCalled()
     expect(logger.warn).not.toHaveBeenCalled()
@@ -218,7 +223,7 @@ describe('reportBrokenLinks', () => {
       brokenLinks: [{ sourceFile: 'index.html', href: '/broken', line: 1 }],
     }
 
-    reportBrokenLinks(result, 'log', logger as any)
+    reportBrokenLinks(result, 'log', logger)
 
     expect(logger.info).toHaveBeenCalled()
     const message = logger.info.mock.calls[0][0]
@@ -235,7 +240,7 @@ describe('reportBrokenLinks', () => {
       brokenLinks: [{ sourceFile: 'index.html', href: '/broken', line: 1 }],
     }
 
-    reportBrokenLinks(result, 'warn', logger as any)
+    reportBrokenLinks(result, 'warn', logger)
 
     expect(logger.warn).toHaveBeenCalled()
     const message = logger.warn.mock.calls[0][0]
@@ -250,7 +255,7 @@ describe('reportBrokenLinks', () => {
       brokenLinks: [{ sourceFile: 'index.html', href: '/broken', line: 1 }],
     }
 
-    expect(() => reportBrokenLinks(result, 'throw', logger as any)).toThrow(
+    expect(() => reportBrokenLinks(result, 'throw', logger)).toThrow(
       'Broken links found',
     )
   })
@@ -267,7 +272,7 @@ describe('reportBrokenLinks', () => {
       ],
     }
 
-    reportBrokenLinks(result, 'warn', logger as any)
+    reportBrokenLinks(result, 'warn', logger)
 
     const message = logger.warn.mock.calls[0][0]
     expect(message).toContain('Found 3 broken links')
