@@ -1,5 +1,5 @@
 ---
-'@levino/shipyard-base': minor
+'@levino/shipyard-base': patch
 ---
 
 You can now enable broken link detection during production builds. Shipyard automatically scans your built HTML files for internal links that point to non-existent pages, helping you catch issues before deploying.

@@ -159,9 +159,8 @@ Documentation features:
    - Modifying existing functionality that affects users
    - The docs app contains the actual shipyard documentation, not just demos
 8. **Changesets**: Create a changeset using `npx changeset` when making changes that affect packages:
-   - Use patch version for bug fixes and minor improvements (especially in 0.x.y versions)
-   - Use minor version for new features (when above 1.0.0)
-   - Use major version for breaking changes (when above 1.0.0)
+   - **0.x.y versioning** (current phase): Use `patch` for everything (bug fixes, improvements, new features). Only use `minor` for breaking changes.
+   - **1.x.y versioning** (post-1.0): Use `patch` for bug fixes, `minor` for new features, `major` for breaking changes.
    - **Write user-centric descriptions**: Focus on what users can now do, not what code was changed
      - ✅ Good: "You can now host multiple documentation sections with custom URL paths"
      - ❌ Bad: "Added `DocsConfig` interface with `routeBasePath` option"
