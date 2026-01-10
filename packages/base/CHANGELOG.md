@@ -1,5 +1,37 @@
 # @levino/shipyard-base
 
+## 0.6.1
+
+### Patch Changes
+
+- cd94056: You can now enable broken link detection during production builds. Shipyard automatically scans your built HTML files for internal links that point to non-existent pages, helping you catch issues before deploying.
+
+  Configure the behavior with the new `onBrokenLinks` option:
+
+  ```javascript
+  shipyard({
+    // ... other options
+    onBrokenLinks: "throw", // fail build on broken links
+  });
+  ```
+
+  Available values:
+
+  - `'ignore'` - Don't check for broken links
+  - `'log'` - Log broken links but continue build
+  - `'warn'` - Log warnings (default)
+  - `'throw'` - Fail the build on broken links
+
+- 7086067: Export globals.css from package for custom layouts
+
+  You can now import the global styles directly when creating custom layouts:
+
+  ```javascript
+  import "@levino/shipyard-base/globals.css";
+  ```
+
+  This is useful when creating custom page layouts that don't use the built-in Shipyard layouts but still need the base styles.
+
 ## 0.6.0
 
 ### Minor Changes
