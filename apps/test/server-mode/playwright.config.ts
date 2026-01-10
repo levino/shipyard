@@ -9,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:4333',
+    baseURL: 'http://localhost:4340',
     trace: 'on-first-retry',
   },
 
@@ -21,9 +21,13 @@ export default defineConfig({
   ],
 
   webServer: {
-    // Use dev server for testing server mode since preview requires wrangler for Cloudflare adapter
-    command: 'npx astro dev --host 0.0.0.0 --port 4333',
-    url: 'http://localhost:4333',
+    // Use Node.js server in production mode for testing SSR
+    command: 'npm run build && npm run preview',
+    url: 'http://localhost:4340',
     reuseExistingServer: !process.env.CI,
+    env: {
+      PORT: '4340',
+      HOST: '0.0.0.0',
+    },
   },
 })

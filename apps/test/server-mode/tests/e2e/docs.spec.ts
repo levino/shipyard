@@ -63,6 +63,6 @@ test.describe('Docs Pages in Server Mode (SSR)', () => {
     await expect(page.locator('article')).toBeVisible()
 
     // Verify the page has a proper title
-    await expect(page).toHaveTitle(/Server Mode Demo/)
+    await expect(page).toHaveTitle(/Server Mode Test/)
   })
 })
