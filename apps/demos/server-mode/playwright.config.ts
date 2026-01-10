@@ -21,7 +21,8 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npx astro preview --host 0.0.0.0 --port 4333',
+    // Use dev server for testing server mode since preview requires wrangler for Cloudflare adapter
+    command: 'npx astro dev --host 0.0.0.0 --port 4333',
     url: 'http://localhost:4333',
     reuseExistingServer: !process.env.CI,
   },
