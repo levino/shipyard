@@ -253,8 +253,11 @@ export interface DocsConfig {
   llmsTxt?: LlmsTxtDocsConfig
   /**
    * Whether to prerender docs pages at build time.
-   * Set to false for SSR sites with auth middleware that need access to request headers/cookies.
-   * @default true
+   * When not specified, this is automatically determined from Astro's output mode:
+   * - `output: 'server'` → defaults to `false` (SSR)
+   * - `output: 'static'` or `output: 'hybrid'` → defaults to `true` (prerender)
+   *
+   * Set explicitly to `false` for SSR sites with auth middleware that need access to request headers/cookies.
    */
   prerender?: boolean
 }
@@ -333,7 +336,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateTime = false,
     showLastUpdateAuthor = false,
     llmsTxt,
-    prerender = true,
+    prerender: prerenderConfig,
   } = config
 
   // Normalize the route base path (remove leading/trailing slashes safely)
@@ -370,6 +373,14 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         config: astroConfig,
         updateConfig,
       }) => {
+        // Determine prerender value: if not explicitly set, derive from Astro's output mode
+        // - 'server' output defaults to false (SSR)
+        // - 'static' or 'hybrid' output defaults to true (prerender)
+        const prerender =
+          prerenderConfig !== undefined
+            ? prerenderConfig
+            : astroConfig.output !== 'server'
+
         // Create a generated entry file for this specific docs instance
         // This ensures each route has its own getStaticPaths that only returns its own paths
         const generatedDir = join(
@@ -395,7 +406,12 @@ import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import { getEditUrl, getGitMetadata } from '@levino/shipyard-docs'
 import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
 export async function getStaticPaths() {
+  // Note: collectionName and routeBasePath must be inlined here because Astro compiles
+  // getStaticPaths separately and module-level constants are not available
   const collectionName = ${JSON.stringify(resolvedCollectionName)}
   const routeBasePath = ${JSON.stringify(normalizedBasePath)}
   const allDocs = await getCollection(collectionName)
@@ -423,7 +439,38 @@ export async function getStaticPaths() {
   }))
 }
 
-const { entry, routeBasePath } = Astro.props
+// In SSR mode (prerender: false), getStaticPaths is not called so Astro.props.entry will be undefined.
+// We need to fetch the entry from the collection based on URL params.
+let entry = Astro.props.entry
+if (!entry) {
+  const allDocs = await getCollection(collectionName)
+  const docs = allDocs.filter((doc) => doc.data.render !== false)
+
+  // Reconstruct the entry ID from URL params
+  const { locale, slug } = Astro.params
+  let entryId
+  if (i18n && locale) {
+    entryId = slug ? locale + '/' + slug : locale
+  } else {
+    entryId = slug ?? ''
+  }
+
+  // Find the matching entry
+  entry = docs.find((doc) => doc.id === entryId)
+
+  // If no exact match, try matching with /index suffix (for index pages)
+  // For empty entryId (root path like /docs), look for 'index'
+  // For category paths (like /docs/details), look for 'details/index'
+  if (!entry) {
+    const indexEntryId = entryId ? entryId + '/index' : 'index'
+    entry = docs.find((doc) => doc.id === indexEntryId)
+  }
+
+  // If still no match, return 404
+  if (!entry) {
+    return Astro.redirect('/404')
+  }
+}
 
 const docsConfig = docsConfigs[routeBasePath] ?? {
   showLastUpdateTime: false,

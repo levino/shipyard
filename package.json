@@ -21,7 +21,8 @@
   "workspaces": [
     "packages/*",
     "apps/*",
-    "apps/demos/*"
+    "apps/demos/*",
+    "apps/test/*"
   ],
   "dependencies": {
     "@changesets/cli": "^2.27.11"

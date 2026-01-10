@@ -4,7 +4,7 @@ test.describe('Page Title Integration Tests', () => {
   test('index page shows site title with page title', async ({ page }) => {
     await page.goto('/')
     await expect(page).toHaveTitle(
-      'Server Mode Demo - Welcome to Server Mode Demo',
+      'Server Mode Test - Welcome to Server Mode Test',
     )
     // Verify dynamic content is present (random animal)
     await expect(page.locator('.alert-info')).toBeVisible()
@@ -13,19 +13,19 @@ test.describe('Page Title Integration Tests', () => {
   test('about page shows site title with page title', async ({ page }) => {
     await page.goto('/about')
     await expect(page).toHaveTitle(
-      'Server Mode Demo - About Single Language Demo',
+      'Server Mode Test - About Single Language Demo',
     )
   })
 
   test('blog index shows site title with Blog', async ({ page }) => {
     await page.goto('/blog')
-    await expect(page).toHaveTitle('Server Mode Demo - Blog')
+    await expect(page).toHaveTitle('Server Mode Test - Blog')
   })
 
   test('blog post shows site title with post title', async ({ page }) => {
     await page.goto('/blog/2024-09-01-getting-started')
     await expect(page).toHaveTitle(
-      'Server Mode Demo - Getting Started with Single-Language Sites',
+      'Server Mode Test - Getting Started with Single-Language Sites',
     )
   })
 })
