@@ -15,6 +15,95 @@ export type NavigationTree = Record<string, NavigationEntry>
 export type Script = string | astroHTML.JSX.IntrinsicElements['script']
 
 /**
+ * A single footer link.
+ */
+export interface FooterLink {
+  /**
+   * Display text for the link.
+   */
+  label: string
+  /**
+   * Client-side routing path. Use for internal links.
+   */
+  to?: string
+  /**
+   * Full URL for external links.
+   */
+  href?: string
+}
+
+/**
+ * A column of footer links with a title.
+ * Used for multi-column footer layouts.
+ */
+export interface FooterLinkColumn {
+  /**
+   * Column title displayed above the links.
+   */
+  title: string
+  /**
+   * Links within this column.
+   */
+  items: FooterLink[]
+}
+
+/**
+ * Footer logo configuration.
+ */
+export interface FooterLogo {
+  /**
+   * Alt text for the logo image.
+   */
+  alt: string
+  /**
+   * Logo image source URL.
+   */
+  src: string
+  /**
+   * Optional dark mode logo source.
+   */
+  srcDark?: string
+  /**
+   * Link URL when clicking the logo.
+   */
+  href?: string
+  /**
+   * Logo width in pixels.
+   */
+  width?: number
+  /**
+   * Logo height in pixels.
+   */
+  height?: number
+}
+
+/**
+ * Footer configuration.
+ * Supports both simple (single row of links) and multi-column layouts.
+ */
+export interface FooterConfig {
+  /**
+   * Footer color theme.
+   * @default 'light'
+   */
+  style?: 'light' | 'dark'
+  /**
+   * Footer links. Can be a flat array of links (simple footer)
+   * or an array of columns with titles (multi-column footer).
+   */
+  links?: (FooterLink | FooterLinkColumn)[]
+  /**
+   * Copyright notice displayed at the bottom of the footer.
+   * Supports HTML for links and formatting.
+   */
+  copyright?: string
+  /**
+   * Optional footer logo.
+   */
+  logo?: FooterLogo
+}
+
+/**
  * Announcement bar configuration.
  * Displays a dismissible banner above the navbar.
  */
@@ -89,6 +178,17 @@ export interface Config {
    * Shows a dismissible banner at the top of the page.
    */
   announcementBar?: AnnouncementBar
+  /**
+   * Footer configuration.
+   * Customize footer links, copyright notice, and styling.
+   */
+  footer?: FooterConfig
+  /**
+   * Hide the "Built with Shipyard" branding in the footer.
+   * Set to true to remove the branding link.
+   * @default false
+   */
+  hideBranding?: boolean
   /**
    * The behavior of Shipyard when it detects any broken internal link.
    * By default, it logs a warning. Set to 'throw' to fail the build on broken links.

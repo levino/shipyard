@@ -51,6 +51,15 @@ export default defineConfig({
         textColor: 'primary-content',
         isCloseable: true,
       },
+      footer: {
+        links: [
+          { label: 'Documentation', to: '/docs/markdown-features' },
+          { label: 'Blog', to: '/blog' },
+          { label: 'About', to: '/about' },
+          { label: 'GitHub', href: 'https://github.com/levino/shipyard' },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Single Language Demo.`,
+      },
       onBrokenLinks: 'throw',
     }),
     shipyardDocs({

@@ -51,6 +51,33 @@ export default defineConfig({
       title: 'Metro Gardens',
       tagline: 'Growing community, one plant at a time.',
       brand: 'Metro Gardens',
+      footer: {
+        style: 'dark',
+        links: [
+          {
+            title: 'Docs',
+            items: [
+              { label: 'Getting Started', to: '/docs' },
+              { label: 'Guides', to: '/guides' },
+            ],
+          },
+          {
+            title: 'Community',
+            items: [
+              { label: 'Blog', to: '/blog' },
+              {
+                label: 'GitHub',
+                href: 'https://github.com/levino/shipyard',
+              },
+            ],
+          },
+          {
+            title: 'More',
+            items: [{ label: 'About', to: '/about' }],
+          },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Metro Gardens. All rights reserved.`,
+      },
       // Use 'warn' instead of 'throw' because this demo intentionally has
       // incomplete German translations to demonstrate i18n fallback behavior.
       // The link checker flags language switcher links to non-existent German
