@@ -75,4 +75,34 @@ test.describe('Footer Configuration (Simple Footer)', () => {
     const columnHeaders = footer.locator('h3')
     await expect(columnHeaders).toHaveCount(0)
   })
+
+  test('footer displays logo', async ({ page }) => {
+    await page.goto('/')
+
+    const footer = page.locator('footer')
+    const logo = footer.locator('img[alt="Single Language Demo Logo"]')
+    await expect(logo).toBeVisible()
+    await expect(logo).toHaveAttribute('src', '/favicon.svg')
+  })
+
+  test('footer logo links to internal page', async ({ page }) => {
+    await page.goto('/')
+
+    const footer = page.locator('footer')
+    const logoLink = footer.locator(
+      'a:has(img[alt="Single Language Demo Logo"])',
+    )
+    await expect(logoLink).toHaveAttribute('href', '/docs/markdown-features')
+    // Internal link should NOT have target="_blank"
+    await expect(logoLink).not.toHaveAttribute('target', '_blank')
+  })
+
+  test('footer logo has correct dimensions', async ({ page }) => {
+    await page.goto('/')
+
+    const footer = page.locator('footer')
+    const logo = footer.locator('img[alt="Single Language Demo Logo"]')
+    await expect(logo).toHaveAttribute('width', '40')
+    await expect(logo).toHaveAttribute('height', '40')
+  })
 })

@@ -16,21 +16,31 @@ export type Script = string | astroHTML.JSX.IntrinsicElements['script']
 
 /**
  * A single footer link.
+ * Exactly one of `to` (internal link) or `href` (external link) must be provided.
  */
-export interface FooterLink {
-  /**
-   * Display text for the link.
-   */
-  label: string
-  /**
-   * Client-side routing path. Use for internal links.
-   */
-  to?: string
-  /**
-   * Full URL for external links.
-   */
-  href?: string
-}
+export type FooterLink =
+  | {
+      /**
+       * Display text for the link.
+       */
+      label: string
+      /**
+       * Client-side routing path. Use for internal links.
+       */
+      to: string
+      href?: never
+    }
+  | {
+      /**
+       * Display text for the link.
+       */
+      label: string
+      /**
+       * Full URL for external links.
+       */
+      href: string
+      to?: never
+    }
 
 /**
  * A column of footer links with a title.

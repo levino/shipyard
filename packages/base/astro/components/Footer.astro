@@ -13,8 +13,11 @@ interface FooterProps {
 
 const { config, hideBranding = false } = Astro.props as FooterProps
 
-const withLocale = (path: string) =>
-  i18n && Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
+const withLocale = (path: string) => {
+  if (!i18n || !Astro.currentLocale) return path
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  return `/${Astro.currentLocale}${normalizedPath}`
+}
 
 // Type guard to check if a link item is a column
 function isColumn(
@@ -41,6 +44,17 @@ function isExternal(link: FooterLink): boolean {
   )
 }
 
+// Check if a URL is external
+function isExternalUrl(url: string): boolean {
+  return url.startsWith('http://') || url.startsWith('https://')
+}
+
+// Get logo href with locale support for internal links
+function getLogoHref(href: string): string {
+  if (isExternalUrl(href)) return href
+  return withLocale(href)
+}
+
 const isDark = config?.style === 'dark'
 ---
 
@@ -55,7 +69,34 @@ const isDark = config?.style === 'dark'
     {config?.logo && (
       <div class="mb-6">
         {config.logo.href ? (
-          <a href={config.logo.href} target="_blank" rel="noopener noreferrer">
+          <a
+            href={getLogoHref(config.logo.href)}
+            {...(isExternalUrl(config.logo.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            {config.logo.srcDark ? (
+              <picture>
+                <source srcset={config.logo.srcDark} media="(prefers-color-scheme: dark)" />
+                <img
+                  src={config.logo.src}
+                  alt={config.logo.alt}
+                  width={config.logo.width}
+                  height={config.logo.height}
+                  class="h-10 w-auto"
+                />
+              </picture>
+            ) : (
+              <img
+                src={config.logo.src}
+                alt={config.logo.alt}
+                width={config.logo.width}
+                height={config.logo.height}
+                class="h-10 w-auto"
+              />
+            )}
+          </a>
+        ) : config.logo.srcDark ? (
+          <picture>
+            <source srcset={config.logo.srcDark} media="(prefers-color-scheme: dark)" />
             <img
               src={config.logo.src}
               alt={config.logo.alt}
@@ -63,7 +104,7 @@ const isDark = config?.style === 'dark'
               height={config.logo.height}
               class="h-10 w-auto"
             />
-          </a>
+          </picture>
         ) : (
           <img
             src={config.logo.src}
@@ -80,36 +121,24 @@ const isDark = config?.style === 'dark'
     {config?.links && config.links.length > 0 && (
       hasColumns ? (
         <div class="mb-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
-          {config.links.map((item) =>
-            isColumn(item) ? (
-              <div>
-                <h3 class="mb-4 font-semibold">{item.title}</h3>
-                <ul class="space-y-2">
-                  {item.items.map((link) => (
-                    <li>
-                      <a
-                        href={getLinkHref(link)}
-                        class="opacity-80 transition-opacity hover:opacity-100"
-                        {...(isExternal(link) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      >
-                        {link.label}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ) : (
-              <div>
-                <a
-                  href={getLinkHref(item)}
-                  class="opacity-80 transition-opacity hover:opacity-100"
-                  {...(isExternal(item) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                >
-                  {item.label}
-                </a>
-              </div>
-            )
-          )}
+          {config.links.filter(isColumn).map((item) => (
+            <div>
+              <h3 class="mb-4 font-semibold">{item.title}</h3>
+              <ul class="space-y-2">
+                {item.items.map((link) => (
+                  <li>
+                    <a
+                      href={getLinkHref(link)}
+                      class="opacity-80 transition-opacity hover:opacity-100"
+                      {...(isExternal(link) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       ) : (
         <div class="mb-6 flex flex-wrap gap-x-6 gap-y-2">

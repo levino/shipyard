@@ -69,20 +69,6 @@ test.describe('Footer Configuration', () => {
       await expect(footer).toContainText('Copyright')
       await expect(footer).toContainText('Metro Gardens')
     })
-
-    test('footer displays Shipyard branding', async ({ page }) => {
-      await page.goto('/en/')
-
-      const footer = page.locator('footer')
-      const brandingLink = footer.locator('a', {
-        hasText: 'Built with Shipyard',
-      })
-      await expect(brandingLink).toBeVisible()
-      await expect(brandingLink).toHaveAttribute(
-        'href',
-        'https://github.com/levino/shipyard',
-      )
-    })
   })
 
   test.describe('Footer on Different Locales', () => {
@@ -93,6 +79,55 @@ test.describe('Footer Configuration', () => {
       const docsLink = footer.locator('a', { hasText: 'Getting Started' })
       // Links should use the German locale prefix
       await expect(docsLink).toHaveAttribute('href', '/de/docs')
+    })
+  })
+
+  test.describe('Footer Logo', () => {
+    test('footer displays logo', async ({ page }) => {
+      await page.goto('/en/')
+
+      const footer = page.locator('footer')
+      const logo = footer.locator('img[alt="Metro Gardens Logo"]')
+      await expect(logo).toBeVisible()
+      await expect(logo).toHaveAttribute('src', '/favicon.svg')
+    })
+
+    test('footer logo with external href opens in new tab', async ({
+      page,
+    }) => {
+      await page.goto('/en/')
+
+      const footer = page.locator('footer')
+      const logoLink = footer.locator('a:has(img[alt="Metro Gardens Logo"])')
+      await expect(logoLink).toHaveAttribute(
+        'href',
+        'https://github.com/levino/shipyard',
+      )
+      await expect(logoLink).toHaveAttribute('target', '_blank')
+      await expect(logoLink).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    test('footer logo has correct dimensions', async ({ page }) => {
+      await page.goto('/en/')
+
+      const footer = page.locator('footer')
+      const logo = footer.locator('img[alt="Metro Gardens Logo"]')
+      await expect(logo).toHaveAttribute('width', '40')
+      await expect(logo).toHaveAttribute('height', '40')
+    })
+  })
+
+  test.describe('hideBranding Feature', () => {
+    test('footer does not display Shipyard branding when hideBranding is true', async ({
+      page,
+    }) => {
+      await page.goto('/en/')
+
+      const footer = page.locator('footer')
+      const brandingLink = footer.locator('a', {
+        hasText: 'Built with Shipyard',
+      })
+      await expect(brandingLink).toHaveCount(0)
     })
   })
 })

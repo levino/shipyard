@@ -51,8 +51,16 @@ export default defineConfig({
       title: 'Metro Gardens',
       tagline: 'Growing community, one plant at a time.',
       brand: 'Metro Gardens',
+      hideBranding: true,
       footer: {
         style: 'dark',
+        logo: {
+          alt: 'Metro Gardens Logo',
+          src: '/favicon.svg',
+          href: 'https://github.com/levino/shipyard',
+          width: 40,
+          height: 40,
+        },
         links: [
           {
             title: 'Docs',

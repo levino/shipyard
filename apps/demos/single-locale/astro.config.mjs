@@ -52,6 +52,13 @@ export default defineConfig({
         isCloseable: true,
       },
       footer: {
+        logo: {
+          alt: 'Single Language Demo Logo',
+          src: '/favicon.svg',
+          href: '/docs/markdown-features',
+          width: 40,
+          height: 40,
+        },
         links: [
           { label: 'Documentation', to: '/docs/markdown-features' },
           { label: 'Blog', to: '/blog' },
