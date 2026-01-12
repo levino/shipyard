@@ -51,6 +51,22 @@ export default defineConfig({
         textColor: 'primary-content',
         isCloseable: true,
       },
+      footer: {
+        logo: {
+          alt: 'Single Language Demo Logo',
+          src: '/favicon.svg',
+          href: '/docs/markdown-features',
+          width: 40,
+          height: 40,
+        },
+        links: [
+          { label: 'Documentation', to: '/docs/markdown-features' },
+          { label: 'Blog', to: '/blog' },
+          { label: 'About', to: '/about' },
+          { label: 'GitHub', href: 'https://github.com/levino/shipyard' },
+        ],
+        copyright: `Copyright © ${new Date().getFullYear()} Single Language Demo.`,
+      },
       onBrokenLinks: 'throw',
     }),
     shipyardDocs({

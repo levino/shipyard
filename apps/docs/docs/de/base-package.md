@@ -83,6 +83,8 @@ export default defineConfig({
 | `tagline` | `string` | Ja | — | Kurze Beschreibung deiner Seite |
 | `navigation` | `NavigationTree` | Ja | — | Globale Navigationsstruktur (siehe unten) |
 | `scripts` | `Script[]` | Nein | `[]` | Skripte im Seitenkopf |
+| `footer` | `FooterConfig` | Nein | — | Footer-Konfiguration (Links, Copyright, Stil) |
+| `hideBranding` | `boolean` | Nein | `false` | "Built with Shipyard" Branding ausblenden |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | Nein | `'warn'` | Verhalten bei defekten internen Links während des Builds |
 
 ### Navigationsstruktur
@@ -131,6 +133,104 @@ shipyard({
     'https://example.com/analytics.js',
     { src: 'https://example.com/script.js', async: true },
   ],
+})
+```
+
+### Footer-Konfiguration
+
+Passe den Footer deiner Seite mit Links, Copyright-Hinweis und Styling an. Shipyard unterstützt sowohl einfache (einzeilige) als auch mehrspaltige Footer-Layouts, ähnlich wie Docusaurus.
+
+#### Einfacher Footer
+
+Ein einfacher Footer zeigt Links in einer horizontalen Zeile:
+
+```javascript
+shipyard({
+  // ... andere Optionen
+  footer: {
+    links: [
+      { label: 'Dokumentation', to: '/docs' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'GitHub', href: 'https://github.com/myorg/myrepo' },
+    ],
+    copyright: 'Copyright © 2025 Meine Firma. Alle Rechte vorbehalten.',
+  },
+})
+```
+
+#### Mehrspaltiger Footer
+
+Für ein mehrspaltiges Layout verwende Objekte mit `title` und `items`:
+
+```javascript
+shipyard({
+  // ... andere Optionen
+  footer: {
+    style: 'dark',
+    links: [
+      {
+        title: 'Doku',
+        items: [
+          { label: 'Erste Schritte', to: '/docs' },
+          { label: 'API-Referenz', to: '/docs/api' },
+        ],
+      },
+      {
+        title: 'Community',
+        items: [
+          { label: 'Blog', to: '/blog' },
+          { label: 'GitHub', href: 'https://github.com/myorg/myrepo' },
+        ],
+      },
+    ],
+    copyright: 'Copyright © 2025 Meine Firma.',
+  },
+})
+```
+
+#### Footer-Optionen
+
+| Option | Typ | Standard | Beschreibung |
+|--------|-----|----------|--------------|
+| `style` | `'light' \| 'dark'` | `'light'` | Footer-Farbthema |
+| `links` | `(FooterLink \| FooterLinkColumn)[]` | `[]` | Footer-Links oder -Spalten |
+| `copyright` | `string` | — | Copyright-Hinweis (unterstützt HTML) |
+| `logo` | `FooterLogo` | — | Optionales Footer-Logo |
+
+#### FooterLink-Eigenschaften
+
+| Eigenschaft | Typ | Erforderlich | Beschreibung |
+|-------------|-----|--------------|--------------|
+| `label` | `string` | Ja | Anzeigetext für den Link |
+| `to` | `string` | Eines von `to`/`href` | Interner Link-Pfad (Locale-Präfix wird automatisch hinzugefügt) |
+| `href` | `string` | Eines von `to`/`href` | Externe URL (öffnet in neuem Tab) |
+
+#### FooterLinkColumn-Eigenschaften
+
+| Eigenschaft | Typ | Erforderlich | Beschreibung |
+|-------------|-----|--------------|--------------|
+| `title` | `string` | Ja | Spalten-Überschrift |
+| `items` | `FooterLink[]` | Ja | Links innerhalb dieser Spalte |
+
+#### FooterLogo-Eigenschaften
+
+| Eigenschaft | Typ | Erforderlich | Beschreibung |
+|-------------|-----|--------------|--------------|
+| `alt` | `string` | Ja | Alt-Text für das Logo |
+| `src` | `string` | Ja | Logo-Bildquelle URL |
+| `srcDark` | `string` | Nein | Optionales Dark-Mode-Logo |
+| `href` | `string` | Nein | Link-URL beim Klick auf das Logo |
+| `width` | `number` | Nein | Logo-Breite in Pixel |
+| `height` | `number` | Nein | Logo-Höhe in Pixel |
+
+#### Shipyard-Branding
+
+Standardmäßig zeigt der Footer einen "Built with Shipyard" Link. Um dieses Branding auszublenden:
+
+```javascript
+shipyard({
+  // ... andere Optionen
+  hideBranding: true,
 })
 ```
 

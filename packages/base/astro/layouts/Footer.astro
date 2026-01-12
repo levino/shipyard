@@ -1,15 +1,6 @@
 ---
+import config from 'virtual:shipyard/config'
 import { Footer as FooterComponent } from '../components'
-
-const withLocale = (path: string) =>
-  Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
 
-<FooterComponent
-  links={[]}
-  copyright={{
-    href: "https://github.com/levino",
-    label: "Levin Keller",
-    year: 2025,
-  }}
-/>
+<FooterComponent config={config.footer} hideBranding={config.hideBranding} />
