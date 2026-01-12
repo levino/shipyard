@@ -20,6 +20,8 @@ import {
 } from 'ramda'
 import type { Author } from '../src/index'
 
+export const prerender = true
+
 export async function getStaticPaths() {
   const { authorsEnabled } = blogConfig
 

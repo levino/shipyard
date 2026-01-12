@@ -22,6 +22,8 @@ import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
+export const prerender = true
+
 export const getStaticPaths = (async () => {
   const allPosts = await getCollection('blog')
   const { includeDraftsInDev } = blogConfig

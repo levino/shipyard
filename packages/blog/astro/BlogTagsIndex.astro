@@ -11,6 +11,8 @@ import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
 import { getTagDescription, getTagLabel, getTagPermalink } from '../src/index'
 import Layout from './Layout.astro'
 
+export const prerender = true
+
 const { includeDraftsInDev, routeBasePath } = blogConfig
 
 // Filter out draft and unlisted posts

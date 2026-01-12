@@ -8,6 +8,8 @@ import blogConfig from 'virtual:shipyard-blog/config'
 import type { APIRoute, GetStaticPaths } from 'astro'
 import { filter, pipe, reverse, sortBy, take } from 'ramda'
 
+export const prerender = true
+
 const {
   feedOptions,
   includeDraftsInDev,

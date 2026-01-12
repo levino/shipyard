@@ -9,6 +9,8 @@ import type { GetStaticPaths } from 'astro'
 import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
 import Layout from './Layout.astro'
 
+export const prerender = true
+
 const { includeDraftsInDev, routeBasePath } = blogConfig
 
 // Filter out draft and unlisted posts

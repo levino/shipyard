@@ -812,16 +812,9 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         // Note: We inline the values directly in getStaticPaths because Astro's compiler
         // hoists getStaticPaths to a separate module context where top-level constants aren't available
         const hasVersions = !!versions
-        const entryFileContent = `---
-import { i18n } from 'astro:config/server'
-import { getCollection, render } from 'astro:content'
-import { docsConfigs } from 'virtual:shipyard-docs-configs'
-import { createVersionPathMap, getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId } from '@levino/shipyard-docs'
-import Layout from '@levino/shipyard-docs/astro/Layout.astro'
-
-const collectionName = ${JSON.stringify(resolvedCollectionName)}
-const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-
+        // Only include getStaticPaths when prerender is true to avoid Astro warnings
+        const getStaticPathsCode = prerender
+          ? `
 export async function getStaticPaths() {
   // Note: collectionName and routeBasePath must be inlined here because Astro compiles
   // getStaticPaths separately and module-level constants are not available
@@ -895,7 +888,21 @@ export async function getStaticPaths() {
 
   return paths
 }
+`
+          : ''
 
+        const entryFileContent = `---
+import { i18n } from 'astro:config/server'
+import { getCollection, render } from 'astro:content'
+import { docsConfigs } from 'virtual:shipyard-docs-configs'
+import { createVersionPathMap, getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId } from '@levino/shipyard-docs'
+import Layout from '@levino/shipyard-docs/astro/Layout.astro'
+
+export const prerender = ${JSON.stringify(prerender)}
+
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+${getStaticPathsCode}
 // In SSR mode (prerender: false), getStaticPaths is not called so Astro.props.entry will be undefined.
 // We need to fetch the entry from the collection based on URL params.
 let { entry, routeBasePath: propsRouteBasePath, version, actualVersion, isLatestAlias, docLocale } = Astro.props

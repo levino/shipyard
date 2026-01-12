@@ -5,6 +5,8 @@ import blogConfig from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
+export const prerender = true
+
 const { postsPerPage, routeBasePath } = blogConfig
 
 export const getStaticPaths = (async () => {
