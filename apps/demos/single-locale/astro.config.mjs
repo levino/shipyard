@@ -2,11 +2,6 @@
 
 import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
-import {
-  remarkAdmonitions,
-  remarkDirective,
-  remarkNpm2Yarn,
-} from '@levino/shipyard-base/remark'
 import { shipyardCodeBlockTransformers } from '@levino/shipyard-base/shiki'
 import shipyardDocs from '@levino/shipyard-docs'
 import { defineConfig } from 'astro/config'
@@ -16,7 +11,6 @@ import shipyardBlog from '../../../packages/blog/src/index.ts'
 export default defineConfig({
   // No i18n configuration - single language site
   markdown: {
-    remarkPlugins: [remarkDirective, remarkAdmonitions, remarkNpm2Yarn],
     shikiConfig: {
       transformers: shipyardCodeBlockTransformers(),
     },
