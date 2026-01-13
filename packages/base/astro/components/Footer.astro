@@ -1,26 +1,180 @@
 ---
+import { i18n } from 'astro:config/server'
+import type {
+  FooterConfig,
+  FooterLink,
+  FooterLinkColumn,
+} from '../../src/schemas/config'
+
 interface FooterProps {
-  links: {
-    label: string
-    href: string
-  }[]
-  copyright: {
-    label: string
-    href: string
-    year: number
-  }
+  config?: FooterConfig
+  hideBranding?: boolean
 }
 
-const { links, copyright } = Astro.props as FooterProps
+const { config, hideBranding = false } = Astro.props as FooterProps
+
+const withLocale = (path: string) => {
+  if (!i18n || !Astro.currentLocale) return path
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  return `/${Astro.currentLocale}${normalizedPath}`
+}
+
+// Type guard to check if a link item is a column
+function isColumn(
+  item: FooterLink | FooterLinkColumn,
+): item is FooterLinkColumn {
+  return 'items' in item && Array.isArray(item.items)
+}
+
+// Check if we have multi-column layout
+const hasColumns = config?.links?.some(isColumn) ?? false
+
+// Get link href with locale support
+function getLinkHref(link: FooterLink): string {
+  if (link.href) return link.href
+  if (link.to) return withLocale(link.to)
+  return '#'
+}
+
+// Check if link is external
+function isExternal(link: FooterLink): boolean {
+  return (
+    !!link.href &&
+    (link.href.startsWith('http://') || link.href.startsWith('https://'))
+  )
+}
+
+// Check if a URL is external
+function isExternalUrl(url: string): boolean {
+  return url.startsWith('http://') || url.startsWith('https://')
+}
+
+// Get logo href with locale support for internal links
+function getLogoHref(href: string): string {
+  if (isExternalUrl(href)) return href
+  return withLocale(href)
+}
+
+const isDark = config?.style === 'dark'
 ---
 
-<footer class="flex w-full items-center justify-between px-6 py-4 text-sm font-medium">
-  <a href={copyright.href} target="_blank">
-    © {copyright.label}, {copyright.year}
-  </a>
-  {links.map(({ label, href }) => (
-    <a href={href}>
-      {label}
-    </a>
-  ))}
+<footer
+  class:list={[
+    'w-full px-6 py-8 text-sm',
+    isDark ? 'bg-neutral text-neutral-content' : 'bg-base-200 text-base-content',
+  ]}
+>
+  <div class="mx-auto max-w-7xl">
+    {/* Logo */}
+    {config?.logo && (
+      <div class="mb-6">
+        {config.logo.href ? (
+          <a
+            href={getLogoHref(config.logo.href)}
+            {...(isExternalUrl(config.logo.href) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+          >
+            {config.logo.srcDark ? (
+              <picture>
+                <source srcset={config.logo.srcDark} media="(prefers-color-scheme: dark)" />
+                <img
+                  src={config.logo.src}
+                  alt={config.logo.alt}
+                  width={config.logo.width}
+                  height={config.logo.height}
+                  class="h-10 w-auto"
+                />
+              </picture>
+            ) : (
+              <img
+                src={config.logo.src}
+                alt={config.logo.alt}
+                width={config.logo.width}
+                height={config.logo.height}
+                class="h-10 w-auto"
+              />
+            )}
+          </a>
+        ) : config.logo.srcDark ? (
+          <picture>
+            <source srcset={config.logo.srcDark} media="(prefers-color-scheme: dark)" />
+            <img
+              src={config.logo.src}
+              alt={config.logo.alt}
+              width={config.logo.width}
+              height={config.logo.height}
+              class="h-10 w-auto"
+            />
+          </picture>
+        ) : (
+          <img
+            src={config.logo.src}
+            alt={config.logo.alt}
+            width={config.logo.width}
+            height={config.logo.height}
+            class="h-10 w-auto"
+          />
+        )}
+      </div>
+    )}
+
+    {/* Links */}
+    {config?.links && config.links.length > 0 && (
+      hasColumns ? (
+        <div class="mb-8 grid grid-cols-2 gap-8 md:grid-cols-3 lg:grid-cols-4">
+          {config.links.filter(isColumn).map((item) => (
+            <div>
+              <h3 class="mb-4 font-semibold">{item.title}</h3>
+              <ul class="space-y-2">
+                {item.items.map((link) => (
+                  <li>
+                    <a
+                      href={getLinkHref(link)}
+                      class="opacity-80 transition-opacity hover:opacity-100"
+                      {...(isExternal(link) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div class="mb-6 flex flex-wrap gap-x-6 gap-y-2">
+          {config.links.map((item) =>
+            !isColumn(item) && (
+              <a
+                href={getLinkHref(item)}
+                class="opacity-80 transition-opacity hover:opacity-100"
+                {...(isExternal(item) ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {item.label}
+              </a>
+            )
+          )}
+        </div>
+      )
+    )}
+
+    {/* Bottom bar: copyright and branding */}
+    <div class="flex flex-wrap items-center justify-between gap-4 border-t border-current/10 pt-6">
+      {config?.copyright ? (
+        <div set:html={config.copyright} />
+      ) : (
+        <div>&copy; {new Date().getFullYear()}</div>
+      )}
+
+      {!hideBranding && (
+        <a
+          href="https://github.com/levino/shipyard"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="opacity-60 transition-opacity hover:opacity-100"
+        >
+          Built with Shipyard
+        </a>
+      )}
+    </div>
+  </div>
 </footer>

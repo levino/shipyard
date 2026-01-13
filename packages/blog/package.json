@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-blog",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Blog plugin for shipyard with pagination, sidebar, and git metadata",
   "type": "module",
   "main": "src/index.ts",

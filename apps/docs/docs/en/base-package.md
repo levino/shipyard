@@ -83,6 +83,8 @@ export default defineConfig({
 | `tagline` | `string` | Yes | — | Short description of your site |
 | `navigation` | `NavigationTree` | Yes | — | Global navigation structure (see below) |
 | `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
+| `footer` | `FooterConfig` | No | — | Footer configuration (links, copyright, style) |
+| `hideBranding` | `boolean` | No | `false` | Hide the "Built with Shipyard" branding |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure
@@ -131,6 +133,104 @@ shipyard({
     'https://example.com/analytics.js',
     { src: 'https://example.com/script.js', async: true },
   ],
+})
+```
+
+### Footer Configuration
+
+Customize your site's footer with links, copyright notice, and styling. Shipyard supports both simple (single row) and multi-column footer layouts, similar to Docusaurus.
+
+#### Simple Footer
+
+A simple footer displays links in a horizontal row:
+
+```javascript
+shipyard({
+  // ... other options
+  footer: {
+    links: [
+      { label: 'Documentation', to: '/docs' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'GitHub', href: 'https://github.com/myorg/myrepo' },
+    ],
+    copyright: 'Copyright © 2025 My Company. All rights reserved.',
+  },
+})
+```
+
+#### Multi-Column Footer
+
+For a multi-column layout, use objects with `title` and `items`:
+
+```javascript
+shipyard({
+  // ... other options
+  footer: {
+    style: 'dark',
+    links: [
+      {
+        title: 'Docs',
+        items: [
+          { label: 'Getting Started', to: '/docs' },
+          { label: 'API Reference', to: '/docs/api' },
+        ],
+      },
+      {
+        title: 'Community',
+        items: [
+          { label: 'Blog', to: '/blog' },
+          { label: 'GitHub', href: 'https://github.com/myorg/myrepo' },
+        ],
+      },
+    ],
+    copyright: 'Copyright © 2025 My Company.',
+  },
+})
+```
+
+#### Footer Options
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `style` | `'light' \| 'dark'` | `'light'` | Footer color theme |
+| `links` | `(FooterLink \| FooterLinkColumn)[]` | `[]` | Footer links or columns |
+| `copyright` | `string` | — | Copyright notice (supports HTML) |
+| `logo` | `FooterLogo` | — | Optional footer logo |
+
+#### FooterLink Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `label` | `string` | Yes | Display text for the link |
+| `to` | `string` | One of `to`/`href` | Internal link path (locale prefix added automatically) |
+| `href` | `string` | One of `to`/`href` | External URL (opens in new tab) |
+
+#### FooterLinkColumn Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `title` | `string` | Yes | Column header text |
+| `items` | `FooterLink[]` | Yes | Links within this column |
+
+#### FooterLogo Properties
+
+| Property | Type | Required | Description |
+|----------|------|----------|-------------|
+| `alt` | `string` | Yes | Alt text for the logo |
+| `src` | `string` | Yes | Logo image source URL |
+| `srcDark` | `string` | No | Optional dark mode logo |
+| `href` | `string` | No | Link URL when clicking the logo |
+| `width` | `number` | No | Logo width in pixels |
+| `height` | `number` | No | Logo height in pixels |
+
+#### Shipyard Branding
+
+By default, the footer displays a "Built with Shipyard" link. To hide this branding:
+
+```javascript
+shipyard({
+  // ... other options
+  hideBranding: true,
 })
 ```
 

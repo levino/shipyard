@@ -398,8 +398,11 @@ export interface DocsConfig {
   versions?: VersionConfig
   /**
    * Whether to prerender docs pages at build time.
-   * Set to false for SSR sites with auth middleware that need access to request headers/cookies.
-   * @default true
+   * When not specified, this is automatically determined from Astro's output mode:
+   * - `output: 'server'` → defaults to `false` (SSR)
+   * - `output: 'static'` or `output: 'hybrid'` → defaults to `true` (prerender)
+   *
+   * Set explicitly to `false` for SSR sites with auth middleware that need access to request headers/cookies.
    */
   prerender?: boolean
 }
@@ -734,7 +737,7 @@ export default (config: DocsConfig = {}): AstroIntegration => {
     showLastUpdateAuthor = false,
     llmsTxt,
     versions,
-    prerender = true,
+    prerender: prerenderConfig,
   } = config
 
   // Validate versions config if provided
@@ -782,6 +785,14 @@ export default (config: DocsConfig = {}): AstroIntegration => {
         config: astroConfig,
         updateConfig,
       }) => {
+        // Determine prerender value: if not explicitly set, derive from Astro's output mode
+        // - 'server' output defaults to false (SSR)
+        // - 'static' or 'hybrid' output defaults to true (prerender)
+        const prerender =
+          prerenderConfig !== undefined
+            ? prerenderConfig
+            : astroConfig.output !== 'server'
+
         // Create a generated entry file for this specific docs instance
         // This ensures each route has its own getStaticPaths that only returns its own paths
         const generatedDir = join(
@@ -808,7 +819,12 @@ import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import { createVersionPathMap, getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId } from '@levino/shipyard-docs'
 import Layout from '@levino/shipyard-docs/astro/Layout.astro'
 
+const collectionName = ${JSON.stringify(resolvedCollectionName)}
+const routeBasePath = ${JSON.stringify(normalizedBasePath)}
+
 export async function getStaticPaths() {
+  // Note: collectionName and routeBasePath must be inlined here because Astro compiles
+  // getStaticPaths separately and module-level constants are not available
   const collectionName = ${JSON.stringify(resolvedCollectionName)}
   const routeBasePath = ${JSON.stringify(normalizedBasePath)}
   const hasVersions = ${JSON.stringify(hasVersions)}
@@ -880,8 +896,54 @@ export async function getStaticPaths() {
   return paths
 }
 
-const { entry, routeBasePath, version, actualVersion, isLatestAlias, docLocale } = Astro.props
-const { slug: pageSlug } = Astro.params
+// In SSR mode (prerender: false), getStaticPaths is not called so Astro.props.entry will be undefined.
+// We need to fetch the entry from the collection based on URL params.
+let { entry, routeBasePath: propsRouteBasePath, version, actualVersion, isLatestAlias, docLocale } = Astro.props
+const { slug: pageSlug, locale, version: urlVersion } = Astro.params
+
+// SSR mode: fetch entry dynamically when props are not available from getStaticPaths
+if (!entry) {
+  const allDocs = await getCollection(collectionName)
+  const docs = allDocs.filter((doc) => doc.data.render !== false)
+
+  // Reconstruct the entry ID from URL params
+  let entryId
+  if (i18n && locale) {
+    // For versioned docs, include version in the entry ID
+    if (urlVersion) {
+      entryId = pageSlug ? urlVersion + '/' + locale + '/' + pageSlug : urlVersion + '/' + locale
+    } else {
+      entryId = pageSlug ? locale + '/' + pageSlug : locale
+    }
+  } else {
+    if (urlVersion) {
+      entryId = pageSlug ? urlVersion + '/' + pageSlug : urlVersion
+    } else {
+      entryId = pageSlug ?? ''
+    }
+  }
+
+  // Find the matching entry
+  entry = docs.find((doc) => doc.id === entryId)
+
+  // If no exact match, try matching with /index suffix (for index pages)
+  // For empty entryId (root path like /docs), look for 'index'
+  // For category paths (like /docs/details), look for 'details/index'
+  if (!entry) {
+    const indexEntryId = entryId ? entryId + '/index' : 'index'
+    entry = docs.find((doc) => doc.id === indexEntryId)
+  }
+
+  // If still no match, return 404
+  if (!entry) {
+    return Astro.redirect('/404')
+  }
+
+  // Set version from URL params for SSR mode
+  version = urlVersion
+  isLatestAlias = false
+  docLocale = locale
+}
 
 // SEO-friendly redirect for /latest/ URLs to canonical version URLs
 // We handle the redirect inline below since Astro.redirect() doesn't work reliably

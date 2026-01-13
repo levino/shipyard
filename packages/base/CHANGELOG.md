@@ -1,5 +1,78 @@
 # @levino/shipyard-base
 
+## 0.6.2
+
+### Patch Changes
+
+- c5e24d0: Add configurable footer with Docusaurus-like API
+
+  You can now customize your site's footer with links, copyright notice, and styling. Shipyard supports both simple (single row) and multi-column footer layouts, similar to Docusaurus.
+
+  **Simple footer:**
+
+  ```javascript
+  shipyard({
+    footer: {
+      links: [
+        { label: "Documentation", to: "/docs" },
+        { label: "GitHub", href: "https://github.com/myorg/myrepo" },
+      ],
+      copyright: "Copyright © 2025 My Company.",
+    },
+  });
+  ```
+
+  **Multi-column footer:**
+
+  ```javascript
+  shipyard({
+    footer: {
+      style: "dark",
+      links: [
+        {
+          title: "Docs",
+          items: [{ label: "Getting Started", to: "/docs" }],
+        },
+      ],
+      copyright: "Copyright © 2025 My Company.",
+    },
+  });
+  ```
+
+  The footer also includes a "Built with Shipyard" branding link by default, which can be hidden with `hideBranding: true`.
+
+## 0.6.1
+
+### Patch Changes
+
+- cd94056: You can now enable broken link detection during production builds. Shipyard automatically scans your built HTML files for internal links that point to non-existent pages, helping you catch issues before deploying.
+
+  Configure the behavior with the new `onBrokenLinks` option:
+
+  ```javascript
+  shipyard({
+    // ... other options
+    onBrokenLinks: "throw", // fail build on broken links
+  });
+  ```
+
+  Available values:
+
+  - `'ignore'` - Don't check for broken links
+  - `'log'` - Log broken links but continue build
+  - `'warn'` - Log warnings (default)
+  - `'throw'` - Fail the build on broken links
+
+- 7086067: Export globals.css from package for custom layouts
+
+  You can now import the global styles directly when creating custom layouts:
+
+  ```javascript
+  import "@levino/shipyard-base/globals.css";
+  ```
+
+  This is useful when creating custom page layouts that don't use the built-in Shipyard layouts but still need the base styles.
+
 ## 0.6.0
 
 ### Minor Changes
