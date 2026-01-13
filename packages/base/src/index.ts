@@ -1,5 +1,8 @@
 import { fileURLToPath } from 'node:url'
 import type { AstroIntegration } from 'astro'
+import remarkDirective from 'remark-directive'
+import { remarkAdmonitions } from './remark/remarkAdmonitions'
+import { remarkNpm2Yarn } from './remark/remarkNpm2Yarn'
 import type { Config } from './schemas/config'
 import { checkLinks, reportBrokenLinks } from './tools/linkChecker'
 
@@ -39,6 +42,9 @@ export default (config: Config): AstroIntegration => {
         } as Record<string, string | undefined>
 
         updateConfig({
+          markdown: {
+            remarkPlugins: [remarkDirective, remarkAdmonitions, remarkNpm2Yarn],
+          },
           vite: {
             plugins: [
               {

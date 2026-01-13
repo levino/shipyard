@@ -1,17 +1,9 @@
 /**
  * Remark plugins for shipyard markdown processing.
  *
- * @example
- * ```ts
- * import remarkDirective from 'remark-directive'
- * import { remarkAdmonitions } from '@levino/shipyard-base/remark'
- *
- * export default defineConfig({
- *   markdown: {
- *     remarkPlugins: [remarkDirective, remarkAdmonitions],
- *   },
- * })
- * ```
+ * Note: These plugins are automatically registered by the shipyard integration.
+ * You don't need to configure them manually. They are exported here for
+ * advanced use cases where you need direct access to the plugins.
  */
 
 // Re-export remark-directive for convenience

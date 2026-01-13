@@ -41,7 +41,10 @@ const getDefaultTitle = (type: AdmonitionType): string => {
 /**
  * Remark plugin to transform container directives into admonitions.
  *
- * This plugin works with remark-directive to transform:
+ * This plugin is automatically registered by the shipyard integration.
+ * You don't need to configure it manually.
+ *
+ * It works with remark-directive to transform:
  * ```markdown
  * :::note
  * This is a note
@@ -53,18 +56,6 @@ const getDefaultTitle = (type: AdmonitionType): string => {
  * ```
  *
  * Into properly structured admonition HTML.
- *
- * @example
- * ```ts
- * import remarkDirective from 'remark-directive'
- * import { remarkAdmonitions } from '@levino/shipyard-base/remark'
- *
- * export default defineConfig({
- *   markdown: {
- *     remarkPlugins: [remarkDirective, remarkAdmonitions],
- *   },
- * })
- * ```
  */
 export const remarkAdmonitions: Plugin<[], Root> = () => {
   return (tree: Root) => {
