@@ -28,10 +28,9 @@ Additionally, check:
 **FIRST**: Check if any task has status `in_progress` - if so, continue that task (it was interrupted).
 
 If no in_progress tasks, pick the best `pending` task considering:
-1. **Dependencies**: Do prerequisites first
-2. **Priority**: Higher priority tasks are generally more important
-3. **Logical ordering**: What makes sense to build first?
-4. **Context from history**: What was recently worked on?
+1. **Dependencies**: Do prerequisites first (check `dependsOn` field)
+2. **Logical ordering**: What makes sense to build first?
+3. **Context from history**: What was recently worked on?
 
 If no pending/in_progress tasks remain, output `<promise>COMPLETE</promise>` and exit.
 
@@ -83,7 +82,7 @@ This signals the loop to stop. Otherwise, just end your session normally and the
 ## Important Rules
 
 - **One task, completed fully**: Pick one task and finish it completely before the session ends
-- **Use judgment for task selection**: Consider dependencies, logical ordering, and what makes sense - not just priority numbers
+- **Use judgment for task selection**: Consider dependencies, logical ordering, and what makes sense
 - **Never leave tasks half-done**: If you start a task, finish it. Only mark as `blocked` if truly stuck.
 - **No scope creep**: Only add new tasks if strictly required to complete existing work. Do NOT invent features.
 - **Always commit**: Leave the codebase in a clean, working state

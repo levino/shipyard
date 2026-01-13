@@ -116,7 +116,9 @@ const renderScriptAttributes = (script: Script) => {
             showBrand={!props.sidebarNavigation}
             brand={config.brand}
             navigation={navigation}
-          />
+          >
+            <slot name="navbarExtra" slot="navbarExtra" />
+          </GlobalDesktopNavigation>
           <div class="grow">
             <div class="mx-auto px-4">
               <slot />
@@ -134,7 +136,9 @@ const renderScriptAttributes = (script: Script) => {
             brand={config.brand}
             global={navigation}
             local={props.sidebarNavigation}
-          />
+          >
+            <slot name="sidebarExtra" slot="sidebarExtra" />
+          </SidebarNavigation>
         </div>
       </div>
     </div>

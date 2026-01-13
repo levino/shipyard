@@ -70,6 +70,7 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
         )
       }
     </ul>
+    <slot name="navbarExtra" />
     <ThemeToggle class="btn btn-ghost btn-circle" />
     <LanguageSwitcher variant="dropdown" />
   </div>

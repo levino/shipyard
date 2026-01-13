@@ -1,0 +1,13 @@
+# Cloudflare Workers configuration for versioned-i18n demo
+# Static site deployment with i18n and versioning
+
+name = "shipyard-versioned-i18n-demo"
+compatibility_date = "2025-01-08"
+
+[assets]
+directory = "./dist"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+[build]
+command = "npm run build"

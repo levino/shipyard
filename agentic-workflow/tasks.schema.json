@@ -12,7 +12,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "title", "status", "priority", "createdAt"],
+        "required": ["id", "title", "status", "createdAt"],
         "properties": {
           "id": {
             "type": "string",
@@ -30,11 +30,6 @@
             "type": "string",
             "enum": ["pending", "in_progress", "completed", "blocked"],
             "description": "Current task status"
-          },
-          "priority": {
-            "type": "string",
-            "enum": ["critical", "high", "medium", "low"],
-            "description": "Task priority level"
           },
           "createdAt": {
             "type": "string",

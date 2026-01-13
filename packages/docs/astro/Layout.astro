@@ -3,13 +3,19 @@ import { i18n } from 'astro:config/server'
 import { type CollectionKey, getCollection, render } from 'astro:content'
 import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import type { NavigationTree } from '@levino/shipyard-base'
-import { Breadcrumbs, TableOfContents } from '@levino/shipyard-base/components'
+import {
+  Breadcrumbs,
+  DeprecationBanner,
+  TableOfContents,
+  VersionBadge,
+  VersionSelector,
+} from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { Array as EffectArray, Option } from 'effect'
 import { getPaginationInfo } from '../src/pagination'
 import type { DocsData } from '../src/sidebarEntries'
-import { toSidebarEntries } from '../src/sidebarEntries'
+import { filterDocsForVersion, toSidebarEntries } from '../src/sidebarEntries'
 import DocMetadata from './DocMetadata.astro'
 import DocPagination from './DocPagination.astro'
 import LlmsTxtSidebarLabel from './LlmsTxtSidebarLabel.astro'
@@ -45,6 +51,11 @@ interface Props {
    * The name of the author who last updated this page.
    */
   lastAuthor?: string
+  /**
+   * The current version being viewed (for versioned docs).
+   * If not provided, it will be extracted from the URL.
+   */
+  currentVersion?: string
   /**
    * Whether to hide the table of contents on this page.
    * @default false
@@ -84,6 +95,7 @@ const {
   editUrl,
   lastUpdated,
   lastAuthor,
+  currentVersion: currentVersionProp,
   hideTableOfContents = false,
   hideTitle = false,
   keywords,
@@ -95,6 +107,40 @@ const {
 
 // Normalize the route base path
 const normalizedBasePath = routeBasePath.replace(/^\/+|\/+$/g, '')
+
+// Get version configuration for this docs instance
+const versionsConfig = docsConfigs[normalizedBasePath]?.versions
+
+// Extract current version from URL if not provided via props
+// URL patterns: /docs/v1.0/... or /en/docs/v1.0/...
+const extractVersionFromUrl = (): string | undefined => {
+  if (!versionsConfig) return undefined
+
+  const path = Astro.url.pathname
+  const basePath = normalizedBasePath
+
+  // Find the segment after the base path
+  // Handle both /docs/v1.0/... and /en/docs/v1.0/...
+  const basePathIndex = path.indexOf(`/${basePath}/`)
+  if (basePathIndex === -1) return undefined
+
+  const afterBasePath = path.substring(basePathIndex + basePath.length + 2)
+  const nextSegment = afterBasePath.split('/')[0]
+
+  // Handle 'latest' alias - resolve to current version
+  if (nextSegment === 'latest') {
+    return versionsConfig.current
+  }
+
+  // Check if this segment matches a known version path
+  const matchingVersion = versionsConfig.available.find(
+    (v) => v.path === nextSegment || v.version === nextSegment,
+  )
+
+  return matchingVersion?.version
+}
+
+const currentVersion = currentVersionProp ?? extractVersionFromUrl()
 
 // Get the collection name from config, defaulting to the route base path
 const collectionName =
@@ -165,7 +211,14 @@ const docs =
     )
     .then((promises) => Promise.all(promises)))
 
-const fullTree = toSidebarEntries(docs)
+// Filter docs by version for sidebar if versioning is enabled
+// This ensures the sidebar only shows docs from the current version
+const sidebarDocs =
+  currentVersion && versionsConfig
+    ? filterDocsForVersion(docs, currentVersion)
+    : docs
+
+const fullTree = toSidebarEntries(sidebarDocs)
 
 const entries: NavigationTree =
   i18n && Astro.currentLocale
@@ -174,7 +227,8 @@ const entries: NavigationTree =
 
 // Compute pagination info for the current page BEFORE adding llms.txt
 // (llms.txt should not be part of pagination navigation)
-const pagination = getPaginationInfo(Astro.url.pathname, entries, docs)
+// Use sidebarDocs for versioned docs to keep pagination within the same version
+const pagination = getPaginationInfo(Astro.url.pathname, entries, sidebarDocs)
 
 // Add llms.txt link to sidebar if enabled for this docs instance
 // This is added AFTER pagination computation so it doesn't affect prev/next navigation
@@ -190,13 +244,113 @@ if (docsConfig?.llmsTxtEnabled) {
     labelHtml: llmsTxtLabelHtml,
   }
 }
+
+// Prepare version selector props (only if versions are configured)
+const hasVersions = versionsConfig && versionsConfig.available.length > 1
+const versionSelectorProps = hasVersions
+  ? {
+      versions: versionsConfig.available,
+      currentVersion: currentVersion ?? versionsConfig.current,
+      stableVersion: versionsConfig.stable,
+      deprecatedVersions: versionsConfig.deprecated,
+    }
+  : null
+
+// Prepare version badge props (show if versioning is enabled)
+const versionBadgeProps =
+  versionsConfig && currentVersion
+    ? {
+        version: currentVersion,
+        stableVersion: versionsConfig.stable,
+        currentVersion: versionsConfig.current,
+        deprecatedVersions: versionsConfig.deprecated,
+        banner: versionsConfig.available.find(
+          (v) => v.version === currentVersion,
+        )?.banner,
+        isLatestAlias: Astro.url.pathname.includes('/latest/'),
+      }
+    : null
+
+// Check if current version is deprecated
+const isDeprecated =
+  versionsConfig &&
+  currentVersion &&
+  (versionsConfig.deprecated?.includes(currentVersion) ||
+    versionsConfig.available.find((v) => v.version === currentVersion)
+      ?.banner === 'unmaintained')
+
+// Prepare deprecation banner props (show only for deprecated versions)
+// This block only executes when isDeprecated is true, which guarantees versionsConfig and currentVersion exist
+const deprecationBannerProps =
+  isDeprecated && versionsConfig && currentVersion
+    ? (() => {
+        // Find the current version info
+        const currentVersionInfo = versionsConfig.available.find(
+          (v) => v.version === currentVersion,
+        )
+        // Find the latest version info
+        const latestVersionInfo = versionsConfig.available.find(
+          (v) => v.version === versionsConfig.current,
+        )
+        // Build the URL to the same page in the latest version
+        const currentPath = Astro.url.pathname
+        const currentVersionPath = currentVersionInfo?.path ?? currentVersion
+        const latestVersionPath =
+          latestVersionInfo?.path ?? versionsConfig.current
+        // Escape special regex characters in the version path
+        const escapedVersionPath = currentVersionPath.replace(
+          /[.*+?^${}()|[\]\\]/g,
+          '\\$&',
+        )
+        const latestVersionUrl = currentPath.replace(
+          new RegExp(`/${escapedVersionPath}/`),
+          `/${latestVersionPath}/`,
+        )
+
+        return {
+          version: currentVersion,
+          label: currentVersionInfo?.label,
+          currentVersion: versionsConfig.current,
+          currentVersionLabel: latestVersionInfo?.label,
+          latestVersionUrl,
+        }
+      })()
+    : null
 ---
 
 <BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} title={titleMeta}>
+  {
+    versionSelectorProps && (
+      <VersionSelector
+        slot="navbarExtra"
+        variant="dropdown"
+        {...versionSelectorProps}
+      />
+    )
+  }
+  {
+    versionSelectorProps && (
+      <VersionSelector
+        slot="sidebarExtra"
+        variant="list"
+        {...versionSelectorProps}
+      />
+    )
+  }
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': !hideTableOfContents }]}>
+      {deprecationBannerProps && (
+        <div class="not-prose mb-4">
+          <DeprecationBanner {...deprecationBannerProps} />
+        </div>
+      )}
       <div class:list={['prose', 'max-w-none', { 'hide-title': hideTitle }]}>
-        <Breadcrumbs navigation={entries} />
+        <div class="flex items-center gap-3 flex-wrap not-prose mb-2">
+          <Breadcrumbs navigation={entries} />
+          {versionBadgeProps && (
+            <VersionBadge {...versionBadgeProps} size="sm" />
+          )}
+        </div>
         {!hideTableOfContents && <TableOfContents links={headings} class="xl:hidden" />}
         <slot />
         <DocMetadata editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} />

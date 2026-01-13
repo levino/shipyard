@@ -1,0 +1,13 @@
+# Cloudflare Workers configuration for versioned-docs demo
+# Static site deployment
+
+name = "shipyard-versioned-docs-demo"
+compatibility_date = "2025-01-08"
+
+[assets]
+directory = "./dist"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+[build]
+command = "npm run build"

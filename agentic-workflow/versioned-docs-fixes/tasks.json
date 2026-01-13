@@ -1,0 +1,53 @@
+{
+  "$schema": "../tasks.schema.json",
+  "version": 1,
+  "tasks": [
+    {
+      "id": "fix-ci-workflow-paths",
+      "title": "Fix CI workflow to use correct demo paths",
+      "description": "The CI workflow references 'single-language' but the directory was renamed to 'single-locale' on main. Update the workflow file to match.",
+      "status": "completed",
+      "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:45:00Z",
+      "notes": [
+        "Changed name and path from single-language to single-locale in CI matrix"
+      ]
+    },
+    {
+      "id": "fix-build-errors",
+      "title": "Fix all build errors",
+      "description": "All demo apps should build successfully. Run builds and fix any errors that occur.",
+      "status": "completed",
+      "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:50:00Z",
+      "notes": [
+        "Fixed docsSchema.extend() error by extracting base schema before transform/refine",
+        "All 4 demos now build: i18n, single-locale, versioned-docs, versioned-i18n"
+      ]
+    },
+    {
+      "id": "fix-test-failures",
+      "title": "Fix all E2E test failures",
+      "description": "All E2E tests should pass. Run the test suite and fix any failing tests.",
+      "status": "completed",
+      "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:58:00Z",
+      "dependsOn": ["fix-build-errors"],
+      "notes": [
+        "Fixed 4 failing tests in versioned-docs demo",
+        "cross-version-links tests: updated selectors to use 'ol a' to exclude pagination links",
+        "pagination tests: updated regex from /^\\/docs\\/v[12]\\// to /^\\/docs\\/v[12](\\/|$)/ to accept URLs without trailing slash"
+      ]
+    },
+    {
+      "id": "pass-linting",
+      "title": "Ensure code passes linting",
+      "description": "Run Biome and fix any linting or formatting issues.",
+      "status": "completed",
+      "createdAt": "2026-01-08T10:30:00Z",
+      "completedAt": "2026-01-08T10:59:00Z",
+      "dependsOn": ["fix-test-failures"],
+      "notes": ["Biome check passed with no fixes needed"]
+    }
+  ]
+}

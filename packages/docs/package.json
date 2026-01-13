@@ -26,10 +26,12 @@
   "dependencies": {
     "effect": "^3.12.5",
     "ramda": "^0.31",
+    "unist-util-visit": "^5.0.0",
     "@levino/shipyard-base": "^0.6.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
+    "@types/hast": "^3.0.4",
     "@types/ramda": "^0.31",
     "astro": "^5.15",
     "vitest": "^2.1.8"

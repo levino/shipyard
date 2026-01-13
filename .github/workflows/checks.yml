@@ -40,6 +40,12 @@ jobs:
           - name: single-locale
             workspace: single-locale-demo
             path: apps/demos/single-locale
+          - name: versioned-docs
+            workspace: versioned-docs-demo
+            path: apps/demos/versioned-docs
+          - name: versioned-i18n
+            workspace: versioned-i18n-demo
+            path: apps/demos/versioned-i18n
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
