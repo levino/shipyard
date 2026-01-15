@@ -1049,8 +1049,20 @@ if (
         writeFileSync(entryFilePath, entryFileContent)
 
         // Create virtual modules to expose docs configurations
+        // Also configure Vite to properly externalize Node.js built-in modules
+        // This prevents warnings when building for edge runtimes like Cloudflare Workers
         updateConfig({
           vite: {
+            ssr: {
+              // Externalize Node.js built-in modules used by shipyard-docs
+              // These are only used at build time (not at SSR runtime in edge environments)
+              external: [
+                'node:fs',
+                'node:path',
+                'node:child_process',
+                'node:module',
+              ],
+            },
             plugins: [
               {
                 name: `shipyard-docs-config-${normalizedBasePath}`,
