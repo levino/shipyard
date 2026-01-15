@@ -1,8 +1,8 @@
 // @ts-check
 
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs, { rehypeVersionLinks } from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 // Version configuration for this demo
@@ -26,6 +26,9 @@ const versionsConfig = {
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   // Configure rehype plugin for version-aware link resolution
   markdown: {
     rehypePlugins: [
@@ -41,9 +44,6 @@ export default defineConfig({
   },
   // No i18n configuration - single language site with versioned docs
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {

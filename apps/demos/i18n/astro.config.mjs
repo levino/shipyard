@@ -1,13 +1,16 @@
 // @ts-check
 
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
 // https://astro.build/config
 export default defineConfig({
   site: 'https://i18n.demos.shipyard.levinkeller.de',
+  vite: {
+    plugins: [tailwindcss()],
+  },
   redirects: {
     '/': {
       status: 302,
@@ -26,9 +29,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {
