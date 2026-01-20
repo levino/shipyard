@@ -45,6 +45,20 @@ shipyard benötigt folgende Peer Dependencies:
 npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
 ```
 
+## Übersicht der erforderlichen Dateien
+
+Bevor wir in die Konfigurationsdetails eintauchen, hier eine kurze Checkliste der Dateien, die du erstellen oder ändern musst:
+
+| Datei | Zweck | Erforderlich? |
+|-------|-------|---------------|
+| `astro.config.mjs` | Astro-Integrationen und Seiten-Einstellungen | Ja |
+| `tailwind.config.mjs` | Tailwind CSS Konfiguration | Ja |
+| `src/content.config.ts` | **Content Collection Schemas und Loader** | Ja |
+| `docs/` Verzeichnis | Dokumentations-Markdown-Dateien | Ja (für Doku) |
+| `blog/` Verzeichnis | Blog-Beitrags-Markdown-Dateien | Ja (für Blog) |
+
+Die am häufigsten vergessene Datei ist `src/content.config.ts` — ohne sie erhältst du Fehler wie "The collection does not exist" beim Bauen deiner Seite.
+
 ## Konfiguration
 
 ### Astro-Konfiguration
@@ -106,9 +120,9 @@ export default {
 }
 ```
 
-### Content Collections
+### Content Collections (Erforderlich)
 
-Erstelle `src/content.config.ts`:
+Erstelle `src/content.config.ts` — **diese Datei ist essentiell**, damit shipyard deine Dokumentations- und Blog-Inhalte finden und rendern kann:
 
 ```typescript
 import { defineCollection } from 'astro:content'
@@ -322,6 +336,52 @@ Jetzt wo du shipyard eingerichtet hast, erkunde diese Themen:
 - **[@levino/shipyard-blog](./blog-package)** – Blog-Features und Anpassung
 - **[Server-Modus (SSR)](./server-mode)** – shipyard mit Server-Side Rendering verwenden
 - **[Feature-Roadmap](./roadmap)** – Sieh welche Features als nächstes kommen
+
+## Fehlerbehebung
+
+### "The collection does not exist" oder "Cannot read properties of undefined"
+
+```
+The collection "docs" does not exist or is empty.
+Cannot read properties of undefined (reading 'render')
+```
+
+**Ursache:** Fehlende oder falsch konfigurierte `src/content.config.ts` Datei.
+
+**Lösung:** Erstelle die Content-Config-Datei wie oben in [Content Collections](#content-collections-erforderlich) gezeigt. Stelle sicher:
+1. Die Datei befindet sich unter `src/content.config.ts` (nicht im Root-Verzeichnis)
+2. Du exportierst ein `collections` Objekt mit deinen definierten Collections
+3. Die Collection-Namen entsprechen dem, was die shipyard-Plugins erwarten (`docs` für Dokumentation, `blog` für Blog-Beiträge)
+
+### Build-Fehler nach der Installation
+
+Wenn du sofort nach der Installation TypeScript- oder Build-Fehler siehst:
+
+1. **Prüfe Peer Dependencies** — Stelle sicher, dass alle erforderlichen Peer Dependencies installiert sind:
+   ```bash
+   npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
+   ```
+
+2. **Überprüfe Tailwind-Konfiguration** — Stelle sicher, dass `tailwind.config.mjs` die shipyard-Pakete im `content`-Array enthält
+
+3. **Prüfe Integrations-Reihenfolge** — In `astro.config.mjs` muss Tailwind vor den shipyard-Integrationen kommen
+
+### Styles werden nicht richtig angewendet
+
+Wenn Komponenten ungestylt oder kaputt erscheinen:
+
+1. **Prüfe `applyBaseStyles`** — Stelle sicher, dass Tailwind mit `applyBaseStyles: false` konfiguriert ist:
+   ```javascript
+   tailwind({ applyBaseStyles: false })
+   ```
+
+2. **Überprüfe Content-Pfade** — Stelle sicher, dass `tailwind.config.mjs` Pfade zu shipyard-Paketen und deinen Content-Verzeichnissen enthält
+
+### Dokumentationsseiten geben 404 zurück
+
+1. **Prüfe Ordnerstruktur** — Dokumentationsdateien sollten in `docs/` im Projekt-Root sein, nicht in `src/docs/`
+2. **Überprüfe content.config.ts** — Stelle sicher, dass der Glob-Loader auf das richtige Verzeichnis zeigt (`'./docs'`)
+3. **Prüfe auf index.md** — Stelle sicher, dass du mindestens eine Markdown-Datei hast (z.B. `docs/index.md`)
 
 ## Hilfe gebraucht?
 
