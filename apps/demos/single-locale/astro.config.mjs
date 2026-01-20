@@ -1,24 +1,24 @@
 // @ts-check
 
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import { shipyardCodeBlockTransformers } from '@levino/shipyard-base/shiki'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
 
 // https://astro.build/config
 export default defineConfig({
   // No i18n configuration - single language site
+  vite: {
+    plugins: [tailwindcss()],
+  },
   markdown: {
     shikiConfig: {
       transformers: shipyardCodeBlockTransformers(),
     },
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {

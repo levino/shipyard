@@ -1,10 +1,10 @@
 // @ts-check
 
 import cloudflare from '@astrojs/cloudflare'
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardBlog from '@levino/shipyard-blog'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
@@ -12,11 +12,11 @@ export default defineConfig({
   // Server mode configuration for Cloudflare
   output: 'server',
   adapter: cloudflare(),
+  vite: {
+    plugins: [tailwindcss()],
+  },
   // No i18n configuration - single language site
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {

@@ -1,8 +1,13 @@
 /* biome-ignore-all lint/suspicious/noUnknownAtRules: bug https://github.com/biomejs/biome/issues/7223 */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
+/* Scan internal shipyard packages that are symlinked in node_modules */
+@source "../../../node_modules/@levino/shipyard-base";
+@source "../../../node_modules/@levino/shipyard-blog";
+@source "../../../node_modules/@levino/shipyard-docs";
 
 @layer components {
   .prose :where(table) {

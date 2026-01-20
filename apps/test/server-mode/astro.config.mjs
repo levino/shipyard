@@ -1,10 +1,10 @@
 // @ts-check
 
 import node from '@astrojs/node'
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardBlog from '@levino/shipyard-blog'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 // https://astro.build/config
@@ -14,11 +14,11 @@ export default defineConfig({
   adapter: node({
     mode: 'standalone',
   }),
+  vite: {
+    plugins: [tailwindcss()],
+  },
   // No i18n configuration - single language site
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {

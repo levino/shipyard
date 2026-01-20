@@ -1,14 +1,17 @@
 // @ts-check
 
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../packages/blog/src/index.ts'
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://shipyard.levinkeller.de',
+  vite: {
+    plugins: [tailwindcss()],
+  },
   redirects: {
     '/': {
       status: 302,
@@ -36,9 +39,6 @@ export default defineConfig({
     },
   },
   integrations: [
-    tailwind({
-      applyBaseStyles: false,
-    }),
     shipyard({
       navigation: {
         docs: {
@@ -72,25 +72,27 @@ export default defineConfig({
         projectName: 'shipyard',
         summary:
           'shipyard is an Astro-based page builder for creating documentation sites, blogs, and content-focused websites with responsive design, i18n support, and modular components.',
-        description: `shipyard provides three packages: @levino/shipyard-base (core layouts and configuration), @levino/shipyard-docs (documentation features with sidebar and pagination), and @levino/shipyard-blog (blog functionality). It uses Tailwind CSS with DaisyUI for styling.
+        description: `shipyard provides three packages: @levino/shipyard-base (core layouts and configuration), @levino/shipyard-docs (documentation features with sidebar and pagination), and @levino/shipyard-blog (blog functionality). It uses Tailwind CSS 4 with DaisyUI 5 for styling.
 
 ## Quick Start
 
 Install packages:
 \`\`\`bash
-npm install @levino/shipyard-base @levino/shipyard-docs tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
+npm install @levino/shipyard-base @levino/shipyard-docs tailwindcss daisyui @tailwindcss/typography @tailwindcss/vite
 \`\`\`
 
 Configure astro.config.mjs:
 \`\`\`javascript
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
-    tailwind({ applyBaseStyles: false }), // Required: prevents DaisyUI conflicts
     shipyard({
       brand: 'My Site',
       title: 'My Site',
@@ -111,21 +113,6 @@ import { createDocsCollection } from '@levino/shipyard-docs'
 
 const docs = defineCollection(createDocsCollection('./docs'))
 export const collections = { docs }
-\`\`\`
-
-Configure tailwind.config.mjs (CRITICAL - styles won't work without this):
-\`\`\`javascript
-import daisyui from 'daisyui'
-import typography from '@tailwindcss/typography'
-
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}',
-    './docs/**/*.md',
-    'node_modules/@levino/shipyard-*/**/*.{astro,js,ts}',
-  ],
-  plugins: [typography, daisyui],
-}
 \`\`\`
 
 Example docs frontmatter (docs/index.md):
