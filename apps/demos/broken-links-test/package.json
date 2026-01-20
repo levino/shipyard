@@ -11,8 +11,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@levino/shipyard-base": "file:../../../packages/base",
-    "@levino/shipyard-docs": "file:../../../packages/docs",
+    "@levino/shipyard-base": "*",
+    "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
     "astro": "^5.15",
     "daisyui": "^5",
