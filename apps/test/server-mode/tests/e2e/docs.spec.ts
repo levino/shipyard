@@ -59,8 +59,8 @@ test.describe('Docs Pages in Server Mode (SSR)', () => {
   test('docs pages show expected content', async ({ page }) => {
     await page.goto('/docs/configuration')
 
-    // Verify specific content is present
-    await expect(page.locator('article')).toBeVisible()
+    // Verify specific content is present (docs use prose div, not article)
+    await expect(page.locator('.prose')).toBeVisible()
 
     // Verify the page has a proper title
     await expect(page).toHaveTitle(/Server Mode Test/)
