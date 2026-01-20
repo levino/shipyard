@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import type { AstroIntegration } from 'astro'
 import remarkDirective from 'remark-directive'
@@ -26,9 +27,21 @@ export default (config: Config): AstroIntegration => {
   return {
     name: 'shipyard',
     hooks: {
-      'astro:config:setup': ({ updateConfig, config: astroConfig }) => {
+      'astro:config:setup': ({
+        updateConfig,
+        config: astroConfig,
+        injectScript,
+      }) => {
         // Detect server mode (output: 'server' or 'hybrid')
         isServerMode = astroConfig.output === 'server'
+
+        // Inject the app's CSS if provided
+        if (config.css) {
+          // Resolve the CSS path relative to the Astro project root
+          const rootDir = fileURLToPath(astroConfig.root)
+          const cssPath = path.resolve(rootDir, config.css)
+          injectScript('page-ssr', `import '${cssPath}';`)
+        }
 
         // Extract locales from Astro's i18n config
         const locales = astroConfig.i18n?.locales ?? []

@@ -20,6 +20,7 @@ export default defineConfig({
   // No i18n configuration - single language site
   integrations: [
     shipyard({
+      css: './src/styles/app.css',
       navigation: {
         docs: {
           label: 'Documentation',

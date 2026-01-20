@@ -29,7 +29,8 @@
     "./components/*": "./astro/components/*",
     "./remark": "./src/remark/index.ts",
     "./shiki": "./src/shiki/index.ts",
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./src/globals.css",
+    "./styles/components.css": "./src/styles/components.css"
   },
   "peerDependencies": {
     "@tailwindcss/typography": "^0.5.10",

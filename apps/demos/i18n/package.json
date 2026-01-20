@@ -12,9 +12,9 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@levino/shipyard-base": "*",
-    "@levino/shipyard-blog": "*",
-    "@levino/shipyard-docs": "*",
+    "@levino/shipyard-base": "file:../../../packages/base",
+    "@levino/shipyard-blog": "file:../../../packages/blog",
+    "@levino/shipyard-docs": "file:../../../packages/docs",
     "@tailwindcss/vite": "^4",
     "astro": "^5.15",
     "daisyui": "^5",

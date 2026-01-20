@@ -20,6 +20,7 @@ export default defineConfig({
   },
   integrations: [
     shipyard({
+      css: './src/styles/app.css',
       navigation: {
         docs: {
           label: 'Documentation',
