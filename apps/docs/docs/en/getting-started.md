@@ -45,6 +45,20 @@ shipyard requires the following peer dependencies:
 npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
 ```
 
+## Required Files Overview
+
+Before diving into the configuration details, here's a quick checklist of the files you'll need to create or modify:
+
+| File | Purpose | Required? |
+|------|---------|-----------|
+| `astro.config.mjs` | Astro integrations and site settings | Yes |
+| `tailwind.config.mjs` | Tailwind CSS configuration | Yes |
+| `src/content.config.ts` | **Content collection schemas and loaders** | Yes |
+| `docs/` directory | Documentation markdown files | Yes (for docs) |
+| `blog/` directory | Blog post markdown files | Yes (for blog) |
+
+The most commonly missed file is `src/content.config.ts` — without it, you'll get errors like "The collection does not exist" when building your site.
+
 ## Configuration
 
 ### Astro Configuration
@@ -106,9 +120,9 @@ export default {
 }
 ```
 
-### Content Collections
+### Content Collections (Required)
 
-Create `src/content.config.ts`:
+Create `src/content.config.ts` — **this file is essential** for shipyard to find and render your documentation and blog content:
 
 ```typescript
 import { defineCollection } from 'astro:content'
@@ -322,6 +336,52 @@ Now that you have shipyard set up, explore these topics:
 - **[@levino/shipyard-blog](./blog-package)** – Blog features and customization
 - **[Server Mode (SSR)](./server-mode)** – Using shipyard with server-side rendering
 - **[Feature Roadmap](./roadmap)** – See what features are coming next
+
+## Troubleshooting
+
+### "The collection does not exist" or "Cannot read properties of undefined"
+
+```
+The collection "docs" does not exist or is empty.
+Cannot read properties of undefined (reading 'render')
+```
+
+**Cause:** Missing or incorrectly configured `src/content.config.ts` file.
+
+**Solution:** Create the content config file as shown in [Content Collections](#content-collections-required) above. Make sure:
+1. The file is located at `src/content.config.ts` (not in the root directory)
+2. You export a `collections` object with your defined collections
+3. The collection names match what the shipyard plugins expect (`docs` for documentation, `blog` for blog posts)
+
+### Build errors after installation
+
+If you see TypeScript or build errors immediately after installation:
+
+1. **Check peer dependencies** — Ensure all required peer dependencies are installed:
+   ```bash
+   npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
+   ```
+
+2. **Verify Tailwind config** — Make sure `tailwind.config.mjs` includes the shipyard packages in the `content` array
+
+3. **Check integration order** — In `astro.config.mjs`, Tailwind must come before shipyard integrations
+
+### Styles not applying correctly
+
+If components appear unstyled or broken:
+
+1. **Check `applyBaseStyles`** — Ensure Tailwind is configured with `applyBaseStyles: false`:
+   ```javascript
+   tailwind({ applyBaseStyles: false })
+   ```
+
+2. **Verify content paths** — Make sure `tailwind.config.mjs` includes paths to shipyard packages and your content directories
+
+### Documentation pages return 404
+
+1. **Check folder structure** — Documentation files should be in `docs/` at the project root, not in `src/docs/`
+2. **Verify content.config.ts** — Make sure the glob loader points to the correct directory (`'./docs'`)
+3. **Check for index.md** — Ensure you have at least one markdown file (e.g., `docs/index.md`)
 
 ## Need Help?
 
