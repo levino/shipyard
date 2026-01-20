@@ -1,5 +1,4 @@
 ---
-import Footer from './Footer.astro'
 import { i18n } from 'astro:config/server'
 import config from 'virtual:shipyard/config'
 import { mapObjIndexed } from 'ramda'
@@ -15,6 +14,7 @@ import {
   Npm2YarnScript,
   SidebarNavigation,
 } from '../components'
+import Footer from './Footer.astro'
 
 type CustomMetaTag = {
   name?: string

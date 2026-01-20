@@ -3,6 +3,7 @@
     "setup": "npm install && npm exec @lavamoat/allow-scripts && ./scripts/create-demo-symlinks.sh",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "test:unit": "npm run test:unit --workspaces --if-present",
+    "test:css": "./scripts/verify-css-classes.sh",
     "build": "npm run build --workspaces --if-present"
   },
   "keywords": [],

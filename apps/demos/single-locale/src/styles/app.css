@@ -9,6 +9,6 @@
 
 /* Tell Tailwind to scan shipyard packages for class usage.
    Note: These paths work because we have symlinks in node_modules/@levino/ */
-@source "../node_modules/@levino/shipyard-base";
-@source "../node_modules/@levino/shipyard-blog";
-@source "../node_modules/@levino/shipyard-docs";
+@source "../../node_modules/@levino/shipyard-base";
+@source "../../node_modules/@levino/shipyard-blog";
+@source "../../node_modules/@levino/shipyard-docs";

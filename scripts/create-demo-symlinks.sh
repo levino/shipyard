@@ -25,9 +25,11 @@ for demo in "${DEMOS[@]}"; do
     mkdir -p "$demo_path/node_modules/@levino"
 
     # Create symlinks to packages
-    ln -sfn "../../../../packages/base" "$demo_path/node_modules/@levino/shipyard-base"
-    ln -sfn "../../../../packages/blog" "$demo_path/node_modules/@levino/shipyard-blog"
-    ln -sfn "../../../../packages/docs" "$demo_path/node_modules/@levino/shipyard-docs"
+    # Path is relative from the symlink location: node_modules/@levino/shipyard-X
+    # Need to go up 5 levels: @levino -> node_modules -> demo -> demos -> apps -> root
+    ln -sfn "../../../../../packages/base" "$demo_path/node_modules/@levino/shipyard-base"
+    ln -sfn "../../../../../packages/blog" "$demo_path/node_modules/@levino/shipyard-blog"
+    ln -sfn "../../../../../packages/docs" "$demo_path/node_modules/@levino/shipyard-docs"
 
     echo "Created symlinks for $demo"
   fi
