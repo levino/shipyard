@@ -4,11 +4,6 @@
 @plugin "daisyui";
 @plugin "@tailwindcss/typography";
 
-/* Scan internal shipyard packages that are symlinked in node_modules */
-@source "../../../node_modules/@levino/shipyard-base";
-@source "../../../node_modules/@levino/shipyard-blog";
-@source "../../../node_modules/@levino/shipyard-docs";
-
 @layer components {
   .prose :where(table) {
     @apply block overflow-x-auto;
