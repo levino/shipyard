@@ -1,5 +1,57 @@
 # @levino/shipyard-base
 
+## 0.7.0
+
+### Minor Changes
+
+- ed3ef9a: Upgrade to Tailwind CSS 4 and DaisyUI 5. This is a breaking change that requires migration from the old `@astrojs/tailwind` integration to the new `@tailwindcss/vite` plugin.
+
+  **Migration Guide:**
+
+  1. Update dependencies:
+
+     - Replace `@astrojs/tailwind` with `@tailwindcss/vite`
+     - Update `tailwindcss` to `^4`
+     - Update `daisyui` to `^5`
+
+  2. Update `astro.config.mjs`:
+
+     ```javascript
+     // Before
+     import tailwind from "@astrojs/tailwind";
+     integrations: [tailwind({ applyBaseStyles: false })];
+
+     // After
+     import tailwindcss from "@tailwindcss/vite";
+     vite: {
+       plugins: [tailwindcss()];
+     }
+     ```
+
+  3. Remove `tailwind.config.mjs` - no longer needed. Tailwind 4 uses CSS-first configuration.
+
+  4. The globals.css now uses new CSS syntax with `@import "tailwindcss"` and `@plugin` directives.
+
+  5. DaisyUI class renames:
+     - `avatar placeholder` → `avatar avatar-placeholder`
+
+### Patch Changes
+
+- e9cdc63: You can now use a simpler CSS import syntax in your Tailwind CSS 4 setup. Instead of manually adding `@source` directives for each package, simply import the packages directly:
+
+  ```css
+  @import "tailwindcss";
+
+  @import "@levino/shipyard-base";
+  @import "@levino/shipyard-blog";
+  @import "@levino/shipyard-docs";
+
+  @plugin "daisyui";
+  @plugin "@tailwindcss/typography";
+  ```
+
+  Each package now includes its own `@source` directives, so Tailwind automatically scans the package components for CSS classes. This eliminates the need for path-based `@source` directives that could break in different project structures.
+
 ## 0.6.3
 
 ### Patch Changes
