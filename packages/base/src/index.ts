@@ -14,10 +14,12 @@ export * from './types'
 
 const shipyardConfigId = 'virtual:shipyard/config'
 const shipyardLocalesId = 'virtual:shipyard/locales'
+const shipyardCssId = 'virtual:shipyard/css'
 
 const resolveId: Record<string, string | undefined> = {
   [shipyardConfigId]: `${shipyardConfigId}`,
   [shipyardLocalesId]: `${shipyardLocalesId}`,
+  [shipyardCssId]: `${shipyardCssId}`,
 }
 
 export default (config: Config): AstroIntegration => {
@@ -26,18 +28,9 @@ export default (config: Config): AstroIntegration => {
   return {
     name: 'shipyard',
     hooks: {
-      'astro:config:setup': ({
-        updateConfig,
-        config: astroConfig,
-        injectScript,
-      }) => {
+      'astro:config:setup': ({ updateConfig, config: astroConfig }) => {
         // Detect server mode (output: 'server' or 'hybrid')
         isServerMode = astroConfig.output === 'server'
-
-        // Inject the app's CSS if provided (expects a URL from ?url import)
-        if (config.css) {
-          injectScript('page-ssr', `import '${config.css}';`)
-        }
 
         // Extract locales from Astro's i18n config
         const locales = astroConfig.i18n?.locales ?? []
@@ -48,6 +41,8 @@ export default (config: Config): AstroIntegration => {
         const load = {
           [shipyardConfigId]: `export default ${JSON.stringify(config)}`,
           [shipyardLocalesId]: `export const locales = ${JSON.stringify(localeList)}; export default ${JSON.stringify(localeList)};`,
+          // Virtual CSS module - imports user's CSS if provided
+          [shipyardCssId]: config.css ? `import '${config.css}';` : '',
         } as Record<string, string | undefined>
 
         updateConfig({
