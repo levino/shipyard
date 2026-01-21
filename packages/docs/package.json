@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-docs",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "Documentation plugin for shipyard with automatic sidebar, pagination, and git metadata",
   "type": "module",
   "main": "src/index.ts",
@@ -27,7 +27,7 @@
     "effect": "^3.12.5",
     "ramda": "^0.31",
     "unist-util-visit": "^5.0.0",
-    "@levino/shipyard-base": "^0.6.3"
+    "@levino/shipyard-base": "^0.7.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.16",
