@@ -1,0 +1,12 @@
+/* biome-ignore-all lint/suspicious/noUnknownAtRules: Tailwind CSS directives */
+
+/* Tailwind CSS 4 setup */
+@import "tailwindcss";
+
+/* Import shipyard packages - includes both styles and @source directives */
+@import "@levino/shipyard-base";
+@import "@levino/shipyard-blog";
+@import "@levino/shipyard-docs";
+
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";

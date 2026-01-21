@@ -182,6 +182,24 @@ export interface Config {
   navigation: NavigationTree
   title: string
   tagline: string
+  /**
+   * Path to your app's CSS entry point.
+   * This file should set up Tailwind CSS with @source directives for shipyard packages.
+   *
+   * @example './src/styles/app.css'
+   *
+   * Example CSS file contents:
+   * ```css
+   * @import "tailwindcss";
+   * @plugin "daisyui";
+   * @plugin "@tailwindcss/typography";
+   * @source "../node_modules/@levino/shipyard-base";
+   * @source "../node_modules/@levino/shipyard-blog";
+   * @source "../node_modules/@levino/shipyard-docs";
+   * @import "@levino/shipyard-base/globals.css";
+   * ```
+   */
+  css?: string
   scripts?: Script[]
   /**
    * Announcement bar configuration.

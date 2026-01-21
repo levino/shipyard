@@ -4,6 +4,7 @@ import shipyard from '@levino/shipyard-base'
 import shipyardDocs, { rehypeVersionLinks } from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
+import appCss from './src/styles/app.css?url'
 
 // Version configuration for this demo
 const versionsConfig = {
@@ -45,6 +46,7 @@ export default defineConfig({
   // No i18n configuration - single language site with versioned docs
   integrations: [
     shipyard({
+      css: appCss,
       navigation: {
         docs: {
           label: 'Documentation',

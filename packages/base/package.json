@@ -20,8 +20,13 @@
   "scripts": {
     "test:unit": "vitest run"
   },
+  "style": "./index.css",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "style": "./index.css",
+      "default": "./src/index.ts"
+    },
+    "./index.css": "./index.css",
     "./astro": "./src/astro.ts",
     "./layouts": "./astro/layouts/index.ts",
     "./layouts/*": "./astro/layouts/*",
@@ -29,7 +34,8 @@
     "./components/*": "./astro/components/*",
     "./remark": "./src/remark/index.ts",
     "./shiki": "./src/shiki/index.ts",
-    "./globals.css": "./src/globals.css"
+    "./globals.css": "./src/globals.css",
+    "./styles/components.css": "./src/styles/components.css"
   },
   "peerDependencies": {
     "@tailwindcss/typography": "^0.5.10",
@@ -39,7 +45,8 @@
   },
   "files": [
     "astro",
-    "src"
+    "src",
+    "index.css"
   ],
   "repository": {
     "type": "git",

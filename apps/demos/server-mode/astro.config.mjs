@@ -6,6 +6,7 @@ import shipyardBlog from '@levino/shipyard-blog'
 import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
+import appCss from './src/styles/app.css?url'
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +19,7 @@ export default defineConfig({
   // No i18n configuration - single language site
   integrations: [
     shipyard({
+      css: appCss,
       navigation: {
         docs: {
           label: 'Documentation',

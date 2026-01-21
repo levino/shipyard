@@ -1,10 +1,13 @@
 // @ts-check
 
+import mdx from '@astrojs/mdx'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
+import appCss from './src/styles/app.css?url'
+
 // https://astro.build/config
 export default defineConfig({
   site: 'https://i18n.demos.shipyard.levinkeller.de',
@@ -29,7 +32,9 @@ export default defineConfig({
     },
   },
   integrations: [
+    mdx(),
     shipyard({
+      css: appCss,
       navigation: {
         docs: {
           label: 'Documentation',

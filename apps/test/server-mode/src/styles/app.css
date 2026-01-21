@@ -1,0 +1,14 @@
+/* biome-ignore-all lint/suspicious/noUnknownAtRules: Tailwind CSS directives */
+
+/* Tailwind CSS 4 setup - imports must come first */
+@import "tailwindcss";
+@import "@levino/shipyard-base/globals.css";
+
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+
+/* Tell Tailwind to scan shipyard packages for class usage.
+   These paths point to the root node_modules where npm workspaces links the packages */
+@source "../../../../../node_modules/@levino/shipyard-base";
+@source "../../../../../node_modules/@levino/shipyard-blog";
+@source "../../../../../node_modules/@levino/shipyard-docs";

@@ -4,14 +4,20 @@
   "description": "Blog plugin for shipyard with pagination, sidebar, and git metadata",
   "type": "module",
   "main": "src/index.ts",
+  "style": "./index.css",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "style": "./index.css",
+      "default": "./src/index.ts"
+    },
+    "./index.css": "./index.css",
     "./astro": "./src/astro.ts",
     "./astro/*": "./astro/*"
   },
   "files": [
     "astro",
-    "src"
+    "src",
+    "index.css"
   ],
   "keywords": [
     "astro",
