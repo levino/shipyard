@@ -10,7 +10,7 @@ const blog = defineCollection({
 })
 const docs = defineCollection({
   schema: docsSchema,
-  loader: glob({ pattern: '**/*.md', base: './docs' }),
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './docs' }),
 })
 const guides = defineCollection({
   schema: docsSchema,

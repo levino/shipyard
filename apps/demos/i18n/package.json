@@ -12,6 +12,7 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
+    "@astrojs/mdx": "^4",
     "@levino/shipyard-base": "*",
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",

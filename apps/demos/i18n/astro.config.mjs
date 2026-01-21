@@ -1,5 +1,6 @@
 // @ts-check
 
+import mdx from '@astrojs/mdx'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
@@ -31,6 +32,7 @@ export default defineConfig({
     },
   },
   integrations: [
+    mdx(),
     shipyard({
       css: appCss,
       navigation: {
