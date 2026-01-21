@@ -5,6 +5,7 @@ import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
+import appCss from './src/styles/app.css?url'
 
 // https://astro.build/config
 export default defineConfig({
@@ -31,7 +32,7 @@ export default defineConfig({
   },
   integrations: [
     shipyard({
-      css: './src/styles/app.css',
+      css: appCss,
       navigation: {
         docs: {
           label: 'Documentation',
