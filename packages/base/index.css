@@ -1,0 +1,24 @@
+/* biome-ignore-all lint/suspicious/noUnknownAtRules: Tailwind CSS directives */
+
+/*
+ * shipyard CSS entry point for Tailwind CSS 4
+ *
+ * This file provides the @source directives so Tailwind can scan
+ * shipyard components for CSS class usage.
+ *
+ * Usage in your app's CSS:
+ *
+ * @import "tailwindcss";
+ * @import "@levino/shipyard-base";
+ * @import "@levino/shipyard-blog";
+ * @import "@levino/shipyard-docs";
+ * @plugin "daisyui";
+ * @plugin "@tailwindcss/typography";
+ */
+
+/* Import shipyard's component styles */
+@import "./src/globals.css";
+
+/* Tell Tailwind to scan this package for class usage */
+@source "./src";
+@source "./astro";

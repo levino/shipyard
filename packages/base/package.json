@@ -20,8 +20,13 @@
   "scripts": {
     "test:unit": "vitest run"
   },
+  "style": "./index.css",
   "exports": {
-    ".": "./src/index.ts",
+    ".": {
+      "style": "./index.css",
+      "default": "./src/index.ts"
+    },
+    "./index.css": "./index.css",
     "./astro": "./src/astro.ts",
     "./layouts": "./astro/layouts/index.ts",
     "./layouts/*": "./astro/layouts/*",
@@ -40,7 +45,8 @@
   },
   "files": [
     "astro",
-    "src"
+    "src",
+    "index.css"
   ],
   "repository": {
     "type": "git",

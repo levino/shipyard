@@ -42,7 +42,7 @@ npm install @levino/shipyard-base
 shipyard requires the following peer dependencies:
 
 ```bash
-npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
+npm install tailwindcss @tailwindcss/vite daisyui @tailwindcss/typography
 ```
 
 ## Required Files Overview
@@ -52,7 +52,7 @@ Before diving into the configuration details, here's a quick checklist of the fi
 | File | Purpose | Required? |
 |------|---------|-----------|
 | `astro.config.mjs` | Astro integrations and site settings | Yes |
-| `tailwind.config.mjs` | Tailwind CSS configuration | Yes |
+| `src/styles/app.css` | Tailwind CSS 4 setup with `@source` directives | Yes |
 | `src/content.config.ts` | **Content collection schemas and loaders** | Yes |
 | `docs/` directory | Documentation markdown files | Yes (for docs) |
 | `blog/` directory | Blog post markdown files | Yes (for blog) |
@@ -61,21 +61,46 @@ The most commonly missed file is `src/content.config.ts` — without it, you'll 
 
 ## Configuration
 
+### CSS Setup (Tailwind CSS 4)
+
+Create `src/styles/app.css` with the Tailwind CSS 4 configuration:
+
+```css
+/* Tailwind CSS 4 setup */
+@import "tailwindcss";
+
+/* Import shipyard packages - includes styles and @source directives */
+@import "@levino/shipyard-base";
+@import "@levino/shipyard-blog";
+@import "@levino/shipyard-docs";
+
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+```
+
+The shipyard packages include built-in `@source` directives, so Tailwind automatically detects all component classes. See [Tailwind CSS Setup](./guides/tailwind-setup) for detailed configuration options and troubleshooting.
+
 ### Astro Configuration
 
 Update your `astro.config.mjs`:
 
 ```javascript
-import tailwind from '@astrojs/tailwind'
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
 import shipyardBlog from '@levino/shipyard-blog'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
+// Import your CSS file with ?url
+import appCss from './src/styles/app.css?url'
+
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
-    tailwind({ applyBaseStyles: false }),
     shipyard({
+      css: appCss,  // Required: pass your CSS to shipyard
       brand: 'My Site',
       title: 'My Awesome Site',
       tagline: 'Built with shipyard',
@@ -94,31 +119,9 @@ export default defineConfig({
 
 | Setting | Why it's needed |
 |---------|-----------------|
-| `tailwind({ applyBaseStyles: false })` | Prevents Tailwind's base styles from conflicting with DaisyUI. Without this, you may see unstyled or broken components. |
-| Integration order | Tailwind must come before shipyard integrations to ensure styles are processed correctly. |
-
-### Tailwind Configuration
-
-Create or update `tailwind.config.mjs`:
-
-```javascript
-import daisyui from 'daisyui'
-import typography from '@tailwindcss/typography'
-
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    './docs/**/*.md',
-    './blog/**/*.md',
-    'node_modules/@levino/shipyard-*/**/*.{astro,js,ts}',
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [typography, daisyui],
-}
-```
+| `tailwindcss()` Vite plugin | Enables Tailwind CSS 4 processing |
+| `css: appCss` | Passes your Tailwind CSS setup to shipyard. Without this, styles won't be applied. |
+| `?url` import | Tells Vite to resolve the file path at build time for proper CSS processing. |
 
 ### Content Collections (Required)
 
@@ -153,10 +156,11 @@ my-site/
 │   └── 2025-01-15-first-post.md
 ├── src/
 │   ├── content.config.ts      # Content collection config
+│   ├── styles/
+│   │   └── app.css            # Tailwind CSS 4 setup
 │   └── pages/                 # Additional pages
 │       └── index.astro        # Homepage
 ├── astro.config.mjs
-├── tailwind.config.mjs
 └── package.json
 ```
 
@@ -359,23 +363,24 @@ If you see TypeScript or build errors immediately after installation:
 
 1. **Check peer dependencies** — Ensure all required peer dependencies are installed:
    ```bash
-   npm install tailwindcss daisyui @tailwindcss/typography @astrojs/tailwind
+   npm install tailwindcss daisyui @tailwindcss/typography
    ```
 
-2. **Verify Tailwind config** — Make sure `tailwind.config.mjs` includes the shipyard packages in the `content` array
+2. **Verify CSS setup** — Make sure `src/styles/app.css` exists with the correct `@source` directives
 
-3. **Check integration order** — In `astro.config.mjs`, Tailwind must come before shipyard integrations
+3. **Check css config** — Ensure you're passing `css: appCss` to the shipyard integration
 
 ### Styles not applying correctly
 
 If components appear unstyled or broken:
 
-1. **Check `applyBaseStyles`** — Ensure Tailwind is configured with `applyBaseStyles: false`:
-   ```javascript
-   tailwind({ applyBaseStyles: false })
-   ```
+1. **Check @source paths** — Ensure paths correctly point to shipyard packages in your `node_modules`
 
-2. **Verify content paths** — Make sure `tailwind.config.mjs` includes paths to shipyard packages and your content directories
+2. **Verify CSS import order** — In your app.css, `@import "tailwindcss"` must come before `@import "@levino/shipyard-base/globals.css"`
+
+3. **Check the css config** — Make sure `astro.config.mjs` imports your CSS with `?url` and passes it to shipyard
+
+See [Tailwind CSS Setup](./guides/tailwind-setup) for detailed troubleshooting.
 
 ### Documentation pages return 404
 
