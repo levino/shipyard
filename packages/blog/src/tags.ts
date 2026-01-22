@@ -1,6 +1,26 @@
 import { existsSync, readFileSync } from 'node:fs'
+import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
-import { type Tag, tagSchema } from './index'
+
+/**
+ * Schema for tag definition in tags.yml file.
+ */
+export const tagSchema = z.object({
+  /**
+   * Display label for the tag. If not provided, uses the tag key.
+   */
+  label: z.string().optional(),
+  /**
+   * Description of the tag for the tag page.
+   */
+  description: z.string().optional(),
+  /**
+   * Custom permalink for the tag. If not provided, uses the tag key.
+   */
+  permalink: z.string().optional(),
+})
+
+export type Tag = z.infer<typeof tagSchema>
 
 export type TagsMap = Record<string, Tag>
 
@@ -30,15 +50,15 @@ export const loadTagsMap = (tagsMapPath?: string): TagsMap => {
   }
 
   // Validate each tag against the schema
-  const tagsMap: TagsMap = {}
+  const result: TagsMap = {}
   for (const [key, value] of Object.entries(rawData)) {
-    const result = tagSchema.safeParse(value)
-    if (result.success) {
-      tagsMap[key.toLowerCase()] = result.data
+    const parsed = tagSchema.safeParse(value)
+    if (parsed.success) {
+      result[key.toLowerCase()] = parsed.data
     }
   }
 
-  return tagsMap
+  return result
 }
 
 /**
