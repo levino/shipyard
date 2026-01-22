@@ -1,0 +1,304 @@
+---
+/**
+ * Pre-shipped route component for versioned docs.
+ * This component is referenced by injectRoute and reads configuration from virtual modules.
+ *
+ * Route patterns:
+ * - With i18n: /[locale]/[routeBasePath]/[version]/[...slug]
+ * - Without i18n: /[routeBasePath]/[version]/[...slug]
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionKey, getCollection, render } from 'astro:content'
+import { docsConfigs, getRouteConfig } from 'virtual:shipyard-docs-configs'
+import {
+  createVersionPathMap,
+  getEditUrl,
+  getVersionFromDocId,
+  stripVersionFromDocId,
+} from '@levino/shipyard-docs'
+import Layout from '../Layout.astro'
+
+// Get the route base path from URL
+function extractRouteBasePath(pathname: string, hasI18n: boolean): string {
+  const segments = pathname.split('/').filter(Boolean)
+  return hasI18n ? segments[1] : segments[0]
+}
+
+const routeBasePath = extractRouteBasePath(Astro.url.pathname, !!i18n)
+const routeConfig = getRouteConfig(routeBasePath)
+const prerender = routeConfig?.prerender ?? true
+
+export { prerender }
+
+export async function getStaticPaths() {
+  const configs = docsConfigs
+  const allPaths: Array<{
+    params: Record<string, string | undefined>
+    props: {
+      entry: unknown
+      routeBasePath: string
+      version: string | null
+      isLatestAlias: boolean
+      actualVersion?: string
+      docLocale?: string
+    }
+  }> = []
+
+  // Generate paths for each versioned docs instance
+  for (const [basePath, config] of Object.entries(configs)) {
+    // Skip non-versioned docs
+    if (!config.versions) continue
+
+    const versionsConfig = config.versions
+    const versionPathMap = createVersionPathMap(versionsConfig)
+
+    const allDocs = await getCollection(config.collectionName as CollectionKey)
+    const docs = allDocs.filter(
+      (doc: { data: { render?: boolean } }) => doc.data.render !== false,
+    )
+
+    for (const entry of docs) {
+      const extractedVersion = getVersionFromDocId(entry.id)
+      if (!extractedVersion) continue
+
+      const version = versionPathMap.get(extractedVersion) ?? extractedVersion
+      const docIdWithoutVersion = stripVersionFromDocId(entry.id)
+      const docLocale = i18n ? docIdWithoutVersion.split('/')[0] : undefined
+
+      const getParams = (
+        slug: string,
+        ver: string | null,
+      ): Record<string, string | undefined> => {
+        if (i18n) {
+          const [locale, ...rest] = slug.split('/')
+          return {
+            locale,
+            routeBasePath: basePath,
+            version: ver ?? undefined,
+            slug: rest.length ? rest.join('/') : undefined,
+          }
+        } else {
+          return {
+            routeBasePath: basePath,
+            version: ver ?? undefined,
+            slug: slug || undefined,
+          }
+        }
+      }
+
+      // Add the main path for this doc
+      allPaths.push({
+        params: getParams(docIdWithoutVersion, version),
+        props: {
+          entry,
+          routeBasePath: basePath,
+          version,
+          isLatestAlias: false,
+          docLocale,
+        },
+      })
+
+      // If this doc is in the current version, also generate a 'latest' alias path
+      if (extractedVersion === versionsConfig.current) {
+        allPaths.push({
+          params: getParams(docIdWithoutVersion, 'latest'),
+          props: {
+            entry,
+            routeBasePath: basePath,
+            version: 'latest',
+            actualVersion: version,
+            isLatestAlias: true,
+            docLocale,
+          },
+        })
+      }
+    }
+  }
+
+  return allPaths
+}
+
+interface Props {
+  entry?: {
+    id: string
+    data: Record<string, unknown>
+    filePath?: string
+  }
+  routeBasePath?: string
+  version?: string | null
+  actualVersion?: string
+  isLatestAlias?: boolean
+  docLocale?: string
+}
+
+let {
+  entry,
+  routeBasePath: propsRouteBasePath,
+  version,
+  actualVersion,
+  isLatestAlias,
+  docLocale,
+} = Astro.props as Props
+
+const { slug: pageSlug, locale, version: urlVersion } = Astro.params
+
+const resolvedRouteBasePath =
+  propsRouteBasePath ?? extractRouteBasePath(Astro.url.pathname, !!i18n)
+const docsConfig = docsConfigs[resolvedRouteBasePath] ?? {
+  showLastUpdateTime: false,
+  showLastUpdateAuthor: false,
+  routeBasePath: 'docs',
+  collectionName: 'docs',
+}
+
+// SSR mode: fetch entry dynamically
+if (!entry) {
+  const allDocs = await getCollection(
+    docsConfig.collectionName as CollectionKey,
+  )
+  const docs = allDocs.filter(
+    (doc: { data: { render?: boolean } }) => doc.data.render !== false,
+  )
+
+  let entryId: string
+  if (i18n && locale) {
+    entryId = urlVersion
+      ? pageSlug
+        ? `${urlVersion}/${locale}/${pageSlug}`
+        : `${urlVersion}/${locale}`
+      : pageSlug
+        ? `${locale}/${pageSlug}`
+        : locale
+  } else {
+    entryId = urlVersion
+      ? pageSlug
+        ? `${urlVersion}/${pageSlug}`
+        : urlVersion
+      : (pageSlug ?? '')
+  }
+
+  entry = docs.find((doc: { id: string }) => doc.id === entryId)
+
+  if (!entry) {
+    const indexEntryId = entryId ? `${entryId}/index` : 'index'
+    entry = docs.find((doc: { id: string }) => doc.id === indexEntryId)
+  }
+
+  if (!entry) {
+    return Astro.redirect('/404')
+  }
+
+  version = urlVersion ?? null
+  isLatestAlias = false
+  docLocale = locale
+}
+
+// SEO-friendly redirect for /latest/ URLs to canonical version URLs
+if (isLatestAlias && actualVersion) {
+  const targetUrl = docLocale
+    ? pageSlug
+      ? `/${docLocale}/${resolvedRouteBasePath}/${actualVersion}/${pageSlug}`
+      : `/${docLocale}/${resolvedRouteBasePath}/${actualVersion}/`
+    : pageSlug
+      ? `/${resolvedRouteBasePath}/${actualVersion}/${pageSlug}`
+      : `/${resolvedRouteBasePath}/${actualVersion}/`
+
+  const fromUrl = docLocale
+    ? pageSlug
+      ? `/${docLocale}/${resolvedRouteBasePath}/latest/${pageSlug}`
+      : `/${docLocale}/${resolvedRouteBasePath}/latest/`
+    : pageSlug
+      ? `/${resolvedRouteBasePath}/latest/${pageSlug}`
+      : `/${resolvedRouteBasePath}/latest/`
+
+  const canonicalHref = Astro.site
+    ? new URL(targetUrl, Astro.site).href
+    : targetUrl
+
+  return new Response(
+    `<!doctype html><title>Redirecting to: ${targetUrl}</title><meta http-equiv="refresh" content="0;url=${targetUrl}"><meta name="robots" content="noindex"><link rel="canonical" href="${canonicalHref}"><body>\t<a href="${targetUrl}">Redirecting from <code>${fromUrl}</code> to <code>${targetUrl}</code></a></body>`,
+    {
+      status: 301,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        Location: targetUrl,
+      },
+    },
+  )
+}
+
+const { Content, headings } = await render(entry)
+
+const {
+  customEditUrl,
+  lastUpdateAuthor,
+  lastUpdateTime,
+  hideTableOfContents,
+  hideTitle,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
+  title_meta: titleMeta,
+} = entry.data as Record<string, unknown>
+
+// Compute edit URL
+let editUrl: string | undefined
+if (customEditUrl === null) {
+  editUrl = undefined
+} else if (typeof customEditUrl === 'string') {
+  editUrl = customEditUrl
+} else if (entry.filePath) {
+  const collectionBase = `${docsConfig.collectionName}/`
+  const relativePath = entry.filePath.startsWith(collectionBase)
+    ? entry.filePath.slice(collectionBase.length)
+    : entry.filePath
+  editUrl = getEditUrl(docsConfig.editUrl, relativePath)
+} else {
+  editUrl = getEditUrl(docsConfig.editUrl, entry.id)
+}
+
+// Get git metadata
+let lastUpdated: Date | undefined
+let lastAuthor: string | undefined
+
+const data = entry.data as Record<string, unknown>
+
+if (
+  (docsConfig.showLastUpdateTime && lastUpdateTime !== false) ||
+  (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false)
+) {
+  if (docsConfig.showLastUpdateTime && lastUpdateTime !== false) {
+    if (lastUpdateTime instanceof Date) {
+      lastUpdated = lastUpdateTime
+    } else if (data._gitLastUpdated) {
+      lastUpdated = new Date(data._gitLastUpdated as string)
+    }
+  }
+
+  if (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false) {
+    if (typeof lastUpdateAuthor === 'string') {
+      lastAuthor = lastUpdateAuthor
+    } else if (data._gitLastAuthor) {
+      lastAuthor = data._gitLastAuthor as string
+    }
+  }
+}
+---
+
+<Layout
+  headings={headings}
+  routeBasePath={resolvedRouteBasePath}
+  editUrl={editUrl}
+  lastUpdated={lastUpdated}
+  lastAuthor={lastAuthor}
+  hideTableOfContents={hideTableOfContents as boolean | undefined}
+  hideTitle={hideTitle as boolean | undefined}
+  keywords={keywords as string[] | undefined}
+  image={image as string | undefined}
+  canonicalUrl={canonicalUrl as string | undefined}
+  customMetaTags={customMetaTags as Array<{ name?: string; property?: string; content: string }> | undefined}
+  titleMeta={titleMeta as string | undefined}
+>
+  <Content />
+</Layout>

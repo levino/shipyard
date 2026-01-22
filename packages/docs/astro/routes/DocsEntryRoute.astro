@@ -1,0 +1,224 @@
+---
+/**
+ * Pre-shipped route component for non-versioned docs.
+ * This component is referenced by injectRoute and reads configuration from virtual modules.
+ *
+ * Route patterns:
+ * - With i18n: /[locale]/[routeBasePath]/[...slug]
+ * - Without i18n: /[routeBasePath]/[...slug]
+ */
+import { i18n } from 'astro:config/server'
+import { type CollectionKey, getCollection, render } from 'astro:content'
+import { docsConfigs, getRouteConfig } from 'virtual:shipyard-docs-configs'
+import { getEditUrl } from '../../src/gitMetadata'
+import Layout from '../Layout.astro'
+
+// Get the route base path from URL - it's embedded in the route pattern
+// For pattern /[locale]/docs/[...slug], the 'docs' part is static
+// We extract it from Astro.url.pathname
+function extractRouteBasePath(pathname: string, hasI18n: boolean): string {
+  const segments = pathname.split('/').filter(Boolean)
+  // With i18n: /en/docs/getting-started -> segments[1] = 'docs'
+  // Without i18n: /docs/getting-started -> segments[0] = 'docs'
+  return hasI18n ? segments[1] : segments[0]
+}
+
+// Determine if we're in prerender mode by checking the route config
+const routeBasePath = extractRouteBasePath(Astro.url.pathname, !!i18n)
+const routeConfig = getRouteConfig(routeBasePath)
+const prerender = routeConfig?.prerender ?? true
+
+export { prerender }
+
+export async function getStaticPaths() {
+  // Get all configurations from the virtual module
+  const configs = docsConfigs
+  const allPaths: Array<{
+    params: Record<string, string | undefined>
+    props: {
+      entry: unknown
+      routeBasePath: string
+      collectionName: string
+    }
+  }> = []
+
+  // Generate paths for each non-versioned docs instance
+  for (const [basePath, config] of Object.entries(configs)) {
+    // Skip versioned docs - they use a different route component
+    if (config.versions) continue
+
+    const docs = await getCollection(config.collectionName as CollectionKey)
+
+    // Filter out pages with render: false
+    const filteredDocs = docs.filter(
+      (doc: { data: { render?: boolean } }) => doc.data.render !== false,
+    )
+
+    for (const entry of filteredDocs) {
+      if (i18n) {
+        const [locale, ...rest] = entry.id.split('/')
+        allPaths.push({
+          params: {
+            locale,
+            routeBasePath: basePath,
+            slug: rest.length ? rest.join('/') : undefined,
+          },
+          props: {
+            entry,
+            routeBasePath: basePath,
+            collectionName: config.collectionName,
+          },
+        })
+      } else {
+        allPaths.push({
+          params: {
+            routeBasePath: basePath,
+            slug: entry.id || undefined,
+          },
+          props: {
+            entry,
+            routeBasePath: basePath,
+            collectionName: config.collectionName,
+          },
+        })
+      }
+    }
+  }
+
+  return allPaths
+}
+
+// Get props from static paths or handle SSR mode
+interface Props {
+  entry?: {
+    id: string
+    data: Record<string, unknown>
+    filePath?: string
+  }
+  routeBasePath?: string
+  collectionName?: string
+}
+
+let {
+  entry,
+  routeBasePath: propsRouteBasePath,
+  collectionName,
+} = Astro.props as Props
+const { slug: pageSlug, locale } = Astro.params
+
+// Use props if available, otherwise extract from URL (SSR mode)
+const resolvedRouteBasePath =
+  propsRouteBasePath ?? extractRouteBasePath(Astro.url.pathname, !!i18n)
+const docsConfig = docsConfigs[resolvedRouteBasePath] ?? {
+  showLastUpdateTime: false,
+  showLastUpdateAuthor: false,
+  routeBasePath: 'docs',
+  collectionName: 'docs',
+}
+
+// SSR mode: fetch entry dynamically when props are not available
+if (!entry) {
+  const resolvedCollectionName = collectionName ?? docsConfig.collectionName
+  const allDocs = await getCollection(resolvedCollectionName as CollectionKey)
+  const docs = allDocs.filter(
+    (doc: { data: { render?: boolean } }) => doc.data.render !== false,
+  )
+
+  // Reconstruct the entry ID from URL params
+  let entryId: string
+  if (i18n && locale) {
+    entryId = pageSlug ? `${locale}/${pageSlug}` : locale
+  } else {
+    entryId = pageSlug ?? ''
+  }
+
+  // Find the matching entry
+  entry = docs.find((doc: { id: string }) => doc.id === entryId)
+
+  // If no exact match, try matching with /index suffix
+  if (!entry) {
+    const indexEntryId = entryId ? `${entryId}/index` : 'index'
+    entry = docs.find((doc: { id: string }) => doc.id === indexEntryId)
+  }
+
+  // If still no match, return 404
+  if (!entry) {
+    return Astro.redirect('/404')
+  }
+}
+
+const { Content, headings } = await render(entry)
+
+const {
+  customEditUrl,
+  lastUpdateAuthor,
+  lastUpdateTime,
+  hideTableOfContents,
+  hideTitle,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
+  title_meta: titleMeta,
+} = entry.data as Record<string, unknown>
+
+// Compute edit URL
+let editUrl: string | undefined
+if (customEditUrl === null) {
+  editUrl = undefined
+} else if (typeof customEditUrl === 'string') {
+  editUrl = customEditUrl
+} else if (entry.filePath) {
+  const collectionBase = `${docsConfig.collectionName}/`
+  const relativePath = entry.filePath.startsWith(collectionBase)
+    ? entry.filePath.slice(collectionBase.length)
+    : entry.filePath
+  editUrl = getEditUrl(docsConfig.editUrl, relativePath)
+} else {
+  editUrl = getEditUrl(docsConfig.editUrl, entry.id)
+}
+
+// Get git metadata from frontmatter (populated by remark plugin at build time)
+let lastUpdated: Date | undefined
+let lastAuthor: string | undefined
+
+const data = entry.data as Record<string, unknown>
+
+if (
+  (docsConfig.showLastUpdateTime && lastUpdateTime !== false) ||
+  (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false)
+) {
+  if (docsConfig.showLastUpdateTime && lastUpdateTime !== false) {
+    if (lastUpdateTime instanceof Date) {
+      lastUpdated = lastUpdateTime
+    } else if (data._gitLastUpdated) {
+      lastUpdated = new Date(data._gitLastUpdated as string)
+    }
+  }
+
+  if (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false) {
+    if (typeof lastUpdateAuthor === 'string') {
+      lastAuthor = lastUpdateAuthor
+    } else if (data._gitLastAuthor) {
+      lastAuthor = data._gitLastAuthor as string
+    }
+  }
+}
+---
+
+<Layout
+  headings={headings}
+  routeBasePath={resolvedRouteBasePath}
+  editUrl={editUrl}
+  lastUpdated={lastUpdated}
+  lastAuthor={lastAuthor}
+  hideTableOfContents={hideTableOfContents as boolean | undefined}
+  hideTitle={hideTitle as boolean | undefined}
+  keywords={keywords as string[] | undefined}
+  image={image as string | undefined}
+  canonicalUrl={canonicalUrl as string | undefined}
+  customMetaTags={customMetaTags as Array<{ name?: string; property?: string; content: string }> | undefined}
+  titleMeta={titleMeta as string | undefined}
+>
+  <Content />
+</Layout>

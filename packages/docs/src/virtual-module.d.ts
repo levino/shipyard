@@ -13,9 +13,26 @@ declare module 'virtual:shipyard-docs-configs' {
       routeBasePath: string
       collectionName: string
       llmsTxtEnabled: boolean
+      llmsTxtConfig?: {
+        projectName: string
+        summary?: string
+        description?: string
+        sectionTitle: string
+      }
       versions?: VersionConfig
+      prerender?: boolean
     }
   >
+
+  /**
+   * Get the route configuration for a specific docs instance.
+   *
+   * @param routeBasePath - The route base path of the docs instance
+   * @returns The route configuration or undefined
+   */
+  export function getRouteConfig(
+    routeBasePath: string,
+  ): (typeof docsConfigs)[string] | undefined
 
   /**
    * Get the version configuration for a specific docs instance.
