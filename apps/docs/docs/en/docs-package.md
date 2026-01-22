@@ -19,29 +19,7 @@ Requires `@levino/shipyard-base` to be installed and configured.
 
 ### Tailwind Configuration
 
-For Tailwind to correctly pick up the classes used in shipyard-docs components, you need to add the package path to the `content` array in your `tailwind.config.mjs`:
-
-```javascript
-const path = require('node:path')
-
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    // Include shipyard-base (required)
-    path.join(
-      path.dirname(require.resolve('@levino/shipyard-base')),
-      '../astro/**/*.astro',
-    ),
-    // Include shipyard-docs
-    path.join(
-      path.dirname(require.resolve('@levino/shipyard-docs')),
-      '../astro/**/*.astro',
-    ),
-  ],
-  // ... rest of your config
-}
-```
+shipyard uses Tailwind CSS 4, which uses a CSS-based configuration approach. For detailed setup instructions, see the [Tailwind CSS Setup guide](./guides/tailwind-setup).
 
 ## Quick Start
 
@@ -50,11 +28,18 @@ export default {
 ```javascript
 import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
+import appCss from './src/styles/app.css?url'
+
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     shipyard({
+      css: appCss,
       brand: 'My Site',
       title: 'My Site',
       tagline: 'Documentation',

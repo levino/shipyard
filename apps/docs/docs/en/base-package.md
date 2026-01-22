@@ -24,32 +24,13 @@ npm install tailwindcss daisyui @tailwindcss/typography
 | Package | Version |
 |---------|---------|
 | `astro` | ^5.7 |
-| `tailwindcss` | ^3 |
-| `daisyui` | ^4 |
+| `tailwindcss` | ^4 |
+| `daisyui` | ^5 |
 | `@tailwindcss/typography` | ^0.5.10 |
 
 ### Tailwind Configuration
 
-For Tailwind to correctly pick up the classes used in shipyard components, you need to add the package paths to the `content` array in your `tailwind.config.mjs`:
-
-```javascript
-const path = require('node:path')
-
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    // Add this to include shipyard-base component styles
-    path.join(
-      path.dirname(require.resolve('@levino/shipyard-base')),
-      '../astro/**/*.astro',
-    ),
-  ],
-  // ... rest of your config
-}
-```
-
-This ensures that Tailwind scans the shipyard component files and includes all necessary CSS classes in your build.
+shipyard uses Tailwind CSS 4, which uses a CSS-based configuration approach. For detailed setup instructions, see the [Tailwind CSS Setup guide](./guides/tailwind-setup).
 
 ## Configuration
 
