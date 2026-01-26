@@ -78,7 +78,7 @@ Erstelle `src/styles/app.css` mit der Tailwind CSS 4 Konfiguration:
 @plugin "@tailwindcss/typography";
 ```
 
-**Wichtig:** Die shipyard-Pakete enthalten automatisch die nötigen `@source`-Direktiven, damit Tailwind die CSS-Klassen in den Komponenten erkennt. Siehe [Tailwind CSS Setup](./guides/tailwind-setup) für detaillierte Konfigurationsoptionen und Fehlerbehebung.
+**Wichtig:** Die shipyard-Pakete enthalten automatisch die nötigen `@source`-Direktiven, damit Tailwind die CSS-Klassen in den Komponenten erkennt. Siehe [Tailwind CSS Setup](../guides/tailwind-setup) für detaillierte Konfigurationsoptionen und Fehlerbehebung.
 
 ### Astro-Konfiguration
 
@@ -375,7 +375,7 @@ Wenn Komponenten ungestylt oder kaputt erscheinen:
 
 3. **Prüfe css-Konfiguration** — Stelle sicher, dass `astro.config.mjs` dein CSS mit `?url` importiert und an shipyard übergibt
 
-Siehe [Tailwind CSS Setup](./guides/tailwind-setup) für detaillierte Fehlerbehebung.
+Siehe [Tailwind CSS Setup](../guides/tailwind-setup) für detaillierte Fehlerbehebung.
 
 ### Dokumentationsseiten geben 404 zurück
 
