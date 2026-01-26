@@ -30,7 +30,7 @@ npm install tailwindcss daisyui @tailwindcss/typography
 
 ### Tailwind-Konfiguration
 
-shipyard verwendet Tailwind CSS 4, das einen CSS-basierten Konfigurationsansatz nutzt. Für detaillierte Setup-Anweisungen siehe die [Tailwind CSS Setup-Anleitung](./guides/tailwind-setup).
+shipyard verwendet Tailwind CSS 4, das einen CSS-basierten Konfigurationsansatz nutzt. Für detaillierte Setup-Anweisungen siehe die [Tailwind CSS Setup-Anleitung](../guides/tailwind-setup).
 
 ## Konfiguration
 
