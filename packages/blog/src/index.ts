@@ -10,13 +10,14 @@ export { getEditUrl, getGitMetadata } from './gitMetadata'
 export type { ReadingTime } from './readingTime'
 export { getReadingTime } from './readingTime'
 // Re-export tag utilities
-export type { TagsMap } from './tags'
+export type { Tag, TagsMap } from './tags'
 export {
   getTagDescription,
   getTagLabel,
   getTagMetadata,
   getTagPermalink,
   loadTagsMap,
+  tagSchema,
 } from './tags'
 
 /**
@@ -46,26 +47,6 @@ export const authorSchema = z.object({
 })
 
 export type Author = z.infer<typeof authorSchema>
-
-/**
- * Schema for tag definition in tags.yml file.
- */
-export const tagSchema = z.object({
-  /**
-   * Display label for the tag. If not provided, uses the tag key.
-   */
-  label: z.string().optional(),
-  /**
-   * Description of the tag for the tag page.
-   */
-  description: z.string().optional(),
-  /**
-   * Custom permalink for the tag. If not provided, uses the tag key.
-   */
-  permalink: z.string().optional(),
-})
-
-export type Tag = z.infer<typeof tagSchema>
 
 export const blogSchema = z.object({
   date: z.date(),

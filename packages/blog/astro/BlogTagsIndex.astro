@@ -8,7 +8,7 @@ import blogConfig from 'virtual:shipyard-blog/config'
 import tagsMap from 'virtual:shipyard-blog/tags'
 import type { GetStaticPaths } from 'astro'
 import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
-import { getTagDescription, getTagLabel, getTagPermalink } from '../src/index'
+import { getTagDescription, getTagLabel, getTagPermalink } from '../src/tags'
 import Layout from './Layout.astro'
 
 const { includeDraftsInDev, routeBasePath } = blogConfig
