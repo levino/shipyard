@@ -1,0 +1,95 @@
+---
+/**
+ * Pre-shipped route component for redirecting from docs root to current version.
+ * This component is referenced by injectRoute for versioned docs.
+ *
+ * Route patterns:
+ * - With i18n: /[locale]/[routeBasePath]
+ * - Without i18n: /[routeBasePath]
+ */
+import { i18n } from 'astro:config/server'
+import { docsConfigs, getRouteConfig } from 'virtual:shipyard-docs-configs'
+
+// Get the route base path from URL
+function extractRouteBasePath(pathname: string, hasI18n: boolean): string {
+  const segments = pathname.split('/').filter(Boolean)
+  return hasI18n ? segments[1] : segments[0]
+}
+
+const routeBasePath = extractRouteBasePath(Astro.url.pathname, !!i18n)
+const routeConfig = getRouteConfig(routeBasePath)
+const prerender = routeConfig?.prerender ?? true
+
+export { prerender }
+
+export function getStaticPaths() {
+  const configs = docsConfigs
+  const allPaths: Array<{
+    params: Record<string, string | undefined>
+    props: { routeBasePath: string; currentVersionPath: string }
+  }> = []
+
+  // Generate redirect paths for each versioned docs instance
+  for (const [basePath, config] of Object.entries(configs)) {
+    if (!config.versions) continue
+
+    const currentVersionPath =
+      config.versions.available.find(
+        (v: { version: string; path?: string }) =>
+          v.version === config.versions?.current,
+      )?.path ?? config.versions.current
+
+    if (i18n) {
+      const locales = i18n.locales ?? ['en']
+      for (const locale of locales) {
+        const localeCode = typeof locale === 'string' ? locale : locale.path
+        allPaths.push({
+          params: { locale: localeCode, routeBasePath: basePath },
+          props: { routeBasePath: basePath, currentVersionPath },
+        })
+      }
+    } else {
+      allPaths.push({
+        params: { routeBasePath: basePath },
+        props: { routeBasePath: basePath, currentVersionPath },
+      })
+    }
+  }
+
+  return allPaths
+}
+
+interface Props {
+  routeBasePath?: string
+  currentVersionPath?: string
+}
+
+const {
+  routeBasePath: propsRouteBasePath,
+  currentVersionPath: propsVersionPath,
+} = Astro.props as Props
+const { locale } = Astro.params
+
+const resolvedRouteBasePath =
+  propsRouteBasePath ?? extractRouteBasePath(Astro.url.pathname, !!i18n)
+
+// Get the current version path from config if not in props (SSR mode)
+let currentVersionPath = propsVersionPath
+if (!currentVersionPath) {
+  const config = docsConfigs[resolvedRouteBasePath]
+  if (config?.versions) {
+    currentVersionPath =
+      config.versions.available.find(
+        (v: { version: string; path?: string }) =>
+          v.version === config.versions?.current,
+      )?.path ?? config.versions.current
+  }
+}
+
+// Redirect to the current version's index
+const redirectTarget = locale
+  ? `/${locale}/${resolvedRouteBasePath}/${currentVersionPath}/`
+  : `/${resolvedRouteBasePath}/${currentVersionPath}/`
+
+return Astro.redirect(redirectTarget, 302)
+---
