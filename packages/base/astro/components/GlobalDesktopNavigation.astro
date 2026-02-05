@@ -45,7 +45,7 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
       {brand}
     </a>
   </div>
-  <div class="hidden flex-none lg:flex">
+  <div class="hidden flex-none items-center lg:flex">
     <ul class="menu menu-horizontal px-1">
       {
         Object.entries(navigation).map(([key, entry]) =>
