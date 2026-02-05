@@ -8,6 +8,7 @@ import type {
   NavigationTree,
   Script,
 } from '../../src/schemas/config'
+import { cn } from '../../src/tools/cn'
 import { getTitle } from '../../src/tools/title'
 import {
   AnnouncementBar,
@@ -60,6 +61,7 @@ const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
 
 const navigation = applyLocaleAndSetActive(config.navigation)
 const title = getTitle(config.title, props.title)
+const hasSidebar = !!props.sidebarNavigation
 
 // Helper function to render script attributes
 const renderScriptAttributes = (script: Script) => {
@@ -106,25 +108,22 @@ const renderScriptAttributes = (script: Script) => {
       return <script is:inline {...attrs}></script>
     })}
   </head>
-  <body>
+  <body class="flex min-h-screen flex-col">
     {config.announcementBar && <AnnouncementBar config={config.announcementBar} />}
-    <div class="drawer lg:drawer-open">
+    <div class={cn("drawer grow", { "lg:drawer-open": hasSidebar })}>
       <input id="drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content overflow-x-hidden">
-        <div class="flex min-h-screen flex-col">
-          <GlobalDesktopNavigation
-            showBrand={!props.sidebarNavigation}
-            brand={config.brand}
-            navigation={navigation}
-          >
-            <slot name="navbarExtra" slot="navbarExtra" />
-          </GlobalDesktopNavigation>
-          <div class="grow">
-            <div class="mx-auto px-4">
-              <slot />
-            </div>
+      <div class="drawer-content flex flex-col overflow-x-hidden">
+        <GlobalDesktopNavigation
+          showBrand={!hasSidebar}
+          brand={config.brand}
+          navigation={navigation}
+        >
+          <slot name="navbarExtra" slot="navbarExtra" />
+        </GlobalDesktopNavigation>
+        <div class="grow">
+          <div class="mx-auto max-w-7xl px-4">
+            <slot />
           </div>
-          <Footer />
         </div>
       </div>
 
@@ -142,6 +141,7 @@ const renderScriptAttributes = (script: Script) => {
         </div>
       </div>
     </div>
+    <Footer />
     <Npm2YarnScript />
   </body>
 </html>

@@ -39,7 +39,7 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
     <a
       href="/"
       class={cn("btn btn-ghost text-xl", {
-        "md:hidden": !showBrand,
+        "lg:hidden": !showBrand,
       })}
     >
       {brand}
@@ -75,3 +75,25 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
     <LanguageSwitcher variant="dropdown" />
   </div>
 </div>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const navbar = document.querySelector('.navbar')
+    if (!navbar) return
+    const openDetails = navbar.querySelectorAll('details[open]')
+    for (const details of openDetails) {
+      if (!details.contains(e.target)) {
+        details.removeAttribute('open')
+      }
+    }
+  })
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const navbar = document.querySelector('.navbar')
+      if (!navbar) return
+      for (const details of navbar.querySelectorAll('details[open]')) {
+        details.removeAttribute('open')
+      }
+    }
+  })
+</script>
