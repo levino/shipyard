@@ -2,6 +2,7 @@
 title: Content Management Made Simple
 description: How to organize and manage content in single-language shipyard sites
 date: 2024-09-03
+image: https://picsum.photos/seed/shipyard-content/800/400
 tags:
   - content
   - tutorial
