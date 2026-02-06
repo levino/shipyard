@@ -115,15 +115,37 @@ const showRightEllipsis =
 
 <Layout title="Blog">
   <div class="max-w-7xl mx-auto">
-    <div class="prose max-w-none">
+    <div class="space-y-6">
       {
-        paginatedEntries.map(async (entry) => (
-          <a class="block my-8 no-underline" href={`/${getBlogPostLink(entry.id, Astro.currentLocale)}`}>
-            <div class="text-sm">{formatDate(entry.data.date)}</div>
-            <h2 class="my-0">{entry.data.title}</h2>
-            <p>{entry.data.description}</p>
-          </a>
-        ))
+        paginatedEntries.map(async (entry) => {
+          const postLink = `/${getBlogPostLink(entry.id, Astro.currentLocale)}`
+          const hasImage = !!entry.data.image
+          return (
+            <article class:list={["card bg-base-100 shadow-sm", { "card-side": hasImage }]} data-testid="blog-post-item">
+              {hasImage && (
+                <figure class="hidden w-48 flex-shrink-0 sm:block">
+                  <a href={postLink}>
+                    <img
+                      src={entry.data.image}
+                      alt={entry.data.title}
+                      class="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </a>
+                </figure>
+              )}
+              <div class="card-body">
+                <div class="text-sm text-base-content/60">
+                  <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
+                </div>
+                <a class="no-underline" href={postLink} data-testid="blog-post-link">
+                  <h2 class="card-title">{entry.data.title}</h2>
+                </a>
+                <p class="line-clamp-2 text-sm text-base-content/70">{entry.data.description}</p>
+              </div>
+            </article>
+          )
+        })
       }
     </div>
 

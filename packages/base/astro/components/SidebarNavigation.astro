@@ -17,13 +17,13 @@ const withLocale = (path: string) =>
   Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
 ---
 
-<ul class={cn("menu min-h-screen w-56 bg-base-100", { "md:hidden": !local })} data-testid="sidebar-navigation">
-  <div>
-    <a href={withLocale("/")} class="btn btn-ghost mb-2 text-xl">
+<ul class={cn("menu min-h-full w-56 bg-base-100", { "lg:hidden": !local })} data-testid="sidebar-navigation">
+  <div class="max-w-full">
+    <a href={withLocale("/")} class="btn btn-ghost mb-2 max-w-full truncate text-lg">
       {brand}
     </a>
   </div>
-  <div class="block md:hidden" data-testid="sidebar-global-nav">
+  <div class="block lg:hidden" data-testid="sidebar-global-nav">
     <li>
       {
         local ? (
@@ -42,7 +42,7 @@ const withLocale = (path: string) =>
       <span class="text-sm opacity-70">Theme</span>
       <ThemeToggle />
     </li>
-    <div class={cn("divider my-1 block md:hidden", { hidden: !local })}></div>
+    <div class={cn("divider my-1 block lg:hidden", { hidden: !local })}></div>
   </div>
   {local && <div data-testid="sidebar-local-nav"><SidebarElement entry={local} /></div>}
 </ul>

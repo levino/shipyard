@@ -138,6 +138,26 @@ Documentation features:
 
 10. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
 
+## Styling Rules — DaisyUI First, No Custom Design Systems
+
+shipyard is a **page builder**. Users build their own sites with it. Every shipyard component must look and behave exactly like a standard DaisyUI component so that user-created content blends in seamlessly. The theme controls the look — not custom CSS.
+
+**Mandatory:**
+- **Use DaisyUI component classes** (`card`, `card-body`, `card-title`, `card-side`, `badge`, `btn`, `menu`, `navbar`, `drawer`, `footer`, etc.) as documented at https://daisyui.com/components/. Do not reinvent them with custom Tailwind.
+- **Use DaisyUI color classes** (`bg-base-100`, `text-base-content`, `bg-primary`, `text-primary-content`, etc.). Never hardcode colors or opacity values when a DaisyUI semantic class exists.
+- **Use DaisyUI modifiers** (`badge-soft`, `badge-outline`, `btn-ghost`, `card-side`, `shadow-sm`, etc.) instead of building the same effect with raw Tailwind utilities.
+- **Minimal custom Tailwind** is allowed only for layout concerns that DaisyUI does not cover: grid definitions, flex directions, max-widths, spacing between components, responsive visibility (`hidden lg:block`). Even then, keep it simple.
+
+**Forbidden:**
+- Do not create custom design tokens, color scales, or spacing systems. DaisyUI's theme handles this.
+- Do not add custom `rounded-*`, `shadow-*`, `border-*`, `bg-*`, `text-*`, `px-*`, `py-*` classes to replicate what a DaisyUI component already provides. If `card` gives you rounded corners and padding via `card-body`, don't add your own.
+- Do not override DaisyUI component internals with Tailwind utilities unless absolutely necessary for a specific layout constraint.
+- Do not build "design system" abstractions on top of DaisyUI. The components ARE the design system.
+
+**Why:** Users of this page builder will create their own pages using DaisyUI. If shipyard's internal components use custom styles, they will look different from user-created content using the same theme. Everything must go through DaisyUI so that a single theme change updates the entire site consistently.
+
+**Reference:** https://daisyui.com/components/ and https://daisyui.com/llms.txt
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories

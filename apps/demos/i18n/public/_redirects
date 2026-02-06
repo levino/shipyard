@@ -1,0 +1,3 @@
+# Redirect missing German docs/guides to English equivalents
+/de/docs/* /en/docs/:splat 302
+/de/guides/* /en/guides/:splat 302

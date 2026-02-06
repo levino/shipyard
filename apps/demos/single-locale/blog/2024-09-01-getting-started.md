@@ -2,6 +2,7 @@
 title: Getting Started with Single-Language Sites
 description: Learn how to build single-language sites with shipyard
 date: 2024-09-01
+image: https://picsum.photos/seed/shipyard-start/800/400
 tags:
   - getting-started
   - tutorial
