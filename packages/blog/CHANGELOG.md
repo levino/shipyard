@@ -1,5 +1,11 @@
 # @levino/shipyard-blog
 
+## 0.6.3
+
+### Patch Changes
+
+- 6cf308b: The `yaml` dependency is now correctly declared in package.json. This fixes build failures in clean environments (e.g., Docker) where transitive dependencies aren't available.
+
 ## 0.6.2
 
 ### Patch Changes

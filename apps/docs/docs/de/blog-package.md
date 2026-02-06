@@ -19,29 +19,7 @@ Erfordert dass `@levino/shipyard-base` installiert und konfiguriert ist.
 
 ### Tailwind-Konfiguration
 
-Damit Tailwind die in shipyard-blog-Komponenten verwendeten Klassen korrekt erkennt, musst du den Paketpfad zum `content`-Array in deiner `tailwind.config.mjs` hinzufügen:
-
-```javascript
-const path = require('node:path')
-
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    './src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}',
-    // shipyard-base einschließen (erforderlich)
-    path.join(
-      path.dirname(require.resolve('@levino/shipyard-base')),
-      '../astro/**/*.astro',
-    ),
-    // shipyard-blog einschließen
-    path.join(
-      path.dirname(require.resolve('@levino/shipyard-blog')),
-      '../astro/**/*.astro',
-    ),
-  ],
-  // ... Rest deiner Konfiguration
-}
-```
+shipyard verwendet Tailwind CSS 4, das einen CSS-basierten Konfigurationsansatz nutzt. Für detaillierte Setup-Anweisungen siehe die [Tailwind CSS Setup-Anleitung](../guides/tailwind-setup).
 
 ## Schnellstart
 
@@ -50,11 +28,18 @@ export default {
 ```javascript
 import shipyard from '@levino/shipyard-base'
 import shipyardBlog from '@levino/shipyard-blog'
+import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 
+import appCss from './src/styles/app.css?url'
+
 export default defineConfig({
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     shipyard({
+      css: appCss,
       brand: 'Meine Seite',
       title: 'Meine Seite',
       tagline: 'Ein Blog',
