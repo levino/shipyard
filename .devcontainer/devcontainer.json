@@ -20,6 +20,6 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers-extra/features/tmux-apt-get:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {}
   }
 }
