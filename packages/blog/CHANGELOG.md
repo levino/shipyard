@@ -1,5 +1,12 @@
 # @levino/shipyard-blog
 
+## 0.7.1
+
+### Patch Changes
+
+- Updated dependencies [32fac4d]
+  - @levino/shipyard-base@0.7.1
+
 ## 0.6.3
 
 ### Patch Changes
