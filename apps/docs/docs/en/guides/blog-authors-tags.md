@@ -50,28 +50,7 @@ john:
   image_url: https://example.com/john.jpg
 ```
 
-> **Note:** String author references (e.g., `authors: jane`) are not currently resolved from `authors.yml`. This feature is planned but not yet implemented. For now, use inline author objects in frontmatter as shown above, or use simple strings which will display as names only.
-
-Then reference authors by key in frontmatter:
-
-```yaml
----
-title: My Post
-description: A blog post
-date: 2026-01-15
-authors: jane
----
-```
-
-For multiple authors:
-
-```yaml
----
-authors:
-  - jane
-  - john
----
-```
+> **Note:** String author references (e.g., `authors: jane`) are not currently resolved from `authors.yml`. This feature is planned but not yet implemented. For now, use inline author objects in frontmatter as shown in the example above, or use simple strings which will display as names only.
 
 ### Author Properties
 

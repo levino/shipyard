@@ -232,7 +232,7 @@ import { Tabs, TabItem } from '@levino/shipyard-base/components'
 </Tabs>
 ```
 
-Standardmäßig verwaltet jede `Tabs`-Instanz ihre eigene Auswahl. Um die Auswahl über mehrere Tab-Gruppen hinweg zu synchronisieren, geben Sie ihnen die gleiche `groupId`.
+By default, each `Tabs` instance manages its own selected tab. To sync the selection across multiple tab groups, give them the same `groupId`.
 
 ---
 

@@ -32,7 +32,7 @@ authors:
 
 ### Authors File
 
-For shared author data, you can create an `authors.yml` file in your blog directory:
+Für gemeinsam genutzte Autorendaten können Sie eine Datei `authors.yml` in Ihrem Blog-Verzeichnis erstellen:
 
 ```yaml
 # blog/authors.yml
@@ -50,28 +50,7 @@ john:
   image_url: https://example.com/john.jpg
 ```
 
-> **Hinweis:** String-Autoren-Referenzen (z.B. `authors: jane`) werden derzeit nicht aus `authors.yml` aufgelöst. Diese Funktion ist geplant, aber noch nicht implementiert. Verwenden Sie vorerst Inline-Autorenobjekte im Frontmatter wie oben gezeigt, oder einfache Strings, die nur als Namen angezeigt werden.
-
-Then reference authors by key in frontmatter:
-
-```yaml
----
-title: My Post
-description: A blog post
-date: 2026-01-15
-authors: jane
----
-```
-
-For multiple authors:
-
-```yaml
----
-authors:
-  - jane
-  - john
----
-```
+> **Hinweis:** String-Autoren-Referenzen (z.B. `authors: jane`) werden derzeit nicht aus `authors.yml` aufgelöst. Diese Funktion ist geplant, aber noch nicht implementiert. Verwenden Sie vorerst Inline-Autorenobjekte im Frontmatter wie im obigen Beispiel gezeigt, oder einfache Strings, die nur als Namen angezeigt werden.
 
 ### Author Properties
 
@@ -111,7 +90,7 @@ tags:
 
 ### Tags File
 
-For custom tag labels, descriptions, and permalinks, create a `tags.yml` file and configure it in your Astro config:
+Für benutzerdefinierte Tag-Bezeichnungen, Beschreibungen und Permalinks erstellen Sie eine Datei `tags.yml` und konfigurieren sie in Ihrer Astro-Konfiguration:
 
 ```yaml
 # blog/tags.yml
@@ -125,7 +104,7 @@ best-practices:
   description: Recommended patterns and approaches
 ```
 
-Then configure the path in `astro.config.mjs`:
+Dann konfigurieren Sie den Pfad in `astro.config.mjs`:
 
 ```js
 shipyardBlog({

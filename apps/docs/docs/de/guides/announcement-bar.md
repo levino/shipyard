@@ -30,7 +30,7 @@ shipyard({
 
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
-| `id` | `string` | `'announcement-bar'` | Optionale eindeutige Kennung (wird für localStorage-Persistenz verwendet). Standardwert ist `'announcement-bar'`. |
+| `id` | `string` | `'announcement-bar'` | Optional unique identifier used for localStorage persistence. Default is `'announcement-bar'`. |
 | `content` | `string` | Required | HTML content to display |
 | `backgroundColor` | `string` | — | Custom background color |
 | `textColor` | `string` | — | Custom text color |
