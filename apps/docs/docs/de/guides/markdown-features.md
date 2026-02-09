@@ -213,18 +213,18 @@ The `Tabs` and `TabItem` components let you group content into switchable tabs. 
 ```mdx
 import { Tabs, TabItem } from '@levino/shipyard-base/components'
 
-<Tabs>
-  <TabItem label="npm">
+<Tabs items={['npm', 'yarn', 'pnpm']}>
+  <TabItem value="npm">
     ```bash
     npm install my-package
     ```
   </TabItem>
-  <TabItem label="yarn">
+  <TabItem value="yarn">
     ```bash
     yarn add my-package
     ```
   </TabItem>
-  <TabItem label="pnpm">
+  <TabItem value="pnpm">
     ```bash
     pnpm add my-package
     ```
@@ -232,7 +232,7 @@ import { Tabs, TabItem } from '@levino/shipyard-base/components'
 </Tabs>
 ```
 
-Tabs persist the selected tab across all tab groups on the page.
+Standardmäßig verwaltet jede `Tabs`-Instanz ihre eigene Auswahl. Um die Auswahl über mehrere Tab-Gruppen hinweg zu synchronisieren, geben Sie ihnen die gleiche `groupId`.
 
 ---
 
