@@ -24,7 +24,7 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [x] Generate documentation routes automatically
 - [x] Documentation sidebar navigation
 - [x] Multiple documentation instances (multi-instance docs)
-- [ ] Documentation versioning
+- [x] Documentation versioning
 
 ### Configuration Options
 
@@ -106,13 +106,13 @@ This document tracks shipyard's progress towards supporting features from Docusa
 
 ### Versioning
 
-- [ ] Create versioned documentation snapshots
-- [ ] Version dropdown selector
-- [ ] Version badges
-- [ ] Unmaintained version banners
-- [ ] Custom version labels
-- [ ] Version-specific sidebars
-- [ ] Version-specific edit URLs
+- [x] Create versioned documentation snapshots
+- [x] Version dropdown selector
+- [x] Version badges
+- [x] Unmaintained version banners
+- [x] Custom version labels
+- [x] Version-specific sidebars
+- [x] Version-specific edit URLs
 
 ### SEO Features
 
@@ -301,7 +301,7 @@ This document tracks shipyard's progress towards supporting features from Docusa
 - [x] Sidebar navigation (docs)
 - [x] Breadcrumbs
 - [x] Table of contents
-- [ ] Search integration
+- [x] Search integration
 - [x] Announcement banner
 - [x] Theme/dark mode toggle
 
@@ -346,7 +346,7 @@ The following Docusaurus features are **not applicable** because Astro handles t
 
 ### Medium Priority (Enhanced Features)
 
-1. **Search integration** - Critical for larger docs
+1. ~~**Search integration**~~ - ✅ Implemented (via Pagefind)
 2. ~~**"Edit this page" links**~~ - ✅ Implemented
 3. ~~**Last updated timestamps**~~ - ✅ Implemented
 4. ~~**Code block enhancements**~~ - ✅ Implemented (line numbers, highlighting, titles)
@@ -356,7 +356,7 @@ The following Docusaurus features are **not applicable** because Astro handles t
 
 ### Lower Priority (Advanced Features)
 
-1. **Documentation versioning** - Complex feature for mature projects
+1. ~~**Documentation versioning**~~ - ✅ Implemented (multi-version docs with version selector)
 2. ~~**Multi-instance docs/blogs**~~ - ✅ Implemented (routeBasePath for both docs and blogs)
 3. ~~**Sidebar link type**~~ - ✅ Implemented (external/internal links in sidebar)
 4. ~~**Author pages**~~ - ✅ Implemented (generated author pages for blog)

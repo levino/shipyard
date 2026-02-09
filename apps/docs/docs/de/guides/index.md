@@ -12,3 +12,6 @@ Schritt-für-Schritt-Anleitungen für fortgeschrittene shipyard-Funktionen.
 
 - **[Dokumentations-Versionierung](./versioning)** - Pflegen Sie mehrere Versionen Ihrer Dokumentation für verschiedene Software-Releases
 - **[Migration zu versionierten Docs](./migration-to-versioned)** - Schritt-für-Schritt-Anleitung zur Migration bestehender Dokumentation zu versionierten Docs
+- **[Markdown-Funktionen](./markdown-features)** - Admonitions, Code-Blöcke, Tabs und weitere Markdown-Erweiterungen
+- **[Ankündigungsleiste](./announcement-bar)** - Ausblendbare Ankündigungsbanner auf Ihrer Webseite
+- **[Blog-Autoren & Tags](./blog-authors-tags)** - Autorenprofile, Tags, Feeds und Archivseiten
