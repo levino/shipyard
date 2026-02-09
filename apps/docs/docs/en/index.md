@@ -99,6 +99,12 @@ Each demo showcases different shipyard capabilities. The source code for all dem
 - **[@levino/shipyard-docs](./docs-package)** – Documentation plugin with sidebar and pagination
 - **[@levino/shipyard-blog](./blog-package)** – Blog plugin with post listing and navigation
 
+### Guides
+
+- **[Markdown Features](./guides/markdown-features)** – Admonitions, code blocks, tabs, and more
+- **[Announcement Bar](./guides/announcement-bar)** – Dismissible site-wide banners
+- **[Blog Authors & Tags](./guides/blog-authors-tags)** – Author profiles, tags, feeds, and archive
+
 ### Additional Resources
 
 - **[Server Mode (SSR)](./server-mode)** – Using shipyard with server-side rendering

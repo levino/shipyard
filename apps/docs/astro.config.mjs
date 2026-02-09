@@ -4,6 +4,7 @@ import shipyard from '@levino/shipyard-base'
 import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
+import pagefind from 'astro-pagefind'
 import shipyardBlog from '../../packages/blog/src/index.ts'
 
 // Import CSS URL - Vite resolves the path
@@ -56,6 +57,10 @@ export default defineConfig({
         about: {
           label: 'About',
           href: '/about',
+        },
+        search: {
+          label: 'Search',
+          href: '/search',
         },
       },
       title: 'shipyard',
@@ -137,5 +142,6 @@ description: Introduction to my project
       },
     }),
     shipyardBlog(),
+    pagefind(),
   ],
 })
