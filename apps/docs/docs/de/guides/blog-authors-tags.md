@@ -32,7 +32,7 @@ authors:
 
 ### Authors File
 
-For shared author data, create an `authors.yml` file in your blog directory:
+Für gemeinsam genutzte Autorendaten können Sie eine Datei `authors.yml` in Ihrem Blog-Verzeichnis erstellen:
 
 ```yaml
 # blog/authors.yml
@@ -50,26 +50,7 @@ john:
   image_url: https://example.com/john.jpg
 ```
 
-Then reference authors by key in frontmatter:
-
-```yaml
----
-title: My Post
-description: A blog post
-date: 2026-01-15
-authors: jane
----
-```
-
-For multiple authors:
-
-```yaml
----
-authors:
-  - jane
-  - john
----
-```
+> **Hinweis:** String-Autoren-Referenzen (z.B. `authors: jane`) werden derzeit nicht aus `authors.yml` aufgelöst. Diese Funktion ist geplant, aber noch nicht implementiert. Verwenden Sie vorerst Inline-Autorenobjekte im Frontmatter wie im obigen Beispiel gezeigt, oder einfache Strings, die nur als Namen angezeigt werden.
 
 ### Author Properties
 
@@ -109,7 +90,7 @@ tags:
 
 ### Tags File
 
-For custom tag labels, descriptions, and permalinks, create a `tags.yml` file:
+Für benutzerdefinierte Tag-Bezeichnungen, Beschreibungen und Permalinks erstellen Sie eine Datei `tags.yml` und konfigurieren sie in Ihrer Astro-Konfiguration:
 
 ```yaml
 # blog/tags.yml
@@ -122,6 +103,17 @@ best-practices:
   label: Best Practices
   description: Recommended patterns and approaches
 ```
+
+Dann konfigurieren Sie den Pfad in `astro.config.mjs`:
+
+```js
+shipyardBlog({
+  tagsMapPath: './blog/tags.yml',
+  // ... other options
+})
+```
+
+**Hinweis:** Die `tags.yml`-Datei wird nicht automatisch erkannt. Sie müssen `tagsMapPath` in Ihrer Konfiguration angeben, damit Tag-Metadaten geladen werden.
 
 ### Tag Properties
 

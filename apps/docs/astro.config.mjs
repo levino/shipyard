@@ -30,6 +30,10 @@ export default defineConfig({
       status: 302,
       destination: '/en/blog',
     },
+    '/search': {
+      status: 302,
+      destination: '/en/search',
+    },
   },
   i18n: {
     defaultLocale: 'en',

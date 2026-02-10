@@ -32,7 +32,7 @@ authors:
 
 ### Authors File
 
-For shared author data, create an `authors.yml` file in your blog directory:
+For shared author data, you can create an `authors.yml` file in your blog directory:
 
 ```yaml
 # blog/authors.yml
@@ -50,26 +50,7 @@ john:
   image_url: https://example.com/john.jpg
 ```
 
-Then reference authors by key in frontmatter:
-
-```yaml
----
-title: My Post
-description: A blog post
-date: 2026-01-15
-authors: jane
----
-```
-
-For multiple authors:
-
-```yaml
----
-authors:
-  - jane
-  - john
----
-```
+> **Note:** String author references (e.g., `authors: jane`) are not currently resolved from `authors.yml`. This feature is planned but not yet implemented. For now, use inline author objects in frontmatter as shown in the example above, or use simple strings which will display as names only.
 
 ### Author Properties
 
@@ -109,7 +90,7 @@ tags:
 
 ### Tags File
 
-For custom tag labels, descriptions, and permalinks, create a `tags.yml` file:
+For custom tag labels, descriptions, and permalinks, create a `tags.yml` file and configure it in your Astro config:
 
 ```yaml
 # blog/tags.yml
@@ -122,6 +103,17 @@ best-practices:
   label: Best Practices
   description: Recommended patterns and approaches
 ```
+
+Then configure the path in `astro.config.mjs`:
+
+```js
+shipyardBlog({
+  tagsMapPath: './blog/tags.yml',
+  // ... other options
+})
+```
+
+**Note:** The `tags.yml` file is not automatically discovered. You must specify `tagsMapPath` in your configuration for tag metadata to be loaded.
 
 ### Tag Properties
 
