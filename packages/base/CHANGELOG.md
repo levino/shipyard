@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.7.2
+
+### Patch Changes
+
+- 5da25ab: Mobile sidebar now extends to the full height of the screen instead of stopping at the last menu item
+
 ## 0.7.1
 
 ### Patch Changes
