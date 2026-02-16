@@ -1,6 +1,6 @@
 {
   "name": "@levino/shipyard-blog",
-  "version": "0.7.1",
+  "version": "0.7.2",
   "description": "Blog plugin for shipyard with pagination, sidebar, and git metadata",
   "type": "module",
   "main": "src/index.ts",
@@ -31,7 +31,7 @@
   "license": "MIT",
   "homepage": "https://shipyard.levinkeller.de",
   "dependencies": {
-    "@levino/shipyard-base": "^0.7.1",
+    "@levino/shipyard-base": "^0.7.2",
     "ramda": "^0.31",
     "yaml": "^2.0.0"
   },
