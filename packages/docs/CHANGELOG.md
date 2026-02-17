@@ -1,5 +1,12 @@
 # @levino/shipyard-docs
 
+## 0.7.3
+
+### Patch Changes
+
+- 3d87d96: Blog post images and docs images now use Astro's `image()` schema helper and the `<Image>` component for automatic optimization. Use relative paths to local image files in frontmatter instead of external URLs.
+  - @levino/shipyard-base@0.7.3
+
 ## 0.7.2
 
 ### Patch Changes
