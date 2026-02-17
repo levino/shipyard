@@ -242,6 +242,38 @@ import { Page } from '@levino/shipyard-base/layouts'
 | `title` | `string` | Seitentitel (kombiniert mit Seitentitel) |
 | `description` | `string` | Seitenbeschreibung für SEO |
 
+#### Named Slots
+
+| Slot | Beschreibung |
+|------|--------------|
+| (default) | Seiteninhalt |
+| `head` | Eigene Elemente im HTML `<head>` |
+| `navbarExtra` | Zusätzlicher Inhalt in der Navigationsleiste |
+| `sidebarExtra` | Zusätzlicher Inhalt in der Sidebar |
+
+#### Eigene Head-Elemente einfügen
+
+Verwende den `head`-Slot, um eigene Meta-Tags, Open Graph-Daten, Canonical-URLs oder strukturierte Daten (JSON-LD) in den `<head>` einzufügen, ohne ein eigenes Layout bauen zu müssen:
+
+```astro
+---
+import { Page } from '@levino/shipyard-base/layouts'
+---
+
+<Page title="Mein Event" description="Ein Community-Event">
+  <meta slot="head" property="og:type" content="event" />
+  <meta slot="head" property="og:image" content="/images/event.jpg" />
+  <link slot="head" rel="canonical" href="https://example.com/mein-event" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "Mein Event"
+  })} />
+
+  <h1>Mein Event</h1>
+</Page>
+```
+
 ### Markdown Layout
 
 Ein Layout mit Tailwind Typography (prose) Styling. Verwende es für eigenständige Markdown-Seiten.
