@@ -5,7 +5,7 @@ sidebar:
   label: Advanced Features
 description: Explore advanced shipyard features that work great with single-language sites
 date: 2024-09-05
-image: https://picsum.photos/seed/shipyard-advanced/800/400
+image: ./images/advanced-features.png
 tags:
   - features
   - customization
