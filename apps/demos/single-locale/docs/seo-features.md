@@ -10,7 +10,7 @@ keywords:
   - keywords
   - social sharing
   - open graph
-image: https://picsum.photos/1200/630
+image: ./seo-image.png
 ---
 
 # SEO Features Demo

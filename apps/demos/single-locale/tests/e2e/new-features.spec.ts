@@ -141,7 +141,7 @@ test.describe('SEO Features', () => {
   test('page with image has og:image meta tag', async ({ page }) => {
     await page.goto('/docs/seo-features')
     const ogImage = page.locator('meta[property="og:image"]')
-    await expect(ogImage).toHaveAttribute('content', /picsum\.photos/)
+    await expect(ogImage).toHaveAttribute('content', /\/_astro\/seo-image\./)
   })
 
   test('page with image has twitter:card meta tag', async ({ page }) => {

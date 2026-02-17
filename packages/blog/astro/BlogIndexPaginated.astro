@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets'
 import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
@@ -125,7 +126,7 @@ const showRightEllipsis =
               {hasImage && (
                 <figure class="hidden w-48 flex-shrink-0 sm:block">
                   <a href={postLink}>
-                    <img
+                    <Image
                       src={entry.data.image}
                       alt={entry.data.title}
                       class="h-full w-full object-cover"

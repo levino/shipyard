@@ -67,99 +67,100 @@ export const tagSchema = z.object({
 
 export type Tag = z.infer<typeof tagSchema>
 
-export const blogSchema = z.object({
-  date: z.date(),
-  title: z.string(),
-  /**
-   * SEO title override for the page's <title> and meta tags.
-   * If not provided, uses the title field.
-   */
-  title_meta: z.string().optional(),
-  description: z.string(),
-  /**
-   * Post author(s). Can be:
-   * - A string referencing an author from authors.yml
-   * - An inline author object
-   * - An array of author references or objects
-   */
-  authors: z
-    .union([
-      z.string(),
-      authorSchema,
-      z.array(z.union([z.string(), authorSchema])),
-    ])
-    .optional(),
-  /**
-   * Post tags for categorization.
-   */
-  tags: z.array(z.string()).optional(),
-  /**
-   * Social card/preview image for the post.
-   */
-  image: z.string().optional(),
-  /**
-   * SEO keywords for the post.
-   */
-  keywords: z.array(z.string()).optional(),
-  /**
-   * Custom URL slug for the post.
-   */
-  slug: z.string().optional(),
-  /**
-   * Mark post as draft (excluded from production builds).
-   */
-  draft: z.boolean().default(false),
-  /**
-   * Mark post as unlisted (accessible but hidden from listings).
-   */
-  unlisted: z.boolean().default(false),
-  /**
-   * Hide the table of contents for this post.
-   */
-  hide_table_of_contents: z.boolean().default(false),
-  /**
-   * Sidebar configuration for this blog post.
-   */
-  sidebar: z
-    .object({
-      /**
-       * Custom label for this post in the blog sidebar.
-       * If not provided, uses the title.
-       */
-      label: z.string().optional(),
-    })
-    .default({}),
-  /**
-   * Minimum heading level to include in table of contents.
-   * @default 2
-   */
-  toc_min_heading_level: z.number().int().min(1).max(6).default(2),
-  /**
-   * Maximum heading level to include in table of contents.
-   * @default 3
-   */
-  toc_max_heading_level: z.number().int().min(1).max(6).default(3),
-  /**
-   * Override the last update author for this specific post.
-   * Set to false to hide the author for this post.
-   */
-  last_update_author: z.union([z.string(), z.literal(false)]).optional(),
-  /**
-   * Override the last update timestamp for this specific post.
-   * Set to false to hide the timestamp for this post.
-   */
-  last_update_time: z.union([z.coerce.date(), z.literal(false)]).optional(),
-  /**
-   * Custom edit URL for this specific post.
-   * Set to null to disable edit link for this post.
-   */
-  custom_edit_url: z.string().nullable().optional(),
-  /**
-   * Custom canonical URL for this post.
-   * Useful when content is duplicated or when migrating URLs.
-   */
-  canonical_url: z.string().optional(),
-})
+export const blogSchema = ({ image }: { image: () => z.ZodType }) =>
+  z.object({
+    date: z.date(),
+    title: z.string(),
+    /**
+     * SEO title override for the page's <title> and meta tags.
+     * If not provided, uses the title field.
+     */
+    title_meta: z.string().optional(),
+    description: z.string(),
+    /**
+     * Post author(s). Can be:
+     * - A string referencing an author from authors.yml
+     * - An inline author object
+     * - An array of author references or objects
+     */
+    authors: z
+      .union([
+        z.string(),
+        authorSchema,
+        z.array(z.union([z.string(), authorSchema])),
+      ])
+      .optional(),
+    /**
+     * Post tags for categorization.
+     */
+    tags: z.array(z.string()).optional(),
+    /**
+     * Image for the post. Use a relative path to a local image file.
+     */
+    image: image().optional(),
+    /**
+     * SEO keywords for the post.
+     */
+    keywords: z.array(z.string()).optional(),
+    /**
+     * Custom URL slug for the post.
+     */
+    slug: z.string().optional(),
+    /**
+     * Mark post as draft (excluded from production builds).
+     */
+    draft: z.boolean().default(false),
+    /**
+     * Mark post as unlisted (accessible but hidden from listings).
+     */
+    unlisted: z.boolean().default(false),
+    /**
+     * Hide the table of contents for this post.
+     */
+    hide_table_of_contents: z.boolean().default(false),
+    /**
+     * Sidebar configuration for this blog post.
+     */
+    sidebar: z
+      .object({
+        /**
+         * Custom label for this post in the blog sidebar.
+         * If not provided, uses the title.
+         */
+        label: z.string().optional(),
+      })
+      .default({}),
+    /**
+     * Minimum heading level to include in table of contents.
+     * @default 2
+     */
+    toc_min_heading_level: z.number().int().min(1).max(6).default(2),
+    /**
+     * Maximum heading level to include in table of contents.
+     * @default 3
+     */
+    toc_max_heading_level: z.number().int().min(1).max(6).default(3),
+    /**
+     * Override the last update author for this specific post.
+     * Set to false to hide the author for this post.
+     */
+    last_update_author: z.union([z.string(), z.literal(false)]).optional(),
+    /**
+     * Override the last update timestamp for this specific post.
+     * Set to false to hide the timestamp for this post.
+     */
+    last_update_time: z.union([z.coerce.date(), z.literal(false)]).optional(),
+    /**
+     * Custom edit URL for this specific post.
+     * Set to null to disable edit link for this post.
+     */
+    custom_edit_url: z.string().nullable().optional(),
+    /**
+     * Custom canonical URL for this post.
+     * Useful when content is duplicated or when migrating URLs.
+     */
+    canonical_url: z.string().optional(),
+  })
 
 export const blogConfigSchema = z.object({
   /**
