@@ -150,16 +150,14 @@ const tagBaseUrl = i18n
 
           return isFirst && hasImage ? (
             /* Featured first post — full-width card with image */
-            <article class="card bg-base-100 shadow-sm" data-testid="blog-post-item">
+            <article class="card bg-base-100 shadow-sm relative" data-testid="blog-post-item">
               <figure>
-                <a href={postLink} data-testid="blog-post-link">
-                  <Image
-                    src={entry.data.image}
-                    alt={entry.data.title}
-                    class="w-full object-cover"
-                    loading="eager"
-                  />
-                </a>
+                <Image
+                  src={entry.data.image}
+                  alt={entry.data.title}
+                  class="w-full object-cover"
+                  loading="eager"
+                />
               </figure>
               <div class="card-body">
                 {entry.data.draft && (
@@ -174,12 +172,12 @@ const tagBaseUrl = i18n
                     </>
                   )}
                 </div>
-                <a class="no-underline" href={postLink}>
+                <a class="no-underline after:absolute after:inset-0 after:content-['']" href={postLink} data-testid="blog-post-link">
                   <h2 class="card-title text-2xl md:text-3xl">{entry.data.title}</h2>
                 </a>
                 <p class="text-base-content/70">{entry.data.description}</p>
                 {tags.length > 0 && (
-                  <div class="card-actions">
+                  <div class="card-actions relative z-10">
                     <BlogTags tags={tags} baseUrl={tagBaseUrl} />
                   </div>
                 )}
@@ -187,16 +185,14 @@ const tagBaseUrl = i18n
             </article>
           ) : hasImage ? (
             /* Post with image — side card */
-            <article class="card card-side bg-base-100 shadow-sm" data-testid="blog-post-item">
+            <article class="card card-side bg-base-100 shadow-sm relative" data-testid="blog-post-item">
               <figure class="hidden w-48 flex-shrink-0 sm:block">
-                <a href={postLink}>
-                  <Image
-                    src={entry.data.image}
-                    alt={entry.data.title}
-                    class="h-full w-full object-cover"
-                    loading="lazy"
-                  />
-                </a>
+                <Image
+                  src={entry.data.image}
+                  alt={entry.data.title}
+                  class="h-full w-full object-cover"
+                  loading="lazy"
+                />
               </figure>
               <div class="card-body">
                 {entry.data.draft && (
@@ -211,12 +207,12 @@ const tagBaseUrl = i18n
                     </>
                   )}
                 </div>
-                <a class="no-underline" href={postLink} data-testid="blog-post-link">
+                <a class="no-underline after:absolute after:inset-0 after:content-['']" href={postLink} data-testid="blog-post-link">
                   <h2 class="card-title">{entry.data.title}</h2>
                 </a>
                 <p class="line-clamp-2 text-sm text-base-content/70">{entry.data.description}</p>
                 {tags.length > 0 && (
-                  <div class="card-actions">
+                  <div class="card-actions relative z-10">
                     <BlogTags tags={tags} baseUrl={tagBaseUrl} />
                   </div>
                 )}
@@ -224,7 +220,7 @@ const tagBaseUrl = i18n
             </article>
           ) : (
             /* Post without image — simple card */
-            <article class="card bg-base-100 shadow-sm" data-testid="blog-post-item">
+            <article class="card bg-base-100 shadow-sm relative" data-testid="blog-post-item">
               <div class="card-body">
                 {entry.data.draft && (
                   <span class="badge badge-warning">Draft</span>
@@ -238,12 +234,12 @@ const tagBaseUrl = i18n
                     </>
                   )}
                 </div>
-                <a class="no-underline" href={postLink} data-testid="blog-post-link">
+                <a class="no-underline after:absolute after:inset-0 after:content-['']" href={postLink} data-testid="blog-post-link">
                   <h2 class="card-title">{entry.data.title}</h2>
                 </a>
                 <p class="line-clamp-2 text-sm text-base-content/70">{entry.data.description}</p>
                 {tags.length > 0 && (
-                  <div class="card-actions">
+                  <div class="card-actions relative z-10">
                     <BlogTags tags={tags} baseUrl={tagBaseUrl} />
                   </div>
                 )}

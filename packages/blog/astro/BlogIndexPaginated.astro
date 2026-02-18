@@ -122,24 +122,22 @@ const showRightEllipsis =
           const postLink = `/${getBlogPostLink(entry.id, Astro.currentLocale)}`
           const hasImage = !!entry.data.image
           return (
-            <article class:list={["card bg-base-100 shadow-sm", { "card-side": hasImage }]} data-testid="blog-post-item">
+            <article class:list={["card bg-base-100 shadow-sm relative", { "card-side": hasImage }]} data-testid="blog-post-item">
               {hasImage && (
                 <figure class="hidden w-48 flex-shrink-0 sm:block">
-                  <a href={postLink}>
-                    <Image
-                      src={entry.data.image}
-                      alt={entry.data.title}
-                      class="h-full w-full object-cover"
-                      loading="lazy"
-                    />
-                  </a>
+                  <Image
+                    src={entry.data.image}
+                    alt={entry.data.title}
+                    class="h-full w-full object-cover"
+                    loading="lazy"
+                  />
                 </figure>
               )}
               <div class="card-body">
                 <div class="text-sm text-base-content/60">
                   <time datetime={entry.data.date.toISOString()}>{formatDate(entry.data.date)}</time>
                 </div>
-                <a class="no-underline" href={postLink} data-testid="blog-post-link">
+                <a class="no-underline after:absolute after:inset-0 after:content-['']" href={postLink} data-testid="blog-post-link">
                   <h2 class="card-title">{entry.data.title}</h2>
                 </a>
                 <p class="line-clamp-2 text-sm text-base-content/70">{entry.data.description}</p>
