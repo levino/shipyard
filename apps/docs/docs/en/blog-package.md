@@ -89,6 +89,12 @@ That's it! Your blog is now available at `/blog`.
 
 ---
 
+## Blog Index
+
+The blog index displays posts as cards. Each card is **fully clickable** — clicking anywhere on the card navigates to the post. Tags inside cards remain independently clickable, so users can filter by tag without accidentally navigating away.
+
+---
+
 ## Configuration
 
 | Option | Type | Default | Description |
