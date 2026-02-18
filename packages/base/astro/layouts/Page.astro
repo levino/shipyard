@@ -107,6 +107,7 @@ const renderScriptAttributes = (script: Script) => {
       const attrs = renderScriptAttributes(script)
       return <script is:inline {...attrs}></script>
     })}
+    <slot name="head" />
   </head>
   <body class="flex min-h-screen flex-col">
     {config.announcementBar && <AnnouncementBar config={config.announcementBar} />}

@@ -1,0 +1,29 @@
+---
+import { Page } from '@levino/shipyard-base/layouts'
+---
+
+<Page title="Head Slot Example" description="Demonstrates using the head slot to inject custom meta tags">
+  <meta slot="head" property="og:type" content="article" />
+  <meta slot="head" name="author" content="Shipyard Team" />
+  <link slot="head" rel="canonical" href="https://example.com/head-slot-demo" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Head Slot Example",
+    "author": "Shipyard Team"
+  })} />
+
+  <div class="prose mx-auto">
+    <h1>Head Slot Example</h1>
+    <p>
+      This page demonstrates the <code>head</code> named slot in the Page layout.
+      Inspect the HTML <code>&lt;head&gt;</code> to see the injected elements:
+    </p>
+    <ul>
+      <li><code>&lt;meta property="og:type" content="article"&gt;</code></li>
+      <li><code>&lt;meta name="author" content="Shipyard Team"&gt;</code></li>
+      <li><code>&lt;link rel="canonical" href="https://example.com/head-slot-demo"&gt;</code></li>
+      <li><code>&lt;script type="application/ld+json"&gt;</code> with structured data</li>
+    </ul>
+  </div>
+</Page>

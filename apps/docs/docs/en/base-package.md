@@ -242,6 +242,38 @@ import { Page } from '@levino/shipyard-base/layouts'
 | `title` | `string` | Page title (combined with site title) |
 | `description` | `string` | Page description for SEO |
 
+#### Named Slots
+
+| Slot | Description |
+|------|-------------|
+| (default) | Page body content |
+| `head` | Custom elements injected into the HTML `<head>` |
+| `navbarExtra` | Extra content in the navigation bar |
+| `sidebarExtra` | Extra content in the sidebar |
+
+#### Injecting Custom Head Elements
+
+Use the `head` slot to inject custom meta tags, Open Graph data, canonical URLs, or structured data (JSON-LD) into the `<head>` without building a custom layout:
+
+```astro
+---
+import { Page } from '@levino/shipyard-base/layouts'
+---
+
+<Page title="My Event" description="A community event">
+  <meta slot="head" property="og:type" content="event" />
+  <meta slot="head" property="og:image" content="/images/event.jpg" />
+  <link slot="head" rel="canonical" href="https://example.com/my-event" />
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "My Event"
+  })} />
+
+  <h1>My Event</h1>
+</Page>
+```
+
 ### Markdown Layout
 
 A layout with Tailwind Typography (prose) styling. Use this for standalone markdown pages.
