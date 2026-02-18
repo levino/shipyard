@@ -1,5 +1,14 @@
 # @levino/shipyard-blog
 
+## 0.7.4
+
+### Patch Changes
+
+- 244247d: Blog cards are now fully clickable — clicking anywhere on a card navigates to the post. Tags inside cards remain independently clickable, so you can still filter by tag without accidentally navigating away.
+- Updated dependencies [4dda10c]
+- Updated dependencies [1ef1acc]
+  - @levino/shipyard-base@0.7.4
+
 ## 0.7.3
 
 ### Patch Changes
