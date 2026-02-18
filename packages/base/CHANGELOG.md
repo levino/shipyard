@@ -1,5 +1,12 @@
 # @levino/shipyard-base
 
+## 0.7.4
+
+### Patch Changes
+
+- 4dda10c: You can now inject custom elements into the HTML `<head>` using the new `head` named slot on the Page layout. This lets you add Open Graph tags, canonical URLs, JSON-LD structured data, and other meta tags without building a custom layout.
+- 1ef1acc: Mobile navigation menu now displays correctly at full height instead of being cut off by a wrapper div
+
 ## 0.7.3
 
 ## 0.7.2
