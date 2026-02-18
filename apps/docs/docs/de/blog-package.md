@@ -89,6 +89,12 @@ Das war's! Dein Blog ist jetzt unter `/blog` verfügbar.
 
 ---
 
+## Blog-Index
+
+Der Blog-Index zeigt Beiträge als Karten an. Jede Karte ist **vollständig klickbar** — ein Klick irgendwo auf die Karte navigiert zum Beitrag. Tags innerhalb der Karten bleiben eigenständig klickbar, sodass Nutzer nach Tags filtern können, ohne versehentlich zum Beitrag zu navigieren.
+
+---
+
 ## Konfiguration
 
 | Option | Typ | Standard | Beschreibung |
