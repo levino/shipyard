@@ -3,7 +3,6 @@ import { Image } from 'astro:assets'
 import { i18n } from 'astro:config/server'
 import { type CollectionKey, getCollection } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
-import type { GetStaticPaths } from 'astro'
 import Layout from './Layout.astro'
 
 const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
@@ -11,48 +10,6 @@ const collectionName =
   Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 const { postsPerPage, routeBasePath } = blogConfig
-
-export const getStaticPaths = (async () => {
-  const allPosts = await getCollection('blog')
-
-  if (i18n) {
-    const paths: Array<{ params: { locale: string; page: string } }> = []
-
-    for (const locale of i18n.locales) {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-
-      const localePosts = allPosts.filter(({ id }) => {
-        const [postLocale] = id.split('/')
-        return postLocale === locale
-      })
-
-      const totalPages = Math.ceil(
-        localePosts.length / blogConfigDefault.postsPerPage,
-      )
-
-      // Generate pages 2+ only (page 1 is handled by BlogIndex.astro)
-      for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-        paths.push({ params: { locale, page: String(pageNum) } })
-      }
-    }
-
-    return paths
-  } else {
-    const totalPages = Math.ceil(
-      allPosts.length / blogConfigDefault.postsPerPage,
-    )
-    const paths: Array<{ params: { page: string } }> = []
-
-    // Generate pages 2+ only
-    for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
-      paths.push({ params: { page: String(pageNum) } })
-    }
-
-    return paths
-  }
-}) satisfies GetStaticPaths
 
 // Get current page from URL params
 const pageParam = Astro.params.page

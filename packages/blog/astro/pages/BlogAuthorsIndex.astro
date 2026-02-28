@@ -1,0 +1,23 @@
+---
+import { i18n } from 'astro:config/server'
+import registry from 'virtual:shipyard-blog/registry'
+import type { GetStaticPaths } from 'astro'
+import { getInstanceConfig, getLocalePaths } from '../../src/staticPaths'
+import BlogAuthorsIndex from '../BlogAuthorsIndex.astro'
+
+export const getStaticPaths = (({ routePattern }) => {
+  const instance = getInstanceConfig(routePattern, registry)
+  if (!instance.blogConfig.authorsEnabled) return []
+  return getLocalePaths(i18n).map((p) => ({
+    ...p,
+    props: instance,
+  }))
+}) satisfies GetStaticPaths
+
+const instance = getInstanceConfig(Astro.routePattern, registry)
+const blogConfig = Astro.props.blogConfig ?? instance.blogConfig
+const tagsMap = Astro.props.tagsMap ?? instance.tagsMap
+const collectionName = Astro.props.collectionName ?? instance.collectionName
+---
+
+<BlogAuthorsIndex blogConfig={blogConfig} tagsMap={tagsMap} collectionName={collectionName} />

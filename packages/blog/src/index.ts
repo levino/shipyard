@@ -1,6 +1,4 @@
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
-import { join } from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { existsSync, readFileSync } from 'node:fs'
 import type { AstroIntegration } from 'astro'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
@@ -304,389 +302,21 @@ const VIRTUAL_MODULE_ID = 'virtual:shipyard-blog/config'
 const RESOLVED_VIRTUAL_MODULE_ID = `\0${VIRTUAL_MODULE_ID}`
 const VIRTUAL_TAGS_MODULE_ID = 'virtual:shipyard-blog/tags'
 const RESOLVED_VIRTUAL_TAGS_MODULE_ID = `\0${VIRTUAL_TAGS_MODULE_ID}`
+const VIRTUAL_REGISTRY_ID = 'virtual:shipyard-blog/registry'
+const RESOLVED_VIRTUAL_REGISTRY_ID = `\0${VIRTUAL_REGISTRY_ID}`
 
-// ─── Generated File Templates ───────────────────────────────────────────
-
-/**
- * Generate a simple wrapper for components that only need locale-based getStaticPaths.
- * Used for: BlogIndex, BlogTagsIndex, BlogArchive, BlogAuthorsIndex
- */
-function generateSimpleWrapper(
-  componentImport: string,
-  blogConfig: BlogConfig,
-  collectionName: string,
-  tagsMap: Record<string, unknown>,
-  opts?: { authorsCheck?: boolean },
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const tagsJson = JSON.stringify(tagsMap)
-  const authorsGuard = opts?.authorsCheck
-    ? `
-  if (!${JSON.stringify(blogConfig.authorsEnabled)}) return []`
-    : ''
-
-  return `---
-import { i18n } from 'astro:config/server'
-import Component from '${componentImport}'
-import type { GetStaticPaths } from 'astro'
-
-export const getStaticPaths = (() => {${authorsGuard}
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-      return { params: { locale } }
-    })
-  } else {
-    return [{ params: {} }]
+const blogRegistry: Record<
+  string,
+  {
+    blogConfig: BlogConfig
+    tagsMap: Record<string, unknown>
+    collectionName: string
   }
-}) satisfies GetStaticPaths
-
-const blogConfig = ${configJson}
-const tagsMap = ${tagsJson}
----
-
-<Component collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
-`
-}
-
-/**
- * Generate a wrapper for BlogEntry with per-entry getStaticPaths.
- */
-function generateBlogEntryWrapper(
-  blogConfig: BlogConfig,
-  collectionName: string,
-  tagsMap: Record<string, unknown>,
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const tagsJson = JSON.stringify(tagsMap)
-
-  return `---
-import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-import { computeBlogEntryPaths } from '@levino/shipyard-blog/staticPaths'
-import BlogEntry from '@levino/shipyard-blog/astro/BlogEntry.astro'
-
-export const getStaticPaths = async () => {
-  const allPosts = await getCollection(${JSON.stringify(collectionName)})
-  return computeBlogEntryPaths(allPosts, ${configJson}, i18n)
-}
-
-const { entry, older, newer } = Astro.props
-const blogConfig = ${configJson}
-const tagsMap = ${tagsJson}
----
-
-<BlogEntry
-  entry={entry}
-  older={older}
-  newer={newer}
-  collectionName=${JSON.stringify(collectionName)}
-  blogConfig={blogConfig}
-  tagsMap={tagsMap}
-/>
-`
-}
-
-/**
- * Generate a wrapper for BlogIndexPaginated with pagination-aware getStaticPaths.
- */
-function generateBlogPaginatedWrapper(
-  blogConfig: BlogConfig,
-  collectionName: string,
-  tagsMap: Record<string, unknown>,
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const tagsJson = JSON.stringify(tagsMap)
-
-  return `---
-import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-import { computeBlogPaginatedPaths } from '@levino/shipyard-blog/staticPaths'
-import BlogIndexPaginated from '@levino/shipyard-blog/astro/BlogIndexPaginated.astro'
-
-export const getStaticPaths = async () => {
-  const allPosts = await getCollection(${JSON.stringify(collectionName)})
-  return computeBlogPaginatedPaths(allPosts, ${configJson}, i18n)
-}
-
-const blogConfig = ${configJson}
-const tagsMap = ${tagsJson}
----
-
-<BlogIndexPaginated collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
-`
-}
-
-/**
- * Generate a wrapper for BlogTagPage with per-tag getStaticPaths.
- */
-function generateBlogTagPageWrapper(
-  blogConfig: BlogConfig,
-  collectionName: string,
-  tagsMap: Record<string, unknown>,
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const tagsJson = JSON.stringify(tagsMap)
-
-  return `---
-import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-import { computeBlogTagPaths } from '@levino/shipyard-blog/staticPaths'
-import BlogTagPage from '@levino/shipyard-blog/astro/BlogTagPage.astro'
-
-export const getStaticPaths = async () => {
-  const allPosts = await getCollection(${JSON.stringify(collectionName)})
-  return computeBlogTagPaths(allPosts, ${configJson}, i18n)
-}
-
-const blogConfig = ${configJson}
-const tagsMap = ${tagsJson}
----
-
-<BlogTagPage collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
-`
-}
-
-/**
- * Generate a wrapper for BlogAuthorPage with per-author getStaticPaths.
- */
-function generateBlogAuthorPageWrapper(
-  blogConfig: BlogConfig,
-  collectionName: string,
-  tagsMap: Record<string, unknown>,
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const tagsJson = JSON.stringify(tagsMap)
-
-  return `---
-import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-import { computeBlogAuthorPaths } from '@levino/shipyard-blog/staticPaths'
-import BlogAuthorPage from '@levino/shipyard-blog/astro/BlogAuthorPage.astro'
-
-export const getStaticPaths = async () => {
-  const allPosts = await getCollection(${JSON.stringify(collectionName)})
-  return computeBlogAuthorPaths(allPosts, ${configJson}, i18n)
-}
-
-const { author } = Astro.props
-const blogConfig = ${configJson}
-const tagsMap = ${tagsJson}
----
-
-<BlogAuthorPage author={author} collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
-`
-}
-
-/**
- * Generate a feed handler TS file for a specific blog instance.
- */
-function generateFeedFile(
-  feedType: 'rss' | 'atom' | 'json',
-  blogConfig: BlogConfig,
-  collectionName: string,
-) {
-  const configJson = JSON.stringify(blogConfig)
-  const feedEnabledKey = feedType === 'json' ? 'json' : feedType
-  const contentType =
-    feedType === 'rss'
-      ? 'application/rss+xml'
-      : feedType === 'atom'
-        ? 'application/atom+xml'
-        : 'application/feed+json'
-
-  if (feedType === 'json') {
-    return generateJsonFeedFile(blogConfig, collectionName)
-  }
-
-  const isRss = feedType === 'rss'
-  const feedFileName = isRss ? 'rss.xml' : 'atom.xml'
-
-  return `import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-
-const blogConfig = ${configJson}
-const collectionName = ${JSON.stringify(collectionName)}
-const { feedOptions, includeDraftsInDev, blogTitle, blogDescription, routeBasePath } = blogConfig
-const { ${feedEnabledKey}: feedEnabled, limit, title: feedTitle, description: feedDescription } = feedOptions
-
-const isDev = import.meta.env.DEV
-const shouldIncludePost = (post) => {
-  if (post.data.unlisted) return false
-  if (post.data.draft && !(isDev && includeDraftsInDev)) return false
-  return true
-}
-
-export const getStaticPaths = (() => {
-  if (!feedEnabled) return []
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') throw new Error('shipyard does only support strings as locales.')
-      return { params: { locale } }
-    })
-  }
-  return [{ params: {} }]
-})
-
-const escapeXml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;')
-
-export const GET = async ({ site, currentLocale }) => {
-  if (!feedEnabled) return new Response('Feed disabled', { status: 404 })
-  const baseUrl = site?.toString() ?? 'https://example.com'
-
-  const buildUrl = (...segments) => {
-    const url = new URL(baseUrl)
-    const parts = [url.pathname.replace(/\\/$/, ''), ...segments.filter(Boolean).map(s => s.replace(/^\\/|\\/$/g, ''))]
-    url.pathname = '/' + parts.filter(Boolean).join('/')
-    return url.toString()
-  }
-  const allPosts = await getCollection(collectionName)
-  const posts = allPosts
-    .filter(shouldIncludePost)
-    .filter((post) => {
-      if (i18n) { const [pl] = post.id.split('/'); return pl === currentLocale }
-      return true
-    })
-    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-    .slice(0, limit)
-
-  const getBlogPostUrl = (post) => {
-    if (i18n && currentLocale) {
-      const slug = post.id.replace(currentLocale + '/', '')
-      return buildUrl(currentLocale, routeBasePath, slug)
-    }
-    return buildUrl(routeBasePath, post.id)
-  }
-
-  const title = feedTitle ?? blogTitle
-  const description = feedDescription ?? blogDescription ?? title + ' Feed'
-  const feedUrl = i18n
-    ? buildUrl(currentLocale ?? '', routeBasePath, '${feedFileName}')
-    : buildUrl(routeBasePath, '${feedFileName}')
-
-${
-  isRss
-    ? `  const items = posts.map((post) => {
-    const postUrl = getBlogPostUrl(post)
-    return '    <item>\\n      <title>' + escapeXml(post.data.title) + '</title>\\n      <link>' + escapeXml(postUrl) + '</link>\\n      <description>' + escapeXml(post.data.description) + '</description>\\n      <pubDate>' + post.data.date.toUTCString() + '</pubDate>\\n      <guid>' + escapeXml(postUrl) + '</guid>\\n    </item>'
-  })
-
-  const xml = '<?xml version="1.0" encoding="UTF-8"?>\\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">\\n  <channel>\\n    <title>' + escapeXml(title) + '</title>\\n    <link>' + escapeXml(baseUrl) + '</link>\\n    <description>' + escapeXml(description) + '</description>\\n    <language>' + (currentLocale ?? 'en') + '</language>\\n    <atom:link href="' + escapeXml(feedUrl) + '" rel="self" type="application/rss+xml"/>\\n    <lastBuildDate>' + new Date().toUTCString() + '</lastBuildDate>\\n' + items.join('\\n') + '\\n  </channel>\\n</rss>'
-  return new Response(xml, { headers: { 'Content-Type': '${contentType}; charset=utf-8' } })`
-    : `  const lastUpdated = posts.length > 0 ? posts[0].data.date.toISOString() : new Date().toISOString()
-  const subtitle = feedDescription ?? blogDescription
-  const entries = posts.map((post) => {
-    const postUrl = getBlogPostUrl(post)
-    return '  <entry>\\n    <title>' + escapeXml(post.data.title) + '</title>\\n    <link href="' + escapeXml(postUrl) + '"/>\\n    <id>' + escapeXml(postUrl) + '</id>\\n    <updated>' + post.data.date.toISOString() + '</updated>\\n    <summary>' + escapeXml(post.data.description) + '</summary>\\n  </entry>'
-  })
-
-  const xml = '<?xml version="1.0" encoding="UTF-8"?>\\n<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="' + (currentLocale ?? 'en') + '">\\n  <title>' + escapeXml(title) + '</title>\\n  <link href="' + escapeXml(baseUrl) + '"/>\\n  <link href="' + escapeXml(feedUrl) + '" rel="self" type="application/atom+xml"/>\\n  <id>' + escapeXml(baseUrl) + '</id>\\n  <updated>' + lastUpdated + '</updated>\\n  ' + (subtitle ? '<subtitle>' + escapeXml(subtitle) + '</subtitle>' : '') + '\\n' + entries.join('\\n') + '\\n</feed>'
-  return new Response(xml, { headers: { 'Content-Type': '${contentType}; charset=utf-8' } })`
-}
-}
-`
-}
-
-function generateJsonFeedFile(blogConfig: BlogConfig, collectionName: string) {
-  return `import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-
-const blogConfig = ${JSON.stringify(blogConfig)}
-const collectionName = ${JSON.stringify(collectionName)}
-const { feedOptions, includeDraftsInDev, blogTitle, blogDescription, routeBasePath } = blogConfig
-const { json: feedEnabled, limit, title: feedTitle, description: feedDescription } = feedOptions
-
-const isDev = import.meta.env.DEV
-const shouldIncludePost = (post) => {
-  if (post.data.unlisted) return false
-  if (post.data.draft && !(isDev && includeDraftsInDev)) return false
-  return true
-}
-
-export const getStaticPaths = (() => {
-  if (!feedEnabled) return []
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') throw new Error('shipyard does only support strings as locales.')
-      return { params: { locale } }
-    })
-  }
-  return [{ params: {} }]
-})
-
-export const GET = async ({ site, currentLocale }) => {
-  if (!feedEnabled) return new Response('JSON feed disabled', { status: 404 })
-  const baseUrl = site?.toString() ?? 'https://example.com'
-
-  const buildUrl = (...segments) => {
-    const url = new URL(baseUrl)
-    const parts = [url.pathname.replace(/\\/$/, ''), ...segments.filter(Boolean).map(s => s.replace(/^\\/|\\/$/g, ''))]
-    url.pathname = '/' + parts.filter(Boolean).join('/')
-    return url.toString()
-  }
-
-  const allPosts = await getCollection(collectionName)
-  const posts = allPosts
-    .filter(shouldIncludePost)
-    .filter((post) => {
-      if (i18n) { const [pl] = post.id.split('/'); return pl === currentLocale }
-      return true
-    })
-    .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-    .slice(0, limit)
-
-  const getBlogPostUrl = (post) => {
-    if (i18n && currentLocale) {
-      const slug = post.id.replace(currentLocale + '/', '')
-      return buildUrl(currentLocale, routeBasePath, slug)
-    }
-    return buildUrl(routeBasePath, post.id)
-  }
-
-  const title = feedTitle ?? blogTitle
-  const description = feedDescription ?? blogDescription
-  const feedUrl = i18n
-    ? buildUrl(currentLocale ?? '', routeBasePath, 'feed.json')
-    : buildUrl(routeBasePath, 'feed.json')
-
-  const items = posts.map((post) => {
-    const postUrl = getBlogPostUrl(post)
-    return {
-      id: postUrl,
-      url: postUrl,
-      title: post.data.title,
-      summary: post.data.description,
-      date_published: post.data.date.toISOString(),
-      ...(post.data.tags?.length ? { tags: post.data.tags } : {}),
-    }
-  })
-
-  const feed = {
-    version: 'https://jsonfeed.org/version/1.1',
-    title,
-    home_page_url: baseUrl,
-    feed_url: feedUrl,
-    ...(description ? { description } : {}),
-    language: currentLocale ?? 'en',
-    items,
-  }
-
-  return new Response(JSON.stringify(feed, null, 2), {
-    headers: { 'Content-Type': 'application/feed+json; charset=utf-8' },
-  })
-}
-`
-}
-
-// ─── Integration Export ─────────────────────────────────────────────────
+> = {}
 
 export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
-  // Parse and validate config
   const blogConfig = blogConfigSchema.parse(options)
 
-  // Normalize the route base path
   let normalizedBasePath = blogConfig.routeBasePath
   while (normalizedBasePath.startsWith('/')) {
     normalizedBasePath = normalizedBasePath.slice(1)
@@ -695,17 +325,14 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
     normalizedBasePath = normalizedBasePath.slice(0, -1)
   }
 
-  // Default collectionName to the normalized base path
   const resolvedCollectionName = blogConfig.collectionName ?? normalizedBasePath
 
-  // Load tags map if path is provided
   let tagsMap: Record<string, unknown> = {}
 
   return {
     name: `shipyard-blog-${normalizedBasePath}`,
     hooks: {
       'astro:config:setup': ({ injectRoute, config, updateConfig }) => {
-        // Load tags map now (at config setup time)
         if (blogConfig.tagsMapPath) {
           try {
             const resolvedPath = blogConfig.tagsMapPath.startsWith('/')
@@ -730,263 +357,141 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
           }
         }
 
-        // Add a vite plugin to provide the config via a virtual module
-        // Keep backward-compatible module IDs for single-instance usage
+        blogRegistry[normalizedBasePath] = {
+          blogConfig,
+          tagsMap,
+          collectionName: resolvedCollectionName,
+        }
+
         updateConfig({
           vite: {
             plugins: [
               {
                 name: `shipyard-blog-config-${normalizedBasePath}`,
                 resolveId(id) {
-                  if (id === VIRTUAL_MODULE_ID) {
+                  if (id === VIRTUAL_REGISTRY_ID)
+                    return RESOLVED_VIRTUAL_REGISTRY_ID
+                  if (id === VIRTUAL_MODULE_ID)
                     return RESOLVED_VIRTUAL_MODULE_ID
-                  }
-                  if (id === VIRTUAL_TAGS_MODULE_ID) {
+                  if (id === VIRTUAL_TAGS_MODULE_ID)
                     return RESOLVED_VIRTUAL_TAGS_MODULE_ID
-                  }
                 },
                 load(id) {
-                  if (id === RESOLVED_VIRTUAL_MODULE_ID) {
+                  if (id === RESOLVED_VIRTUAL_REGISTRY_ID)
+                    return `export default ${JSON.stringify(blogRegistry)}`
+                  if (id === RESOLVED_VIRTUAL_MODULE_ID)
                     return `export default ${JSON.stringify(blogConfig)}`
-                  }
-                  if (id === RESOLVED_VIRTUAL_TAGS_MODULE_ID) {
+                  if (id === RESOLVED_VIRTUAL_TAGS_MODULE_ID)
                     return `export default ${JSON.stringify(tagsMap)}`
-                  }
                 },
               },
             ],
           },
         })
 
-        // Create generated entry files for this specific blog instance
-        // This ensures each instance has its own getStaticPaths that only returns its own paths
-        const rootDir = config.root ? fileURLToPath(config.root) : process.cwd()
-        const generatedDir = join(rootDir, 'node_modules', '.shipyard-blog')
-
-        if (!existsSync(generatedDir)) {
-          mkdirSync(generatedDir, { recursive: true })
-        }
-
-        // Helper to write a generated file
-        const writeGenerated = (filename: string, content: string) => {
-          const filePath = join(generatedDir, filename)
-          writeFileSync(filePath, content, 'utf-8')
-          return filePath
-        }
-
         const basePath = normalizedBasePath
-        // Sanitize suffix to a safe filename fragment (replace path separators)
-        const suffix = normalizedBasePath
-          .replace(/[/.]+/g, '-')
-          .replace(/^-|-$/g, '')
+        const pageBase = '@levino/shipyard-blog/astro/pages'
 
-        // Generate all entry files for this instance
-        const blogIndexFile = writeGenerated(
-          `BlogIndex-${suffix}.astro`,
-          generateSimpleWrapper(
-            '@levino/shipyard-blog/astro/BlogIndex.astro',
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        const blogPaginatedFile = writeGenerated(
-          `BlogIndexPaginated-${suffix}.astro`,
-          generateBlogPaginatedWrapper(
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        const blogEntryFile = writeGenerated(
-          `BlogEntry-${suffix}.astro`,
-          generateBlogEntryWrapper(blogConfig, resolvedCollectionName, tagsMap),
-        )
-
-        const blogTagsIndexFile = writeGenerated(
-          `BlogTagsIndex-${suffix}.astro`,
-          generateSimpleWrapper(
-            '@levino/shipyard-blog/astro/BlogTagsIndex.astro',
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        const blogTagPageFile = writeGenerated(
-          `BlogTagPage-${suffix}.astro`,
-          generateBlogTagPageWrapper(
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        const blogArchiveFile = writeGenerated(
-          `BlogArchive-${suffix}.astro`,
-          generateSimpleWrapper(
-            '@levino/shipyard-blog/astro/BlogArchive.astro',
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        const blogAuthorsIndexFile = writeGenerated(
-          `BlogAuthorsIndex-${suffix}.astro`,
-          generateSimpleWrapper(
-            '@levino/shipyard-blog/astro/BlogAuthorsIndex.astro',
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-            { authorsCheck: true },
-          ),
-        )
-
-        const blogAuthorPageFile = writeGenerated(
-          `BlogAuthorPage-${suffix}.astro`,
-          generateBlogAuthorPageWrapper(
-            blogConfig,
-            resolvedCollectionName,
-            tagsMap,
-          ),
-        )
-
-        // Inject routes pointing to generated files
         if (config.i18n) {
           injectRoute({
             pattern: `/[locale]/${basePath}`,
-            entrypoint: blogIndexFile,
+            entrypoint: `${pageBase}/BlogIndex.astro`,
           })
           injectRoute({
             pattern: `/[locale]/${basePath}/page/[page]`,
-            entrypoint: blogPaginatedFile,
+            entrypoint: `${pageBase}/BlogIndexPaginated.astro`,
           })
           injectRoute({
             pattern: `/[locale]/${basePath}/tags`,
-            entrypoint: blogTagsIndexFile,
+            entrypoint: `${pageBase}/BlogTagsIndex.astro`,
           })
           injectRoute({
             pattern: `/[locale]/${basePath}/tags/[tag]`,
-            entrypoint: blogTagPageFile,
+            entrypoint: `${pageBase}/BlogTagPage.astro`,
           })
           if (blogConfig.archiveEnabled) {
             injectRoute({
               pattern: `/[locale]/${basePath}/archive`,
-              entrypoint: blogArchiveFile,
+              entrypoint: `${pageBase}/BlogArchive.astro`,
             })
           }
           if (blogConfig.authorsEnabled) {
             injectRoute({
               pattern: `/[locale]/${basePath}/authors`,
-              entrypoint: blogAuthorsIndexFile,
+              entrypoint: `${pageBase}/BlogAuthorsIndex.astro`,
             })
             injectRoute({
               pattern: `/[locale]/${basePath}/authors/[author]`,
-              entrypoint: blogAuthorPageFile,
+              entrypoint: `${pageBase}/BlogAuthorPage.astro`,
             })
           }
           injectRoute({
             pattern: `/[locale]/${basePath}/[...slug]`,
-            entrypoint: blogEntryFile,
+            entrypoint: `${pageBase}/BlogEntry.astro`,
           })
         } else {
           injectRoute({
             pattern: `/${basePath}`,
-            entrypoint: blogIndexFile,
+            entrypoint: `${pageBase}/BlogIndex.astro`,
           })
           injectRoute({
             pattern: `/${basePath}/page/[page]`,
-            entrypoint: blogPaginatedFile,
+            entrypoint: `${pageBase}/BlogIndexPaginated.astro`,
           })
           injectRoute({
             pattern: `/${basePath}/tags`,
-            entrypoint: blogTagsIndexFile,
+            entrypoint: `${pageBase}/BlogTagsIndex.astro`,
           })
           injectRoute({
             pattern: `/${basePath}/tags/[tag]`,
-            entrypoint: blogTagPageFile,
+            entrypoint: `${pageBase}/BlogTagPage.astro`,
           })
           if (blogConfig.archiveEnabled) {
             injectRoute({
               pattern: `/${basePath}/archive`,
-              entrypoint: blogArchiveFile,
+              entrypoint: `${pageBase}/BlogArchive.astro`,
             })
           }
           if (blogConfig.authorsEnabled) {
             injectRoute({
               pattern: `/${basePath}/authors`,
-              entrypoint: blogAuthorsIndexFile,
+              entrypoint: `${pageBase}/BlogAuthorsIndex.astro`,
             })
             injectRoute({
               pattern: `/${basePath}/authors/[author]`,
-              entrypoint: blogAuthorPageFile,
+              entrypoint: `${pageBase}/BlogAuthorPage.astro`,
             })
           }
           injectRoute({
             pattern: `/${basePath}/[...slug]`,
-            entrypoint: blogEntryFile,
+            entrypoint: `${pageBase}/BlogEntry.astro`,
           })
         }
 
-        // Inject feed routes if enabled (generated per-instance)
         const { feedOptions } = blogConfig
-        if (feedOptions.rss || feedOptions.atom || feedOptions.json) {
-          if (feedOptions.rss) {
-            const rssFile = writeGenerated(
-              `rss-${suffix}.xml.ts`,
-              generateFeedFile('rss', blogConfig, resolvedCollectionName),
-            )
-            if (config.i18n) {
-              injectRoute({
-                pattern: `/[locale]/${basePath}/rss.xml`,
-                entrypoint: rssFile,
-              })
-            } else {
-              injectRoute({
-                pattern: `/${basePath}/rss.xml`,
-                entrypoint: rssFile,
-              })
-            }
-          }
-
-          if (feedOptions.atom) {
-            const atomFile = writeGenerated(
-              `atom-${suffix}.xml.ts`,
-              generateFeedFile('atom', blogConfig, resolvedCollectionName),
-            )
-            if (config.i18n) {
-              injectRoute({
-                pattern: `/[locale]/${basePath}/atom.xml`,
-                entrypoint: atomFile,
-              })
-            } else {
-              injectRoute({
-                pattern: `/${basePath}/atom.xml`,
-                entrypoint: atomFile,
-              })
-            }
-          }
-
-          if (feedOptions.json) {
-            const jsonFeedFile = writeGenerated(
-              `feed-${suffix}.json.ts`,
-              generateFeedFile('json', blogConfig, resolvedCollectionName),
-            )
-            if (config.i18n) {
-              injectRoute({
-                pattern: `/[locale]/${basePath}/feed.json`,
-                entrypoint: jsonFeedFile,
-              })
-            } else {
-              injectRoute({
-                pattern: `/${basePath}/feed.json`,
-                entrypoint: jsonFeedFile,
-              })
-            }
-          }
+        if (feedOptions.rss) {
+          injectRoute({
+            pattern: config.i18n
+              ? `/[locale]/${basePath}/rss.xml`
+              : `/${basePath}/rss.xml`,
+            entrypoint: `${pageBase}/feeds/rss.xml.ts`,
+          })
+        }
+        if (feedOptions.atom) {
+          injectRoute({
+            pattern: config.i18n
+              ? `/[locale]/${basePath}/atom.xml`
+              : `/${basePath}/atom.xml`,
+            entrypoint: `${pageBase}/feeds/atom.xml.ts`,
+          })
+        }
+        if (feedOptions.json) {
+          injectRoute({
+            pattern: config.i18n
+              ? `/[locale]/${basePath}/feed.json`
+              : `/${basePath}/feed.json`,
+            entrypoint: `${pageBase}/feeds/feed.json.ts`,
+          })
         }
       },
     },

@@ -10,17 +10,7 @@ import {
 } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import tagsMapDefault from 'virtual:shipyard-blog/tags'
-import type { GetStaticPaths } from 'astro'
-import {
-  filter,
-  includes,
-  map,
-  pipe,
-  reverse,
-  sortBy,
-  toLower,
-  uniq,
-} from 'ramda'
+import { filter, includes, map, pipe, reverse, sortBy, toLower } from 'ramda'
 import { getReadingTime, getTagDescription, getTagLabel } from '../src/index'
 import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
@@ -30,54 +20,6 @@ const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
 const collectionName =
   Astro.props.collectionName ?? blogConfigDefault.collectionName
 const tagsMap = Astro.props.tagsMap ?? tagsMapDefault
-
-export const getStaticPaths = (async () => {
-  const allPosts = await getCollection('blog')
-  const { includeDraftsInDev } = blogConfigDefault
-  const isDev = import.meta.env.DEV
-
-  // Filter out draft and unlisted posts - defined inside getStaticPaths
-  const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
-    if (post.data.unlisted) return false
-    if (post.data.draft && !(isDev && includeDraftsInDev)) return false
-    return true
-  }
-
-  // Get all unique tags across all posts
-  const getAllTags = pipe(
-    filter(shouldIncludePost),
-    (posts: CollectionEntry<'blog'>[]) =>
-      posts.flatMap((post) => post.data.tags ?? []),
-    map(toLower),
-    uniq,
-  ) as (posts: CollectionEntry<'blog'>[]) => string[]
-
-  const allTags = getAllTags(allPosts)
-
-  if (i18n) {
-    // Generate paths for each locale + tag combination
-    const paths: Array<{ params: { locale: string; tag: string } }> = []
-
-    for (const locale of i18n.locales) {
-      if (typeof locale !== 'string') continue
-
-      // Get tags for this locale's posts
-      const localePosts = allPosts.filter((post) => {
-        const [postLocale] = post.id.split('/')
-        return postLocale === locale
-      })
-      const localeTags = getAllTags(localePosts)
-
-      for (const tag of localeTags) {
-        paths.push({ params: { locale, tag } })
-      }
-    }
-
-    return paths
-  } else {
-    return allTags.map((tag) => ({ params: { tag } }))
-  }
-}) satisfies GetStaticPaths
 
 const { includeDraftsInDev, showReadingTime, routeBasePath } = blogConfig
 

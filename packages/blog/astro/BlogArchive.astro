@@ -9,7 +9,6 @@ import {
   getCollection,
 } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
-import type { GetStaticPaths } from 'astro'
 import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
 import Layout from './Layout.astro'
 
@@ -26,19 +25,6 @@ const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
 }
-
-export const getStaticPaths = (() => {
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-      return { params: { locale } }
-    })
-  } else {
-    return [{ params: {} }]
-  }
-}) satisfies GetStaticPaths
 
 const allPosts = await getCollection(collectionName as CollectionKey)
 const filteredPosts = allPosts.filter(shouldIncludePost).filter(({ id }) => {

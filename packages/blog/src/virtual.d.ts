@@ -9,3 +9,9 @@ declare module 'virtual:shipyard-blog/tags' {
   const tagsMap: TagsMap
   export default tagsMap
 }
+
+declare module 'virtual:shipyard-blog/registry' {
+  import type { Registry } from './staticPaths'
+  const registry: Registry
+  export default registry
+}

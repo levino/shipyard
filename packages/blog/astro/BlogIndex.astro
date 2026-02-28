@@ -7,7 +7,6 @@ import {
   getCollection,
 } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
-import type { GetStaticPaths } from 'astro'
 import { getReadingTime } from '../src/index'
 import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
@@ -34,24 +33,6 @@ const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
 }
-
-export const getStaticPaths = (() => {
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-      return {
-        params: {
-          locale,
-        },
-      }
-    })
-  } else {
-    // For non-i18n, return a single path without locale
-    return [{ params: {} }]
-  }
-}) satisfies GetStaticPaths
 
 // Page 1 is always the index page (no page param)
 const currentPage = 1
