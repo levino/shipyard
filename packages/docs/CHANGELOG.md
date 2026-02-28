@@ -1,5 +1,11 @@
 # @levino/shipyard-docs
 
+## 0.7.5
+
+### Patch Changes
+
+- @levino/shipyard-base@0.7.5
+
 ## 0.7.4
 
 ### Patch Changes
