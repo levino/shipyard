@@ -29,9 +29,22 @@ export default defineConfig({
           label: 'Documentation',
           href: '/docs/markdown-features',
         },
-        blog: {
-          label: 'Blog',
-          href: '/blog',
+        content: {
+          label: 'Content',
+          subEntry: {
+            blog: {
+              label: 'Blog',
+              href: '/blog',
+            },
+            newsletters: {
+              label: 'Newsletters',
+              href: '/newsletters',
+            },
+            reports: {
+              label: 'Reports',
+              href: '/reports',
+            },
+          },
         },
         about: {
           label: 'About',
@@ -81,6 +94,22 @@ export default defineConfig({
       showLastUpdateTime: true,
       showLastUpdateAuthor: true,
       tagsMapPath: './blog/tags.yml',
+    }),
+    shipyardBlog({
+      routeBasePath: 'newsletters',
+      blogTitle: 'Newsletters',
+      blogSidebarCount: 'ALL',
+      blogSidebarTitle: 'All newsletters',
+      archiveEnabled: false,
+      authorsEnabled: false,
+    }),
+    shipyardBlog({
+      routeBasePath: 'reports',
+      blogTitle: 'Reports',
+      blogSidebarCount: 'ALL',
+      blogSidebarTitle: 'All reports',
+      archiveEnabled: false,
+      authorsEnabled: false,
     }),
   ],
 })

@@ -4,7 +4,7 @@
  */
 import { i18n } from 'astro:config/server'
 import { type CollectionEntry, getCollection } from 'astro:content'
-import blogConfig from 'virtual:shipyard-blog/config'
+import blogConfigDefault from 'virtual:shipyard-blog/config'
 import Layout from '@levino/shipyard-base/layouts/Page.astro'
 import {
   filter,
@@ -19,6 +19,9 @@ import {
 import type { Author } from '../src/index'
 import { getReadingTime } from '../src/readingTime'
 
+const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
+const collectionName = Astro.props._collectionName ?? 'blog'
+
 const {
   showReadingTime,
   includeDraftsInDev: includeDraftsInDevConfig,
@@ -27,7 +30,7 @@ const {
 
 export async function getStaticPaths() {
   // Must inline all helper functions and values because Astro hoists getStaticPaths to a separate module
-  const { authorsEnabled, includeDraftsInDev } = blogConfig
+  const { authorsEnabled, includeDraftsInDev } = blogConfigDefault
   const isDev = import.meta.env.DEV
 
   const normalizeAuthorInner = (
@@ -143,7 +146,7 @@ export async function getStaticPaths() {
 
 const { author } = Astro.props
 
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection(collectionName as any)
 const isDev = import.meta.env.DEV
 
 // Component-level helper functions
@@ -154,7 +157,7 @@ const normalizeAuthor = (authorArg: string | Author): Author => {
   return authorArg
 }
 
-const getAuthorsFromPost = (post: CollectionEntry<'blog'>): Author[] => {
+const getAuthorsFromPost = (post: CollectionEntry<any>): Author[] => {
   const authors = post.data.authors
   if (!authors) return []
   if (Array.isArray(authors)) {
@@ -164,7 +167,7 @@ const getAuthorsFromPost = (post: CollectionEntry<'blog'>): Author[] => {
 }
 
 // Filter posts (component-level)
-const shouldIncludePostComponent = (post: CollectionEntry<'blog'>) => {
+const shouldIncludePostComponent = (post: CollectionEntry<any>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDevConfig)) return false
   return true
@@ -173,23 +176,23 @@ const shouldIncludePostComponent = (post: CollectionEntry<'blog'>) => {
 // Get posts by this author
 const authorPosts = pipe(
   filter(shouldIncludePostComponent),
-  filter((post: CollectionEntry<'blog'>) => {
+  filter((post: CollectionEntry<any>) => {
     if (i18n) {
       const [postLocale] = post.id.split('/')
       return postLocale === Astro.currentLocale
     }
     return true
   }),
-  filter((post: CollectionEntry<'blog'>) => {
+  filter((post: CollectionEntry<any>) => {
     const authors = getAuthorsFromPost(post)
     return authors.some((a) => a.name === author.name)
   }),
-  sortBy((post: CollectionEntry<'blog'>) => post.data.date.getTime()),
+  sortBy((post: CollectionEntry<any>) => post.data.date.getTime()),
   reverse,
-)(allPosts) as CollectionEntry<'blog'>[]
+)(allPosts) as CollectionEntry<any>[]
 
 // Generate post URL
-const getPostUrl = (post: CollectionEntry<'blog'>): string => {
+const getPostUrl = (post: CollectionEntry<any>): string => {
   if (i18n && Astro.currentLocale) {
     const slug = post.id.replace(`${Astro.currentLocale}/`, '')
     return `/${Astro.currentLocale}/${routeBasePath}/${slug}`

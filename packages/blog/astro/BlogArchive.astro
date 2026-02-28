@@ -4,16 +4,19 @@
  */
 import { i18n } from 'astro:config/server'
 import { type CollectionEntry, getCollection } from 'astro:content'
-import blogConfig from 'virtual:shipyard-blog/config'
+import blogConfigDefault from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
 import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
 import Layout from './Layout.astro'
+
+const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
+const collectionName = Astro.props._collectionName ?? 'blog'
 
 const { includeDraftsInDev, routeBasePath } = blogConfig
 
 // Filter out draft and unlisted posts
 const isDev = import.meta.env.DEV
-const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+const shouldIncludePost = (post: CollectionEntry<any>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
@@ -32,7 +35,7 @@ export const getStaticPaths = (() => {
   }
 }) satisfies GetStaticPaths
 
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection(collectionName as any)
 const filteredPosts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
   if (i18n) {
     const [postLocale] = id.split('/')
@@ -49,10 +52,10 @@ const sortedPosts = filteredPosts.toSorted(
 // Group posts by year
 type YearPosts = {
   year: string
-  posts: CollectionEntry<'blog'>[]
+  posts: CollectionEntry<any>[]
 }
 
-const getYearFromPost = (post: CollectionEntry<'blog'>): string =>
+const getYearFromPost = (post: CollectionEntry<any>): string =>
   post.data.date.getFullYear().toString()
 
 const groupPostsByYear = pipe(
@@ -61,7 +64,7 @@ const groupPostsByYear = pipe(
   map(([year, posts]): YearPosts => ({ year, posts: posts ?? [] })),
   sortBy(prop('year')),
   reverse,
-) as (posts: CollectionEntry<'blog'>[]) => YearPosts[]
+) as (posts: CollectionEntry<any>[]) => YearPosts[]
 
 const postsByYear = groupPostsByYear(sortedPosts)
 
@@ -79,7 +82,7 @@ const getBlogPostLink = (id: string, locale?: string) => {
 }
 ---
 
-<Layout title="Archive">
+<Layout title="Archive" _blogConfig={blogConfig} _collectionName={collectionName}>
   <div class="max-w-4xl mx-auto">
     <h1 class="text-4xl font-bold mb-8">Archive</h1>
     <p class="text-base-content/60 mb-8">
