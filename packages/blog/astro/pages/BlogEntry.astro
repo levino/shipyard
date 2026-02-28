@@ -1,0 +1,36 @@
+---
+import { i18n } from 'astro:config/server'
+import { type CollectionKey, getCollection } from 'astro:content'
+import registry from 'virtual:shipyard-blog/registry'
+import type { GetStaticPaths } from 'astro'
+import { computeBlogEntryPaths, getInstanceConfig } from '../../src/staticPaths'
+import BlogEntry from '../BlogEntry.astro'
+
+export const getStaticPaths = (async ({ routePattern }) => {
+  const instance = getInstanceConfig(routePattern, registry)
+  const allPosts = await getCollection(instance.collectionName as CollectionKey)
+  return computeBlogEntryPaths(allPosts, instance.blogConfig, i18n).map(
+    (p) => ({
+      ...p,
+      props: { ...p.props, ...instance },
+    }),
+  )
+}) satisfies GetStaticPaths
+
+const instance = getInstanceConfig(Astro.routePattern, registry)
+const entry = Astro.props.entry
+const older = Astro.props.older
+const newer = Astro.props.newer
+const blogConfig = Astro.props.blogConfig ?? instance.blogConfig
+const tagsMap = Astro.props.tagsMap ?? instance.tagsMap
+const collectionName = Astro.props.collectionName ?? instance.collectionName
+---
+
+<BlogEntry
+  entry={entry}
+  older={older}
+  newer={newer}
+  collectionName={collectionName}
+  blogConfig={blogConfig}
+  tagsMap={tagsMap}
+/>

@@ -1,7 +1,4 @@
 ---
-/**
- * Individual author page showing author info and their posts.
- */
 import { i18n } from 'astro:config/server'
 import {
   type CollectionEntry,
@@ -10,16 +7,7 @@ import {
 } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import Layout from '@levino/shipyard-base/layouts/Page.astro'
-import {
-  filter,
-  flatten,
-  map,
-  pipe,
-  prop,
-  reverse,
-  sortBy,
-  uniqBy,
-} from 'ramda'
+import { filter, pipe, reverse, sortBy } from 'ramda'
 import type { Author } from '../src/index'
 import { getReadingTime } from '../src/readingTime'
 
@@ -32,122 +20,6 @@ const {
   includeDraftsInDev: includeDraftsInDevConfig,
   routeBasePath,
 } = blogConfig
-
-export async function getStaticPaths() {
-  // Must inline all helper functions and values because Astro hoists getStaticPaths to a separate module
-  const { authorsEnabled, includeDraftsInDev } = blogConfigDefault
-  const isDev = import.meta.env.DEV
-
-  const normalizeAuthorInner = (
-    author:
-      | string
-      | {
-          name: string
-          title?: string
-          url?: string
-          image_url?: string
-          email?: string
-        },
-  ): {
-    name: string
-    title?: string
-    url?: string
-    image_url?: string
-    email?: string
-  } => {
-    if (typeof author === 'string') {
-      return { name: author }
-    }
-    return author
-  }
-
-  const getAuthorsFromPostInner = (
-    post: CollectionEntry<'blog'>,
-  ): {
-    name: string
-    title?: string
-    url?: string
-    image_url?: string
-    email?: string
-  }[] => {
-    const authors = post.data.authors
-    if (!authors) return []
-    if (Array.isArray(authors)) {
-      return authors.map(normalizeAuthorInner)
-    }
-    return [
-      normalizeAuthorInner(
-        authors as
-          | string
-          | {
-              name: string
-              title?: string
-              url?: string
-              image_url?: string
-              email?: string
-            },
-      ),
-    ]
-  }
-
-  const getAuthorSlugInner = (name: string): string =>
-    name.toLowerCase().replace(/\s+/g, '-')
-
-  const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
-    if (post.data.unlisted) return false
-    if (post.data.draft && !(isDev && includeDraftsInDev)) return false
-    return true
-  }
-
-  if (!authorsEnabled) {
-    return []
-  }
-
-  const allPosts = await getCollection('blog')
-
-  // Get all unique authors
-  const getAllAuthors = pipe(
-    filter(shouldIncludePost),
-    map(getAuthorsFromPostInner),
-    flatten,
-    uniqBy(prop('name')),
-  )
-
-  if (i18n) {
-    const paths: {
-      params: { locale: string; author: string }
-      props: { author: Author }
-    }[] = []
-
-    for (const locale of i18n.locales) {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-
-      const localePosts = allPosts.filter((post) => {
-        const [postLocale] = post.id.split('/')
-        return postLocale === locale
-      })
-
-      const authors = getAllAuthors(localePosts) as Author[]
-
-      for (const author of authors) {
-        paths.push({
-          params: { locale, author: getAuthorSlugInner(author.name) },
-          props: { author },
-        })
-      }
-    }
-
-    return paths
-  } else {
-    const authors = getAllAuthors(allPosts) as Author[]
-    return authors.map((author) => ({
-      params: { author: getAuthorSlugInner(author.name) },
-      props: { author },
-    }))
-  }
-}
 
 const { author } = Astro.props
 

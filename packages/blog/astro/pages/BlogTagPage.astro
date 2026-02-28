@@ -1,0 +1,24 @@
+---
+import { i18n } from 'astro:config/server'
+import { type CollectionKey, getCollection } from 'astro:content'
+import registry from 'virtual:shipyard-blog/registry'
+import type { GetStaticPaths } from 'astro'
+import { computeBlogTagPaths, getInstanceConfig } from '../../src/staticPaths'
+import BlogTagPage from '../BlogTagPage.astro'
+
+export const getStaticPaths = (async ({ routePattern }) => {
+  const instance = getInstanceConfig(routePattern, registry)
+  const allPosts = await getCollection(instance.collectionName as CollectionKey)
+  return computeBlogTagPaths(allPosts, instance.blogConfig, i18n).map((p) => ({
+    ...p,
+    props: instance,
+  }))
+}) satisfies GetStaticPaths
+
+const instance = getInstanceConfig(Astro.routePattern, registry)
+const blogConfig = Astro.props.blogConfig ?? instance.blogConfig
+const tagsMap = Astro.props.tagsMap ?? instance.tagsMap
+const collectionName = Astro.props.collectionName ?? instance.collectionName
+---
+
+<BlogTagPage blogConfig={blogConfig} tagsMap={tagsMap} collectionName={collectionName} />

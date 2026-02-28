@@ -10,42 +10,12 @@ import {
 } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import Layout from '@levino/shipyard-base/layouts/Page.astro'
-import {
-  filter,
-  flatten,
-  groupBy,
-  map,
-  pipe,
-  prop,
-  reverse,
-  sortBy,
-  uniqBy,
-  values,
-} from 'ramda'
+import { filter, flatten, map, pipe, prop, sortBy, uniqBy } from 'ramda'
 import type { Author } from '../src/index'
 
 const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
 const collectionName =
   Astro.props.collectionName ?? blogConfigDefault.collectionName
-
-export async function getStaticPaths() {
-  const { authorsEnabled } = blogConfigDefault
-
-  if (!authorsEnabled) {
-    return []
-  }
-
-  if (i18n) {
-    return i18n.locales.map((locale) => {
-      if (typeof locale !== 'string') {
-        throw new Error('shipyard does only support strings as locales.')
-      }
-      return { params: { locale } }
-    })
-  } else {
-    return [{ params: {} }]
-  }
-}
 
 const allPosts = await getCollection(collectionName as CollectionKey)
 const { includeDraftsInDev, routeBasePath } = blogConfig

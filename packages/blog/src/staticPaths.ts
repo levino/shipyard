@@ -1,9 +1,4 @@
-/**
- * Shared static path computation functions for blog route components.
- * These functions accept pre-fetched data and return computed paths.
- * They don't import from astro:content so they can be used in any context.
- * Note: some helpers read import.meta.env.DEV to determine draft inclusion.
- */
+import type { BlogConfig } from './index'
 
 interface BlogPost {
   id: string
@@ -280,4 +275,25 @@ export function computeBlogAuthorPaths(
     params: { author: getAuthorSlug(author.name) },
     props: { author },
   }))
+}
+
+export type InstanceConfig = {
+  blogConfig: BlogConfig
+  tagsMap: Record<string, unknown>
+  collectionName: string
+}
+
+export type Registry = Record<string, InstanceConfig>
+
+export const getInstanceConfig = (
+  routePattern: string,
+  registry: Registry,
+): InstanceConfig => {
+  const stripped = routePattern.replace(/^\/?(\[locale\]\/)?/, '')
+  for (const [basePath, config] of Object.entries(registry)) {
+    if (stripped === basePath || stripped.startsWith(`${basePath}/`)) {
+      return config
+    }
+  }
+  throw new Error(`No blog instance found for route pattern: ${routePattern}`)
 }
