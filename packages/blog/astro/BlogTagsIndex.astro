@@ -3,7 +3,11 @@
  * Blog tags index page - lists all tags with post counts.
  */
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+} from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import tagsMapDefault from 'virtual:shipyard-blog/tags'
 import type { GetStaticPaths } from 'astro'
@@ -11,15 +15,16 @@ import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
 import { getTagDescription, getTagLabel, getTagPermalink } from '../src/index'
 import Layout from './Layout.astro'
 
-const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
-const collectionName = Astro.props._collectionName ?? 'blog'
-const tagsMap = Astro.props._tagsMap ?? tagsMapDefault
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
+const tagsMap = Astro.props.tagsMap ?? tagsMapDefault
 
 const { includeDraftsInDev, routeBasePath } = blogConfig
 
 // Filter out draft and unlisted posts
 const isDev = import.meta.env.DEV
-const shouldIncludePost = (post: CollectionEntry<any>) => {
+const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
@@ -38,7 +43,7 @@ export const getStaticPaths = (() => {
   }
 }) satisfies GetStaticPaths
 
-const allPosts = await getCollection(collectionName as any)
+const allPosts = await getCollection(collectionName as CollectionKey)
 const posts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
   if (i18n) {
     const [postLocale] = id.split('/')
@@ -51,7 +56,7 @@ const posts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
 type TagCount = { tag: string; count: number }
 
 const getTagCounts = pipe(
-  (posts: CollectionEntry<any>[]) =>
+  (posts: CollectionEntry<CollectionKey>[]) =>
     posts.flatMap((post) => post.data.tags ?? []),
   groupBy((tag: string) => tag.toLowerCase()),
   map((tags: string[]) => tags.length),
@@ -59,7 +64,7 @@ const getTagCounts = pipe(
   map(([tag, count]): TagCount => ({ tag, count: count as number })),
   sortBy(prop('count')),
   reverse,
-) as (posts: CollectionEntry<any>[]) => TagCount[]
+) as (posts: CollectionEntry<CollectionKey>[]) => TagCount[]
 
 const tagCounts = getTagCounts(posts)
 
@@ -80,7 +85,7 @@ const tagCountsWithMeta = tagCounts.map(({ tag, count }) => ({
 }))
 ---
 
-<Layout title="Tags" _blogConfig={blogConfig} _collectionName={collectionName}>
+<Layout title="Tags" blogConfig={blogConfig} collectionName={collectionName}>
   <div class="max-w-4xl mx-auto">
     <h1 class="text-4xl font-bold mb-8">Tags</h1>
 

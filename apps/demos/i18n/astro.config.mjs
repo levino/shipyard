@@ -129,6 +129,8 @@ export default defineConfig({
       showLastUpdateAuthor: true,
     }),
     shipyardBlog({
+      routeBasePath: 'blog',
+      collectionName: 'blog',
       blogSidebarCount: 5,
       blogSidebarTitle: 'Recent posts',
       postsPerPage: 10,

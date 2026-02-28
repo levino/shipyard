@@ -3,7 +3,11 @@
  * Individual tag page - shows all posts with a specific tag.
  */
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+} from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import tagsMapDefault from 'virtual:shipyard-blog/tags'
 import type { GetStaticPaths } from 'astro'
@@ -22,9 +26,10 @@ import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
-const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
-const collectionName = Astro.props._collectionName ?? 'blog'
-const tagsMap = Astro.props._tagsMap ?? tagsMapDefault
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
+const tagsMap = Astro.props.tagsMap ?? tagsMapDefault
 
 export const getStaticPaths = (async () => {
   const allPosts = await getCollection('blog')
@@ -78,7 +83,7 @@ const { includeDraftsInDev, showReadingTime, routeBasePath } = blogConfig
 
 // Filter out draft and unlisted posts for runtime use
 const isDev = import.meta.env.DEV
-const shouldIncludePost = (post: CollectionEntry<any>) => {
+const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
@@ -86,10 +91,10 @@ const shouldIncludePost = (post: CollectionEntry<any>) => {
 
 const { tag } = Astro.params
 
-const allPosts = await getCollection(collectionName as any)
+const allPosts = await getCollection(collectionName as CollectionKey)
 const posts = pipe(
   filter(shouldIncludePost),
-  filter((post: CollectionEntry<any>) => {
+  filter((post: CollectionEntry<CollectionKey>) => {
     // Filter by locale if i18n is enabled
     if (i18n) {
       const [postLocale] = post.id.split('/')
@@ -99,9 +104,9 @@ const posts = pipe(
     const postTags = post.data.tags ?? []
     return includes(tag.toLowerCase(), map(toLower, postTags))
   }),
-  sortBy((post: CollectionEntry<any>) => post.data.date.getTime()),
+  sortBy((post: CollectionEntry<CollectionKey>) => post.data.date.getTime()),
   reverse,
-)(allPosts) as CollectionEntry<any>[]
+)(allPosts) as CollectionEntry<CollectionKey>[]
 
 const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
   year: 'numeric',
@@ -126,7 +131,7 @@ const tagLabel = getTagLabel(tagsMap, tag)
 const tagDescription = getTagDescription(tagsMap, tag)
 ---
 
-<Layout title={`Posts tagged "${tagLabel}"`} _blogConfig={blogConfig} _collectionName={collectionName}>
+<Layout title={`Posts tagged "${tagLabel}"`} blogConfig={blogConfig} collectionName={collectionName}>
   <div class="max-w-4xl mx-auto">
     <div class="mb-8">
       <a

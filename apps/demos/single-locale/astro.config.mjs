@@ -87,6 +87,8 @@ export default defineConfig({
       showLastUpdateAuthor: true,
     }),
     shipyardBlog({
+      routeBasePath: 'blog',
+      collectionName: 'blog',
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All posts',
       editUrl:
@@ -97,6 +99,7 @@ export default defineConfig({
     }),
     shipyardBlog({
       routeBasePath: 'newsletters',
+      collectionName: 'newsletters',
       blogTitle: 'Newsletters',
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All newsletters',
@@ -105,6 +108,7 @@ export default defineConfig({
     }),
     shipyardBlog({
       routeBasePath: 'reports',
+      collectionName: 'reports',
       blogTitle: 'Reports',
       blogSidebarCount: 'ALL',
       blogSidebarTitle: 'All reports',

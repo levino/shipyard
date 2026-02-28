@@ -166,16 +166,16 @@ export const blogSchema = ({ image }: { image: () => z.ZodType }) =>
 export const blogConfigSchema = z.object({
   /**
    * The base path where blog routes will be mounted.
-   * @default 'blog'
-   * @example 'news' will mount blog at /news/[...slug]
+   * @example 'blog' will mount at /blog/[...slug]
+   * @example 'news' will mount at /news/[...slug]
    */
-  routeBasePath: z.string().default('blog'),
+  routeBasePath: z.string(),
   /**
    * The name of the content collection to use.
    * Must match a collection defined in your content.config.ts.
-   * @default Same as routeBasePath (e.g., 'blog' or 'news')
+   * @example 'blog' for a collection named 'blog'
    */
-  collectionName: z.string().optional(),
+  collectionName: z.string(),
   /**
    * Number of recent blog posts to show in the sidebar.
    * Set to 'ALL' to show all posts.
@@ -344,7 +344,7 @@ const blogConfig = ${configJson}
 const tagsMap = ${tagsJson}
 ---
 
-<Component _collectionName=${JSON.stringify(collectionName)} _blogConfig={blogConfig} _tagsMap={tagsMap} />
+<Component collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
 `
 }
 
@@ -379,9 +379,9 @@ const tagsMap = ${tagsJson}
   entry={entry}
   older={older}
   newer={newer}
-  _collectionName=${JSON.stringify(collectionName)}
-  _blogConfig={blogConfig}
-  _tagsMap={tagsMap}
+  collectionName=${JSON.stringify(collectionName)}
+  blogConfig={blogConfig}
+  tagsMap={tagsMap}
 />
 `
 }
@@ -412,7 +412,7 @@ const blogConfig = ${configJson}
 const tagsMap = ${tagsJson}
 ---
 
-<BlogIndexPaginated _collectionName=${JSON.stringify(collectionName)} _blogConfig={blogConfig} _tagsMap={tagsMap} />
+<BlogIndexPaginated collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
 `
 }
 
@@ -442,7 +442,7 @@ const blogConfig = ${configJson}
 const tagsMap = ${tagsJson}
 ---
 
-<BlogTagPage _collectionName=${JSON.stringify(collectionName)} _blogConfig={blogConfig} _tagsMap={tagsMap} />
+<BlogTagPage collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
 `
 }
 
@@ -473,7 +473,7 @@ const blogConfig = ${configJson}
 const tagsMap = ${tagsJson}
 ---
 
-<BlogAuthorPage author={author} _collectionName=${JSON.stringify(collectionName)} _blogConfig={blogConfig} _tagsMap={tagsMap} />
+<BlogAuthorPage author={author} collectionName=${JSON.stringify(collectionName)} blogConfig={blogConfig} tagsMap={tagsMap} />
 `
 }
 
@@ -663,13 +663,12 @@ export const GET = async ({ site, currentLocale }) => {
 
 // ─── Integration Export ─────────────────────────────────────────────────
 
-export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
+export default (options: BlogConfig): AstroIntegration => {
   // Parse and validate config
   const blogConfig = blogConfigSchema.parse(options)
 
-  // Resolve collection name (defaults to routeBasePath)
-  const resolvedCollectionName =
-    blogConfig.collectionName ?? blogConfig.routeBasePath
+  // Collection name is always explicitly configured
+  const resolvedCollectionName = blogConfig.collectionName
 
   // Normalize the route base path
   let normalizedBasePath = blogConfig.routeBasePath
@@ -684,7 +683,7 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
   let tagsMap: Record<string, unknown> = {}
 
   return {
-    name: `shipyard-blog${normalizedBasePath !== 'blog' ? `-${normalizedBasePath}` : ''}`,
+    name: `shipyard-blog-${normalizedBasePath}`,
     hooks: {
       'astro:config:setup': ({ injectRoute, config, updateConfig }) => {
         // Load tags map now (at config setup time)

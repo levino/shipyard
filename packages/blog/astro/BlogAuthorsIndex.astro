@@ -3,7 +3,11 @@
  * Authors index page showing all blog authors.
  */
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+} from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import Layout from '@levino/shipyard-base/layouts/Page.astro'
 import {
@@ -20,8 +24,9 @@ import {
 } from 'ramda'
 import type { Author } from '../src/index'
 
-const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
-const collectionName = Astro.props._collectionName ?? 'blog'
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 export async function getStaticPaths() {
   const { authorsEnabled } = blogConfigDefault
@@ -42,12 +47,12 @@ export async function getStaticPaths() {
   }
 }
 
-const allPosts = await getCollection(collectionName as any)
+const allPosts = await getCollection(collectionName as CollectionKey)
 const { includeDraftsInDev, routeBasePath } = blogConfig
 const isDev = import.meta.env.DEV
 
 // Filter posts
-const shouldIncludePost = (post: CollectionEntry<any>) => {
+const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDev)) return false
   return true
@@ -55,14 +60,14 @@ const shouldIncludePost = (post: CollectionEntry<any>) => {
 
 const posts = pipe(
   filter(shouldIncludePost),
-  filter((post: CollectionEntry<any>) => {
+  filter((post: CollectionEntry<CollectionKey>) => {
     if (i18n) {
       const [postLocale] = post.id.split('/')
       return postLocale === Astro.currentLocale
     }
     return true
   }),
-)(allPosts) as CollectionEntry<any>[]
+)(allPosts) as CollectionEntry<CollectionKey>[]
 
 // Extract authors from posts
 const normalizeAuthor = (author: string | Author): Author => {
@@ -72,7 +77,7 @@ const normalizeAuthor = (author: string | Author): Author => {
   return author
 }
 
-const getAuthorsFromPost = (post: CollectionEntry<any>): Author[] => {
+const getAuthorsFromPost = (post: CollectionEntry<CollectionKey>): Author[] => {
   const authors = post.data.authors
   if (!authors) return []
   if (Array.isArray(authors)) {

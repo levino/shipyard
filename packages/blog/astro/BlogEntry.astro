@@ -1,6 +1,11 @@
 ---
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection, render } from 'astro:content'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+  render,
+} from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
@@ -12,8 +17,9 @@ import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
-const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
-const collectionName = Astro.props._collectionName ?? 'blog'
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 export const getStaticPaths = async () => {
   const allPosts = await getCollection('blog')
@@ -99,12 +105,12 @@ export const getStaticPaths = async () => {
 let { entry, older, newer } = Astro.props
 
 if (!entry) {
-  const allPosts = await getCollection(collectionName as any)
+  const allPosts = await getCollection(collectionName as CollectionKey)
 
   // Filter out draft posts for production
   const isDev = import.meta.env.DEV
   const { includeDraftsInDev } = blogConfig
-  const shouldIncludePost = (post: CollectionEntry<any>) => {
+  const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
     if (post.data.draft && !(isDev && includeDraftsInDev)) {
       return false
     }
@@ -137,7 +143,7 @@ if (!entry) {
 
   // Calculate pagination for SSR mode
   const { routeBasePath } = blogConfig
-  const getPostUrl = (post: CollectionEntry<any>) => {
+  const getPostUrl = (post: CollectionEntry<CollectionKey>) => {
     if (i18n) {
       const [postLocale, ...rest] = post.id.split('/')
       return `/${postLocale}/${routeBasePath}/${rest.join('/')}`
@@ -282,7 +288,7 @@ const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
 const showToc = !hide_table_of_contents && filteredHeadings.length > 0
 ---
 
-<Layout title={seoTitle} canonicalUrl={canonical_url} _blogConfig={blogConfig} _collectionName={collectionName}>
+<Layout title={seoTitle} canonicalUrl={canonical_url} blogConfig={blogConfig} collectionName={collectionName}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': showToc }]}>
       {/* Post header */}

@@ -3,7 +3,11 @@
  * Individual author page showing author info and their posts.
  */
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection } from 'astro:content'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+} from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import Layout from '@levino/shipyard-base/layouts/Page.astro'
 import {
@@ -19,8 +23,9 @@ import {
 import type { Author } from '../src/index'
 import { getReadingTime } from '../src/readingTime'
 
-const blogConfig = Astro.props._blogConfig ?? blogConfigDefault
-const collectionName = Astro.props._collectionName ?? 'blog'
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 const {
   showReadingTime,
@@ -146,7 +151,7 @@ export async function getStaticPaths() {
 
 const { author } = Astro.props
 
-const allPosts = await getCollection(collectionName as any)
+const allPosts = await getCollection(collectionName as CollectionKey)
 const isDev = import.meta.env.DEV
 
 // Component-level helper functions
@@ -157,7 +162,7 @@ const normalizeAuthor = (authorArg: string | Author): Author => {
   return authorArg
 }
 
-const getAuthorsFromPost = (post: CollectionEntry<any>): Author[] => {
+const getAuthorsFromPost = (post: CollectionEntry<CollectionKey>): Author[] => {
   const authors = post.data.authors
   if (!authors) return []
   if (Array.isArray(authors)) {
@@ -167,7 +172,7 @@ const getAuthorsFromPost = (post: CollectionEntry<any>): Author[] => {
 }
 
 // Filter posts (component-level)
-const shouldIncludePostComponent = (post: CollectionEntry<any>) => {
+const shouldIncludePostComponent = (post: CollectionEntry<CollectionKey>) => {
   if (post.data.unlisted) return false
   if (post.data.draft && !(isDev && includeDraftsInDevConfig)) return false
   return true
@@ -176,23 +181,23 @@ const shouldIncludePostComponent = (post: CollectionEntry<any>) => {
 // Get posts by this author
 const authorPosts = pipe(
   filter(shouldIncludePostComponent),
-  filter((post: CollectionEntry<any>) => {
+  filter((post: CollectionEntry<CollectionKey>) => {
     if (i18n) {
       const [postLocale] = post.id.split('/')
       return postLocale === Astro.currentLocale
     }
     return true
   }),
-  filter((post: CollectionEntry<any>) => {
+  filter((post: CollectionEntry<CollectionKey>) => {
     const authors = getAuthorsFromPost(post)
     return authors.some((a) => a.name === author.name)
   }),
-  sortBy((post: CollectionEntry<any>) => post.data.date.getTime()),
+  sortBy((post: CollectionEntry<CollectionKey>) => post.data.date.getTime()),
   reverse,
-)(allPosts) as CollectionEntry<any>[]
+)(allPosts) as CollectionEntry<CollectionKey>[]
 
 // Generate post URL
-const getPostUrl = (post: CollectionEntry<any>): string => {
+const getPostUrl = (post: CollectionEntry<CollectionKey>): string => {
   if (i18n && Astro.currentLocale) {
     const slug = post.id.replace(`${Astro.currentLocale}/`, '')
     return `/${Astro.currentLocale}/${routeBasePath}/${slug}`
