@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 import type { AstroIntegration } from 'astro'
 import { z } from 'astro/zod'
 import { parse as parseYaml } from 'yaml'
@@ -166,16 +167,18 @@ export const blogSchema = ({ image }: { image: () => z.ZodType }) =>
 export const blogConfigSchema = z.object({
   /**
    * The base path where blog routes will be mounted.
+   * @default 'blog'
    * @example 'blog' will mount at /blog/[...slug]
    * @example 'news' will mount at /news/[...slug]
    */
-  routeBasePath: z.string(),
+  routeBasePath: z.string().default('blog'),
   /**
    * The name of the content collection to use.
    * Must match a collection defined in your content.config.ts.
+   * Defaults to the routeBasePath if not specified.
    * @example 'blog' for a collection named 'blog'
    */
-  collectionName: z.string(),
+  collectionName: z.string().optional(),
   /**
    * Number of recent blog posts to show in the sidebar.
    * Set to 'ALL' to show all posts.
@@ -499,6 +502,7 @@ function generateFeedFile(
   }
 
   const isRss = feedType === 'rss'
+  const feedFileName = isRss ? 'rss.xml' : 'atom.xml'
 
   return `import { i18n } from 'astro:config/server'
 import { getCollection } from 'astro:content'
@@ -531,6 +535,13 @@ const escapeXml = (text) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').re
 export const GET = async ({ site, currentLocale }) => {
   if (!feedEnabled) return new Response('Feed disabled', { status: 404 })
   const baseUrl = site?.toString() ?? 'https://example.com'
+
+  const buildUrl = (...segments) => {
+    const url = new URL(baseUrl)
+    const parts = [url.pathname.replace(/\\/$/, ''), ...segments.filter(Boolean).map(s => s.replace(/^\\/|\\/$/g, ''))]
+    url.pathname = '/' + parts.filter(Boolean).join('/')
+    return url.toString()
+  }
   const allPosts = await getCollection(collectionName)
   const posts = allPosts
     .filter(shouldIncludePost)
@@ -544,16 +555,16 @@ export const GET = async ({ site, currentLocale }) => {
   const getBlogPostUrl = (post) => {
     if (i18n && currentLocale) {
       const slug = post.id.replace(currentLocale + '/', '')
-      return baseUrl + currentLocale + '/' + routeBasePath + '/' + slug
+      return buildUrl(currentLocale, routeBasePath, slug)
     }
-    return baseUrl + routeBasePath + '/' + post.id
+    return buildUrl(routeBasePath, post.id)
   }
 
   const title = feedTitle ?? blogTitle
   const description = feedDescription ?? blogDescription ?? title + ' Feed'
   const feedUrl = i18n
-    ? baseUrl + currentLocale + '/' + routeBasePath + '/${feedType === 'rss' ? 'rss.xml' : 'atom.xml'}'
-    : baseUrl + routeBasePath + '/${feedType === 'rss' ? 'rss.xml' : 'atom.xml'}'
+    ? buildUrl(currentLocale ?? '', routeBasePath, '${feedFileName}')
+    : buildUrl(routeBasePath, '${feedFileName}')
 
 ${
   isRss
@@ -608,6 +619,14 @@ export const getStaticPaths = (() => {
 export const GET = async ({ site, currentLocale }) => {
   if (!feedEnabled) return new Response('JSON feed disabled', { status: 404 })
   const baseUrl = site?.toString() ?? 'https://example.com'
+
+  const buildUrl = (...segments) => {
+    const url = new URL(baseUrl)
+    const parts = [url.pathname.replace(/\\/$/, ''), ...segments.filter(Boolean).map(s => s.replace(/^\\/|\\/$/g, ''))]
+    url.pathname = '/' + parts.filter(Boolean).join('/')
+    return url.toString()
+  }
+
   const allPosts = await getCollection(collectionName)
   const posts = allPosts
     .filter(shouldIncludePost)
@@ -621,16 +640,16 @@ export const GET = async ({ site, currentLocale }) => {
   const getBlogPostUrl = (post) => {
     if (i18n && currentLocale) {
       const slug = post.id.replace(currentLocale + '/', '')
-      return baseUrl + currentLocale + '/' + routeBasePath + '/' + slug
+      return buildUrl(currentLocale, routeBasePath, slug)
     }
-    return baseUrl + routeBasePath + '/' + post.id
+    return buildUrl(routeBasePath, post.id)
   }
 
   const title = feedTitle ?? blogTitle
   const description = feedDescription ?? blogDescription
   const feedUrl = i18n
-    ? baseUrl + currentLocale + '/' + routeBasePath + '/feed.json'
-    : baseUrl + routeBasePath + '/feed.json'
+    ? buildUrl(currentLocale ?? '', routeBasePath, 'feed.json')
+    : buildUrl(routeBasePath, 'feed.json')
 
   const items = posts.map((post) => {
     const postUrl = getBlogPostUrl(post)
@@ -663,12 +682,9 @@ export const GET = async ({ site, currentLocale }) => {
 
 // ─── Integration Export ─────────────────────────────────────────────────
 
-export default (options: BlogConfig): AstroIntegration => {
+export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
   // Parse and validate config
   const blogConfig = blogConfigSchema.parse(options)
-
-  // Collection name is always explicitly configured
-  const resolvedCollectionName = blogConfig.collectionName
 
   // Normalize the route base path
   let normalizedBasePath = blogConfig.routeBasePath
@@ -678,6 +694,9 @@ export default (options: BlogConfig): AstroIntegration => {
   while (normalizedBasePath.endsWith('/')) {
     normalizedBasePath = normalizedBasePath.slice(0, -1)
   }
+
+  // Default collectionName to the normalized base path
+  const resolvedCollectionName = blogConfig.collectionName ?? normalizedBasePath
 
   // Load tags map if path is provided
   let tagsMap: Record<string, unknown> = {}
@@ -741,11 +760,8 @@ export default (options: BlogConfig): AstroIntegration => {
 
         // Create generated entry files for this specific blog instance
         // This ensures each instance has its own getStaticPaths that only returns its own paths
-        const generatedDir = join(
-          config.root?.pathname || process.cwd(),
-          'node_modules',
-          '.shipyard-blog',
-        )
+        const rootDir = config.root ? fileURLToPath(config.root) : process.cwd()
+        const generatedDir = join(rootDir, 'node_modules', '.shipyard-blog')
 
         if (!existsSync(generatedDir)) {
           mkdirSync(generatedDir, { recursive: true })
@@ -759,7 +775,10 @@ export default (options: BlogConfig): AstroIntegration => {
         }
 
         const basePath = normalizedBasePath
+        // Sanitize suffix to a safe filename fragment (replace path separators)
         const suffix = normalizedBasePath
+          .replace(/[/.]+/g, '-')
+          .replace(/^-|-$/g, '')
 
         // Generate all entry files for this instance
         const blogIndexFile = writeGenerated(

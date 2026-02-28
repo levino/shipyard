@@ -1,7 +1,8 @@
 /**
  * Shared static path computation functions for blog route components.
- * These are pure functions that accept pre-fetched data and return computed paths.
+ * These functions accept pre-fetched data and return computed paths.
  * They don't import from astro:content so they can be used in any context.
+ * Note: some helpers read import.meta.env.DEV to determine draft inclusion.
  */
 
 interface BlogPost {
@@ -136,13 +137,18 @@ export function computeBlogPaginatedPaths(
   blogConfig: BlogConfigForPaths,
   i18n: I18nConfig | null | undefined | false,
 ) {
+  const isDev = import.meta.env?.DEV ?? false
+  const listedPosts = allPosts.filter((post) =>
+    shouldIncludeInListing(post, isDev, blogConfig.includeDraftsInDev),
+  )
+
   if (i18n) {
     const paths: { params: { locale: string; page: string } }[] = []
     for (const locale of i18n.locales) {
       if (typeof locale !== 'string') {
         throw new Error('shipyard does only support strings as locales.')
       }
-      const localePosts = allPosts.filter(({ id }) => {
+      const localePosts = listedPosts.filter(({ id }) => {
         const [postLocale] = id.split('/')
         return postLocale === locale
       })
@@ -154,7 +160,7 @@ export function computeBlogPaginatedPaths(
     return paths
   }
 
-  const totalPages = Math.ceil(allPosts.length / blogConfig.postsPerPage)
+  const totalPages = Math.ceil(listedPosts.length / blogConfig.postsPerPage)
   const paths: { params: { page: string } }[] = []
   for (let pageNum = 2; pageNum <= totalPages; pageNum++) {
     paths.push({ params: { page: String(pageNum) } })
@@ -183,7 +189,9 @@ export function computeBlogTagPaths(
   if (i18n) {
     const paths: { params: { locale: string; tag: string } }[] = []
     for (const locale of i18n.locales) {
-      if (typeof locale !== 'string') continue
+      if (typeof locale !== 'string') {
+        throw new Error('shipyard does only support strings as locales.')
+      }
       const localePosts = allPosts.filter((post) => {
         const [postLocale] = post.id.split('/')
         return postLocale === locale
