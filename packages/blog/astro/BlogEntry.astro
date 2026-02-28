@@ -1,7 +1,12 @@
 ---
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection, render } from 'astro:content'
-import blogConfig from 'virtual:shipyard-blog/config'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+  render,
+} from 'astro:content'
+import blogConfigDefault from 'virtual:shipyard-blog/config'
 import { TableOfContents } from '@levino/shipyard-base/components'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
 import { type Author, getReadingTime } from '../src/index'
@@ -12,12 +17,16 @@ import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
 
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
+
 export const getStaticPaths = async () => {
   const allPosts = await getCollection('blog')
 
   // Filter out draft posts for production - defined inside getStaticPaths
   const isDev = import.meta.env.DEV
-  const { includeDraftsInDev } = blogConfig
+  const { includeDraftsInDev } = blogConfigDefault
   const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
     if (post.data.draft && !(isDev && includeDraftsInDev)) {
       return false
@@ -48,7 +57,7 @@ export const getStaticPaths = async () => {
   }
 
   const getPostUrl = (post: CollectionEntry<'blog'>) => {
-    const { routeBasePath } = blogConfig
+    const { routeBasePath } = blogConfigDefault
     if (i18n) {
       const [locale, ...rest] = post.id.split('/')
       return `/${locale}/${routeBasePath}/${rest.join('/')}`
@@ -96,12 +105,12 @@ export const getStaticPaths = async () => {
 let { entry, older, newer } = Astro.props
 
 if (!entry) {
-  const allPosts = await getCollection('blog')
+  const allPosts = await getCollection(collectionName as CollectionKey)
 
   // Filter out draft posts for production
   const isDev = import.meta.env.DEV
   const { includeDraftsInDev } = blogConfig
-  const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+  const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
     if (post.data.draft && !(isDev && includeDraftsInDev)) {
       return false
     }
@@ -134,7 +143,7 @@ if (!entry) {
 
   // Calculate pagination for SSR mode
   const { routeBasePath } = blogConfig
-  const getPostUrl = (post: CollectionEntry<'blog'>) => {
+  const getPostUrl = (post: CollectionEntry<CollectionKey>) => {
     if (i18n) {
       const [postLocale, ...rest] = post.id.split('/')
       return `/${postLocale}/${routeBasePath}/${rest.join('/')}`
@@ -279,7 +288,7 @@ const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
 const showToc = !hide_table_of_contents && filteredHeadings.length > 0
 ---
 
-<Layout title={seoTitle} canonicalUrl={canonical_url}>
+<Layout title={seoTitle} canonicalUrl={canonical_url} blogConfig={blogConfig} collectionName={collectionName}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': showToc }]}>
       {/* Post header */}

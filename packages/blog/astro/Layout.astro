@@ -1,21 +1,28 @@
 ---
 import { i18n } from 'astro:config/server'
-import { getCollection } from 'astro:content'
-import blogConfig from 'virtual:shipyard-blog/config'
+import { type CollectionKey, getCollection } from 'astro:content'
+import blogConfigDefault from 'virtual:shipyard-blog/config'
 import type { NavigationTree } from '@levino/shipyard-base'
 import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
+import type { BlogConfig } from '../src/index'
 
 type Props = {
   title: string
   canonicalUrl?: string
+  blogConfig?: BlogConfig
+  collectionName?: string
 }
+
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 const locale = Astro.currentLocale
 const { title, canonicalUrl } = Astro.props
 const { blogSidebarCount, blogSidebarTitle, routeBasePath } = blogConfig
 
 // Get and filter posts by locale
-const allPosts = await getCollection('blog')
+const allPosts = await getCollection(collectionName as CollectionKey)
 const filteredPosts = i18n
   ? allPosts.filter(({ id }) => {
       const [postLocale] = id.split('/')

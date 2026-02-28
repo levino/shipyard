@@ -1,13 +1,21 @@
 ---
 import { Image } from 'astro:assets'
 import { i18n } from 'astro:config/server'
-import { type CollectionEntry, getCollection } from 'astro:content'
-import blogConfig from 'virtual:shipyard-blog/config'
+import {
+  type CollectionEntry,
+  type CollectionKey,
+  getCollection,
+} from 'astro:content'
+import blogConfigDefault from 'virtual:shipyard-blog/config'
 import type { GetStaticPaths } from 'astro'
 import { getReadingTime } from '../src/index'
 import BlogReadingTime from './BlogReadingTime.astro'
 import BlogTags from './BlogTags.astro'
 import Layout from './Layout.astro'
+
+const blogConfig = Astro.props.blogConfig ?? blogConfigDefault
+const collectionName =
+  Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 const {
   postsPerPage,
@@ -19,7 +27,7 @@ const {
 
 // Filter out draft and unlisted posts for production
 const isDev = import.meta.env.DEV
-const shouldIncludePost = (post: CollectionEntry<'blog'>) => {
+const shouldIncludePost = (post: CollectionEntry<CollectionKey>) => {
   // Exclude unlisted posts from listings
   if (post.data.unlisted) return false
   // Include drafts only in dev mode if configured
@@ -48,24 +56,26 @@ export const getStaticPaths = (() => {
 // Page 1 is always the index page (no page param)
 const currentPage = 1
 
-const entries = await getCollection('blog').then((posts) => {
-  const filteredPosts = posts.filter(shouldIncludePost)
+const entries = await getCollection(collectionName as CollectionKey).then(
+  (posts) => {
+    const filteredPosts = posts.filter(shouldIncludePost)
 
-  if (i18n) {
-    // With i18n: filter by locale
-    return filteredPosts
-      .filter(({ id }) => {
-        const [postLocale] = id.split('/')
-        return postLocale === Astro.currentLocale
-      })
-      .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  } else {
-    // Without i18n: return all posts
-    return filteredPosts.toSorted(
-      (a, b) => b.data.date.getTime() - a.data.date.getTime(),
-    )
-  }
-})
+    if (i18n) {
+      // With i18n: filter by locale
+      return filteredPosts
+        .filter(({ id }) => {
+          const [postLocale] = id.split('/')
+          return postLocale === Astro.currentLocale
+        })
+        .toSorted((a, b) => b.data.date.getTime() - a.data.date.getTime())
+    } else {
+      // Without i18n: return all posts
+      return filteredPosts.toSorted(
+        (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+      )
+    }
+  },
+)
 
 // Calculate pagination
 const totalPosts = entries.length
@@ -134,7 +144,7 @@ const tagBaseUrl = i18n
   : `/${routeBasePath}/tags`
 ---
 
-<Layout title={blogConfig.blogTitle}>
+<Layout title={blogConfig.blogTitle} blogConfig={blogConfig} collectionName={collectionName}>
   <div class="max-w-7xl mx-auto">
     <h1 class="text-4xl font-bold mb-10">{blogConfig.blogTitle}</h1>
     <div class="space-y-6">
