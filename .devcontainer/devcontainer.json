@@ -1,8 +1,10 @@
 {
   "name": "Node.js & TypeScript",
   "image": "mcr.microsoft.com/devcontainers/typescript-node:1-22-bookworm",
-  "updateContentCommand": "npm run setup",
-  "shutdownAction": "none",
+  "updateContentCommand": {
+    "npm": "npm run setup",
+    "claude": "curl -fsSL https://claude.ai/install.sh | bash"
+  },
   "customizations": {
     "vscode": {
       "extensions": [
@@ -11,7 +13,8 @@
         "astro-build.astro-vscode",
         "bradlc.vscode-tailwindcss",
         "streetsidesoftware.code-spell-checker-german",
-        "biomejs.biome"
+        "biomejs.biome",
+        "Anthropic.claude-code"
       ],
       "settings": {
         "terminal.integrated.defaultProfile.linux": "zsh",
@@ -20,6 +23,7 @@
     }
   },
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainer-community/devcontainer-features/zellij.dev:1": {}
   }
 }
