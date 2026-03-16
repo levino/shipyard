@@ -58,7 +58,7 @@ const sidebarSchema = z
     /** CSS class(es) for styling the sidebar entry */
     className: z.string().optional(),
     /** Arbitrary metadata for custom sidebar components */
-    customProps: z.record(z.any()).optional(),
+    customProps: z.record(z.string(), z.any()).optional(),
     /** Can category be collapsed (default: true) */
     collapsible: z.boolean().default(true),
     /** Start collapsed (default: true) */
