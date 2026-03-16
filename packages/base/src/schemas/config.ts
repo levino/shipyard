@@ -8,6 +8,23 @@ export interface NavigationEntry {
    * When provided, this takes precedence over the label.
    */
   labelHtml?: string
+  /**
+   * Custom HTML that replaces the entire navigation entry.
+   * Use this for elements that cannot be rendered as simple links,
+   * such as forms with POST actions (e.g., logout buttons).
+   *
+   * When provided, `label`, `href`, `labelHtml`, and `subEntry` are ignored.
+   *
+   * @example
+   * ```ts
+   * navigation: {
+   *   logout: {
+   *     html: '<form method="post" action="/api/logout"><button type="submit" class="btn btn-ghost">Logout</button></form>'
+   *   }
+   * }
+   * ```
+   */
+  html?: string
 }
 
 export type NavigationTree = Record<string, NavigationEntry>

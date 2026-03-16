@@ -49,16 +49,26 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
     <ul class="menu menu-horizontal px-1">
       {
         Object.entries(navigation).map(([key, entry]) =>
-          entry.subEntry ? (
+          entry.html ? (
+            <li>
+              <Fragment set:html={entry.html} />
+            </li>
+          ) : entry.subEntry ? (
             <li>
               <details>
                 <summary>{entry.label ?? key}</summary>
                 <ul class="rounded-t-none bg-base-100 p-2">
-                  {Object.entries(entry.subEntry).map(([key, entry]) => (
-                    <li>
-                      <a href={entry.href}>{entry.label ?? key}</a>
-                    </li>
-                  ))}
+                  {Object.entries(entry.subEntry).map(([key, entry]) =>
+                    entry.html ? (
+                      <li>
+                        <Fragment set:html={entry.html} />
+                      </li>
+                    ) : (
+                      <li>
+                        <a href={entry.href}>{entry.label ?? key}</a>
+                      </li>
+                    )
+                  )}
                 </ul>
               </details>
             </li>

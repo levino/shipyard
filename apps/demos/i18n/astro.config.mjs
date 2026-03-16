@@ -52,6 +52,9 @@ export default defineConfig({
           label: 'About',
           href: '/about',
         },
+        contact: {
+          html: '<form method="post" action="/api/contact" data-testid="custom-html-nav"><button type="submit" class="btn btn-ghost btn-sm">Contact</button></form>',
+        },
       },
       title: 'Metro Gardens',
       tagline: 'Growing community, one plant at a time.',
