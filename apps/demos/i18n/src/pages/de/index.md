@@ -1,46 +1,46 @@
 ---
 layout: '@levino/shipyard-base/layouts/Markdown.astro'
-title: Metro Gardens Community Club
-locale: en
+title: Metro Gardens Gemeinschaftsclub
+locale: de
 description:
-  Welcome to Metro Gardens - A thriving community garden in the heart of the city, where neighbors come together to grow, learn, and share the joy of gardening.
+  Willkommen bei Metro Gardens - Ein blühender Gemeinschaftsgarten im Herzen der Stadt, in dem Nachbarn zusammenkommen, um zu gärtnern, zu lernen und die Freude am Gärtnern zu teilen.
 ---
 
-# Welcome to Metro Gardens Community Club 🌱
+# Willkommen beim Metro Gardens Gemeinschaftsclub 🌱
 
-**Growing community, one plant at a time**
+**Gemeinschaft wachsen lassen, eine Pflanze nach der anderen**
 
-Located in the vibrant downtown district, Metro Gardens is more than just a community garden—we're a close-knit family of urban gardeners passionate about sustainable living, fresh food, and neighborhood connection.
+Im lebhaften Innenstadtviertel gelegen, ist Metro Gardens mehr als nur ein Gemeinschaftsgarten – wir sind eine eng verbundene Familie von Stadtgärtnern, die sich für nachhaltiges Leben, frische Lebensmittel und nachbarschaftliche Verbundenheit begeistern.
 
-## What We Offer
+## Was wir bieten
 
-### 🌿 **Community Garden Plots**
-Rent your own plot to grow vegetables, herbs, and flowers. Perfect for apartment dwellers and anyone wanting to connect with the earth.
+### 🌿 **Gemeinschaftsgarten-Parzellen**
+Mieten Sie Ihre eigene Parzelle, um Gemüse, Kräuter und Blumen anzubauen. Perfekt für Wohnungsbewohner und alle, die sich mit der Erde verbinden möchten.
 
-### 📚 **Educational Workshops**
-Learn organic gardening techniques, composting, seed starting, and seasonal growing tips from experienced gardeners.
+### 📚 **Bildungsworkshops**
+Lernen Sie biologische Gartentechniken, Kompostierung, Anzucht und saisonale Anbautipps von erfahrenen Gärtnern.
 
-### 🤝 **Community Events**
-Join us for harvest festivals, plant swaps, garden tours, and seasonal celebrations throughout the year.
+### 🤝 **Gemeinschaftsveranstaltungen**
+Nehmen Sie an Erntefesten, Pflanzentauschbörsen, Gartenführungen und saisonalen Feiern das ganze Jahr über teil.
 
-### 🥕 **Fresh Produce Sharing**
-Our communal harvest program ensures everyone in the neighborhood has access to fresh, locally-grown vegetables.
+### 🥕 **Frische Ernte teilen**
+Unser gemeinschaftliches Ernteprogramm stellt sicher, dass jeder in der Nachbarschaft Zugang zu frischem, lokal angebautem Gemüse hat.
 
-## Our Gardens
+## Unsere Gärten
 
-We maintain **4 distinct garden areas** across our 2-acre urban oasis:
+Wir pflegen **4 verschiedene Gartenbereiche** auf unserer 0,8 Hektar großen urbanen Oase:
 
-- **The Heritage Vegetable Garden** - Traditional varieties and heirloom seeds
-- **The Herb Spiral** - Culinary and medicinal herbs arranged in a beautiful spiral design  
-- **The Children's Discovery Garden** - Kid-friendly plants and learning spaces
-- **The Native Plant Sanctuary** - Supporting local wildlife and pollinators
+- **Der Gemüse-Erbgarten** - Traditionelle Sorten und Erbstücksamen
+- **Die Kräuterspirale** - Küchen- und Heilkräuter in einem wunderschönen Spiraldesign
+- **Der Kinder-Entdeckungsgarten** - Kinderfreundliche Pflanzen und Lernräume
+- **Das Wildpflanzen-Schutzgebiet** - Unterstützung der lokalen Tierwelt und Bestäuber
 
-## Get Involved
+## Mitmachen
 
-Whether you're a seasoned gardener or just getting your hands dirty for the first time, there's a place for you at Metro Gardens. Visit our documentation section to learn about plot rental, volunteer opportunities, and upcoming events.
+Ob Sie ein erfahrener Gärtner sind oder zum ersten Mal die Hände schmutzig machen – bei Metro Gardens gibt es einen Platz für Sie. Besuchen Sie unseren Dokumentationsbereich, um mehr über Parzellenvermietung, Freiwilligenarbeit und kommende Veranstaltungen zu erfahren.
 
-**Ready to dig in?** Contact us at hello@metrogardens.community or visit us during our open hours: Saturdays 9AM-2PM and Wednesday evenings 5-7PM.
+**Bereit loszulegen?** Kontaktieren Sie uns unter hello@metrogardens.community oder besuchen Sie uns während unserer Öffnungszeiten: Samstags 9-14 Uhr und Mittwochabends 17-19 Uhr.
 
 ---
 
-*Metro Gardens Community Club - Cultivating community since 2018*
+*Metro Gardens Gemeinschaftsclub - Gemeinschaft kultivieren seit 2018*

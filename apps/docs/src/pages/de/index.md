@@ -1,71 +1,71 @@
 ---
 layout: '@levino/shipyard-base/layouts/Markdown.astro'
 title: 🚢 shipyard
-locale: en
+locale: de
 description:
-  The complete toolkit for building stunning websites with Astro - beautiful design system, i18n support, smart documentation, and powerful blogging.
+  Das komplette Toolkit zum Erstellen beeindruckender Websites mit Astro - schönes Designsystem, i18n-Unterstützung, intelligente Dokumentation und leistungsstarkes Blogging.
 ---
 
-# The Complete Toolkit for Building Stunning Websites with Astro
+# Das komplette Toolkit zum Erstellen beeindruckender Websites mit Astro
 
-Transform the way you create documentation sites, blogs, and content-focused websites. Stop wrestling with complex configurations and start building beautiful, fast websites in minutes.
+Verändern Sie die Art, wie Sie Dokumentationsseiten, Blogs und inhaltsorientierte Websites erstellen. Schluss mit komplexen Konfigurationen – beginnen Sie in Minuten mit dem Aufbau schöner, schneller Websites.
 
-## ✨ Why Choose shipyard?
+## ✨ Warum shipyard?
 
-**shipyard** is a comprehensive collection of Astro integrations that provides everything you need:
+**shipyard** ist eine umfassende Sammlung von Astro-Integrationen, die alles bietet, was Sie brauchen:
 
-### 🎨 **Beautiful Design System**
-Modern, responsive layouts with Tailwind CSS + DaisyUI out of the box. No more fighting with CSS - just beautiful designs that work everywhere.
+### 🎨 **Schönes Designsystem**
+Moderne, responsive Layouts mit Tailwind CSS + DaisyUI direkt einsatzbereit. Kein Kampf mehr mit CSS – einfach schöne Designs, die überall funktionieren.
 
-### 🌍 **Internationalization Made Easy** 
-Built-in i18n support with locale-based routing. Reach a global audience without the complexity.
+### 🌍 **Internationalisierung leicht gemacht**
+Eingebaute i18n-Unterstützung mit sprachbasiertem Routing. Erreichen Sie ein globales Publikum ohne Komplexität.
 
-### 📚 **Smart Documentation**
-Automated navigation and content organization. Your docs write themselves into a beautiful, searchable structure.
+### 📚 **Intelligente Dokumentation**
+Automatisierte Navigation und Inhaltsorganisation. Ihre Dokumentation organisiert sich selbst in eine schöne, durchsuchbare Struktur.
 
-### 📝 **Powerful Blogging**
-Complete blog functionality with layouts and collections. From simple posts to complex content strategies.
+### 📝 **Leistungsstarkes Blogging**
+Vollständige Blog-Funktionalität mit Layouts und Sammlungen. Von einfachen Beiträgen bis hin zu komplexen Inhaltsstrategien.
 
-### 🧩 **Modular Architecture**
-Use what you need, extend as you grow. Three focused packages that work perfectly together or standalone.
+### 🧩 **Modulare Architektur**
+Nutzen Sie, was Sie brauchen, erweitern Sie nach Bedarf. Drei fokussierte Pakete, die perfekt zusammen oder einzeln funktionieren.
 
-## 🚀 Get Started in Minutes
+## 🚀 In Minuten starten
 
 ```bash
-# Install the packages you need
+# Installieren Sie die benötigten Pakete
 npm install @levino/shipyard-base @levino/shipyard-docs @levino/shipyard-blog
 
-# Add to your astro.config.mjs and you're ready!
+# Zu Ihrer astro.config.mjs hinzufügen und los geht's!
 ```
 
-## 📖 Explore the Documentation
+## 📖 Dokumentation erkunden
 
-Ready to dive deeper? Our comprehensive documentation covers everything from basic setup to advanced customization:
+Bereit, tiefer einzutauchen? Unsere umfassende Dokumentation deckt alles ab, von der grundlegenden Einrichtung bis zur erweiterten Anpassung:
 
-- **[🚀 Getting Started](/en/docs/getting-started)** - Install and configure shipyard
-- **[📚 Multiple Docs](/en/docs/docs-package#multiple-documentation-instances)** - Set up multiple documentation sections
-- **[📖 Pagination](/en/docs/docs-package#pagination)** - Customize navigation between pages
-- **[🗺️ Roadmap](/en/docs/roadmap)** - See the feature roadmap
+- **[🚀 Erste Schritte](/de/docs/getting-started)** - shipyard installieren und konfigurieren
+- **[📚 Mehrere Docs](/de/docs/docs-package#multiple-documentation-instances)** - Mehrere Dokumentationsabschnitte einrichten
+- **[📖 Seitennavigation](/de/docs/docs-package#pagination)** - Navigation zwischen Seiten anpassen
+- **[🗺️ Roadmap](/de/docs/roadmap)** - Die Feature-Roadmap einsehen
 
-## 🌟 See It in Action
+## 🌟 In Aktion sehen
 
-**[🚀 Explore the Live Demo →](https://i18n.demos.shipyard.levinkeller.de/en/)**
+**[🚀 Live-Demo erkunden →](https://i18n.demos.shipyard.levinkeller.de/en/)**
 
-See shipyard in action with a fully-featured example site showcasing:
-- Responsive documentation layouts
-- Multi-language blog posts
-- Smart navigation and content organization
-- Mobile-first design that looks great everywhere
+Sehen Sie shipyard in Aktion mit einer voll ausgestatteten Beispielseite:
+- Responsive Dokumentationslayouts
+- Mehrsprachige Blogbeiträge
+- Intelligente Navigation und Inhaltsorganisation
+- Mobile-First-Design, das überall gut aussieht
 
-### 📂 Demo Deployments
+### 📂 Demo-Deployments
 
-Explore our demo deployments showcasing different configurations:
+Erkunden Sie unsere Demo-Deployments mit verschiedenen Konfigurationen:
 
-| Demo | Description |
+| Demo | Beschreibung |
 |------|-------------|
-| **[i18n Demo](https://i18n.demos.shipyard.levinkeller.de/docs/)** | Multi-language support with locale-based routing |
-| **[Single Locale Demo](https://i18n.demos.shipyard.levinkeller.de/en/docs/)** | Simplified setup for single-language sites |
+| **[i18n Demo](https://i18n.demos.shipyard.levinkeller.de/docs/)** | Mehrsprachige Unterstützung mit sprachbasiertem Routing |
+| **[Einzelsprachen-Demo](https://i18n.demos.shipyard.levinkeller.de/en/docs/)** | Vereinfachte Einrichtung für einsprachige Seiten |
 
 ---
 
-**Ready to build something amazing?** Start with our [Quick Start Guide](/en/docs/) or explore the [Live Demo](https://i18n.demos.shipyard.levinkeller.de/en/) to see what's possible.
+**Bereit, etwas Großartiges zu bauen?** Starten Sie mit unserem [Schnellstart-Leitfaden](/de/docs/) oder erkunden Sie die [Live-Demo](https://i18n.demos.shipyard.levinkeller.de/en/), um zu sehen, was möglich ist.

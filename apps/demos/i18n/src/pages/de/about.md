@@ -1,139 +1,139 @@
 ---
 layout: '@levino/shipyard-base/layouts/Markdown.astro'
-title: About Metro Gardens
-description: Learn about our community garden's mission, history, and the dedicated team that makes it all possible.
+title: Über Metro Gardens
+description: Erfahren Sie mehr über die Mission, Geschichte und das engagierte Team unseres Gemeinschaftsgartens.
 ---
 
-# About Metro Gardens Community Club
+# Über den Metro Gardens Gemeinschaftsclub
 
-## Our Mission
+## Unsere Mission
 
-Metro Gardens Community Club exists to cultivate more than just vegetables—we grow community, knowledge, and connections that nourish both body and spirit. Through shared soil and collaborative effort, we create a space where neighbors become friends, novice gardeners become experts, and fresh food becomes accessible to all.
+Der Metro Gardens Gemeinschaftsclub existiert, um mehr als nur Gemüse anzubauen – wir fördern Gemeinschaft, Wissen und Verbindungen, die Körper und Geist nähren. Durch gemeinsame Erde und gemeinschaftliche Arbeit schaffen wir einen Raum, in dem Nachbarn zu Freunden werden, Anfänger zu Experten und frische Lebensmittel für alle zugänglich werden.
 
-## Our Story
+## Unsere Geschichte
 
-### The Beginning (2018)
-What started as a conversation between three neighbors concerned about food access in our downtown neighborhood has blossomed into a thriving community of over 80 member families. The original trio—Sarah Chen, Marcus Rodriguez, and Dorothy Peterson—noticed the lack of green space and limited access to fresh, affordable produce in our urban area.
+### Die Anfänge (2018)
+Was als Gespräch zwischen drei Nachbarn begann, die sich um den Zugang zu Lebensmitteln in unserem Innenstadtviertel sorgten, hat sich zu einer blühenden Gemeinschaft von über 80 Mitgliedsfamilien entwickelt. Das ursprüngliche Trio – Sarah Chen, Marcus Rodriguez und Dorothy Peterson – bemerkte den Mangel an Grünflächen und den begrenzten Zugang zu frischen, erschwinglichen Lebensmitteln in unserem städtischen Gebiet.
 
-With support from the city's urban agriculture initiative, Metro Gardens was born on a previously vacant 2-acre lot. The first year was all about infrastructure: soil testing, bed construction, and establishing water access. Those early volunteers put in countless hours turning a weedy lot into productive growing space.
+Mit Unterstützung der städtischen Initiative für urbane Landwirtschaft wurde Metro Gardens auf einem zuvor brachliegenden 0,8-Hektar-Grundstück gegründet. Das erste Jahr drehte sich um die Infrastruktur: Bodentests, Beetbau und Wasseranbindung. Die ersten Freiwilligen steckten unzählige Stunden in die Umwandlung eines verwilderten Grundstücks in produktive Anbaufläche.
 
-### Growth and Development (2019-2022)
-As word spread about our community garden, membership grew rapidly. We expanded from 20 initial plots to our current 48 individual growing spaces, while adding specialized areas:
+### Wachstum und Entwicklung (2019-2022)
+Als sich die Nachricht über unseren Gemeinschaftsgarten verbreitete, wuchs die Mitgliedschaft rasant. Wir erweiterten von 20 anfänglichen Parzellen auf unsere aktuellen 48 individuellen Anbauflächen und fügten spezialisierte Bereiche hinzu:
 
-- **2019**: The herb spiral and children's discovery garden
-- **2020**: Native plant sanctuary and rain garden (with help from local environmental groups)
-- **2021**: Tool library and community composting system
-- **2022**: Rainwater collection and preservation workshop space
+- **2019**: Die Kräuterspirale und der Kinder-Entdeckungsgarten
+- **2020**: Wildpflanzen-Schutzgebiet und Regengarten (mit Hilfe lokaler Umweltgruppen)
+- **2021**: Werkzeugbibliothek und Gemeinschaftskompostierungsanlage
+- **2022**: Regenwassersammlung und Konservierungsworkshop-Raum
 
-### Today and Tomorrow
-Metro Gardens now serves as a model for urban community gardening, hosting visits from other cities and organizations interested in replicating our success. But we haven't forgotten our roots—we remain focused on serving our immediate neighborhood while sharing knowledge broadly.
+### Heute und Morgen
+Metro Gardens dient heute als Vorbild für urbanes Gemeinschaftsgärtnern und empfängt Besuche aus anderen Städten und Organisationen, die unseren Erfolg nachahmen möchten. Aber wir haben unsere Wurzeln nicht vergessen – wir bleiben darauf fokussiert, unserer unmittelbaren Nachbarschaft zu dienen und gleichzeitig Wissen weiterzugeben.
 
-## Our Leadership Team
+## Unser Leitungsteam
 
-### Sarah Chen - Garden Manager
-*"Every seed planted is an act of hope and community."*
+### Sarah Chen - Gartenleiterin
+*„Jeder gepflanzte Samen ist ein Akt der Hoffnung und Gemeinschaft."*
 
-Sarah brings 15 years of professional horticulture experience to Metro Gardens. A certified master gardener and permaculture design consultant, she manages our growing systems while coordinating educational programming. Sarah's background includes work with botanical gardens and sustainable agriculture nonprofits. When not at Metro Gardens, you'll find her experimenting with native plant propagation or teaching environmental science at the community college.
+Sarah bringt 15 Jahre professionelle Gartenbau-Erfahrung zu Metro Gardens mit. Als zertifizierte Meistergärtnerin und Permakultur-Designberaterin verwaltet sie unsere Anbausysteme und koordiniert das Bildungsprogramm. Sarahs Hintergrund umfasst Arbeit mit botanischen Gärten und gemeinnützigen Organisationen für nachhaltige Landwirtschaft. Wenn sie nicht bei Metro Gardens ist, experimentiert sie mit der Vermehrung einheimischer Pflanzen oder unterrichtet Umweltwissenschaften am Community College.
 
-### Marcus Rodriguez - Volunteer Coordinator  
-*"The magic happens when neighbors work together toward shared goals."*
+### Marcus Rodriguez - Freiwilligenkoordinator
+*„Die Magie entsteht, wenn Nachbarn gemeinsam auf gemeinsame Ziele hinarbeiten."*
 
-Marcus handles volunteer coordination, event planning, and community outreach. His background in nonprofit management and social work helps ensure Metro Gardens serves gardeners of all experience levels and backgrounds. Marcus is fluent in Spanish and English, helping us maintain strong connections with our diverse neighborhood. He's also our resident expert on fundraising and grant writing.
+Marcus kümmert sich um die Koordination der Freiwilligen, Veranstaltungsplanung und Öffentlichkeitsarbeit. Sein Hintergrund im Non-Profit-Management und in der Sozialarbeit hilft sicherzustellen, dass Metro Gardens Gärtnern aller Erfahrungsstufen und Hintergründe dient. Marcus spricht fließend Spanisch und Englisch und hilft uns, starke Verbindungen zu unserer vielfältigen Nachbarschaft aufrechtzuerhalten. Er ist auch unser Experte für Fundraising und Förderanträge.
 
-### Dorothy Peterson - Master Gardener & Mentor
-*"Gardening wisdom grows best when shared between generations."*
+### Dorothy Peterson - Meistergärtnerin & Mentorin
+*„Gartenwissen wächst am besten, wenn es zwischen Generationen geteilt wird."*
 
-Dorothy is one of our founding members and brings over 50 years of gardening experience to our community. A certified master gardener and longtime environmental educator, she leads our mentorship program and specializes in heirloom varieties and seed saving. Dorothy's extensive personal seed library has supplied many of our most successful garden varieties.
+Dorothy ist eines unserer Gründungsmitglieder und bringt über 50 Jahre Gartenerfahrung in unsere Gemeinschaft ein. Als zertifizierte Meistergärtnerin und langjährige Umweltpädagogin leitet sie unser Mentorenprogramm und ist spezialisiert auf Erbstücksorten und Saatguterhaltung. Dorothys umfangreiche persönliche Saatgutbibliothek hat viele unserer erfolgreichsten Gartensorten geliefert.
 
-### Tom Bradley - Master Composter
-*"Great soil is the foundation of everything we grow here."*
+### Tom Bradley - Meisterkompostierer
+*„Guter Boden ist das Fundament von allem, was wir hier anbauen."*
 
-Tom manages our composting systems and soil health programs. With a background in environmental science and waste management, he's transformed our approach to organic matter recycling. Tom's composting workshops are among our most popular educational offerings, and his three-bin system produces all the compost our gardens need.
+Tom verwaltet unsere Kompostierungssysteme und Bodengesundheitsprogramme. Mit einem Hintergrund in Umweltwissenschaften und Abfallwirtschaft hat er unseren Ansatz zum Recycling organischer Materialien transformiert. Toms Kompostierungsworkshops gehören zu unseren beliebtesten Bildungsangeboten, und sein Drei-Behälter-System produziert den gesamten Kompost, den unsere Gärten benötigen.
 
-## Our Values
+## Unsere Werte
 
-### Organic Growing
-We are committed to 100% organic growing practices. No synthetic pesticides, herbicides, or fertilizers are permitted in our gardens. Instead, we build healthy soil through composting, use companion planting for pest management, and encourage beneficial insects through habitat creation.
+### Biologischer Anbau
+Wir sind zu 100 % biologischen Anbaumethoden verpflichtet. Keine synthetischen Pestizide, Herbizide oder Düngemittel sind in unseren Gärten erlaubt. Stattdessen bauen wir gesunden Boden durch Kompostierung auf, nutzen Mischkultur zur Schädlingsbekämpfung und fördern Nützlinge durch Lebensraumschaffung.
 
-### Community Access
-Metro Gardens strives to make community gardening accessible to all neighbors, regardless of income, experience level, or physical ability. We offer sliding-scale plot fees, wheelchair-accessible raised beds, and extensive mentorship programs for beginning gardeners.
+### Gemeinschaftszugang
+Metro Gardens strebt danach, Gemeinschaftsgärtnern für alle Nachbarn zugänglich zu machen, unabhängig von Einkommen, Erfahrungsniveau oder körperlicher Fähigkeit. Wir bieten gestaffelte Parzellengebühren, rollstuhlgerechte Hochbeete und umfangreiche Mentorenprogramme für Anfänger.
 
-### Environmental Stewardship
-Our practices reflect our commitment to environmental sustainability:
-- Native plant habitat supporting local wildlife
-- Rainwater harvesting reducing municipal water usage
-- Community composting diverting organic waste from landfills
-- Education programs promoting sustainable living practices
+### Umweltverantwortung
+Unsere Praktiken spiegeln unser Engagement für ökologische Nachhaltigkeit wider:
+- Lebensraum für einheimische Pflanzen zur Unterstützung der lokalen Tierwelt
+- Regenwassersammlung zur Reduzierung des kommunalen Wasserverbrauchs
+- Gemeinschaftskompostierung zur Abfallvermeidung
+- Bildungsprogramme zur Förderung nachhaltiger Lebensweisen
 
-### Cultural Celebration
-We embrace the diverse backgrounds of our members, recognizing that different cultural traditions bring valuable gardening knowledge and techniques. Our programming includes workshops on traditional growing methods, international cuisine preparation, and heritage seed preservation.
+### Kulturelle Vielfalt
+Wir schätzen die vielfältigen Hintergründe unserer Mitglieder und erkennen an, dass verschiedene kulturelle Traditionen wertvolles Gartenwissen und Techniken mitbringen. Unser Programm umfasst Workshops zu traditionellen Anbaumethoden, internationaler Küchenzubereitung und Erhaltung von Erbstücksaatgut.
 
-### Knowledge Sharing
-Metro Gardens operates as a living laboratory where members experiment, learn, and teach each other. We document successful techniques, share failures as learning opportunities, and maintain extensive resources for both beginning and experienced gardeners.
+### Wissensaustausch
+Metro Gardens fungiert als lebendes Labor, in dem Mitglieder experimentieren, lernen und sich gegenseitig unterrichten. Wir dokumentieren erfolgreiche Techniken, teilen Misserfolge als Lernmöglichkeiten und pflegen umfangreiche Ressourcen für Anfänger und erfahrene Gärtner.
 
-## Community Impact
+## Gemeinschaftliche Wirkung
 
-### Food Access
-Our gardens produce over 2,000 pounds of fresh vegetables annually. Through our surplus sharing program, excess produce is available to any community member, ensuring fresh food access extends beyond our membership.
+### Lebensmittelzugang
+Unsere Gärten produzieren jährlich über 900 Kilogramm frisches Gemüse. Durch unser Überschuss-Teilungsprogramm steht überschüssige Ernte jedem Gemeindemitglied zur Verfügung und stellt sicher, dass der Zugang zu frischen Lebensmitteln über unsere Mitgliedschaft hinausgeht.
 
-### Educational Programming
-We offer 20+ workshops annually covering topics from basic gardening to advanced permaculture techniques. Our programs serve gardeners from across the metropolitan area, with many participants starting their own community gardens.
+### Bildungsprogramme
+Wir bieten jährlich über 20 Workshops zu Themen von grundlegendem Gärtnern bis hin zu fortgeschrittenen Permakultur-Techniken an. Unsere Programme dienen Gärtnern aus der gesamten Metropolregion, wobei viele Teilnehmer ihre eigenen Gemeinschaftsgärten gründen.
 
-### Environmental Benefits
-- **Carbon sequestration** through soil building and composting
-- **Stormwater management** via our rain garden system
-- **Pollinator habitat** supporting urban biodiversity
-- **Heat island reduction** through increased green space
+### Umweltvorteile
+- **Kohlenstoffbindung** durch Bodenaufbau und Kompostierung
+- **Regenwassermanagement** durch unser Regengartensystem
+- **Bestäuberlebensraum** zur Unterstützung der städtischen Biodiversität
+- **Reduzierung von Wärmeinseln** durch mehr Grünflächen
 
-### Social Connection
-Perhaps most importantly, Metro Gardens creates space for meaningful relationships to develop. From casual conversations over garden beds to organized potluck dinners, we foster the kind of neighbor-to-neighbor connections that make communities resilient.
+### Soziale Verbindung
+Am wichtigsten ist vielleicht, dass Metro Gardens Raum für bedeutungsvolle Beziehungen schafft. Von zwanglosen Gesprächen über den Gartenbeeten bis hin zu organisierten Potluck-Abendessen fördern wir die Art von Nachbar-zu-Nachbar-Verbindungen, die Gemeinschaften widerstandsfähig machen.
 
-## Partnerships & Support
+## Partnerschaften & Unterstützung
 
-Metro Gardens thrives thanks to partnerships with local organizations:
+Metro Gardens gedeiht dank Partnerschaften mit lokalen Organisationen:
 
-- **City Parks Department**: Land lease and infrastructure support
-- **County Extension Office**: Educational programming and soil testing
-- **Green Thumb Nursery**: Discounted supplies and plant donations
-- **Metro Environmental Alliance**: Native plant expertise and grant funding
-- **Community Arts Center**: Event space and programming collaboration
+- **Städtische Parkverwaltung**: Grundstückspacht und Infrastrukturunterstützung
+- **Kreisberatungsstelle**: Bildungsprogramme und Bodenuntersuchungen
+- **Green Thumb Nursery**: Vergünstigte Materialien und Pflanzenspenden
+- **Metro Environmental Alliance**: Expertise für einheimische Pflanzen und Fördergelder
+- **Gemeinschaftskunstzentrum**: Veranstaltungsräume und Programmzusammenarbeit
 
-## Recognition & Awards
+## Auszeichnungen & Anerkennungen
 
-- **2022**: Outstanding Community Garden Award, State Urban Agriculture Association
-- **2021**: Excellence in Environmental Education, County Environmental Council
-- **2020**: Community Builder Award, Metropolitan Community Foundation
+- **2022**: Herausragender Gemeinschaftsgarten-Preis, Staatlicher Verband für Urbane Landwirtschaft
+- **2021**: Exzellenz in Umweltbildung, Kreisumweltrat
+- **2020**: Gemeinschaftsaufbau-Preis, Metropolitane Gemeinschaftsstiftung
 
-## Visit Us
+## Besuchen Sie uns
 
-**Location**: 1847 Oak Street, Downtown Metro District  
-**Open Hours**: Saturdays 9 AM-2 PM, Wednesday evenings 5-7 PM  
-**Contact**: hello@metrogardens.community  
-**Phone**: 555-GARDEN (555-427-3368)
+**Standort**: 1847 Oak Street, Downtown Metro District
+**Öffnungszeiten**: Samstags 9-14 Uhr, Mittwochabends 17-19 Uhr
+**Kontakt**: hello@metrogardens.community
+**Telefon**: 555-GARDEN (555-427-3368)
 
-### How to Get Involved
+### So können Sie mitmachen
 
-**Become a Plot Renter**: Applications open each fall for the following growing season. Plot fees range from $50-80 annually plus a refundable deposit.
+**Parzelle mieten**: Bewerbungen sind jeden Herbst für die folgende Anbausaison möglich. Parzellengebühren liegen zwischen 50-80 $ jährlich plus einer rückzahlbaren Kaution.
 
-**Volunteer**: Join our Saturday morning work crews or help with special events. No experience necessary—we'll teach you everything you need to know.
+**Freiwilligenarbeit**: Schließen Sie sich unseren Samstag-Morgen-Arbeitsteams an oder helfen Sie bei besonderen Veranstaltungen. Keine Erfahrung nötig – wir bringen Ihnen alles bei, was Sie wissen müssen.
 
-**Attend Events**: Community members and neighbors are welcome at our seasonal festivals, educational workshops, and monthly garden walks.
+**Veranstaltungen besuchen**: Gemeindemitglieder und Nachbarn sind bei unseren saisonalen Festen, Bildungsworkshops und monatlichen Gartenrundgängen willkommen.
 
-**Follow Our Journey**: Read our blog for updates, growing tips, and community stories. Photos and additional resources are available through our social media channels.
+**Verfolgen Sie unsere Reise**: Lesen Sie unseren Blog für Updates, Anbautipps und Gemeinschaftsgeschichten. Fotos und zusätzliche Ressourcen sind über unsere Social-Media-Kanäle verfügbar.
 
-## Looking Forward
+## Blick in die Zukunft
 
-As Metro Gardens enters its seventh growing season, we're expanding our impact while staying true to our community-focused mission. Plans for 2025 include:
+Während Metro Gardens in seine siebte Anbausaison geht, erweitern wir unsere Wirkung und bleiben unserer gemeinschaftsorientierten Mission treu. Pläne für 2025 umfassen:
 
-- **Greenhouse construction** for year-round growing and education
-- **Youth leadership program** engaging middle and high school students
-- **Community kitchen** for food preparation and preservation workshops  
-- **Satellite garden development** in partnership with other neighborhoods
+- **Gewächshausbau** für ganzjährigen Anbau und Bildung
+- **Jugendführungsprogramm** für Mittel- und Oberstufenschüler
+- **Gemeinschaftsküche** für Workshops zur Lebensmittelzubereitung und -konservierung
+- **Satellitengarten-Entwicklung** in Partnerschaft mit anderen Nachbarschaften
 
-Metro Gardens proves that when neighbors come together around shared purpose, incredible things grow. We invite you to be part of our story—whether as a plot renter, volunteer, workshop participant, or simply someone who believes in the power of community.
+Metro Gardens beweist, dass unglaubliche Dinge wachsen, wenn Nachbarn sich für einen gemeinsamen Zweck zusammentun. Wir laden Sie ein, Teil unserer Geschichte zu werden – ob als Parzellenmieter, Freiwilliger, Workshop-Teilnehmer oder einfach als jemand, der an die Kraft der Gemeinschaft glaubt.
 
-Come visit us during open hours to see what we've built together, and imagine what we might grow next! 🌱
+Besuchen Sie uns während der Öffnungszeiten, um zu sehen, was wir gemeinsam aufgebaut haben, und stellen Sie sich vor, was wir als Nächstes wachsen lassen können! 🌱
 
 ---
 
-*Metro Gardens Community Club is a 501(c)(3) nonprofit organization. Donations are tax-deductible and support our programming, infrastructure, and community access initiatives.*
+*Metro Gardens Gemeinschaftsclub ist eine gemeinnützige Organisation nach 501(c)(3). Spenden sind steuerlich absetzbar und unterstützen unsere Programme, Infrastruktur und Initiativen für den Gemeinschaftszugang.*

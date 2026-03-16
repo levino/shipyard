@@ -1,21 +1,21 @@
 ---
 layout: '@levino/shipyard-base/layouts/Markdown.astro'
-title: About
-locale: en
-description: About shipyard and its creator
+title: Über uns
+locale: de
+description: Über shipyard und seinen Ersteller
 ---
 
-# About shipyard
+# Über shipyard
 
-A general-purpose page builder for Astro.
+Ein universeller Seitenbaukasten für Astro.
 
-## Author
+## Autor
 
 **Levin Keller**
 
-Hohenzollerndamm 152, 14199 Berlin, Germany
+Berlin, Deutschland
 
 ## Links
 
 - [GitHub Repository](https://github.com/levino/shipyard)
-- [Documentation](/en/docs)
+- [Dokumentation](/de/docs)
