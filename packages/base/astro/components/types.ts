@@ -8,6 +8,12 @@ export type Entry = Record<
      * Useful for custom label components like buttons, icons, or interactive elements.
      */
     labelHtml?: string
+    /**
+     * Custom HTML that replaces the contents of the navigation entry.
+     * The `<li>` wrapper is still rendered; this HTML goes inside it.
+     * When provided, label, href, labelHtml, and subEntry are ignored.
+     */
+    html?: string
     href?: string
     subEntry?: Entry
     active?: boolean

@@ -293,6 +293,36 @@ test.describe('Navigation Features', () => {
     })
   })
 
+  test.describe('Custom HTML Navigation Entry', () => {
+    test.use({ viewport: { width: 1440, height: 900 } })
+
+    test('custom html entry renders in desktop navbar', async ({ page }) => {
+      await page.goto('/en/docs')
+
+      // The custom HTML form should be rendered in the top navbar
+      const form = page.locator('.navbar [data-testid="custom-html-nav"]')
+      await expect(form).toBeAttached()
+
+      // Should be a form element with correct attributes
+      await expect(form).toHaveAttribute('method', 'post')
+      await expect(form).toHaveAttribute('action', '/api/contact')
+
+      // Should contain the submit button
+      const button = form.locator('button[type="submit"]')
+      await expect(button).toBeAttached()
+      await expect(button).toContainText('Contact')
+    })
+
+    test('custom html entry renders in sidebar', async ({ page }) => {
+      await page.goto('/en/docs')
+
+      // The custom HTML form should be rendered in the sidebar (mobile global nav)
+      const form = page.locator('.drawer-side [data-testid="custom-html-nav"]')
+      await expect(form).toBeAttached()
+      await expect(form).toHaveAttribute('method', 'post')
+    })
+  })
+
   test.describe('Integration', () => {
     test.use({ viewport: { width: 1440, height: 900 } })
 

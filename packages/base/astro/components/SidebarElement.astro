@@ -48,7 +48,11 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
     </span>
   );
 
-  return (
+  return entryValue.html ? (
+    <li class={entryValue.className}>
+      <Fragment set:html={entryValue.html} />
+    </li>
+  ) : (
     <li class={entryValue.className}>
       {hasChildren && isCollapsible ? (
         // Collapsible category with children

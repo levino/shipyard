@@ -18,6 +18,9 @@
       "recommended": true,
       "suspicious": {
         "noConsole": "error"
+      },
+      "nursery": {
+        "noShadow": "error"
       }
     }
   },
