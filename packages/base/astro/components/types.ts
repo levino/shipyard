@@ -9,7 +9,8 @@ export type Entry = Record<
      */
     labelHtml?: string
     /**
-     * Custom HTML that replaces the entire navigation entry.
+     * Custom HTML that replaces the contents of the navigation entry.
+     * The `<li>` wrapper is still rendered; this HTML goes inside it.
      * When provided, label, href, labelHtml, and subEntry are ignored.
      */
     html?: string

@@ -56,16 +56,28 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
           ) : entry.subEntry ? (
             <li>
               <details>
-                <summary>{entry.label ?? key}</summary>
+                <summary>
+                  {entry.labelHtml ? (
+                    <Fragment set:html={entry.labelHtml} />
+                  ) : (
+                    entry.label ?? key
+                  )}
+                </summary>
                 <ul class="rounded-t-none bg-base-100 p-2">
-                  {Object.entries(entry.subEntry).map(([key, entry]) =>
-                    entry.html ? (
+                  {Object.entries(entry.subEntry).map(([subKey, subEntry]) =>
+                    subEntry.html ? (
                       <li>
-                        <Fragment set:html={entry.html} />
+                        <Fragment set:html={subEntry.html} />
                       </li>
                     ) : (
                       <li>
-                        <a href={entry.href}>{entry.label ?? key}</a>
+                        <a href={subEntry.href}>
+                          {subEntry.labelHtml ? (
+                            <Fragment set:html={subEntry.labelHtml} />
+                          ) : (
+                            subEntry.label ?? subKey
+                          )}
+                        </a>
                       </li>
                     )
                   )}
@@ -74,7 +86,13 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
             </li>
           ) : (
             <li>
-              <a href={entry.href}>{entry.label ?? key}</a>
+              <a href={entry.href}>
+                {entry.labelHtml ? (
+                  <Fragment set:html={entry.labelHtml} />
+                ) : (
+                  entry.label ?? key
+                )}
+              </a>
             </li>
           ),
         )

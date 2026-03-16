@@ -8,7 +8,7 @@ import Layout from './Layout.astro'
 export async function getStaticPaths() {
   // Get all configured docs collections
   const allPaths = await Promise.all(
-    Object.entries(docsConfigs).map(async ([routeBasePath, config]) => {
+    Object.entries(docsConfigs).map(async ([basePath, config]) => {
       const docs = await getCollection(config.collectionName as CollectionKey)
 
       const getParams = (slug: string) => {
@@ -26,9 +26,9 @@ export async function getStaticPaths() {
         }
       }
 
-      return docs.map((entry) => ({
-        params: getParams(entry.id),
-        props: { entry, routeBasePath },
+      return docs.map((doc) => ({
+        params: getParams(doc.id),
+        props: { entry: doc, routeBasePath: basePath },
       }))
     }),
   )

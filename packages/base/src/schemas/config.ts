@@ -9,7 +9,9 @@ export interface NavigationEntry {
    */
   labelHtml?: string
   /**
-   * Custom HTML that replaces the entire navigation entry.
+   * Custom HTML that replaces the contents of the navigation entry.
+   * The `<li>` wrapper is still rendered by the navigation component;
+   * this HTML is placed inside it.
    * Use this for elements that cannot be rendered as simple links,
    * such as forms with POST actions (e.g., logout buttons).
    *

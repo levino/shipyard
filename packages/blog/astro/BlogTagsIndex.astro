@@ -42,15 +42,15 @@ const posts = allPosts.filter(shouldIncludePost).filter(({ id }) => {
 type TagCount = { tag: string; count: number }
 
 const getTagCounts = pipe(
-  (posts: CollectionEntry<CollectionKey>[]) =>
-    posts.flatMap((post) => post.data.tags ?? []),
+  (items: CollectionEntry<CollectionKey>[]) =>
+    items.flatMap((post) => post.data.tags ?? []),
   groupBy((tag: string) => tag.toLowerCase()),
   map((tags: string[]) => tags.length),
   toPairs,
   map(([tag, count]): TagCount => ({ tag, count: count as number })),
   sortBy(prop('count')),
   reverse,
-) as (posts: CollectionEntry<CollectionKey>[]) => TagCount[]
+) as (items: CollectionEntry<CollectionKey>[]) => TagCount[]
 
 const tagCounts = getTagCounts(posts)
 

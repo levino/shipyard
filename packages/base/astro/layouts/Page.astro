@@ -49,7 +49,7 @@ const props = Astro.props.frontmatter || Astro.props
 
 const withLocale = (path: string) =>
   i18n ? `/${Astro.currentLocale}${path}` : path
-const applyLocaleAndSetActive: (navigation: NavigationTree) => NavigationTree =
+const applyLocaleAndSetActive: (nav: NavigationTree) => NavigationTree =
   mapObjIndexed((entry: NavigationEntry) => ({
     ...entry,
     ...(entry.href ? { href: withLocale(entry.href) } : {}),
