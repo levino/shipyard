@@ -12,12 +12,12 @@
     "test:e2e:ui": "playwright test --ui"
   },
   "dependencies": {
-    "@astrojs/node": "^9.0.0",
+    "@astrojs/node": "^10.0.0",
     "@levino/shipyard-base": "*",
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^5.15",
+    "astro": "^6.0.0",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },

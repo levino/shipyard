@@ -139,3 +139,6 @@ test-results/
 ralph/history.md
 *.local.md
 agentic-workflow/active-workflow.txt
+
+# Wrangler
+.wrangler/

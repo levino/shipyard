@@ -272,7 +272,7 @@ export const blogConfigSchema = z.object({
        */
       description: z.string().optional(),
     })
-    .default({}),
+    .default({ rss: true, atom: true, json: true, limit: 20 }),
   /**
    * Truncation marker for post excerpts.
    * Content before this marker is used as the excerpt.

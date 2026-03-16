@@ -1,0 +1,11 @@
+---
+import { Page } from '@levino/shipyard-base/layouts'
+import Search from 'astro-pagefind/components/Search'
+---
+
+<Page title="Suche" description="Durchsuchen Sie die shipyard-Dokumentation">
+  <div class="prose max-w-none py-8">
+    <h1>Suche</h1>
+    <Search id="search" className="pagefind-ui" uiOptions={{ showImages: false, showSubResults: true }} />
+  </div>
+</Page>

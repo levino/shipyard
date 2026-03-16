@@ -38,11 +38,11 @@
     "yaml": "^2.0.0"
   },
   "peerDependencies": {
-    "astro": "^5.15"
+    "astro": "^6.0.0"
   },
   "devDependencies": {
     "@types/ramda": "^0.31",
-    "astro": "^5.15"
+    "astro": "^6.0.0"
   },
   "repository": {
     "type": "git",

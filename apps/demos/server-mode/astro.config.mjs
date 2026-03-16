@@ -12,7 +12,7 @@ import appCss from './src/styles/app.css?url'
 export default defineConfig({
   // Server mode configuration for Cloudflare
   output: 'server',
-  adapter: cloudflare(),
+  adapter: cloudflare({ configPath: './wrangler-build.toml' }),
   vite: {
     plugins: [tailwindcss()],
   },

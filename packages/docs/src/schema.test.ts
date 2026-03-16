@@ -1,5 +1,8 @@
+import { z } from 'astro/zod'
 import { describe, expect, it } from 'vitest'
-import { docsSchema } from './index'
+import { docsSchema as docsSchemaFn } from './index'
+
+const docsSchema = docsSchemaFn({ image: () => z.any() })
 
 describe('docsSchema', () => {
   it('should accept valid sidebar configuration', () => {
