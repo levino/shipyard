@@ -5,6 +5,9 @@
     "test:unit": "npm run test:unit --workspaces --if-present",
     "build": "npm run build --workspaces --if-present"
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "keywords": [],
   "author": "",
   "private": true,

@@ -42,6 +42,9 @@ export default defineConfig({
       prefixDefaultLocale: true,
       fallbackType: 'rewrite',
     },
+    fallback: {
+      de: 'en',
+    },
   },
   integrations: [
     shipyard({
