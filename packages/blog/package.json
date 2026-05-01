@@ -35,14 +35,14 @@
   "dependencies": {
     "@levino/shipyard-base": "^0.8.0",
     "ramda": "^0.31",
-    "yaml": "^2.0.0"
+    "yaml": "^2.8.3"
   },
   "peerDependencies": {
-    "astro": "^6.0.0"
+    "astro": "^6.1.6"
   },
   "devDependencies": {
     "@types/ramda": "^0.31",
-    "astro": "^6.0.0"
+    "astro": "^6.1.6"
   },
   "repository": {
     "type": "git",
