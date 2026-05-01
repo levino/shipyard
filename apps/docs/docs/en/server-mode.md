@@ -122,6 +122,89 @@ const data = await fetch('https://api.example.com/data')
 ---
 ```
 
+## Server Mode with Auth Middleware (Express)
+
+A common pattern is to wrap Astro's Node.js server behind an Express app that handles authentication (e.g. Passport.js, session stores). Here's how to set that up with shipyard.
+
+### Configuration
+
+When docs sit behind authentication middleware, pages must be rendered on every request so the middleware can check credentials. Set `prerender: false` explicitly:
+
+```javascript
+import node from '@astrojs/node'
+import shipyard from '@levino/shipyard-base'
+import shipyardDocs from '@levino/shipyard-docs'
+import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'astro/config'
+import appCss from './src/styles/app.css?url'
+
+export default defineConfig({
+  output: 'server',
+  adapter: node({ mode: 'middleware' }),
+  vite: {
+    plugins: [tailwindcss()],
+  },
+  integrations: [
+    shipyard({
+      css: appCss,
+      brand: 'Internal Docs',
+      title: 'Internal Docs',
+      navigation: {
+        docs: { label: 'Docs', href: '/docs' },
+      },
+    }),
+    shipyardDocs({ prerender: false }),
+  ],
+})
+```
+
+### Express Wrapper
+
+Use Astro's Node.js adapter in `middleware` mode and mount it inside Express:
+
+```javascript
+// server.mjs
+import express from 'express'
+import { handler as astroHandler } from './dist/server/entry.mjs'
+
+const app = express()
+
+// Your auth middleware (e.g. Passport, session)
+app.use(session({ /* ... */ }))
+app.use(passport.initialize())
+app.use(passport.session())
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) return next()
+  res.redirect('/login')
+})
+
+// Mount Astro as the final handler
+app.use(astroHandler)
+
+app.listen(3000)
+```
+
+### Root Path Redirect
+
+When your docs are the only content, redirect the root path to `/docs`:
+
+```astro
+---
+// src/pages/index.astro
+return Astro.redirect('/docs', 302)
+---
+```
+
+This avoids needing a `routeBasePath` workaround and keeps the URL structure clean.
+
+### Key Points
+
+| Setting | Why |
+|---------|-----|
+| `output: 'server'` | Enables SSR so middleware runs on every request |
+| `adapter: node({ mode: 'middleware' })` | Lets you mount Astro inside Express |
+| `shipyardDocs({ prerender: false })` | Prevents docs from being pre-rendered at build time, which would bypass auth |
+
 ## Live Demo
 
 See server mode in action: **[Server Mode Demo](https://server-mode.demos.shipyard.levinkeller.de)**

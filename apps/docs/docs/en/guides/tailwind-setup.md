@@ -65,6 +65,22 @@ npm install tailwindcss @tailwindcss/vite daisyui @tailwindcss/typography
 
 That's it! The shipyard packages include their own `@source` directives, so Tailwind automatically detects all component classes.
 
+### Docs-only Setup (no blog)
+
+If you're not using `@levino/shipyard-blog`, omit its CSS import:
+
+```css
+@import "tailwindcss";
+
+@import "@levino/shipyard-base";
+@import "@levino/shipyard-docs";
+
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+```
+
+Only import the packages you installed. Each `@import` registers `@source` directives for that package — importing a package you didn't install will cause build errors, while omitting an installed package will result in partially unstyled components.
+
 ## How It Works
 
 Each shipyard package exports CSS via conditional exports. When imported in CSS with `@import`, it resolves to a CSS file that contains:

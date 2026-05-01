@@ -37,6 +37,8 @@ npm install @levino/shipyard-base @levino/shipyard-blog
 npm install @levino/shipyard-base
 ```
 
+> **Tip:** The commands above install the latest version. For reproducible builds, pin versions in your `package.json` (e.g. `"@levino/shipyard-base": "^0.8.0"`). Check [npm](https://www.npmjs.com/package/@levino/shipyard-base) for the latest release.
+
 ### Step 2: Install Peer Dependencies
 
 shipyard requires the following peer dependencies:
@@ -65,6 +67,8 @@ The most commonly missed file is `src/content.config.ts` — without it, you'll 
 
 Create `src/styles/app.css` with the Tailwind CSS 4 configuration:
 
+**Full-featured site (docs + blog):**
+
 ```css
 /* Tailwind CSS 4 setup */
 @import "tailwindcss";
@@ -78,7 +82,21 @@ Create `src/styles/app.css` with the Tailwind CSS 4 configuration:
 @plugin "@tailwindcss/typography";
 ```
 
-The shipyard packages include built-in `@source` directives, so Tailwind automatically detects all component classes. See [Tailwind CSS Setup](../guides/tailwind-setup) for detailed configuration options and troubleshooting.
+**Documentation site only (no blog):**
+
+```css
+@import "tailwindcss";
+
+@import "@levino/shipyard-base";
+@import "@levino/shipyard-docs";
+
+@plugin "daisyui";
+@plugin "@tailwindcss/typography";
+```
+
+**Important:** Only import the shipyard packages you installed. Each package ships `@source` directives that tell Tailwind where to scan for CSS classes. If you omit a package you use, its components will be partially unstyled because Tailwind won't generate the needed utility classes. If you include a package you didn't install, the build will fail.
+
+See [Tailwind CSS Setup](../guides/tailwind-setup) for detailed configuration options and troubleshooting.
 
 ### Astro Configuration
 
