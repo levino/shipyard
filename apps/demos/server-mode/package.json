@@ -10,12 +10,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.0.0",
+    "@astrojs/cloudflare": "^13.1.10",
     "@levino/shipyard-base": "*",
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^6.0.0",
+    "astro": "^6.1.6",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
