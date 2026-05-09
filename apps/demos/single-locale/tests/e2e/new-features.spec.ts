@@ -144,10 +144,62 @@ test.describe('SEO Features', () => {
     await expect(ogImage).toHaveAttribute('content', /\/_astro\/seo-image\./)
   })
 
+  test('page with image emits og:image as a JPEG variant', async ({ page }) => {
+    await page.goto('/docs/seo-features')
+    const ogImage = page.locator('meta[property="og:image"]')
+    await expect(ogImage).toHaveAttribute('content', /\.jpe?g(\?|$)/i)
+  })
+
+  test('page with image emits og:image:width and og:image:height', async ({
+    page,
+  }) => {
+    await page.goto('/docs/seo-features')
+    const ogWidth = page.locator('meta[property="og:image:width"]')
+    const ogHeight = page.locator('meta[property="og:image:height"]')
+    await expect(ogWidth).toHaveAttribute('content', '1200')
+    await expect(ogHeight).toHaveAttribute('content', '630')
+  })
+
+  test('page with image emits og:image:type', async ({ page }) => {
+    await page.goto('/docs/seo-features')
+    const ogType = page.locator('meta[property="og:image:type"]')
+    await expect(ogType).toHaveAttribute('content', 'image/jpeg')
+  })
+
+  test('page with image emits og:image:alt from description', async ({
+    page,
+  }) => {
+    await page.goto('/docs/seo-features')
+    const ogAlt = page.locator('meta[property="og:image:alt"]')
+    await expect(ogAlt).toHaveAttribute(
+      'content',
+      /Demonstrating SEO frontmatter features/,
+    )
+  })
+
+  test('page with image emits twitter:image:alt', async ({ page }) => {
+    await page.goto('/docs/seo-features')
+    const twitterAlt = page.locator('meta[name="twitter:image:alt"]')
+    await expect(twitterAlt).toHaveAttribute(
+      'content',
+      /Demonstrating SEO frontmatter features/,
+    )
+  })
+
   test('page with image has twitter:card meta tag', async ({ page }) => {
     await page.goto('/docs/seo-features')
     const twitterCard = page.locator('meta[name="twitter:card"]')
     await expect(twitterCard).toHaveAttribute('content', 'summary_large_image')
+  })
+
+  test('page without frontmatter image falls back to defaultImage from config', async ({
+    page,
+  }) => {
+    // /docs/installation has no `image:` in frontmatter, so the config-level
+    // defaultImage ('/default-og.png') should be used.
+    await page.goto('/docs/installation')
+    const ogImage = page.locator('meta[property="og:image"]')
+    await expect(ogImage).toHaveAttribute('content', /default-og\.png(\?|$)/)
   })
 })
 

@@ -111,6 +111,8 @@ const {
   draft = false,
   canonical_url,
   title_meta,
+  description,
+  image,
 } = entry.data
 
 // Use title_meta for SEO if provided, otherwise use title
@@ -209,7 +211,7 @@ const formatDate = new Intl.DateTimeFormat(Astro.currentLocale || 'en', {
 const showToc = !hide_table_of_contents && filteredHeadings.length > 0
 ---
 
-<Layout title={seoTitle} canonicalUrl={canonical_url} blogConfig={blogConfig} collectionName={collectionName}>
+<Layout title={seoTitle} description={description} canonicalUrl={canonical_url} image={image} blogConfig={blogConfig} collectionName={collectionName}>
   <div class="grid grid-cols-12 gap-6 max-w-7xl mx-auto">
     <div class:list={['col-span-12', { 'xl:col-span-9': showToc }]}>
       {/* Post header */}

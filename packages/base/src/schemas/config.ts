@@ -202,6 +202,22 @@ export interface Config {
   title: string
   tagline: string
   /**
+   * Default social preview image URL used as a fallback for pages that don't
+   * specify their own `image` in frontmatter.
+   *
+   * Accepts an absolute URL (e.g. `https://example.com/og.jpg`) or a path
+   * relative to the site root (e.g. `/og-default.jpg` for a file in `public/`).
+   * The path is resolved against `site` from `astro.config.*` to produce an
+   * absolute URL in the emitted `og:image` / `twitter:image` meta tags.
+   *
+   * For best results across Facebook, LinkedIn, Twitter and chat clients
+   * (WhatsApp, Telegram), use a 1200×630 JPEG under ~200 KB.
+   *
+   * @example '/og-default.jpg'
+   * @example 'https://example.com/og.jpg'
+   */
+  defaultImage?: string
+  /**
    * Path to your app's CSS entry point.
    * This file should set up Tailwind CSS with @source directives for shipyard packages.
    *

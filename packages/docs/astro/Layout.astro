@@ -11,6 +11,7 @@ import {
   VersionSelector,
 } from '@levino/shipyard-base/components'
 import BaseLayout from '@levino/shipyard-base/layouts/Page.astro'
+import type { ImageMetadata } from 'astro'
 import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { Array as EffectArray, Option } from 'effect'
 import { getPaginationInfo } from '../src/pagination'
@@ -66,9 +67,11 @@ interface Props {
    */
   keywords?: string[]
   /**
-   * Social preview image URL (og:image).
+   * Social preview image. Accepts an absolute URL or, in content collections,
+   * an `ImageMetadata` from a relative path. Local images are automatically
+   * optimized to 1200×630 JPEG for OG/Twitter cards.
    */
-  image?: string
+  image?: string | ImageMetadata
   /**
    * Custom canonical URL for the page.
    */
@@ -86,6 +89,11 @@ interface Props {
    * Override title for SEO/browser tab (overrides the regular title in <title> tag).
    */
   titleMeta?: string
+  /**
+   * Page description used for `<meta name="description">` and as the default
+   * for `og:image:alt` / `twitter:image:alt`.
+   */
+  description?: string
 }
 
 const {
@@ -103,6 +111,7 @@ const {
   canonicalUrl,
   customMetaTags,
   titleMeta,
+  description,
 } = Astro.props
 
 // Normalize the route base path
@@ -318,7 +327,7 @@ const deprecationBannerProps =
     : null
 ---
 
-<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} title={titleMeta}>
+<BaseLayout sidebarNavigation={entries} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} title={titleMeta} description={description}>
   {
     versionSelectorProps && (
       <VersionSelector

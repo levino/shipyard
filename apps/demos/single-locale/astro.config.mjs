@@ -54,6 +54,7 @@ export default defineConfig({
       title: 'Single Language Demo',
       tagline: 'shipyard without internationalization',
       brand: 'Single Lang Demo',
+      defaultImage: '/default-og.png',
       announcementBar: {
         id: 'demo-announcement',
         content:

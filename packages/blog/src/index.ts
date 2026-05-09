@@ -95,9 +95,13 @@ export const blogSchema = ({ image }: { image: () => z.ZodType }) =>
      */
     tags: z.array(z.string()).optional(),
     /**
-     * Image for the post. Use a relative path to a local image file.
+     * Social preview image for the post. Accepts either:
+     * - A relative path to a local image file (e.g. `./hero.jpg`), which is
+     *   automatically optimized to 1200×630 JPEG for OG/Twitter cards.
+     * - An absolute URL (e.g. `https://example.com/og.jpg`), passed through
+     *   verbatim.
      */
-    image: image().optional(),
+    image: z.union([image(), z.string().url()]).optional(),
     /**
      * SEO keywords for the post.
      */

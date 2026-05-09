@@ -1,7 +1,9 @@
 ---
 import 'virtual:shipyard/css'
+import { getImage } from 'astro:assets'
 import { i18n } from 'astro:config/server'
 import config from 'virtual:shipyard/config'
+import type { ImageMetadata } from 'astro'
 import { mapObjIndexed } from 'ramda'
 import type {
   NavigationEntry,
@@ -24,12 +26,14 @@ type CustomMetaTag = {
   content: string
 }
 
+type PageImage = string | ImageMetadata
+
 type Props = {
   frontmatter?: {
     title?: string
     description?: string
     keywords?: string[]
-    image?: string
+    image?: PageImage
     canonicalUrl?: string
     customMetaTags?: CustomMetaTag[]
     sidebarNavigation?: NavigationTree
@@ -38,7 +42,7 @@ type Props = {
   title?: string
   description?: string
   keywords?: string[]
-  image?: string
+  image?: PageImage
   canonicalUrl?: string
   customMetaTags?: CustomMetaTag[]
   sidebarNavigation?: NavigationTree
@@ -46,6 +50,49 @@ type Props = {
 
 const currentPath = Astro.url.pathname
 const props = Astro.props.frontmatter || Astro.props
+
+const isImageMetadata = (value: PageImage): value is ImageMetadata =>
+  typeof value === 'object' && value !== null && 'src' in value
+
+const toAbsoluteUrl = (url: string) => {
+  if (/^https?:\/\//i.test(url)) return url
+  if (!Astro.site) return url
+  return new URL(url, Astro.site).href
+}
+
+type OgImageData = {
+  src: string
+  width?: number
+  height?: number
+  type?: string
+}
+
+const resolveOgImage = async (
+  value: PageImage | undefined,
+): Promise<OgImageData | undefined> => {
+  if (!value) return undefined
+  if (typeof value === 'string') return { src: value }
+  if (!isImageMetadata(value)) return undefined
+  // 1200x630 JPEG keeps OG cards under ~200 KB so WhatsApp/Telegram fetch the
+  // preview; re-encoding via Sharp also strips EXIF.
+  const optimized = await getImage({
+    src: value,
+    width: 1200,
+    height: 630,
+    format: 'jpeg',
+    fit: 'cover',
+  })
+  return {
+    src: optimized.src,
+    width: 1200,
+    height: 630,
+    type: 'image/jpeg',
+  }
+}
+
+const ogImageData = await resolveOgImage(props.image ?? config.defaultImage)
+const ogImageUrl = ogImageData ? toAbsoluteUrl(ogImageData.src) : undefined
+const ogImageAlt = props.description
 
 const withLocale = (path: string) =>
   i18n ? `/${Astro.currentLocale}${path}` : path
@@ -85,11 +132,26 @@ const renderScriptAttributes = (script: Script) => {
     )}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={props.description} />
-    {props.image && (
+    {ogImageData && ogImageUrl && (
       <>
-        <meta property="og:image" content={props.image} />
+        <meta property="og:image" content={ogImageUrl} />
+        {ogImageData.width && (
+          <meta property="og:image:width" content={String(ogImageData.width)} />
+        )}
+        {ogImageData.height && (
+          <meta property="og:image:height" content={String(ogImageData.height)} />
+        )}
+        {ogImageData.type && (
+          <meta property="og:image:type" content={ogImageData.type} />
+        )}
+        {ogImageAlt && (
+          <meta property="og:image:alt" content={ogImageAlt} />
+        )}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={props.image} />
+        <meta name="twitter:image" content={ogImageUrl} />
+        {ogImageAlt && (
+          <meta name="twitter:image:alt" content={ogImageAlt} />
+        )}
       </>
     )}
     {props.canonicalUrl && (
