@@ -142,11 +142,12 @@ const tagBaseUrl = i18n
           return isFirst && hasImage ? (
             /* Featured first post — full-width card with image */
             <article class="card bg-base-100 shadow-sm relative" data-testid="blog-post-item">
-              <figure>
+              <figure class="max-h-80">
                 <Image
                   src={entry.data.image}
                   alt={entry.data.title}
-                  class="w-full object-cover"
+                  width={1600}
+                  class="w-full h-80 object-cover"
                   loading="eager"
                 />
               </figure>
@@ -181,6 +182,7 @@ const tagBaseUrl = i18n
                 <Image
                   src={entry.data.image}
                   alt={entry.data.title}
+                  width={384}
                   class="h-full w-full object-cover"
                   loading="lazy"
                 />
