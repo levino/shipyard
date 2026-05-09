@@ -6,8 +6,6 @@ import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
-// Import the fallback OG image so Astro can run it through the image pipeline
-import defaultOg from './src/assets/default-og.png'
 // Import CSS URL - Vite resolves the path
 import appCss from './src/styles/app.css?url'
 
@@ -55,7 +53,7 @@ export default defineConfig({
       title: 'Single Language Demo',
       tagline: 'shipyard without internationalization',
       brand: 'Single Lang Demo',
-      defaultImage: defaultOg,
+      defaultImage: '/default-og.png',
       announcementBar: {
         id: 'demo-announcement',
         content:

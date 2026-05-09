@@ -167,15 +167,11 @@ In the frontmatter, authors still write a string path (`cover: ./hero.jpg`). Ast
 
 ### Outside content collections
 
-For places where YAML frontmatter isn't validated by a Zod schema (e.g. `.md` files using a `layout:` frontmatter, or `astro.config.*` options), import the image at the call site instead of accepting a string:
+For places where YAML frontmatter isn't validated by a Zod schema (e.g. `.md` files using a `layout:` frontmatter), the path is just a string. There's no `image()` helper and no automatic conversion to `ImageMetadata`. Document this honestly in the field's JSDoc — don't pretend optimization happens when it can't.
 
-```js
-// astro.config.mjs
-import defaultOg from './src/assets/default-og.png'
-shipyard({ defaultImage: defaultOg })
-```
+**`astro.config.*` is a special case:** it runs before Vite's asset pipeline is wired up, so an `import logo from './foo.png'` there returns a plain string (the URL), not a real `ImageMetadata`. **Don't ask users to import images in `astro.config.*` to get optimization** — it doesn't work, and the resulting string flows down the unoptimized path. For site-wide config images (e.g. `defaultImage`), accept a string that points at a `public/` file or an external URL, and tell users to pre-size the file themselves.
 
-Public-folder strings (`/og.png`) and external URLs (`https://...`) can be accepted as a fallback, but they will not be optimized. Document this in the field's JSDoc and don't pretend otherwise.
+Public-folder strings (`/og.png`) and external URLs (`https://...`) can be accepted as a fallback, but they will not be optimized.
 
 ### When reviewing or writing code
 

@@ -1,5 +1,3 @@
-import type { ImageMetadata } from 'astro'
-
 export interface NavigationEntry {
   label?: string
   href?: string
@@ -204,24 +202,25 @@ export interface Config {
   title: string
   tagline: string
   /**
-   * Default social preview image used as a fallback for pages that don't
+   * Default social preview image URL used as a fallback for pages that don't
    * specify their own `image` in frontmatter.
    *
-   * Prefer importing a file from `src/` so it goes through Astro's image
-   * pipeline (1200×630 JPEG, cropped, EXIF-stripped), the same as a
-   * frontmatter `image:` field:
+   * Accepts an absolute URL (e.g. `https://example.com/og.jpg`) or a path
+   * relative to the site root (e.g. `/og-default.jpg` for a file in `public/`).
+   * The path is resolved against `site` from `astro.config.*` to produce an
+   * absolute URL in the emitted `og:image` / `twitter:image` meta tags.
    *
-   * ```js
-   * import defaultOg from './assets/default-og.png'
-   * shipyard({ defaultImage: defaultOg })
-   * ```
+   * Note: this string is passed through verbatim — `astro.config.*` runs
+   * before Vite's asset pipeline is wired up, so a `src/`-imported
+   * `ImageMetadata` is not available here. Pre-size and pre-encode the file
+   * manually (1200×630 JPEG, < 200 KB) before serving it from `public/`.
+   * Frontmatter `image:` on individual pages still goes through Astro's image
+   * pipeline and is optimized automatically.
    *
-   * A plain string is also accepted — an absolute URL
-   * (e.g. `https://example.com/og.jpg`) or a path relative to the site root
-   * (e.g. `/og-default.jpg` for a file in `public/`) — and is passed through
-   * unchanged without optimization.
+   * @example '/og-default.jpg'
+   * @example 'https://example.com/og.jpg'
    */
-  defaultImage?: string | ImageMetadata
+  defaultImage?: string
   /**
    * Path to your app's CSS entry point.
    * This file should set up Tailwind CSS with @source directives for shipyard packages.

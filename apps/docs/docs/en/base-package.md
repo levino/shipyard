@@ -66,7 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
 | `footer` | `FooterConfig` | No | — | Footer configuration (links, copyright, style) |
 | `hideBranding` | `boolean` | No | `false` | Hide the "Built with Shipyard" branding |
-| `defaultImage` | `ImageMetadata \| string` | No | — | Fallback social preview image used for pages without their own `image:`. Imported `src/` images are optimized; plain strings (URL or `/path` in `public/`) are passed through unchanged |
+| `defaultImage` | `string` | No | — | Fallback social preview image (URL or `/path` in `public/`) used for pages without their own `image:`. Passed through unchanged — not optimized (config-time imports can't go through Astro's image pipeline) |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure
@@ -329,21 +329,19 @@ Absolute URLs (`https://...`) are no longer accepted in content-collection front
 
 ### Site-wide Default
 
-Set `defaultImage` to provide a fallback for pages without their own `image:`. Import the file from `src/` so it goes through the same image pipeline:
+Set `defaultImage` to provide a fallback for pages without their own `image:`:
 
 ```javascript
-import defaultOg from './assets/default-og.png'
-
 shipyard({
   brand: 'My Site',
   title: 'My Site',
   tagline: 'Built with shipyard',
   navigation: { /* ... */ },
-  defaultImage: defaultOg,
+  defaultImage: '/og-default.jpg',
 })
 ```
 
-A plain string (e.g. `'/og-default.jpg'` for a file in `public/`, or a fully-qualified URL) is also accepted and passed through unchanged, but is not optimized. Pages with their own `image:` always take precedence.
+The path can be a `/...` path resolved against `site` from `astro.config.*` (e.g. a file in `public/`) or a fully-qualified URL. Asset imports from `src/` don't work here — `astro.config.*` runs before Vite's asset pipeline is wired up, so the image is passed through verbatim and is not optimized. If you want an optimized site-wide default, pre-size and pre-encode it manually (1200×630 JPEG, < 200 KB) and serve it from `public/`. Pages with their own `image:` always take precedence and are optimized through the content-collection pipeline.
 
 ### Emitted Meta Tags
 

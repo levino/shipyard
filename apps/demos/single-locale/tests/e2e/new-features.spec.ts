@@ -196,12 +196,14 @@ test.describe('SEO Features', () => {
     page,
   }) => {
     // /docs/installation has no `image:` in frontmatter, so the config-level
-    // `defaultImage` (an imported `ImageMetadata` from `src/assets/`) should
-    // be used and run through Astro's image pipeline (1200×630 JPEG variant).
+    // `defaultImage` ('/default-og.png' from public/) is used as a passthrough
+    // string. Config-time imports in astro.config.mjs cannot be turned into
+    // ImageMetadata, so the public/ string fallback is the documented escape
+    // hatch — it skips optimization but is the simplest option for a
+    // site-wide default.
     await page.goto('/docs/installation')
     const ogImage = page.locator('meta[property="og:image"]')
-    await expect(ogImage).toHaveAttribute('content', /\/_astro\/default-og\./)
-    await expect(ogImage).toHaveAttribute('content', /\.jpe?g(\?|$)/i)
+    await expect(ogImage).toHaveAttribute('content', /default-og\.png(\?|$)/)
   })
 
   test('blog post with frontmatter image emits optimized og:image variant', async ({

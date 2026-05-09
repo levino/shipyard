@@ -66,7 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | Nein | `[]` | Skripte im Seitenkopf |
 | `footer` | `FooterConfig` | Nein | — | Footer-Konfiguration (Links, Copyright, Stil) |
 | `hideBranding` | `boolean` | Nein | `false` | "Built with Shipyard" Branding ausblenden |
-| `defaultImage` | `ImageMetadata \| string` | Nein | — | Fallback-Vorschaubild für Seiten ohne eigenes `image:`. Aus `src/` importierte Bilder werden optimiert; einfache Strings (URL oder `/Pfad` in `public/`) werden unverändert weitergereicht |
+| `defaultImage` | `string` | Nein | — | Fallback-Vorschaubild (URL oder `/Pfad` in `public/`) für Seiten ohne eigenes `image:`. Wird unverändert weitergereicht — nicht optimiert (Config-Importe können nicht durch Astros Bildpipeline laufen) |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | Nein | `'warn'` | Verhalten bei defekten internen Links während des Builds |
 
 ### Navigationsstruktur
@@ -329,21 +329,19 @@ Absolute URLs (`https://...`) werden im Frontmatter von Content-Collections nich
 
 ### Seitenweiter Standard
 
-Setze `defaultImage` als Fallback für Seiten ohne eigenes `image:`. Importiere die Datei aus `src/`, damit sie durch dieselbe Bildpipeline läuft:
+Setze `defaultImage` als Fallback für Seiten ohne eigenes `image:`:
 
 ```javascript
-import defaultOg from './assets/default-og.png'
-
 shipyard({
   brand: 'Meine Seite',
   title: 'Meine Seite',
   tagline: 'Mit shipyard gebaut',
   navigation: { /* ... */ },
-  defaultImage: defaultOg,
+  defaultImage: '/og-default.jpg',
 })
 ```
 
-Ein einfacher String (z. B. `'/og-default.jpg'` für eine Datei in `public/` oder eine vollständige URL) wird ebenfalls akzeptiert und unverändert weitergereicht, jedoch nicht optimiert. Seiten mit eigenem `image:` haben immer Vorrang.
+Der Pfad kann ein gegen `site` aus `astro.config.*` aufgelöster `/...`-Pfad sein (z. B. eine Datei in `public/`) oder eine vollständige URL. Asset-Importe aus `src/` funktionieren hier nicht — `astro.config.*` wird ausgeführt, bevor Vites Asset-Pipeline aktiv ist, das Bild wird also unverändert weitergereicht und nicht optimiert. Wenn du einen optimierten seitenweiten Standard möchtest, optimiere ihn vorab manuell (1200×630 JPEG, < 200 KB) und liefere ihn aus `public/` aus. Seiten mit eigenem `image:` haben immer Vorrang und laufen durch die Content-Collection-Pipeline.
 
 ### Erzeugte Meta-Tags
 
