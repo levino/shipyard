@@ -9,4 +9,5 @@
 // Re-export remark-directive for convenience
 export { default as remarkDirective } from 'remark-directive'
 export { type AdmonitionType, remarkAdmonitions } from './remarkAdmonitions'
+export { remarkBlockDirective } from './remarkBlockDirective'
 export { remarkNpm2Yarn } from './remarkNpm2Yarn'

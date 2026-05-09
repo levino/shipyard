@@ -66,6 +66,7 @@
   "dependencies": {
     "clsx": "^2.1.0",
     "mdast-util-directive": "^3.0.0",
+    "micromark-extension-directive": "^3.0.0",
     "ramda": "^0.31",
     "remark-directive": "^3.0.0",
     "tailwind-merge": "^2.2.0",
