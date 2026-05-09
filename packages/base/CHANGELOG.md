@@ -1,5 +1,23 @@
 # @levino/shipyard-base
 
+## 0.8.1
+
+### Patch Changes
+
+- eecfd43: You can now use the German gender colon (e.g. `Organisator:innen`, `Ordner:innen`, `Anwohner:innen`) in your markdown without it tearing paragraphs apart. Previously the `:innen` suffix was parsed as an inline directive and rendered as an empty `<div>`, which broke the surrounding paragraph. Inline `:name` directives are no longer recognised — block directives like `:::note` admonitions still work as before.
+- 0227e5c: Social previews now work out of the box on WhatsApp, Telegram, Facebook, LinkedIn and Twitter — even when authors drop full-resolution photos into their docs. When you set `image:` in frontmatter to a local file (e.g. `./hero.jpg`), shipyard automatically generates a 1200×630 JPEG variant for the OG/Twitter card. The optimized image is small enough for chat clients to fetch (typically under ~200 KB), and EXIF data (GPS, device, timestamp) is stripped during re-encoding. shipyard also emits the full set of meta tags scrapers expect: `og:image:width`, `og:image:height`, `og:image:type`, `og:image:alt` (defaulting to the page `description`), and `twitter:image:alt`.
+
+  You can also set a site-wide fallback image via the new `defaultImage` config option, so pages that don't specify their own `image:` in frontmatter still get a social preview:
+
+  ```js
+  shipyard({
+    // ...
+    defaultImage: "/og-default.jpg",
+  });
+  ```
+
+  Frontmatter `image` accepts both relative local paths (optimized) and absolute URLs (passed through unchanged), so existing external image URLs keep working.
+
 ## 0.8.0
 
 ### Minor Changes
