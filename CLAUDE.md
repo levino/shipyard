@@ -138,6 +138,51 @@ Documentation features:
 
 10. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
 
+## Images — Always Use Astro's `image()` Schema Helper
+
+**Do not accept image paths as plain strings in content collection schemas, layout props, or anywhere else where Astro's image pipeline could otherwise run.** Astro's content collections expose an `image()` schema helper that turns a frontmatter path string into an `ImageMetadata` reference at parse time. That reference is what unlocks build-time optimization (cropping, downscaling, format conversion, EXIF stripping, hashed filenames) via `getImage()` from `astro:assets`. A plain string bypasses all of this — the file is served as-is, no matter how clever the layout looks.
+
+**Reference:** https://docs.astro.build/en/guides/images/#images-in-content-collections
+
+### The pattern
+
+```ts
+import { defineCollection, z } from 'astro:content'
+
+const blog = defineCollection({
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      // ✅ Use image() — produces ImageMetadata, gets optimized
+      cover: image().optional(),
+      // ❌ Don't do this — the string passes through unoptimized
+      // cover: z.string().optional(),
+      // ❌ Don't do this either — the string union is an escape hatch
+      // cover: z.union([image(), z.string().url()]).optional(),
+    }),
+})
+```
+
+In the frontmatter, authors still write a string path (`cover: ./hero.jpg`). Astro converts it into `ImageMetadata` for you. From there, components and layouts only ever see the typed object, and `getImage({ src: cover, width, height, fit, format })` Just Works.
+
+### Outside content collections
+
+For places where YAML frontmatter isn't validated by a Zod schema (e.g. `.md` files using a `layout:` frontmatter, or `astro.config.*` options), import the image at the call site instead of accepting a string:
+
+```js
+// astro.config.mjs
+import defaultOg from './src/assets/default-og.png'
+shipyard({ defaultImage: defaultOg })
+```
+
+Public-folder strings (`/og.png`) and external URLs (`https://...`) can be accepted as a fallback, but they will not be optimized. Document this in the field's JSDoc and don't pretend otherwise.
+
+### When reviewing or writing code
+
+- Any new schema field for an image must use `image()`. If you find yourself writing `z.string()` for an image field, stop and switch to `image()`.
+- Any time the type `string | ImageMetadata` shows up for an image, ask whether the string branch is actually reachable for the documented authoring flow. If it isn't, drop the string. If it is (raw markdown layout, config option), narrow it to the cases that genuinely need it and document why.
+- The terminal layout (`Page.astro`) is allowed to handle both, since it's the join point. Everywhere upstream should be `ImageMetadata`-only.
+
 ## Styling Rules — DaisyUI First, No Custom Design Systems
 
 shipyard is a **page builder**. Users build their own sites with it. Every shipyard component must look and behave exactly like a standard DaisyUI component so that user-created content blends in seamlessly. The theme controls the look — not custom CSS.

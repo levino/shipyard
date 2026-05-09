@@ -66,7 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
 | `footer` | `FooterConfig` | No | — | Footer configuration (links, copyright, style) |
 | `hideBranding` | `boolean` | No | `false` | Hide the "Built with Shipyard" branding |
-| `defaultImage` | `string` | No | — | Fallback social preview image (URL or `/path` in `public/`) used for pages without their own `image:` |
+| `defaultImage` | `ImageMetadata \| string` | No | — | Fallback social preview image used for pages without their own `image:`. Imported `src/` images are optimized; plain strings (URL or `/path` in `public/`) are passed through unchanged |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure
@@ -313,7 +313,7 @@ Shipyard generates social preview meta tags (`og:image`, `twitter:image`, etc.) 
 
 ### Frontmatter `image`
 
-Both content collections (docs, blog) accept either a relative path to a local image or an absolute URL:
+Content collections (docs, blog) take a relative path to a local image. The path is validated by Astro's `image()` schema helper and resolved into an `ImageMetadata` reference at parse time, which means shipyard can run the file through Astro's image pipeline:
 
 ```markdown
 ---
@@ -323,33 +323,27 @@ image: ./hero.jpg
 ---
 ```
 
-```markdown
----
-title: My Page
-description: A short summary used for og:image:alt as well
-image: https://example.com/og.jpg
----
-```
+Shipyard emits a 1200×630 JPEG variant — the size Facebook, LinkedIn and Twitter recommend, and small enough (under ~200 KB) for chat clients (WhatsApp, Telegram) to fetch the preview. The image is cropped (`fit: cover`) so any source aspect ratio works, and EXIF data (GPS, device, timestamp) is stripped during re-encoding. So you can drop a phone-camera JPEG straight into your content folder — no manual optimization or pre-cropping needed.
 
-When you point at a **local image**, shipyard runs it through Astro's image pipeline at build time and emits a 1200×630 JPEG variant. This is the size Facebook, LinkedIn and Twitter recommend, and it keeps the file under ~200 KB so chat clients (WhatsApp, Telegram) actually fetch the preview. EXIF data (GPS, device, timestamp) is stripped during re-encoding. So you can drop a phone-camera JPEG straight into your content folder — no manual optimization needed.
-
-When you point at an **absolute URL**, shipyard passes it through unchanged.
+Absolute URLs (`https://...`) are no longer accepted in content-collection frontmatter — they bypass the image pipeline and so cannot be optimized. Put the file alongside your markdown instead.
 
 ### Site-wide Default
 
-Set `defaultImage` to provide a fallback for pages without their own `image:`:
+Set `defaultImage` to provide a fallback for pages without their own `image:`. Import the file from `src/` so it goes through the same image pipeline:
 
 ```javascript
+import defaultOg from './assets/default-og.png'
+
 shipyard({
   brand: 'My Site',
   title: 'My Site',
   tagline: 'Built with shipyard',
   navigation: { /* ... */ },
-  defaultImage: '/og-default.jpg',
+  defaultImage: defaultOg,
 })
 ```
 
-The path can be a `/...` path resolved against `site` from `astro.config.*` (e.g. a file in `public/`) or a fully-qualified URL. Pages with their own `image:` always take precedence.
+A plain string (e.g. `'/og-default.jpg'` for a file in `public/`, or a fully-qualified URL) is also accepted and passed through unchanged, but is not optimized. Pages with their own `image:` always take precedence.
 
 ### Emitted Meta Tags
 

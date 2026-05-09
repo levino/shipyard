@@ -66,7 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | Nein | `[]` | Skripte im Seitenkopf |
 | `footer` | `FooterConfig` | Nein | — | Footer-Konfiguration (Links, Copyright, Stil) |
 | `hideBranding` | `boolean` | Nein | `false` | "Built with Shipyard" Branding ausblenden |
-| `defaultImage` | `string` | Nein | — | Fallback-Vorschaubild (URL oder `/Pfad` in `public/`) für Seiten ohne eigenes `image:` |
+| `defaultImage` | `ImageMetadata \| string` | Nein | — | Fallback-Vorschaubild für Seiten ohne eigenes `image:`. Aus `src/` importierte Bilder werden optimiert; einfache Strings (URL oder `/Pfad` in `public/`) werden unverändert weitergereicht |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | Nein | `'warn'` | Verhalten bei defekten internen Links während des Builds |
 
 ### Navigationsstruktur
@@ -313,7 +313,7 @@ Shipyard erzeugt für jede Seite automatisch Meta-Tags für soziale Vorschauen (
 
 ### Frontmatter `image`
 
-Sowohl Content-Collections (Docs, Blog) akzeptieren entweder einen relativen Pfad zu einem lokalen Bild oder eine absolute URL:
+Content-Collections (Docs, Blog) erwarten einen relativen Pfad zu einem lokalen Bild. Astros `image()`-Schema-Helper validiert den Pfad und löst ihn beim Parsen in eine `ImageMetadata`-Referenz auf, sodass shipyard die Datei durch Astros Bildpipeline schicken kann:
 
 ```markdown
 ---
@@ -323,33 +323,27 @@ image: ./hero.jpg
 ---
 ```
 
-```markdown
----
-title: Meine Seite
-description: Eine kurze Zusammenfassung, die auch als og:image:alt verwendet wird
-image: https://example.com/og.jpg
----
-```
+Shipyard erzeugt eine 1200×630-JPEG-Variante — die von Facebook, LinkedIn und Twitter empfohlene Größe und klein genug (unter ~200 KB), damit Chat-Clients (WhatsApp, Telegram) die Vorschau tatsächlich abrufen. Das Bild wird zugeschnitten (`fit: cover`), sodass jedes Quellseitenverhältnis funktioniert, und EXIF-Daten (GPS, Gerät, Zeitstempel) werden beim erneuten Kodieren entfernt. Du kannst also ein Foto direkt aus deiner Handy-Kamera in den Content-Ordner legen — keine manuelle Optimierung oder Vorab-Zuschnitt nötig.
 
-Bei einem **lokalen Bild** läuft das Bild zur Build-Zeit durch Astros Bildpipeline und shipyard erzeugt eine 1200×630-JPEG-Variante. Das ist die von Facebook, LinkedIn und Twitter empfohlene Größe und hält die Datei unter ~200 KB, sodass Chat-Clients (WhatsApp, Telegram) die Vorschau tatsächlich abrufen. EXIF-Daten (GPS, Gerät, Zeitstempel) werden beim erneuten Kodieren entfernt. Du kannst also ein Foto direkt aus deiner Handy-Kamera in den Content-Ordner legen — keine manuelle Optimierung nötig.
-
-Bei einer **absoluten URL** wird die URL unverändert weitergereicht.
+Absolute URLs (`https://...`) werden im Frontmatter von Content-Collections nicht mehr akzeptiert — sie umgehen die Bildpipeline und können daher nicht optimiert werden. Lege die Datei stattdessen neben deine Markdown-Datei.
 
 ### Seitenweiter Standard
 
-Setze `defaultImage` als Fallback für Seiten ohne eigenes `image:`:
+Setze `defaultImage` als Fallback für Seiten ohne eigenes `image:`. Importiere die Datei aus `src/`, damit sie durch dieselbe Bildpipeline läuft:
 
 ```javascript
+import defaultOg from './assets/default-og.png'
+
 shipyard({
   brand: 'Meine Seite',
   title: 'Meine Seite',
   tagline: 'Mit shipyard gebaut',
   navigation: { /* ... */ },
-  defaultImage: '/og-default.jpg',
+  defaultImage: defaultOg,
 })
 ```
 
-Der Pfad kann ein gegen `site` aus `astro.config.*` aufgelöster `/...`-Pfad sein (z. B. eine Datei in `public/`) oder eine vollständige URL. Seiten mit eigenem `image:` haben immer Vorrang.
+Ein einfacher String (z. B. `'/og-default.jpg'` für eine Datei in `public/` oder eine vollständige URL) wird ebenfalls akzeptiert und unverändert weitergereicht, jedoch nicht optimiert. Seiten mit eigenem `image:` haben immer Vorrang.
 
 ### Erzeugte Meta-Tags
 

@@ -196,10 +196,38 @@ test.describe('SEO Features', () => {
     page,
   }) => {
     // /docs/installation has no `image:` in frontmatter, so the config-level
-    // defaultImage ('/default-og.png') should be used.
+    // `defaultImage` (an imported `ImageMetadata` from `src/assets/`) should
+    // be used and run through Astro's image pipeline (1200×630 JPEG variant).
     await page.goto('/docs/installation')
     const ogImage = page.locator('meta[property="og:image"]')
-    await expect(ogImage).toHaveAttribute('content', /default-og\.png(\?|$)/)
+    await expect(ogImage).toHaveAttribute('content', /\/_astro\/default-og\./)
+    await expect(ogImage).toHaveAttribute('content', /\.jpe?g(\?|$)/i)
+  })
+
+  test('blog post with frontmatter image emits optimized og:image variant', async ({
+    page,
+  }) => {
+    // Blog post at /blog/2024-09-01-getting-started has
+    // `image: ./images/getting-started.png` in its frontmatter. The blog
+    // schema runs the path through Astro's `image()` helper, which produces
+    // an `ImageMetadata` reference, which shipyard then runs through Astro's
+    // image pipeline. The emitted og:image must be the 1200×630 JPEG variant,
+    // not a passthrough of the source PNG.
+    await page.goto('/blog/2024-09-01-getting-started')
+    const ogImage = page.locator('meta[property="og:image"]')
+    await expect(ogImage).toHaveAttribute(
+      'content',
+      /\/_astro\/getting-started\./,
+    )
+    await expect(ogImage).toHaveAttribute('content', /\.jpe?g(\?|$)/i)
+
+    const ogWidth = page.locator('meta[property="og:image:width"]')
+    const ogHeight = page.locator('meta[property="og:image:height"]')
+    await expect(ogWidth).toHaveAttribute('content', '1200')
+    await expect(ogHeight).toHaveAttribute('content', '630')
+
+    const ogType = page.locator('meta[property="og:image:type"]')
+    await expect(ogType).toHaveAttribute('content', 'image/jpeg')
   })
 })
 
