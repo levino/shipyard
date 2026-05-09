@@ -4,11 +4,19 @@ import { type CollectionKey, getCollection } from 'astro:content'
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import type { NavigationTree } from '@levino/shipyard-base'
 import { Page as BaseLayout } from '@levino/shipyard-base/layouts'
+import type { ImageMetadata } from 'astro'
 import type { BlogConfig } from '../src/index'
 
 type Props = {
   title: string
+  description?: string
   canonicalUrl?: string
+  /**
+   * Social preview image. Accepts an absolute URL or an `ImageMetadata` from
+   * a relative path. Local images are automatically optimized to 1200×630
+   * JPEG for OG/Twitter cards.
+   */
+  image?: string | ImageMetadata
   blogConfig?: BlogConfig
   collectionName?: string
 }
@@ -18,7 +26,7 @@ const collectionName =
   Astro.props.collectionName ?? blogConfigDefault.collectionName
 
 const locale = Astro.currentLocale
-const { title, canonicalUrl } = Astro.props
+const { title, description, canonicalUrl, image } = Astro.props
 const { blogSidebarCount, blogSidebarTitle, routeBasePath } = blogConfig
 
 // Get and filter posts by locale
@@ -76,6 +84,6 @@ if (hasMorePosts) {
 }
 ---
 
-<BaseLayout title={title} sidebarNavigation={entry} canonicalUrl={canonicalUrl}>
+<BaseLayout title={title} description={description} sidebarNavigation={entry} canonicalUrl={canonicalUrl} image={image}>
   <slot />
 </BaseLayout>

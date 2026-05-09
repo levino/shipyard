@@ -66,6 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | No | `[]` | Scripts to include in the page head |
 | `footer` | `FooterConfig` | No | — | Footer configuration (links, copyright, style) |
 | `hideBranding` | `boolean` | No | `false` | Hide the "Built with Shipyard" branding |
+| `defaultImage` | `string` | No | — | Fallback social preview image (URL or `/path` in `public/`) used for pages without their own `image:` |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure
@@ -303,6 +304,63 @@ title: Welcome
   <h1>Welcome to My Site</h1>
 </div>
 ```
+
+---
+
+## Social Preview Images (OG / Twitter)
+
+Shipyard generates social preview meta tags (`og:image`, `twitter:image`, etc.) automatically for every page. The image source comes from the page's `image` frontmatter field, with a site-wide fallback configured via `defaultImage`.
+
+### Frontmatter `image`
+
+Both content collections (docs, blog) accept either a relative path to a local image or an absolute URL:
+
+```markdown
+---
+title: My Page
+description: A short summary used for og:image:alt as well
+image: ./hero.jpg
+---
+```
+
+```markdown
+---
+title: My Page
+description: A short summary used for og:image:alt as well
+image: https://example.com/og.jpg
+---
+```
+
+When you point at a **local image**, shipyard runs it through Astro's image pipeline at build time and emits a 1200×630 JPEG variant. This is the size Facebook, LinkedIn and Twitter recommend, and it keeps the file under ~200 KB so chat clients (WhatsApp, Telegram) actually fetch the preview. EXIF data (GPS, device, timestamp) is stripped during re-encoding. So you can drop a phone-camera JPEG straight into your content folder — no manual optimization needed.
+
+When you point at an **absolute URL**, shipyard passes it through unchanged.
+
+### Site-wide Default
+
+Set `defaultImage` to provide a fallback for pages without their own `image:`:
+
+```javascript
+shipyard({
+  brand: 'My Site',
+  title: 'My Site',
+  tagline: 'Built with shipyard',
+  navigation: { /* ... */ },
+  defaultImage: '/og-default.jpg',
+})
+```
+
+The path can be a `/...` path resolved against `site` from `astro.config.*` (e.g. a file in `public/`) or a fully-qualified URL. Pages with their own `image:` always take precedence.
+
+### Emitted Meta Tags
+
+For pages with an image, shipyard emits:
+
+- `og:image` (absolute URL — required by most scrapers)
+- `og:image:width` and `og:image:height`
+- `og:image:type` (e.g. `image/jpeg` for optimized variants)
+- `og:image:alt` (defaults to the page `description`)
+- `twitter:card` (`summary_large_image`)
+- `twitter:image` and `twitter:image:alt`
 
 ---
 

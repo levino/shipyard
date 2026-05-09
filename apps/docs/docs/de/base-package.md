@@ -66,6 +66,7 @@ export default defineConfig({
 | `scripts` | `Script[]` | Nein | `[]` | Skripte im Seitenkopf |
 | `footer` | `FooterConfig` | Nein | — | Footer-Konfiguration (Links, Copyright, Stil) |
 | `hideBranding` | `boolean` | Nein | `false` | "Built with Shipyard" Branding ausblenden |
+| `defaultImage` | `string` | Nein | — | Fallback-Vorschaubild (URL oder `/Pfad` in `public/`) für Seiten ohne eigenes `image:` |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | Nein | `'warn'` | Verhalten bei defekten internen Links während des Builds |
 
 ### Navigationsstruktur
@@ -303,6 +304,63 @@ title: Willkommen
   <h1>Willkommen auf meiner Seite</h1>
 </div>
 ```
+
+---
+
+## Soziale Vorschaubilder (OG / Twitter)
+
+Shipyard erzeugt für jede Seite automatisch Meta-Tags für soziale Vorschauen (`og:image`, `twitter:image` usw.). Die Bildquelle ergibt sich aus dem `image`-Frontmatter-Feld der Seite, mit einem seitenweiten Fallback über `defaultImage`.
+
+### Frontmatter `image`
+
+Sowohl Content-Collections (Docs, Blog) akzeptieren entweder einen relativen Pfad zu einem lokalen Bild oder eine absolute URL:
+
+```markdown
+---
+title: Meine Seite
+description: Eine kurze Zusammenfassung, die auch als og:image:alt verwendet wird
+image: ./hero.jpg
+---
+```
+
+```markdown
+---
+title: Meine Seite
+description: Eine kurze Zusammenfassung, die auch als og:image:alt verwendet wird
+image: https://example.com/og.jpg
+---
+```
+
+Bei einem **lokalen Bild** läuft das Bild zur Build-Zeit durch Astros Bildpipeline und shipyard erzeugt eine 1200×630-JPEG-Variante. Das ist die von Facebook, LinkedIn und Twitter empfohlene Größe und hält die Datei unter ~200 KB, sodass Chat-Clients (WhatsApp, Telegram) die Vorschau tatsächlich abrufen. EXIF-Daten (GPS, Gerät, Zeitstempel) werden beim erneuten Kodieren entfernt. Du kannst also ein Foto direkt aus deiner Handy-Kamera in den Content-Ordner legen — keine manuelle Optimierung nötig.
+
+Bei einer **absoluten URL** wird die URL unverändert weitergereicht.
+
+### Seitenweiter Standard
+
+Setze `defaultImage` als Fallback für Seiten ohne eigenes `image:`:
+
+```javascript
+shipyard({
+  brand: 'Meine Seite',
+  title: 'Meine Seite',
+  tagline: 'Mit shipyard gebaut',
+  navigation: { /* ... */ },
+  defaultImage: '/og-default.jpg',
+})
+```
+
+Der Pfad kann ein gegen `site` aus `astro.config.*` aufgelöster `/...`-Pfad sein (z. B. eine Datei in `public/`) oder eine vollständige URL. Seiten mit eigenem `image:` haben immer Vorrang.
+
+### Erzeugte Meta-Tags
+
+Für Seiten mit Bild gibt shipyard aus:
+
+- `og:image` (absolute URL — von den meisten Scrapern erwartet)
+- `og:image:width` und `og:image:height`
+- `og:image:type` (z. B. `image/jpeg` für optimierte Varianten)
+- `og:image:alt` (Standard: `description` der Seite)
+- `twitter:card` (`summary_large_image`)
+- `twitter:image` und `twitter:image:alt`
 
 ---
 

@@ -86,8 +86,14 @@ const docsSchemaBase = (image: () => z.ZodType) =>
     description: z.string().optional(),
     /** SEO keywords */
     keywords: z.array(z.string()).optional(),
-    /** Image for the page. Use a relative path to a local image file. */
-    image: image().optional(),
+    /**
+     * Social preview image. Accepts either:
+     * - A relative path to a local image file (e.g. `./hero.png`), which is
+     *   automatically optimized to 1200×630 JPEG for OG/Twitter cards.
+     * - An absolute URL (e.g. `https://example.com/og.jpg`), passed through
+     *   verbatim.
+     */
+    image: z.union([image(), z.string().url()]).optional(),
     /** Custom canonical URL */
     canonicalUrl: z.string().optional(),
     /** Custom canonical URL - snake_case alias for Docusaurus compatibility */
@@ -1015,7 +1021,7 @@ const displayVersion = version // The version shown in the URL
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title_meta: titleMeta } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title_meta: titleMeta, description } = entry.data
 
 let editUrl
 if (customEditUrl === null) {
@@ -1065,7 +1071,7 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image?.src} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} titleMeta={titleMeta}>
+<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} titleMeta={titleMeta} description={description}>
   <Content />
 </Layout>
 `
