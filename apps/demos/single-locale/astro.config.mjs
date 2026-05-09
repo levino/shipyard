@@ -6,7 +6,6 @@ import shipyardDocs from '@levino/shipyard-docs'
 import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import shipyardBlog from '../../../packages/blog/src/index.ts'
-
 // Import CSS URL - Vite resolves the path
 import appCss from './src/styles/app.css?url'
 

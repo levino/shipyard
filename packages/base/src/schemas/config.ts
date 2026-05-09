@@ -210,8 +210,12 @@ export interface Config {
    * The path is resolved against `site` from `astro.config.*` to produce an
    * absolute URL in the emitted `og:image` / `twitter:image` meta tags.
    *
-   * For best results across Facebook, LinkedIn, Twitter and chat clients
-   * (WhatsApp, Telegram), use a 1200×630 JPEG under ~200 KB.
+   * Note: this string is passed through verbatim — `astro.config.*` runs
+   * before Vite's asset pipeline is wired up, so a `src/`-imported
+   * `ImageMetadata` is not available here. Pre-size and pre-encode the file
+   * manually (1200×630 JPEG, < 200 KB) before serving it from `public/`.
+   * Frontmatter `image:` on individual pages still goes through Astro's image
+   * pipeline and is optimized automatically.
    *
    * @example '/og-default.jpg'
    * @example 'https://example.com/og.jpg'
