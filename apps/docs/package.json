@@ -14,7 +14,7 @@
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^6.1.6",
+    "astro": "^6.1.10",
     "astro-pagefind": "^1.8.5",
     "daisyui": "^5",
     "tailwindcss": "^4"
