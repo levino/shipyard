@@ -19,7 +19,10 @@ const withLocale = (path: string) =>
 
 <ul class={cn("menu min-h-full w-56 bg-base-100", { "lg:hidden": !local })} data-testid="sidebar-navigation">
   <div class="max-w-full">
-    <a href={withLocale("/")} class="btn btn-ghost mb-2 max-w-full truncate text-lg">
+    <a
+      href={withLocale("/")}
+      class="btn btn-ghost mb-2 h-auto min-h-12 max-w-full whitespace-normal py-2 text-left text-lg leading-tight"
+    >
       {brand}
     </a>
   </div>
