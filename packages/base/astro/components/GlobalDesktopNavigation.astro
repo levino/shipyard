@@ -38,9 +38,12 @@ const { brand, navigation, showBrand = false } = Astro.props as Props
   <div class="flex-1">
     <a
       href="/"
-      class={cn("btn btn-ghost text-xl", {
-        "lg:hidden": !showBrand,
-      })}
+      class={cn(
+        "btn btn-ghost h-auto min-h-12 whitespace-normal py-2 text-left text-xl leading-tight",
+        {
+          "lg:hidden": !showBrand,
+        },
+      )}
     >
       {brand}
     </a>
