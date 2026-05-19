@@ -1,5 +1,12 @@
 # @levino/shipyard-docs
 
+## 0.8.4
+
+### Patch Changes
+
+- Updated dependencies [59a95cd]
+  - @levino/shipyard-base@0.8.4
+
 ## 0.8.3
 
 ### Patch Changes

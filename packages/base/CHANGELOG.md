@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.8.4
+
+### Patch Changes
+
+- 59a95cd: Long brand/organisation names in the navigation no longer get clipped. The brand area now wraps onto multiple lines instead of being cut off, both in the top navigation bar and the sidebar.
+
 ## 0.8.3
 
 ### Patch Changes
