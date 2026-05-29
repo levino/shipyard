@@ -51,7 +51,23 @@ const docsConfig = docsConfigs[routeBasePath] ??
 const { Content, headings } = await render(entry)
 
 // Get frontmatter data for per-page overrides
-const { custom_edit_url, last_update_author, last_update_time } = entry.data
+const {
+  custom_edit_url,
+  last_update_author,
+  last_update_time,
+  title,
+  title_meta,
+  description,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
+} = entry.data
+
+// Use title_meta for the <title>/og:title if provided, otherwise fall back to
+// the reference title. Without this the docs head has no title or description
+// and social previews (Open Graph/Twitter) come out empty.
+const seoTitle = title_meta ?? title
 
 // Compute edit URL
 let editUrl: string | undefined
@@ -109,6 +125,18 @@ if (
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor}>
+<Layout
+  headings={headings}
+  routeBasePath={routeBasePath}
+  editUrl={editUrl}
+  lastUpdated={lastUpdated}
+  lastAuthor={lastAuthor}
+  titleMeta={seoTitle}
+  description={description}
+  keywords={keywords}
+  image={image}
+  canonicalUrl={canonicalUrl}
+  customMetaTags={customMetaTags}
+>
   <Content />
 </Layout>

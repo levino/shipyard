@@ -1022,7 +1022,11 @@ const displayVersion = version // The version shown in the URL
 
 const { Content, headings } = await render(entry)
 
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title_meta: titleMeta, description } = entry.data
+const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title, title_meta, description } = entry.data
+// Fall back to the reference title when no SEO-specific override (title_meta)
+// is set. Without this fallback, docs pages that only define \`title\` render an
+// empty <title>/og:title and broken social previews.
+const titleMeta = title_meta ?? title
 
 let editUrl
 if (customEditUrl === null) {
