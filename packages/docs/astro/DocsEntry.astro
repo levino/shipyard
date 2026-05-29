@@ -5,41 +5,17 @@ import { docsConfigs } from 'virtual:shipyard-docs-configs'
 import { getEditUrl, getGitMetadata } from '../src/gitMetadata'
 import Layout from './Layout.astro'
 
-export async function getStaticPaths() {
-  // Get all configured docs collections
-  const allPaths = await Promise.all(
-    Object.entries(docsConfigs).map(async ([basePath, config]) => {
-      const docs = await getCollection(config.collectionName as CollectionKey)
-
-      const getParams = (slug: string) => {
-        if (i18n) {
-          const [locale, ...rest] = slug.split('/')
-          return {
-            slug: rest.length ? rest.join('/') : undefined,
-            locale,
-          }
-        } else {
-          // For non-i18n, treat the entire slug as the path
-          return {
-            slug: slug || undefined,
-          }
-        }
-      }
-
-      return docs.map((doc) => ({
-        params: getParams(doc.id),
-        props: { entry: doc, routeBasePath: basePath },
-      }))
-    }),
-  )
-
-  return allPaths.flat()
+interface Props {
+  entry?: Awaited<ReturnType<typeof getCollection>>[number]
+  routeBasePath?: string
+  collectionName?: string
+  version?: string
+  actualVersion?: string
+  isLatestAlias?: boolean
+  docLocale?: string
 }
 
-// For your template, you can get the entry directly from the prop
-const { entry, routeBasePath } = Astro.props
-
-// Get the config for this specific docs instance
+const routeBasePath = Astro.props.routeBasePath ?? 'docs'
 const docsConfig = docsConfigs[routeBasePath] ??
   docsConfigs.docs ?? {
     showLastUpdateTime: false,
@@ -47,20 +23,88 @@ const docsConfig = docsConfigs[routeBasePath] ??
     routeBasePath: 'docs',
     collectionName: 'docs',
   }
+const collectionName = Astro.props.collectionName ?? docsConfig.collectionName
+
+// The /latest/ alias redirect is handled by the route wrapper
+// (astro/pages/DocsEntry.astro) before this component renders, because a
+// Response returned from a child component is not used as the page response.
+
+// In SSR mode (prerender: false), getStaticPaths is not called so Astro.props
+// will be empty. We need to fetch the entry from the collection based on URL
+// params.
+let { entry } = Astro.props
+const { slug: pageSlug, locale, version: urlVersion } = Astro.params
+
+if (!entry) {
+  const allDocs = await getCollection(collectionName as CollectionKey)
+  const docs = allDocs.filter((doc) => doc.data.render !== false)
+
+  // Reconstruct the entry ID from URL params
+  let entryId: string
+  if (i18n && locale) {
+    // For versioned docs, include version in the entry ID
+    if (urlVersion) {
+      entryId = pageSlug
+        ? `${urlVersion}/${locale}/${pageSlug}`
+        : `${urlVersion}/${locale}`
+    } else {
+      entryId = pageSlug ? `${locale}/${pageSlug}` : locale
+    }
+  } else {
+    if (urlVersion) {
+      entryId = pageSlug ? `${urlVersion}/${pageSlug}` : urlVersion
+    } else {
+      entryId = pageSlug ?? ''
+    }
+  }
+
+  // Find the matching entry
+  entry = docs.find((doc) => doc.id === entryId)
+
+  // If no exact match, try matching with /index suffix (for index pages)
+  // For empty entryId (root path like /docs), look for 'index'
+  // For category paths (like /docs/details), look for 'details/index'
+  if (!entry) {
+    const indexEntryId = entryId ? `${entryId}/index` : 'index'
+    entry = docs.find((doc) => doc.id === indexEntryId)
+  }
+
+  // If still no match, return 404
+  if (!entry) {
+    return Astro.redirect('/404')
+  }
+}
 
 const { Content, headings } = await render(entry)
 
-// Get frontmatter data for per-page overrides
-const { custom_edit_url, last_update_author, last_update_time } = entry.data
+const {
+  customEditUrl,
+  lastUpdateAuthor,
+  lastUpdateTime,
+  hideTableOfContents,
+  hideTitle,
+  keywords,
+  image,
+  canonicalUrl,
+  customMetaTags,
+  title,
+  title_meta,
+  description,
+} = entry.data
+
+// Use title_meta for the <title>/og:title if provided, otherwise fall back to
+// the reference title. Without this fallback, docs pages that only define
+// `title` render an empty <title>/og:title and broken social previews.
+const titleMeta = title_meta ?? title
 
 // Compute edit URL
 let editUrl: string | undefined
-if (custom_edit_url === null) {
+if (customEditUrl === null) {
   // Explicitly disabled for this page
   editUrl = undefined
-} else if (custom_edit_url) {
+} else if (customEditUrl) {
   // Custom URL provided
-  editUrl = custom_edit_url
+  editUrl = customEditUrl
 } else if (entry.filePath) {
   // Use filePath instead of entry.id because Astro's glob loader
   // strips "index" from entry.id for index pages (e.g., en/index -> en)
@@ -80,35 +124,45 @@ let lastUpdated: Date | undefined
 let lastAuthor: string | undefined
 
 if (
-  (docsConfig.showLastUpdateTime && last_update_time !== false) ||
-  (docsConfig.showLastUpdateAuthor && last_update_author !== false)
+  (docsConfig.showLastUpdateTime && lastUpdateTime !== false) ||
+  (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false)
 ) {
-  // We need to get the file path for git metadata
-  // The entry.filePath gives us the absolute path to the markdown file
   const filePath = entry.filePath
 
   if (filePath) {
     const gitMetadata = getGitMetadata(filePath)
 
-    // Use frontmatter override or git metadata for timestamp
-    if (docsConfig.showLastUpdateTime && last_update_time !== false) {
+    if (docsConfig.showLastUpdateTime && lastUpdateTime !== false) {
       lastUpdated =
-        last_update_time instanceof Date
-          ? last_update_time
+        lastUpdateTime instanceof Date
+          ? lastUpdateTime
           : gitMetadata.lastUpdated
     }
 
-    // Use frontmatter override or git metadata for author
-    if (docsConfig.showLastUpdateAuthor && last_update_author !== false) {
+    if (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false) {
       lastAuthor =
-        typeof last_update_author === 'string'
-          ? last_update_author
+        typeof lastUpdateAuthor === 'string'
+          ? lastUpdateAuthor
           : gitMetadata.lastAuthor
     }
   }
 }
 ---
 
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor}>
+<Layout
+  headings={headings}
+  routeBasePath={routeBasePath}
+  editUrl={editUrl}
+  lastUpdated={lastUpdated}
+  lastAuthor={lastAuthor}
+  hideTableOfContents={hideTableOfContents}
+  hideTitle={hideTitle}
+  keywords={keywords}
+  image={image}
+  canonicalUrl={canonicalUrl}
+  customMetaTags={customMetaTags}
+  titleMeta={titleMeta}
+  description={description}
+>
   <Content />
 </Layout>

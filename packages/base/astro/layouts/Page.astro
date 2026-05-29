@@ -37,6 +37,8 @@ type Props = {
     canonicalUrl?: string
     customMetaTags?: CustomMetaTag[]
     sidebarNavigation?: NavigationTree
+    /** Open Graph object type (`website` or `article`). @default 'website' */
+    ogType?: string
   }
 } & {
   title?: string
@@ -46,6 +48,8 @@ type Props = {
   canonicalUrl?: string
   customMetaTags?: CustomMetaTag[]
   sidebarNavigation?: NavigationTree
+  /** Open Graph object type (`website` or `article`). @default 'website' */
+  ogType?: string
 }
 
 const currentPath = Astro.url.pathname
@@ -110,6 +114,15 @@ const navigation = applyLocaleAndSetActive(config.navigation)
 const title = getTitle(config.title, props.title)
 const hasSidebar = !!props.sidebarNavigation
 
+// Language for the <html> element: current locale on i18n sites, otherwise the
+// configured default locale (omitted entirely when i18n is disabled).
+const htmlLang = Astro.currentLocale ?? (i18n ? i18n.defaultLocale : undefined)
+
+// Absolute URL of the current page (no query string), used for og:url and as
+// the self-referential canonical when no explicit canonicalUrl is provided.
+const pageUrl = Astro.site ? new URL(currentPath, Astro.site).href : undefined
+const canonicalUrl = props.canonicalUrl ?? pageUrl
+
 // Helper function to render script attributes
 const renderScriptAttributes = (script: Script) => {
   if (typeof script === 'string') {
@@ -119,19 +132,27 @@ const renderScriptAttributes = (script: Script) => {
 }
 ---
 
-<html>
+<html lang={htmlLang}>
   <head>
     <meta charset="utf-8" />
     <title>
       {title}
     </title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content={props.description} />
+    {props.description && (
+      <meta name="description" content={props.description} />
+    )}
     {props.keywords && props.keywords.length > 0 && (
       <meta name="keywords" content={props.keywords.join(', ')} />
     )}
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
     <meta property="og:title" content={title} />
-    <meta property="og:description" content={props.description} />
+    {props.description && (
+      <meta property="og:description" content={props.description} />
+    )}
+    <meta property="og:type" content={props.ogType ?? 'website'} />
+    <meta property="og:site_name" content={config.title} />
+    {pageUrl && <meta property="og:url" content={pageUrl} />}
     {ogImageData && ogImageUrl && (
       <>
         <meta property="og:image" content={ogImageUrl} />
@@ -147,15 +168,20 @@ const renderScriptAttributes = (script: Script) => {
         {ogImageAlt && (
           <meta property="og:image:alt" content={ogImageAlt} />
         )}
-        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
+    <meta name="twitter:card" content={ogImageUrl ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:title" content={title} />
+    {props.description && (
+      <meta name="twitter:description" content={props.description} />
+    )}
+    {ogImageUrl && (
+      <>
         <meta name="twitter:image" content={ogImageUrl} />
         {ogImageAlt && (
           <meta name="twitter:image:alt" content={ogImageAlt} />
         )}
       </>
-    )}
-    {props.canonicalUrl && (
-      <link rel="canonical" href={props.canonicalUrl} />
     )}
     {props.customMetaTags?.map((tag) => (
       <meta
@@ -172,6 +198,12 @@ const renderScriptAttributes = (script: Script) => {
     <slot name="head" />
   </head>
   <body class="flex min-h-screen flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 btn btn-primary btn-sm"
+    >
+      {config.skipToContentLabel ?? 'Skip to content'}
+    </a>
     {config.announcementBar && <AnnouncementBar config={config.announcementBar} />}
     <div class={cn("drawer grow", { "lg:drawer-open": hasSidebar })}>
       <input id="drawer" type="checkbox" class="drawer-toggle" />
@@ -184,7 +216,7 @@ const renderScriptAttributes = (script: Script) => {
           <slot name="navbarExtra" slot="navbarExtra" />
         </GlobalDesktopNavigation>
         <div class="grow">
-          <div class="mx-auto max-w-7xl px-4 pb-12">
+          <div id="main-content" class="mx-auto max-w-7xl px-4 pb-12">
             <slot />
           </div>
         </div>

@@ -222,6 +222,12 @@ export interface Config {
    */
   defaultImage?: string
   /**
+   * Label for the accessibility "skip to content" link, rendered as the first
+   * focusable element on every page. Set this to localize it.
+   * @default 'Skip to content'
+   */
+  skipToContentLabel?: string
+  /**
    * Path to your app's CSS entry point.
    * This file should set up Tailwind CSS with @source directives for shipyard packages.
    *
