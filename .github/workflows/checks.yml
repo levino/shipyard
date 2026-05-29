@@ -8,9 +8,16 @@ on:
     branches:
       - main
 
+# Cancel an in-progress CI run when a newer commit is pushed to the same ref,
+# so pushes don't pile up into several full runs competing for runners.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
       - name: Setup Biome
@@ -21,6 +28,7 @@ jobs:
         run: biome ci .
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v4
@@ -31,6 +39,7 @@ jobs:
       - run: npm run test --workspaces --if-present
   test-e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       matrix:
         demo:
