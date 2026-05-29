@@ -1,5 +1,26 @@
 # @levino/shipyard-docs
 
+## 0.8.5
+
+### Patch Changes
+
+- cfef583: The docs plugin no longer writes generated `.astro` route components into
+  `node_modules` at build time. Routes are now served by real, shipped
+  components (`astro/pages/DocsEntry.astro` and
+  `astro/pages/DocsVersionRedirect.astro`) that resolve their docs instance from
+  the route pattern — the same approach the blog plugin uses. This removes a
+  duplicate, drift-prone code path (the source of the empty docs `<title>`/
+  `og:title` bug) and keeps all route markup in real, type-checked `.astro`
+  files.
+- e2ef607: Documentation pages now produce correct `<title>`, `og:title` and
+  `og:description` again. Previously a docs page that defined only `title` in its
+  frontmatter (without `title_meta`) rendered an empty `<title>` and an
+  `og:title` that fell back to the site name, so social/link previews for docs
+  pages came out blank. The page `title` is now used as the SEO/Open Graph title
+  whenever no explicit `title_meta` override is set.
+- Updated dependencies [cfef583]
+  - @levino/shipyard-base@0.8.5
+
 ## 0.8.4
 
 ### Patch Changes
