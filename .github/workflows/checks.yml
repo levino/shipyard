@@ -31,15 +31,6 @@ jobs:
       - run: npm run test --workspaces --if-present
   test-e2e:
     runs-on: ubuntu-latest
-    # Run inside the official Playwright image, which already bundles the
-    # browsers and their OS dependencies. This removes the slow
-    # `npx playwright install --with-deps` step that previously ran on every
-    # one of the four matrix legs and downloaded Chromium + Firefox + WebKit
-    # + apt deps, even though all demos only use Chromium.
-    # Keep this tag in sync with the @playwright/test version in
-    # package-lock.json (currently 1.57.0).
-    container:
-      image: mcr.microsoft.com/playwright:v1.57.0-noble
     strategy:
       matrix:
         demo:
@@ -63,6 +54,21 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --workspace=${{ matrix.demo.workspace }}
+      # Cache the Playwright browser binaries across runs, keyed on the
+      # Playwright version, so Chromium isn't re-downloaded every time.
+      # Bump the key when the @playwright/test version in package-lock.json
+      # changes.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-1.57.0
+      # Install only Chromium: every demo uses the `chromium` Playwright
+      # project, so downloading Firefox + WebKit (as the old browser-less
+      # `playwright install` did) was pure waste.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: ./${{ matrix.demo.path }}
       - name: Run E2E tests
         run: npm run test:e2e
         working-directory: ./${{ matrix.demo.path }}
