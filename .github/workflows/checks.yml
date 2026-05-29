@@ -40,6 +40,17 @@ jobs:
   test-e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    # Run in the official Playwright image: browsers + OS deps are
+    # preinstalled, so there is no browser download/install step at all
+    # (Playwright recommends this over installing/caching browsers in CI).
+    # `--ipc=host` is required for Chromium: without it the container's tiny
+    # default /dev/shm makes Chromium run out of shared memory and crash under
+    # parallel workers (this is what broke the largest demo's e2e leg).
+    # https://playwright.dev/docs/docker
+    # Keep the image tag in sync with @playwright/test in package-lock.json.
+    container:
+      image: mcr.microsoft.com/playwright:v1.57.0-noble
+      options: --ipc=host
     strategy:
       matrix:
         demo:
@@ -63,21 +74,6 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm run build --workspace=${{ matrix.demo.workspace }}
-      # Cache the Playwright browser binaries across runs, keyed on the
-      # Playwright version, so Chromium isn't re-downloaded every time.
-      # Bump the key when the @playwright/test version in package-lock.json
-      # changes.
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-1.57.0
-      # Install only Chromium: every demo uses the `chromium` Playwright
-      # project, so downloading Firefox + WebKit (as the old browser-less
-      # `playwright install` did) was pure waste.
-      - name: Install Playwright Chromium
-        run: npx playwright install --with-deps chromium
-        working-directory: ./${{ matrix.demo.path }}
       - name: Run E2E tests
         run: npm run test:e2e
         working-directory: ./${{ matrix.demo.path }}
