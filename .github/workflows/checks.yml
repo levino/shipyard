@@ -68,6 +68,15 @@ jobs:
             path: apps/demos/versioned-i18n
     steps:
       - uses: actions/checkout@v5
+        # Full history so the demos' `git log`-based "last updated"/"last
+        # author" metadata can be resolved (shallow clones have no file history).
+        with:
+          fetch-depth: 0
+      # The job runs as root inside the container while the checkout is owned by
+      # the runner user, so git refuses with "detected dubious ownership".
+      # Trust the workspace so the build's `git fetch --unshallow` and `git log`
+      # (used for page metadata) work.
+      - run: git config --global --add safe.directory '*'
       - uses: actions/setup-node@v4
         with:
           node-version: 24
