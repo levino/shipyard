@@ -1,5 +1,6 @@
 ---
 title: Garden Guide & Documentation
+description: Everything you need to know about the Metro Gardens community garden, from plot rental to harvest guidelines.
 ---
 
 # Metro Gardens Community Club - Garden Guide

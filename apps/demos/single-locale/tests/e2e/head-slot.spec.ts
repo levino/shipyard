@@ -33,12 +33,15 @@ test.describe('Head Slot', () => {
     expect(data.author).toBe('Shipyard Team')
   })
 
-  test('page without head slot does not have extra meta tags', async ({
+  test('page without head slot uses default og:type and no JSON-LD', async ({
     page,
   }) => {
     await page.goto('/about')
+    // og:type defaults to "website" on every page now.
     const ogType = page.locator('meta[property="og:type"]')
-    await expect(ogType).toHaveCount(0)
+    await expect(ogType).toHaveCount(1)
+    await expect(ogType).toHaveAttribute('content', 'website')
+    // JSON-LD is still opt-in via the head slot only.
     const jsonLd = page.locator('script[type="application/ld+json"]')
     await expect(jsonLd).toHaveCount(0)
   })

@@ -11,7 +11,7 @@ import {
 import blogConfigDefault from 'virtual:shipyard-blog/config'
 import tagsMapDefault from 'virtual:shipyard-blog/tags'
 import { groupBy, map, pipe, prop, reverse, sortBy, toPairs } from 'ramda'
-import { getTagDescription, getTagLabel, getTagPermalink } from '../src/index'
+import { getTagDescription, getTagLabel, getTagPermalink } from '../src/tags'
 import Layout from './Layout.astro'
 
 const blogConfig = Astro.props.blogConfig ?? blogConfigDefault

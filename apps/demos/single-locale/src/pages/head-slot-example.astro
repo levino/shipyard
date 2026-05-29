@@ -2,10 +2,13 @@
 import { Page } from '@levino/shipyard-base/layouts'
 ---
 
-<Page title="Head Slot Example" description="Demonstrates using the head slot to inject custom meta tags">
-  <meta slot="head" property="og:type" content="article" />
+<Page
+  title="Head Slot Example"
+  description="Demonstrates using the head slot to inject custom meta tags"
+  ogType="article"
+  canonicalUrl="https://example.com/head-slot-demo"
+>
   <meta slot="head" name="author" content="Shipyard Team" />
-  <link slot="head" rel="canonical" href="https://example.com/head-slot-demo" />
   <script slot="head" type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "Article",
@@ -16,14 +19,15 @@ import { Page } from '@levino/shipyard-base/layouts'
   <div class="prose mx-auto">
     <h1>Head Slot Example</h1>
     <p>
-      This page demonstrates the <code>head</code> named slot in the Page layout.
-      Inspect the HTML <code>&lt;head&gt;</code> to see the injected elements:
+      This page demonstrates the <code>head</code> named slot in the Page layout,
+      plus the <code>ogType</code> and <code>canonicalUrl</code> props. Inspect
+      the HTML <code>&lt;head&gt;</code> to see them:
     </p>
     <ul>
-      <li><code>&lt;meta property="og:type" content="article"&gt;</code></li>
-      <li><code>&lt;meta name="author" content="Shipyard Team"&gt;</code></li>
-      <li><code>&lt;link rel="canonical" href="https://example.com/head-slot-demo"&gt;</code></li>
-      <li><code>&lt;script type="application/ld+json"&gt;</code> with structured data</li>
+      <li><code>&lt;meta property="og:type" content="article"&gt;</code> (via the <code>ogType</code> prop)</li>
+      <li><code>&lt;link rel="canonical" href="https://example.com/head-slot-demo"&gt;</code> (via the <code>canonicalUrl</code> prop)</li>
+      <li><code>&lt;meta name="author" content="Shipyard Team"&gt;</code> (via the head slot)</li>
+      <li><code>&lt;script type="application/ld+json"&gt;</code> with structured data (via the head slot)</li>
     </ul>
   </div>
 </Page>

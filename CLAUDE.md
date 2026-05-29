@@ -199,6 +199,30 @@ shipyard is a **page builder**. Users build their own sites with it. Every shipy
 
 **Reference:** https://daisyui.com/components/ and https://daisyui.com/llms.txt
 
+## No Inline HTML/Astro Markup in TypeScript — Ship Real `.astro` Files
+
+**Never write HTML or Astro component markup as a string inside a `.ts`/`.js` file, and never code-generate `.astro` files at build time** (no `writeFileSync(..., '<some astro>')`, no template-literal `.astro` blobs in an integration). Markup belongs in real `.astro` files where it gets syntax highlighting, type checking, Biome formatting, and where there is a single source of truth.
+
+**Why this rule exists:** the docs integration used to generate a ~240-line `.astro` route component as a template string in `packages/docs/src/index.ts`. A hand-written `DocsEntry.astro` also existed, the two drifted, and a real bug shipped (empty `<title>`/`og:title` on docs pages) because the SEO title fallback lived in one copy but not the other. Strings are invisible to every tool we rely on.
+
+### The pattern for per-instance routes (how to avoid code generation)
+
+An Astro integration can `injectRoute` the **same real `.astro` entrypoint** for multiple instances/patterns and disambiguate at runtime — no generated files needed. This is exactly how the **blog** package works; copy it:
+
+- Ship the route component as a real file, e.g. `packages/<pkg>/astro/pages/Foo.astro`, and add it to the package `exports` (`"./astro/*": "./astro/*"`).
+- `injectRoute({ pattern, entrypoint: '@levino/shipyard-<pkg>/astro/pages/Foo.astro', prerender })` — same entrypoint, different patterns per instance.
+- In the page's `getStaticPaths`, read the `routePattern` argument and look the instance up in a **registry virtual module** (`getInstanceConfig(routePattern, registry)`), instead of inlining constants into a generated file. `getStaticPaths` is plain JS/TS and contains **no markup** — that is fine; only HTML/Astro markup is forbidden in `.ts`.
+- Keep the render body in a real `.astro` component and call it: `<Foo {...Astro.props} />`.
+
+References to mirror: `packages/blog/src/index.ts` (injectRoute + registry virtual module), `packages/blog/astro/pages/BlogEntry.astro` (`getStaticPaths({ routePattern })`), `packages/blog/src/staticPaths.ts` (`getInstanceConfig` + pure `compute*Paths` helpers, which are unit-testable).
+
+**The only strings that may contain markup-ish text** are genuine non-component outputs with no `.astro` equivalent: RSS/Atom/JSON feeds and `llms.txt`. Even those should be built with small, tested helpers, not ad-hoc concatenation scattered across files.
+
+### When reviewing or writing code
+
+- If you reach for `writeFileSync`/`mkdirSync` to emit an `.astro` (or `.html`) file, stop — use `injectRoute` with a real entrypoint instead.
+- If a `.ts` file contains `<Layout`, `<html`, `<!doctype`, or JSX/Astro-looking tags in a string, that is a bug to fix, not a pattern to copy.
+
 ## Working with Components
 
 - Astro components are in `packages/*/astro/` directories

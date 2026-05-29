@@ -824,264 +824,19 @@ export default (config: DocsConfig = {}): AstroIntegration => {
             ? prerenderConfig
             : astroConfig.output !== 'server'
 
-        // Create a generated entry file for this specific docs instance
-        // This ensures each route has its own getStaticPaths that only returns its own paths
+        // Directory for generated JS/TS route files (llms.txt endpoints).
+        // No .astro files are generated as strings anymore — the docs entry and
+        // version-redirect routes ship as real .astro files under astro/pages.
         const generatedDir = join(
           astroConfig.root?.pathname || process.cwd(),
           'node_modules',
           '.shipyard-docs',
         )
 
-        if (!existsSync(generatedDir)) {
-          mkdirSync(generatedDir, { recursive: true })
-        }
-
-        const entryFileName = `DocsEntry-${normalizedBasePath}.astro`
-        const entryFilePath = join(generatedDir, entryFileName)
-
-        // Generate the entry file with the correct routeBasePath and collectionName
-        // Note: We inline the values directly in getStaticPaths because Astro's compiler
-        // hoists getStaticPaths to a separate module context where top-level constants aren't available
-        const hasVersions = !!versions
-        const entryFileContent = `---
-import { i18n } from 'astro:config/server'
-import { getCollection, render } from 'astro:content'
-import { docsConfigs } from 'virtual:shipyard-docs-configs'
-import { createVersionPathMap, getEditUrl, getGitMetadata, getVersionFromDocId, stripVersionFromDocId } from '@levino/shipyard-docs'
-import Layout from '@levino/shipyard-docs/astro/Layout.astro'
-
-const collectionName = ${JSON.stringify(resolvedCollectionName)}
-const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-
-export async function getStaticPaths() {
-  // Note: collectionName and routeBasePath must be inlined here because Astro compiles
-  // getStaticPaths separately and module-level constants are not available
-  const collectionName = ${JSON.stringify(resolvedCollectionName)}
-  const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-  const hasVersions = ${JSON.stringify(hasVersions)}
-  const versionsConfig = ${JSON.stringify(versions || null)}
-  const allDocs = await getCollection(collectionName)
-
-  // Filter out pages with render: false - they should not generate pages
-  const docs = allDocs.filter((doc) => doc.data.render !== false)
-
-  // Pre-compute version path map for O(1) lookups instead of O(V) per document
-  const versionPathMap = hasVersions && versionsConfig
-    ? createVersionPathMap(versionsConfig)
-    : null
-
-  const getParams = (slug, version) => {
-    if (i18n) {
-      const [locale, ...rest] = slug.split('/')
-      const baseParams = {
-        slug: rest.length ? rest.join('/') : undefined,
-        locale,
-      }
-      return version ? { ...baseParams, version } : baseParams
-    } else {
-      const baseParams = {
-        slug: slug || undefined,
-      }
-      return version ? { ...baseParams, version } : baseParams
-    }
-  }
-
-  const paths = []
-
-  for (const entry of docs) {
-    // For versioned docs, extract version from the doc ID (e.g., "v1.0/en/getting-started")
-    let version = null
-    let docIdWithoutVersion = entry.id
-
-    if (hasVersions && versionsConfig && versionPathMap) {
-      const extractedVersion = getVersionFromDocId(entry.id)
-      if (extractedVersion) {
-        // Use pre-computed map for O(1) lookup instead of array.find()
-        version = versionPathMap.get(extractedVersion) ?? extractedVersion
-        docIdWithoutVersion = stripVersionFromDocId(entry.id)
-      }
-    }
-
-    // Extract locale from docIdWithoutVersion for i18n builds
-    const docLocale = i18n ? docIdWithoutVersion.split('/')[0] : undefined
-
-    // Add the main path for this doc
-    paths.push({
-      params: getParams(docIdWithoutVersion, version),
-      props: { entry, routeBasePath, version, isLatestAlias: false, docLocale },
-    })
-
-    // If this doc is in the current version, also generate a 'latest' alias path that redirects
-    if (hasVersions && versionsConfig && version) {
-      const extractedVersion = getVersionFromDocId(entry.id)
-      const currentVersion = versionsConfig.current
-      if (extractedVersion === currentVersion) {
-        paths.push({
-          params: getParams(docIdWithoutVersion, 'latest'),
-          props: { entry, routeBasePath, version: 'latest', actualVersion: version, isLatestAlias: true, docLocale },
-        })
-      }
-    }
-  }
-
-  return paths
-}
-
-// In SSR mode (prerender: false), getStaticPaths is not called so Astro.props.entry will be undefined.
-// We need to fetch the entry from the collection based on URL params.
-let { entry, routeBasePath: propsRouteBasePath, version, actualVersion, isLatestAlias, docLocale } = Astro.props
-const { slug: pageSlug, locale, version: urlVersion } = Astro.params
-
-// SSR mode: fetch entry dynamically when props are not available from getStaticPaths
-if (!entry) {
-  const allDocs = await getCollection(collectionName)
-  const docs = allDocs.filter((doc) => doc.data.render !== false)
-
-  // Reconstruct the entry ID from URL params
-  let entryId
-  if (i18n && locale) {
-    // For versioned docs, include version in the entry ID
-    if (urlVersion) {
-      entryId = pageSlug ? urlVersion + '/' + locale + '/' + pageSlug : urlVersion + '/' + locale
-    } else {
-      entryId = pageSlug ? locale + '/' + pageSlug : locale
-    }
-  } else {
-    if (urlVersion) {
-      entryId = pageSlug ? urlVersion + '/' + pageSlug : urlVersion
-    } else {
-      entryId = pageSlug ?? ''
-    }
-  }
-
-  // Find the matching entry
-  entry = docs.find((doc) => doc.id === entryId)
-
-  // If no exact match, try matching with /index suffix (for index pages)
-  // For empty entryId (root path like /docs), look for 'index'
-  // For category paths (like /docs/details), look for 'details/index'
-  if (!entry) {
-    const indexEntryId = entryId ? entryId + '/index' : 'index'
-    entry = docs.find((doc) => doc.id === indexEntryId)
-  }
-
-  // If still no match, return 404
-  if (!entry) {
-    return Astro.redirect('/404')
-  }
-
-  // Set version from URL params for SSR mode
-  version = urlVersion
-  isLatestAlias = false
-  docLocale = locale
-}
-
-// SEO-friendly redirect for /latest/ URLs to canonical version URLs
-// We handle the redirect inline below since Astro.redirect() doesn't work reliably
-// with i18n fallback pages
-const redirectInfo = isLatestAlias && actualVersion ? {
-  locale: docLocale,
-  targetUrl: docLocale
-    ? (pageSlug
-        ? \`/\${docLocale}/\${routeBasePath}/\${actualVersion}/\${pageSlug}\`
-        : \`/\${docLocale}/\${routeBasePath}/\${actualVersion}/\`)
-    : (pageSlug
-        ? \`/\${routeBasePath}/\${actualVersion}/\${pageSlug}\`
-        : \`/\${routeBasePath}/\${actualVersion}/\`),
-  fromUrl: docLocale
-    ? (pageSlug
-        ? \`/\${docLocale}/\${routeBasePath}/latest/\${pageSlug}\`
-        : \`/\${docLocale}/\${routeBasePath}/latest/\`)
-    : (pageSlug
-        ? \`/\${routeBasePath}/latest/\${pageSlug}\`
-        : \`/\${routeBasePath}/latest/\`),
-} : null
-
-// If this is a redirect, return early with a minimal redirect page
-if (redirectInfo) {
-  return new Response(\`<!doctype html><title>Redirecting to: \${redirectInfo.targetUrl}</title><meta http-equiv="refresh" content="0;url=\${redirectInfo.targetUrl}"><meta name="robots" content="noindex"><link rel="canonical" href="\${Astro.site ? new URL(redirectInfo.targetUrl, Astro.site).href : redirectInfo.targetUrl}"><body>\\t<a href="\${redirectInfo.targetUrl}">Redirecting from <code>\${redirectInfo.fromUrl}</code> to <code>\${redirectInfo.targetUrl}</code></a></body>\`, {
-    status: 301,
-    headers: {
-      'Content-Type': 'text/html; charset=utf-8',
-      'Location': redirectInfo.targetUrl,
-    },
-  })
-}
-
-const docsConfig = docsConfigs[routeBasePath] ?? {
-  showLastUpdateTime: false,
-  showLastUpdateAuthor: false,
-  routeBasePath: 'docs',
-  collectionName: 'docs',
-}
-
-// Version is available for use in Layout/components if needed
-// For 'latest' alias URLs, actualVersion contains the real version
-const currentVersion = isLatestAlias ? actualVersion : version
-const displayVersion = version // The version shown in the URL
-
-const { Content, headings } = await render(entry)
-
-const { customEditUrl, lastUpdateAuthor, lastUpdateTime, hideTableOfContents, hideTitle, keywords, image, canonicalUrl, customMetaTags, title, title_meta, description } = entry.data
-// Fall back to the reference title when no SEO-specific override (title_meta)
-// is set. Without this fallback, docs pages that only define \`title\` render an
-// empty <title>/og:title and broken social previews.
-const titleMeta = title_meta ?? title
-
-let editUrl
-if (customEditUrl === null) {
-  editUrl = undefined
-} else if (customEditUrl) {
-  editUrl = customEditUrl
-} else if (entry.filePath) {
-  // Use filePath instead of entry.id because Astro's glob loader
-  // strips "index" from entry.id for index pages (e.g., en/index -> en)
-  // Strip the collection base directory to get the relative path
-  const collectionBase = \`\${docsConfig.collectionName}/\`
-  const relativePath = entry.filePath.startsWith(collectionBase)
-    ? entry.filePath.slice(collectionBase.length)
-    : entry.filePath
-  editUrl = getEditUrl(docsConfig.editUrl, relativePath)
-} else {
-  // Fallback to entry.id if filePath is not available
-  editUrl = getEditUrl(docsConfig.editUrl, entry.id)
-}
-
-let lastUpdated
-let lastAuthor
-
-if (
-  (docsConfig.showLastUpdateTime && lastUpdateTime !== false) ||
-  (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false)
-) {
-  const filePath = entry.filePath
-
-  if (filePath) {
-    const gitMetadata = getGitMetadata(filePath)
-
-    if (docsConfig.showLastUpdateTime && lastUpdateTime !== false) {
-      lastUpdated =
-        lastUpdateTime instanceof Date
-          ? lastUpdateTime
-          : gitMetadata.lastUpdated
-    }
-
-    if (docsConfig.showLastUpdateAuthor && lastUpdateAuthor !== false) {
-      lastAuthor =
-        typeof lastUpdateAuthor === 'string'
-          ? lastUpdateAuthor
-          : gitMetadata.lastAuthor
-    }
-  }
-}
----
-
-<Layout headings={headings} routeBasePath={routeBasePath} editUrl={editUrl} lastUpdated={lastUpdated} lastAuthor={lastAuthor} hideTableOfContents={hideTableOfContents} hideTitle={hideTitle} keywords={keywords} image={image} canonicalUrl={canonicalUrl} customMetaTags={customMetaTags} titleMeta={titleMeta} description={description}>
-  <Content />
-</Layout>
-`
-
-        writeFileSync(entryFilePath, entryFileContent)
+        const ENTRYPOINT_DOCS_ENTRY =
+          '@levino/shipyard-docs/astro/pages/DocsEntry.astro'
+        const ENTRYPOINT_DOCS_VERSION_REDIRECT =
+          '@levino/shipyard-docs/astro/pages/DocsVersionRedirect.astro'
 
         // Create virtual modules to expose docs configurations
         updateConfig({
@@ -1176,51 +931,24 @@ export function hasVersioning(routeBasePath = 'docs') {
           // With i18n: use locale prefix
           if (versions) {
             // Versioned routes: /[locale]/[routeBasePath]/[version]/[...slug]
-            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the frontmatter
+            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the component
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}/[version]/[...slug]`,
-              entrypoint: entryFilePath,
+              entrypoint: ENTRYPOINT_DOCS_ENTRY,
               prerender,
             })
-
-            // Generate redirect from docs root to current version
-            const redirectFileName = `docs-redirect-${normalizedBasePath}.astro`
-            const redirectFilePath = join(generatedDir, redirectFileName)
-            const currentVersionPath =
-              versions.available.find((v) => v.version === versions.current)
-                ?.path ?? versions.current
-            const redirectFileContent = `---
-import { i18n } from 'astro:config/server'
-
-export function getStaticPaths() {
-  const locales = i18n?.locales ?? ['en']
-  return locales.map((locale) => {
-    const localeCode = typeof locale === 'string' ? locale : locale.path
-    return { params: { locale: localeCode } }
-  })
-}
-
-const { locale } = Astro.params
-const currentVersion = ${JSON.stringify(currentVersionPath)}
-const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-
-// Redirect to the current version's index
-return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302)
----
-`
-            writeFileSync(redirectFilePath, redirectFileContent)
 
             // Inject redirect route for docs root (without trailing slash)
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}`,
-              entrypoint: redirectFilePath,
+              entrypoint: ENTRYPOINT_DOCS_VERSION_REDIRECT,
               prerender,
             })
           } else {
             // Non-versioned routes: /[locale]/[routeBasePath]/[...slug]
             injectRoute({
               pattern: `/[locale]/${normalizedBasePath}/[...slug]`,
-              entrypoint: entryFilePath,
+              entrypoint: ENTRYPOINT_DOCS_ENTRY,
               prerender,
             })
           }
@@ -1228,40 +956,24 @@ return Astro.redirect(\`/\${locale}/\${routeBasePath}/\${currentVersion}/\`, 302
           // Without i18n: direct path
           if (versions) {
             // Versioned routes: /[routeBasePath]/[version]/[...slug]
-            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the frontmatter
+            // Note: 'latest' alias paths are generated in getStaticPaths and redirect in the component
             injectRoute({
               pattern: `/${normalizedBasePath}/[version]/[...slug]`,
-              entrypoint: entryFilePath,
+              entrypoint: ENTRYPOINT_DOCS_ENTRY,
               prerender,
             })
-
-            // Generate redirect from docs root to current version
-            const redirectFileName = `docs-redirect-${normalizedBasePath}.astro`
-            const redirectFilePath = join(generatedDir, redirectFileName)
-            const currentVersionPath =
-              versions.available.find((v) => v.version === versions.current)
-                ?.path ?? versions.current
-            const redirectFileContent = `---
-const currentVersion = ${JSON.stringify(currentVersionPath)}
-const routeBasePath = ${JSON.stringify(normalizedBasePath)}
-
-// Redirect to the current version's index
-return Astro.redirect(\`/\${routeBasePath}/\${currentVersion}/\`, 302)
----
-`
-            writeFileSync(redirectFilePath, redirectFileContent)
 
             // Inject redirect route for docs root (without trailing slash)
             injectRoute({
               pattern: `/${normalizedBasePath}`,
-              entrypoint: redirectFilePath,
+              entrypoint: ENTRYPOINT_DOCS_VERSION_REDIRECT,
               prerender,
             })
           } else {
             // Non-versioned routes: /[routeBasePath]/[...slug]
             injectRoute({
               pattern: `/${normalizedBasePath}/[...slug]`,
-              entrypoint: entryFilePath,
+              entrypoint: ENTRYPOINT_DOCS_ENTRY,
               prerender,
             })
           }
@@ -1274,6 +986,11 @@ return Astro.redirect(\`/\${routeBasePath}/\${currentVersion}/\`, 302)
             summary: llmsTxt.summary,
             description: llmsTxt.description,
             sectionTitle: llmsTxt.sectionTitle ?? 'Documentation',
+          }
+
+          // Ensure the directory for generated JS/TS endpoints exists
+          if (!existsSync(generatedDir)) {
+            mkdirSync(generatedDir, { recursive: true })
           }
 
           // Generate individual plain text endpoints for each doc page

@@ -295,16 +295,25 @@ test.describe('Documentation Plugin Features', () => {
 
       const metaDescription = page.locator('meta[name="description"]')
       await expect(metaDescription).toBeAttached()
+      // The description must carry the frontmatter content, not be empty.
+      await expect(metaDescription).toHaveAttribute(
+        'content',
+        /Metro Gardens community garden/,
+      )
     })
 
-    test('OpenGraph title tag is set', async ({ page }) => {
+    test('OpenGraph title includes the page title (not just the site name)', async ({
+      page,
+    }) => {
       await page.goto('/en/docs/')
 
       const ogTitle = page.locator('meta[property="og:title"]')
       await expect(ogTitle).toBeAttached()
-      // OG title contains site title
       const content = await ogTitle.getAttribute('content')
+      // Regression guard: a docs page that only sets `title` (no `title_meta`)
+      // must still surface the page title in og:title, not just the site name.
       expect(content).toContain('Metro Gardens')
+      expect(content).toContain('Garden Guide')
     })
 
     test('OpenGraph description tag is set', async ({ page }) => {
@@ -312,6 +321,20 @@ test.describe('Documentation Plugin Features', () => {
 
       const ogDescription = page.locator('meta[property="og:description"]')
       await expect(ogDescription).toBeAttached()
+    })
+
+    test('page has default og:type and a self-referential canonical', async ({
+      page,
+    }) => {
+      await page.goto('/en/docs/')
+
+      const ogType = page.locator('meta[property="og:type"]')
+      await expect(ogType).toHaveAttribute('content', 'website')
+
+      const canonical = page.locator('link[rel="canonical"]')
+      await expect(canonical).toHaveAttribute('href', /\/en\/docs\/?$/)
+
+      await expect(page.locator('html')).toHaveAttribute('lang', 'en')
     })
   })
 })

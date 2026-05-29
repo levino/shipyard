@@ -1,0 +1,28 @@
+---
+import { i18n } from 'astro:config/server'
+import { docsConfigs } from 'virtual:shipyard-docs-configs'
+import type { GetStaticPaths } from 'astro'
+import {
+  getDocsInstanceConfig,
+  getDocsRedirectPaths,
+} from '../../src/docsStaticPaths'
+
+export const getStaticPaths = (() => {
+  return getDocsRedirectPaths(i18n)
+}) satisfies GetStaticPaths
+
+const instance = getDocsInstanceConfig(Astro.routePattern, docsConfigs)
+const routeBasePath = instance.routeBasePath
+const versions = instance.versions
+const currentVersionPath =
+  versions?.available.find((v) => v.version === versions.current)?.path ??
+  versions?.current
+
+const { locale } = Astro.params
+
+const targetUrl = locale
+  ? `/${locale}/${routeBasePath}/${currentVersionPath}/`
+  : `/${routeBasePath}/${currentVersionPath}/`
+
+return Astro.redirect(targetUrl, 302)
+---

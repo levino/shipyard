@@ -1,0 +1,71 @@
+---
+import { i18n } from 'astro:config/server'
+import { type CollectionKey, getCollection } from 'astro:content'
+import { docsConfigs } from 'virtual:shipyard-docs-configs'
+import type { GetStaticPaths } from 'astro'
+import {
+  buildLatestAliasRedirect,
+  computeDocsEntryPaths,
+  getDocsInstanceConfig,
+  renderLatestAliasRedirectHtml,
+} from '../../src/docsStaticPaths'
+import DocsEntry from '../DocsEntry.astro'
+
+export const getStaticPaths = (async ({ routePattern }) => {
+  const instance = getDocsInstanceConfig(routePattern, docsConfigs)
+  const allDocs = await getCollection(instance.collectionName as CollectionKey)
+  const docs = allDocs.filter((doc) => doc.data.render !== false)
+  return computeDocsEntryPaths(docs, {
+    collectionName: instance.collectionName,
+    routeBasePath: instance.routeBasePath,
+    versions: instance.versions,
+    hasI18n: !!i18n,
+  })
+}) satisfies GetStaticPaths
+
+// getStaticPaths runs in a separate module scope, so derive the instance again
+// here from the route pattern to resolve collectionName/routeBasePath.
+const instance = getDocsInstanceConfig(Astro.routePattern, docsConfigs)
+const resolvedCollectionName =
+  Astro.props.collectionName ?? instance.collectionName
+const resolvedRouteBasePath =
+  Astro.props.routeBasePath ?? instance.routeBasePath
+
+// SEO-friendly redirect for prerendered /latest/ alias URLs to canonical
+// version URLs. This must happen in the page (route) component — a Response
+// returned from a child component is not used as the page response.
+const { slug: pageSlug } = Astro.params
+const redirectInfo = buildLatestAliasRedirect({
+  isLatestAlias: Astro.props.isLatestAlias,
+  actualVersion: Astro.props.actualVersion,
+  routeBasePath: resolvedRouteBasePath,
+  docLocale: Astro.props.docLocale,
+  pageSlug: typeof pageSlug === 'string' ? pageSlug : undefined,
+})
+
+if (redirectInfo) {
+  const canonicalHref = Astro.site
+    ? new URL(redirectInfo.targetUrl, Astro.site).href
+    : redirectInfo.targetUrl
+  return new Response(
+    renderLatestAliasRedirectHtml(
+      redirectInfo.targetUrl,
+      redirectInfo.fromUrl,
+      canonicalHref,
+    ),
+    {
+      status: 301,
+      headers: {
+        'Content-Type': 'text/html; charset=utf-8',
+        Location: redirectInfo.targetUrl,
+      },
+    },
+  )
+}
+---
+
+<DocsEntry
+  {...Astro.props}
+  routeBasePath={resolvedRouteBasePath}
+  collectionName={resolvedCollectionName}
+/>
