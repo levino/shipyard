@@ -16,7 +16,9 @@ const makeConfig = (
   routeBasePath,
   collectionName: routeBasePath,
   llmsTxtEnabled: false,
-  versions,
+  // `versions` is optional-without-undefined on `DocsInstanceConfig`, so the
+  // key is omitted rather than written as `undefined`.
+  ...(versions ? { versions } : {}),
 })
 
 describe('getDocsInstanceConfig', () => {
@@ -84,10 +86,10 @@ describe('computeDocsEntryPaths', () => {
       hasI18n: false,
     })
     expect(paths).toHaveLength(2)
-    expect(paths[0].params).toEqual({ slug: 'getting-started' })
-    expect(paths[0].props.routeBasePath).toBe('docs')
-    expect(paths[0].props.isLatestAlias).toBe(false)
-    expect(paths[1].params).toEqual({ slug: 'guides/intro' })
+    expect(paths[0]?.params).toEqual({ slug: 'getting-started' })
+    expect(paths[0]?.props.routeBasePath).toBe('docs')
+    expect(paths[0]?.props.isLatestAlias).toBe(false)
+    expect(paths[1]?.params).toEqual({ slug: 'guides/intro' })
   })
 
   it('computes i18n paths with locale + slug split', () => {
@@ -102,10 +104,10 @@ describe('computeDocsEntryPaths', () => {
       hasI18n: true,
     })
     expect(paths).toHaveLength(2)
-    expect(paths[0].params).toEqual({ locale: 'en', slug: 'getting-started' })
-    expect(paths[0].props.docLocale).toBe('en')
+    expect(paths[0]?.params).toEqual({ locale: 'en', slug: 'getting-started' })
+    expect(paths[0]?.props.docLocale).toBe('en')
     // "en" (locale-root index) -> slug undefined
-    expect(paths[1].params).toEqual({ locale: 'en', slug: undefined })
+    expect(paths[1]?.params).toEqual({ locale: 'en', slug: undefined })
   })
 
   it('generates a latest alias for current-version docs', () => {

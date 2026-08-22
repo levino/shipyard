@@ -160,10 +160,8 @@ export const getPaginationInfo = (
     }
     // No prev for index page (unless explicitly set above)
 
-    if (paginationNext === null) {
-      // Explicitly disabled
-      result.next = undefined
-    } else if (typeof paginationNext === 'string') {
+    // A `null` override disables the link, so `next` is simply left unset.
+    if (typeof paginationNext === 'string') {
       const targetDoc = findDocById(paginationNext)
       if (targetDoc?.path) {
         result.next = {
@@ -171,19 +169,20 @@ export const getPaginationInfo = (
           href: targetDoc.path,
         }
       }
-    } else if (flatPages.length > 0) {
+    } else if (paginationNext !== null) {
       // Use the first sidebar item as next
-      result.next = getPaginationLink(flatPages[0])
+      const firstPage = flatPages[0]
+      if (firstPage) {
+        result.next = getPaginationLink(firstPage)
+      }
     }
 
     return result
   }
 
   // Handle previous page
-  if (paginationPrev === null) {
-    // Explicitly disabled
-    result.prev = undefined
-  } else if (typeof paginationPrev === 'string') {
+  // A `null` override disables the link, so `prev` is simply left unset.
+  if (typeof paginationPrev === 'string') {
     // Explicitly set to a specific page ID (supports custom frontmatter IDs)
     const targetDoc = findDocById(paginationPrev)
     if (targetDoc?.path) {
@@ -192,16 +191,17 @@ export const getPaginationInfo = (
         href: targetDoc.path,
       }
     }
-  } else if (currentIndex > 0) {
+  } else if (paginationPrev !== null && currentIndex > 0) {
     // Use the previous page in sidebar order
-    result.prev = getPaginationLink(flatPages[currentIndex - 1])
+    const prevPage = flatPages[currentIndex - 1]
+    if (prevPage) {
+      result.prev = getPaginationLink(prevPage)
+    }
   }
 
   // Handle next page
-  if (paginationNext === null) {
-    // Explicitly disabled
-    result.next = undefined
-  } else if (typeof paginationNext === 'string') {
+  // A `null` override disables the link, so `next` is simply left unset.
+  if (typeof paginationNext === 'string') {
     // Explicitly set to a specific page ID (supports custom frontmatter IDs)
     const targetDoc = findDocById(paginationNext)
     if (targetDoc?.path) {
@@ -210,9 +210,12 @@ export const getPaginationInfo = (
         href: targetDoc.path,
       }
     }
-  } else if (currentIndex < flatPages.length - 1) {
+  } else if (paginationNext !== null && currentIndex < flatPages.length - 1) {
     // Use the next page in sidebar order
-    result.next = getPaginationLink(flatPages[currentIndex + 1])
+    const nextPage = flatPages[currentIndex + 1]
+    if (nextPage) {
+      result.next = getPaginationLink(nextPage)
+    }
   }
 
   return result

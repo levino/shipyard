@@ -1,6 +1,11 @@
 import type { Root } from 'mdast'
 import { directiveFromMarkdown } from 'mdast-util-directive'
 import { directive } from 'micromark-extension-directive'
+// `remark-parse` augments unified's `Data` with `micromarkExtensions` and
+// `fromMarkdownExtensions`. shipyard ships raw TypeScript source, so a consumer
+// compiles this file in their own program — importing the augmentation here
+// keeps it available there instead of relying on a transitive dev dependency.
+import type {} from 'remark-parse'
 import type { Plugin, Processor } from 'unified'
 
 /**

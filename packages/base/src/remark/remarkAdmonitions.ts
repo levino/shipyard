@@ -1,5 +1,9 @@
 import type { Root } from 'mdast'
 import type { ContainerDirective } from 'mdast-util-directive'
+// `mdast-util-to-hast` augments mdast's `Data` with `hName`/`hProperties`, which
+// this plugin sets. Imported explicitly so the augmentation is present when a
+// consumer compiles this file, not just via a transitive dev dependency.
+import type {} from 'mdast-util-to-hast'
 import { includes, pipe, toLower } from 'ramda'
 import type { Plugin } from 'unified'
 import { SKIP, visit } from 'unist-util-visit'
@@ -67,7 +71,11 @@ export const remarkAdmonitions: Plugin<[], Root> = () => {
       }
 
       const type = toLower(directiveName) as AdmonitionType
-      const title = node.label ?? getDefaultTitle(type)
+      // NOTE: container directives carry no `label` field. `:::note[Custom]`
+      // is parsed by mdast-util-directive into a first child paragraph with
+      // `data.directiveLabel === true`, so custom titles are not picked up
+      // here and the default title is used for every admonition.
+      const title = getDefaultTitle(type)
 
       // Set up the data for hast transformation
       if (!node.data) {

@@ -90,8 +90,11 @@ export function rehypeVersionLinks(options: RehypeVersionLinksOptions) {
 
       // Check for cross-version link syntax: @version:/path
       const crossVersionMatch = href.match(CROSS_VERSION_LINK_REGEX)
-      if (crossVersionMatch) {
-        const [, targetVersion, targetPath] = crossVersionMatch
+      // Both capture groups are always present when the regex matches; the
+      // explicit checks below narrow them for the type checker.
+      const targetVersion = crossVersionMatch?.[1]
+      const targetPath = crossVersionMatch?.[2]
+      if (targetVersion !== undefined && targetPath !== undefined) {
         const cleanPath = targetPath.startsWith('/')
           ? targetPath.slice(1)
           : targetPath
@@ -123,7 +126,8 @@ export function rehypeVersionLinks(options: RehypeVersionLinksOptions) {
         const pathAfterBase = href.slice(`/${routeBasePath}/`.length)
 
         // Check if it already has a version
-        const firstSegment = pathAfterBase.split('/')[0]
+        // `split` always yields at least one element, so `?? ''` is unreachable.
+        const firstSegment = pathAfterBase.split('/')[0] ?? ''
         const hasVersion =
           availableVersions.includes(firstSegment) ||
           firstSegment === 'latest' ||

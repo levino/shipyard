@@ -1,7 +1,7 @@
 import { defineCollection } from 'astro:content'
+import { blogSchema } from '@levino/shipyard-blog'
 import { docsSchema } from '@levino/shipyard-docs'
 import { glob } from 'astro/loaders'
-import { blogSchema } from '../../../packages/blog/src/index.ts'
 
 // 3. Define your collection(s)
 const blog = defineCollection({

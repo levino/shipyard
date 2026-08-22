@@ -29,14 +29,13 @@ export const isVersionLikeString = (str: string): boolean => {
  * ```
  */
 export const getVersionFromDocId = (docId: string): string | undefined => {
-  const parts = docId.split('/')
+  const [potentialVersion] = docId.split('/')
   // For versioned docs, first part is the version
   // We check if it looks like a version (starts with 'v' and has numbers, or is 'latest', 'next', etc.)
-  if (parts.length > 0) {
-    const potentialVersion = parts[0]
-    if (isVersionLikeString(potentialVersion)) {
-      return potentialVersion
-    }
+  // `String.prototype.split` always yields at least one element, so the guard
+  // below only satisfies the type checker.
+  if (potentialVersion !== undefined && isVersionLikeString(potentialVersion)) {
+    return potentialVersion
   }
   return undefined
 }

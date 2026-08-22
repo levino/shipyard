@@ -3,7 +3,8 @@
     "setup": "npm install && npm exec @lavamoat/allow-scripts",
     "test:e2e": "npm run test:e2e --workspaces --if-present",
     "test:unit": "npm run test:unit --workspaces --if-present",
-    "build": "npm run build --workspaces --if-present"
+    "build": "npm run build --workspaces --if-present",
+    "type-check": "tsc --noEmit && npm run type-check --workspaces --if-present"
   },
   "engines": {
     "node": ">=22.12.0"

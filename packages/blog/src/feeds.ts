@@ -77,15 +77,21 @@ const getPostUrl = (
 
 export interface FeedParams {
   allPosts: FeedPost[]
+  /**
+   * Structural subset of the blog integration config. The optional members are
+   * declared as `| undefined` because callers pass the zod-inferred
+   * `BlogConfig`, whose optional fields may be present with an explicit
+   * `undefined` value.
+   */
   blogConfig: {
     routeBasePath: string
     blogTitle: string
-    blogDescription?: string
+    blogDescription?: string | undefined
     includeDraftsInDev: boolean
     feedOptions: {
       limit: number
-      title?: string
-      description?: string
+      title?: string | undefined
+      description?: string | undefined
     }
   }
   site: URL | undefined
@@ -183,10 +189,10 @@ export const createAtomResponse = ({
     ? buildUrl(baseUrl, currentLocale ?? '', routeBasePath, 'atom.xml')
     : buildUrl(baseUrl, routeBasePath, 'atom.xml')
 
-  const lastUpdated =
-    posts.length > 0
-      ? posts[0].data.date.toISOString()
-      : new Date().toISOString()
+  const [latestPost] = posts
+  const lastUpdated = latestPost
+    ? latestPost.data.date.toISOString()
+    : new Date().toISOString()
   const subtitle = feedOptions.description ?? blogDescription
 
   const entries = posts

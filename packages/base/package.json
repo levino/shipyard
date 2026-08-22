@@ -67,9 +67,11 @@
     "@astrojs/markdown-remark": "^7.2.4",
     "clsx": "^2.1.0",
     "mdast-util-directive": "^3.0.0",
+    "mdast-util-to-hast": "^13.2.1",
     "micromark-extension-directive": "^3.0.0",
     "ramda": "^0.32.0",
     "remark-directive": "^3.0.0",
+    "remark-parse": "^11.0.0",
     "tailwind-merge": "^2.2.0",
     "unified": "^11.0.0",
     "unist-util-visit": "^5.0.0"

@@ -44,8 +44,8 @@ describe('checkLinks', () => {
     const result = checkLinks(testDir)
 
     expect(result.brokenCount).toBe(1)
-    expect(result.brokenLinks[0].href).toBe('/non-existent')
-    expect(result.brokenLinks[0].sourceFile).toBe('index.html')
+    expect(result.brokenLinks[0]?.href).toBe('/non-existent')
+    expect(result.brokenLinks[0]?.sourceFile).toBe('index.html')
   })
 
   test('ignores external links', () => {
@@ -163,7 +163,7 @@ describe('checkLinks', () => {
 
     const result = checkLinks(testDir)
 
-    expect(result.brokenLinks[0].line).toBe(2)
+    expect(result.brokenLinks[0]?.line).toBe(2)
   })
 })
 
@@ -221,7 +221,7 @@ describe('reportBrokenLinks', () => {
     reportBrokenLinks(result, 'log', logger as any)
 
     expect(logger.info).toHaveBeenCalled()
-    const message = logger.info.mock.calls[0][0]
+    const message = logger.info.mock.calls[0]?.[0]
     expect(message).toContain('Found 1 broken link')
     expect(message).toContain('/broken')
     expect(message).toContain('index.html:1')
@@ -238,7 +238,7 @@ describe('reportBrokenLinks', () => {
     reportBrokenLinks(result, 'warn', logger as any)
 
     expect(logger.warn).toHaveBeenCalled()
-    const message = logger.warn.mock.calls[0][0]
+    const message = logger.warn.mock.calls[0]?.[0]
     expect(message).toContain('Found 1 broken link')
   })
 
@@ -269,7 +269,7 @@ describe('reportBrokenLinks', () => {
 
     reportBrokenLinks(result, 'warn', logger as any)
 
-    const message = logger.warn.mock.calls[0][0]
+    const message = logger.warn.mock.calls[0]?.[0]
     expect(message).toContain('Found 3 broken links')
   })
 })

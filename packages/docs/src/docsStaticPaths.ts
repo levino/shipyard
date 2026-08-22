@@ -130,9 +130,9 @@ export const computeDocsEntryPaths = (
       props: {
         entry,
         routeBasePath,
-        version,
+        ...(version !== undefined ? { version } : {}),
         isLatestAlias: false,
-        docLocale,
+        ...(docLocale !== undefined ? { docLocale } : {}),
       },
     })
 
@@ -148,7 +148,7 @@ export const computeDocsEntryPaths = (
             version: 'latest',
             actualVersion: version,
             isLatestAlias: true,
-            docLocale,
+            ...(docLocale !== undefined ? { docLocale } : {}),
           },
         })
       }

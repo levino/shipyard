@@ -161,6 +161,20 @@ const sampleVersionConfig: VersionConfig = {
   stable: 'v2.0',
 }
 
+/**
+ * `VersionConfig` is the Zod *output* type, so `.default([])` makes
+ * `deprecated` a required property. The integration registers the raw,
+ * unparsed config object though (`index.ts` validates with `safeParse` but
+ * discards `parseResult.data`), so the helpers really can be handed a config
+ * that never had a `deprecated` key. That is what their `?? []` fallbacks —
+ * and the tests using this helper — cover.
+ */
+type UnparsedVersionConfig = Omit<VersionConfig, 'deprecated'> &
+  Partial<Pick<VersionConfig, 'deprecated'>>
+
+const unparsedVersionConfig = (config: UnparsedVersionConfig): VersionConfig =>
+  config as VersionConfig
+
 describe('getVersionPath', () => {
   it('should return version string when path is not defined', () => {
     const path = getVersionPath('v2.0', sampleVersionConfig)
@@ -188,9 +202,9 @@ describe('getAvailableVersions', () => {
   it('should return all available versions', () => {
     const versions = getAvailableVersions(sampleVersionConfig)
     expect(versions).toHaveLength(3)
-    expect(versions[0].version).toBe('v3.0')
-    expect(versions[1].version).toBe('v2.0')
-    expect(versions[2].version).toBe('v1.0')
+    expect(versions[0]?.version).toBe('v3.0')
+    expect(versions[1]?.version).toBe('v2.0')
+    expect(versions[2]?.version).toBe('v1.0')
   })
 })
 
@@ -208,10 +222,10 @@ describe('isVersionDeprecated', () => {
   })
 
   it('should handle config without deprecated array', () => {
-    const configWithoutDeprecated: VersionConfig = {
+    const configWithoutDeprecated = unparsedVersionConfig({
       current: 'v1.0',
       available: [{ version: 'v1.0' }],
-    }
+    })
     expect(isVersionDeprecated('v1.0', configWithoutDeprecated)).toBe(false)
   })
 })
@@ -225,6 +239,7 @@ describe('getStableVersion', () => {
     const configWithoutStable: VersionConfig = {
       current: 'v3.0',
       available: [{ version: 'v3.0' }],
+      deprecated: [],
     }
     expect(getStableVersion(configWithoutStable)).toBe('v3.0')
   })
@@ -458,7 +473,7 @@ describe('filterDocsByVersion', () => {
   it('should handle special version names', () => {
     const latestDocs = filterDocsByVersion(mockDocs, 'latest')
     expect(latestDocs).toHaveLength(1)
-    expect(latestDocs[0].id).toBe('latest/en/intro')
+    expect(latestDocs[0]?.id).toBe('latest/en/intro')
   })
 
   it('should handle empty docs array', () => {
@@ -684,6 +699,7 @@ describe('createVersionPathMap', () => {
         { version: 'v2.0.0', label: 'Version 2.0', path: 'v2' },
         { version: 'v1.0.0', label: 'Version 1.0', path: 'v1' },
       ],
+      deprecated: [],
       stable: 'v2.0.0',
     }
     const map = createVersionPathMap(versionsWithCustomPaths)
@@ -700,6 +716,7 @@ describe('createVersionPathMap', () => {
     const emptyVersions: VersionConfig = {
       current: 'v1',
       available: [],
+      deprecated: [],
       stable: 'v1',
     }
     const map = createVersionPathMap(emptyVersions)
@@ -713,6 +730,7 @@ describe('createVersionPathMap', () => {
         version: `v${i + 1}`,
         label: `Version ${i + 1}`,
       })),
+      deprecated: [],
       stable: 'v10',
     }
     const map = createVersionPathMap(manyVersions)
@@ -737,11 +755,11 @@ describe('createDeprecatedVersionSet', () => {
   })
 
   it('should return empty Set when deprecated is undefined', () => {
-    const versions: VersionConfig = {
+    const versions = unparsedVersionConfig({
       current: 'v1',
       available: [{ version: 'v1' }],
       stable: 'v1',
-    }
+    })
     const set = createDeprecatedVersionSet(versions)
     expect(set.size).toBe(0)
   })

@@ -16,6 +16,7 @@ interface ConfigUpdate {
 const baseConfig: Config = {
   title: 'Test',
   brand: 'Test',
+  tagline: 'Test',
   navigation: {},
 }
 
@@ -83,7 +84,7 @@ describe('markdown processor', () => {
     })
 
     expect(logger.warn).toHaveBeenCalledOnce()
-    expect(logger.warn.mock.calls[0][0]).toContain('satteri')
+    expect(logger.warn.mock.calls[0]?.[0]).toContain('satteri')
     expect(update?.markdown?.processor?.name).toBe(unified().name)
     expect(update?.markdown?.processor?.options.remarkPlugins).toHaveLength(
       SHIPYARD_PLUGIN_COUNT,

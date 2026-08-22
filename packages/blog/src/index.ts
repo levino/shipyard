@@ -380,6 +380,7 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
                     return RESOLVED_VIRTUAL_MODULE_ID
                   if (id === VIRTUAL_TAGS_MODULE_ID)
                     return RESOLVED_VIRTUAL_TAGS_MODULE_ID
+                  return undefined
                 },
                 load(id) {
                   if (id === RESOLVED_VIRTUAL_REGISTRY_ID)
@@ -388,6 +389,7 @@ export default (options: Partial<BlogConfig> = {}): AstroIntegration => {
                     return `export default ${JSON.stringify(blogConfig)}`
                   if (id === RESOLVED_VIRTUAL_TAGS_MODULE_ID)
                     return `export default ${JSON.stringify(tagsMap)}`
+                  return undefined
                 },
               },
             ],

@@ -8,7 +8,8 @@
     "build": "astro build",
     "build:expect-fail": "astro build 2>&1 | grep -q 'Broken links found' && echo 'PASS: Build correctly failed on broken links' || (echo 'FAIL: Build should have failed on broken links' && exit 1)",
     "preview": "astro preview --host 0.0.0.0",
-    "astro": "astro"
+    "astro": "astro",
+    "type-check": "astro sync && tsc --noEmit"
   },
   "dependencies": {
     "@levino/shipyard-base": "*",

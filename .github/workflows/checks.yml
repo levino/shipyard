@@ -26,6 +26,19 @@ jobs:
           version: 2.2.3
       - name: Run Biome
         run: biome ci .
+  type-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+      - run: npm ci
+      # Checks the packages against the root tsconfig, then each app against its
+      # own (after `astro sync` generates its content/config types).
+      - run: npm run type-check
   test:
     runs-on: ubuntu-latest
     timeout-minutes: 15
