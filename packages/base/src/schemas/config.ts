@@ -1,3 +1,8 @@
+// `astroHTML.JSX` is a global namespace declared by Astro. It is only in scope
+// for files that pull in Astro's JSX types, which `.ts` files in this package
+// do not do implicitly. The reference is erased at compile time.
+/// <reference types="astro/astro-jsx" />
+
 export interface NavigationEntry {
   label?: string
   href?: string

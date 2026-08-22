@@ -29,8 +29,8 @@ export function getGitMetadata(filePath: string): GitMetadata {
     ).trim()
 
     return {
-      lastUpdated: dateOutput ? new Date(dateOutput) : undefined,
-      lastAuthor: authorOutput || undefined,
+      ...(dateOutput ? { lastUpdated: new Date(dateOutput) } : {}),
+      ...(authorOutput ? { lastAuthor: authorOutput } : {}),
     }
   } catch {
     // Git command failed (not a git repo, file not tracked, etc.)

@@ -1,2 +1,2 @@
-export * as components from './astro/components'
-export * as layouts from './astro/layouts'
+export * as components from '../astro/components'
+export * as layouts from '../astro/layouts'

@@ -4,6 +4,22 @@ import { docsSchema as docsSchemaFn } from './index'
 
 const docsSchema = docsSchemaFn({ image: () => z.any() })
 
+/**
+ * Narrows a failed `safeParse` result to its first validation issue.
+ * Throws (failing the test) if the parse unexpectedly succeeded or
+ * produced no issues.
+ */
+const firstIssue = <T>(result: z.ZodSafeParseResult<T>) => {
+  if (result.success) {
+    throw new Error('expected validation to fail, but it succeeded')
+  }
+  const issue = result.error.issues[0]
+  if (issue === undefined) {
+    throw new Error('expected at least one validation issue')
+  }
+  return issue
+}
+
 describe('docsSchema', () => {
   it('should accept valid sidebar configuration', () => {
     const validData = {
@@ -40,7 +56,7 @@ describe('docsSchema', () => {
     const result = docsSchema.safeParse(invalidData)
     expect(result.success).toBe(false)
     if (!result.success) {
-      expect(result.error.issues[0].message).toBe(
+      expect(firstIssue(result).message).toBe(
         'sidebar.collapsed cannot be true when sidebar.collapsible is false',
       )
     }
@@ -67,7 +83,7 @@ describe('docsSchema', () => {
     const result = docsSchema.safeParse(invalidData)
     expect(result.success).toBe(false)
     if (!result.success) {
-      expect(result.error.issues[0].message).toBe(
+      expect(firstIssue(result).message).toBe(
         'tocMinHeadingLevel must be <= tocMaxHeadingLevel',
       )
     }

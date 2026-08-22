@@ -1,5 +1,33 @@
+import type { z } from 'astro/zod'
 import { describe, expect, it } from 'vitest'
 import { singleVersionSchema, versionConfigSchema } from './index'
+
+/**
+ * Narrows a failed `safeParse` result to its first validation issue.
+ * Throws (failing the test) if the parse unexpectedly succeeded or
+ * produced no issues.
+ */
+const firstIssue = <T>(result: z.ZodSafeParseResult<T>) => {
+  if (result.success) {
+    throw new Error('expected validation to fail, but it succeeded')
+  }
+  const issue = result.error.issues[0]
+  if (issue === undefined) {
+    throw new Error('expected at least one validation issue')
+  }
+  return issue
+}
+
+/**
+ * Narrows a successful `safeParse` result to its parsed data.
+ * Throws (failing the test) if the parse unexpectedly failed.
+ */
+const parsed = <T>(result: z.ZodSafeParseResult<T>) => {
+  if (!result.success) {
+    throw new Error(`expected validation to succeed: ${result.error.message}`)
+  }
+  return result.data
+}
 
 describe('singleVersionSchema', () => {
   describe('valid configurations', () => {
@@ -85,7 +113,7 @@ describe('singleVersionSchema', () => {
     it('should reject empty object', () => {
       const result = singleVersionSchema.safeParse({})
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('version')
+      expect(firstIssue(result).path).toContain('version')
     })
 
     it('should reject missing version field', () => {
@@ -93,7 +121,7 @@ describe('singleVersionSchema', () => {
         label: 'Some Label',
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].code).toBe('invalid_type')
+      expect(firstIssue(result).code).toBe('invalid_type')
     })
 
     it('should reject non-string version', () => {
@@ -101,7 +129,7 @@ describe('singleVersionSchema', () => {
         version: 123,
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('version')
+      expect(firstIssue(result).path).toContain('version')
     })
 
     it('should reject invalid banner value', () => {
@@ -110,7 +138,7 @@ describe('singleVersionSchema', () => {
         banner: 'deprecated',
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('banner')
+      expect(firstIssue(result).path).toContain('banner')
     })
 
     it('should reject non-string label', () => {
@@ -119,7 +147,7 @@ describe('singleVersionSchema', () => {
         label: 123,
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('label')
+      expect(firstIssue(result).path).toContain('label')
     })
 
     it('should reject non-string path', () => {
@@ -128,7 +156,7 @@ describe('singleVersionSchema', () => {
         path: ['v1'],
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('path')
+      expect(firstIssue(result).path).toContain('path')
     })
   })
 })
@@ -238,7 +266,7 @@ describe('versionConfigSchema', () => {
         available: [{ version: 'v1.0' }],
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('current')
+      expect(firstIssue(result).path).toContain('current')
     })
 
     it('should reject missing available field', () => {
@@ -246,7 +274,7 @@ describe('versionConfigSchema', () => {
         current: 'v1.0',
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('available')
+      expect(firstIssue(result).path).toContain('available')
     })
 
     it('should reject empty available array', () => {
@@ -255,7 +283,7 @@ describe('versionConfigSchema', () => {
         available: [],
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].code).toBe('too_small')
+      expect(firstIssue(result).code).toBe('too_small')
     })
 
     it('should reject non-string current', () => {
@@ -264,7 +292,7 @@ describe('versionConfigSchema', () => {
         available: [{ version: 'v1.0' }],
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('current')
+      expect(firstIssue(result).path).toContain('current')
     })
 
     it('should reject non-array available', () => {
@@ -273,7 +301,7 @@ describe('versionConfigSchema', () => {
         available: { version: 'v1.0' },
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('available')
+      expect(firstIssue(result).path).toContain('available')
     })
 
     it('should reject invalid version in available array', () => {
@@ -291,7 +319,7 @@ describe('versionConfigSchema', () => {
         deprecated: 'v0.9',
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('deprecated')
+      expect(firstIssue(result).path).toContain('deprecated')
     })
 
     it('should reject non-string items in deprecated array', () => {
@@ -310,7 +338,7 @@ describe('versionConfigSchema', () => {
         stable: 123,
       })
       expect(result.success).toBe(false)
-      expect(result.error?.issues[0].path).toContain('stable')
+      expect(firstIssue(result).path).toContain('stable')
     })
   })
 
@@ -375,7 +403,7 @@ describe('versionConfigSchema', () => {
       }
       const result = versionConfigSchema.safeParse(config)
       expect(result.success).toBe(true)
-      expect(result.data?.available[0].label).toBe('版本 1.0 🚀')
+      expect(parsed(result).available[0]?.label).toBe('版本 1.0 🚀')
     })
 
     it('should handle many versions in available array', () => {

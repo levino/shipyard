@@ -6,7 +6,10 @@ import tailwindcss from '@tailwindcss/vite'
 import { defineConfig } from 'astro/config'
 import appCss from './src/styles/app.css?url'
 
-// Version configuration for this demo
+// Version configuration for this demo.
+// The annotation keeps `banner` narrowed to its literal union — without it a
+// plain object literal widens it to `string`, which the config type rejects.
+/** @type {import('@levino/shipyard-docs').VersionConfig} */
 const versionsConfig = {
   // Current version shown by default
   current: 'v2',

@@ -69,10 +69,14 @@ const DEFAULT_POSITION = Number.POSITIVE_INFINITY
 const createLeafNode = (key: string, doc: DocsData): TreeNode => ({
   key,
   label: doc.sidebarLabel ?? doc.title ?? key,
-  href: doc.link !== false ? doc.path : undefined,
+  ...(doc.link !== false ? { href: doc.path } : {}),
   position: doc.sidebarPosition ?? DEFAULT_POSITION,
-  className: doc.sidebarClassName,
-  customProps: doc.sidebarCustomProps,
+  ...(doc.sidebarClassName !== undefined
+    ? { className: doc.sidebarClassName }
+    : {}),
+  ...(doc.sidebarCustomProps !== undefined
+    ? { customProps: doc.sidebarCustomProps }
+    : {}),
   collapsible: doc.collapsible ?? true,
   collapsed: doc.collapsed ?? true,
   children: {},
@@ -88,12 +92,19 @@ const createBranchNode = (key: string): TreeNode => ({
 })
 
 const mergeNodeWithDoc = (node: TreeNode, doc: DocsData): TreeNode => ({
+  // Spreading `node` first keeps the existing optional values (href, className,
+  // customProps) whenever the doc does not provide a replacement, so the keys
+  // below are only set when there is an actual value for them.
   ...node,
   label: doc.sidebarLabel ?? doc.title ?? node.label,
-  href: doc.link !== false ? doc.path : node.href,
+  ...(doc.link !== false ? { href: doc.path } : {}),
   position: doc.sidebarPosition ?? node.position,
-  className: doc.sidebarClassName ?? node.className,
-  customProps: doc.sidebarCustomProps ?? node.customProps,
+  ...(doc.sidebarClassName !== undefined
+    ? { className: doc.sidebarClassName }
+    : {}),
+  ...(doc.sidebarCustomProps !== undefined
+    ? { customProps: doc.sidebarCustomProps }
+    : {}),
   collapsible: doc.collapsible ?? node.collapsible,
   collapsed: doc.collapsed ?? node.collapsed,
 })
@@ -103,9 +114,10 @@ const insertAtPath = (
   pathParts: readonly string[],
   doc: DocsData,
 ): Readonly<Record<string, TreeNode>> => {
-  if (pathParts.length === 0) return root
-
   const [head, ...tail] = pathParts
+  // `head` is only undefined when `pathParts` is empty.
+  if (head === undefined) return root
+
   const existingNode = root[head]
 
   if (tail.length === 0) {

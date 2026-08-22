@@ -3,6 +3,7 @@
  * Supports Docusaurus-style features like line numbers, line highlighting, and code block titles.
  */
 
+import type { ElementContent } from 'hast'
 import {
   complement,
   filter,
@@ -29,7 +30,9 @@ const parseLineRange = (rangeStr: string): number[] => {
   const parseSegment = (segment: string): number[] => {
     const trimmed = trim(segment)
     if (test(/-/, trimmed)) {
-      const [start, end] = split('-', trimmed).map(Number)
+      const [startStr, endStr] = split('-', trimmed)
+      const start = Number(startStr)
+      const end = Number(endStr)
       return Array.from({ length: end - start + 1 }, (_, i) => start + i)
     }
     return [Number(trimmed)]
@@ -79,7 +82,7 @@ const extractCodeMeta = (meta: string | undefined): CodeMeta => {
   const startLineNumber = startLineMatch[1] ? Number(startLineMatch[1]) : 1
 
   return {
-    title,
+    ...(isNil(title) ? {} : { title }),
     highlightLines,
     showLineNumbers,
     startLineNumber,
@@ -198,7 +201,7 @@ export const transformerMagicComments = (): ShikiTransformer => {
       const lines = node.children.filter((child) => child.type === 'element')
       lines.forEach((lineNode, index) => {
         // Extract text content from line
-        const getText = (n: typeof lineNode): string => {
+        const getText = (n: ElementContent): string => {
           if (n.type === 'text') return n.value
           if (n.type === 'element' && n.children) {
             return n.children.map(getText).join('')

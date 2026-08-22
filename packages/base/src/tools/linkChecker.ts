@@ -52,16 +52,15 @@ function extractInternalLinks(html: string): { href: string; line: number }[] {
 
   const hrefRegex = /href=["']([^"']+)["']/g
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i]
-
+  for (const [index, line] of lines.entries()) {
     for (const match of line.matchAll(hrefRegex)) {
       const href = match[1]
 
       // Only include internal links (start with /)
       // This automatically excludes external URLs, anchors, and special protocols
-      if (href.startsWith('/')) {
-        links.push({ href, line: i + 1 })
+      // (the capture group is mandatory, so `href` is always a string here)
+      if (href?.startsWith('/')) {
+        links.push({ href, line: index + 1 })
       }
     }
   }
@@ -75,7 +74,10 @@ function extractInternalLinks(html: string): { href: string; line: number }[] {
  */
 function normalizePath(href: string): string[] {
   // Remove query string and hash, and decode URL-encoded characters
-  const path = decodeURIComponent(href.split('?')[0].split('#')[0])
+  // (`split` always yields at least one element, so the defaults never apply)
+  const [beforeQuery = ''] = href.split('?')
+  const [pathname = ''] = beforeQuery.split('#')
+  const path = decodeURIComponent(pathname)
 
   // Generate possible file paths to check
   const paths: string[] = []

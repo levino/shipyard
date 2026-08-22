@@ -7,7 +7,7 @@ import { i18n } from 'astro:config/server'
 import { type CollectionEntry, getCollection } from 'astro:content'
 import blogConfig from 'virtual:shipyard-blog/config'
 import type { APIRoute, GetStaticPaths } from 'astro'
-import { filter, map, pipe, reverse, sortBy, take } from 'ramda'
+import { map, pipe, reverse, sortBy, take } from 'ramda'
 
 const {
   feedOptions,
@@ -77,19 +77,24 @@ export const GET: APIRoute = async ({ site, currentLocale }) => {
   const allPosts = await getCollection('blog')
 
   // Filter and sort posts
-  const posts = pipe(
-    filter(shouldIncludePost),
-    filter((post: CollectionEntry<'blog'>) => {
+  const matchingPosts: CollectionEntry<'blog'>[] = allPosts
+    .filter(shouldIncludePost)
+    .filter((post: CollectionEntry<'blog'>) => {
       if (i18n) {
         const [postLocale] = post.id.split('/')
         return postLocale === currentLocale
       }
       return true
-    }),
-    sortBy((post: CollectionEntry<'blog'>) => post.data.date.getTime()),
-    reverse,
-    take(limit),
-  )(allPosts) as CollectionEntry<'blog'>[]
+    })
+  const posts = take(
+    limit,
+    reverse(
+      sortBy(
+        (post: CollectionEntry<'blog'>) => post.data.date.getTime(),
+        matchingPosts,
+      ),
+    ),
+  )
 
   const getBlogPostUrl = (post: CollectionEntry<'blog'>): string => {
     if (i18n && currentLocale) {

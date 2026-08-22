@@ -186,21 +186,37 @@ const docsSchemaBase = (image: () => z.ZodType) =>
  * Transform function for docs schema to merge snake_case aliases into camelCase fields.
  */
 const docsSchemaTransform = <
+  // The optional members spell out `| undefined` explicitly: with
+  // `exactOptionalPropertyTypes` the zod-inferred schema output (whose optional
+  // properties do include `undefined`) would not satisfy a constraint that
+  // omits it.
   T extends {
-    hide_title?: boolean
+    hide_title?: boolean | undefined
     hideTitle: boolean
-    hide_table_of_contents?: boolean
+    hide_table_of_contents?: boolean | undefined
     hideTableOfContents: boolean
-    canonical_url?: string
-    canonicalUrl?: string
-    custom_meta_tags?: { name?: string; property?: string; content: string }[]
-    customMetaTags?: { name?: string; property?: string; content: string }[]
-    pagination_label?: string
-    paginationLabel?: string
-    pagination_next?: string | null
-    paginationNext?: string | null
-    pagination_prev?: string | null
-    paginationPrev?: string | null
+    canonical_url?: string | undefined
+    canonicalUrl?: string | undefined
+    custom_meta_tags?:
+      | {
+          name?: string | undefined
+          property?: string | undefined
+          content: string
+        }[]
+      | undefined
+    customMetaTags?:
+      | {
+          name?: string | undefined
+          property?: string | undefined
+          content: string
+        }[]
+      | undefined
+    pagination_label?: string | undefined
+    paginationLabel?: string | undefined
+    pagination_next?: string | null | undefined
+    paginationNext?: string | null | undefined
+    pagination_prev?: string | null | undefined
+    paginationPrev?: string | null | undefined
   },
 >(
   data: T,
@@ -795,13 +811,13 @@ export default (config: DocsConfig = {}): AstroIntegration => {
 
   // Register this config in the global registry
   docsConfigs[normalizedBasePath] = {
-    editUrl,
+    ...(editUrl !== undefined ? { editUrl } : {}),
     showLastUpdateTime,
     showLastUpdateAuthor,
     routeBasePath: normalizedBasePath,
     collectionName: resolvedCollectionName,
     llmsTxtEnabled: !!llmsTxt?.enabled,
-    versions,
+    ...(versions !== undefined ? { versions } : {}),
   }
 
   // Virtual module for this specific route's config
@@ -851,6 +867,8 @@ export default (config: DocsConfig = {}): AstroIntegration => {
                   if (id === routeConfigVirtualId) {
                     return resolvedRouteConfigVirtualId
                   }
+                  // Not our virtual module - let other plugins resolve it
+                  return undefined
                 },
                 load(id) {
                   if (id === RESOLVED_VIRTUAL_MODULE_ID) {
@@ -921,6 +939,8 @@ export function hasVersioning(routeBasePath = 'docs') {
                   if (id === resolvedRouteConfigVirtualId) {
                     return `export const routeBasePath = ${JSON.stringify(normalizedBasePath)};\nexport const collectionName = ${JSON.stringify(resolvedCollectionName)};`
                   }
+                  // Not our virtual module - let other plugins load it
+                  return undefined
                 },
               },
             ],

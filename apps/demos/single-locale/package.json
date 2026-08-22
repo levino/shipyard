@@ -9,7 +9,8 @@
     "preview": "astro preview --host 0.0.0.0",
     "astro": "astro",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "type-check": "astro sync && tsc --noEmit"
   },
   "dependencies": {
     "@levino/shipyard-base": "*",

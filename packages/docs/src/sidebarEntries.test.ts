@@ -1,6 +1,40 @@
+import type { Entry } from '@levino/shipyard-base'
 import { describe, expect, it } from 'vitest'
 import type { DocsData } from './sidebarEntries'
 import { filterDocsForVersion, toSidebarEntries } from './sidebarEntries'
+
+/**
+ * Reads the sidebar entry at the given key path (descending through `subEntry`),
+ * failing the test with a precise message when a segment is missing.
+ */
+const entryAt = (
+  entries: Entry,
+  key: string,
+  ...rest: readonly string[]
+): Entry[string] => {
+  const entry = entries[key]
+  if (entry === undefined) {
+    expect.fail(`Expected sidebar entry "${key}" to exist`)
+  }
+  const [next, ...tail] = rest
+  if (next === undefined) {
+    return entry
+  }
+  const { subEntry } = entry
+  if (subEntry === undefined) {
+    expect.fail(`Expected sidebar entry "${key}" to have children`)
+  }
+  return entryAt(subEntry, next, ...tail)
+}
+
+/** Reads the array element at `index`, failing the test when it is missing. */
+const at = <T>(items: readonly T[], index: number): T => {
+  const item = items[index]
+  if (item === undefined) {
+    expect.fail(`Expected an element at index ${index}, but there was none`)
+  }
+  return item
+}
 
 describe('toSidebarEntries', () => {
   it('should create a basic sidebar structure from flat docs', () => {
@@ -48,7 +82,7 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    expect(entries.guide.subEntry?.intro.label).toBe('Intro')
+    expect(entryAt(entries, 'guide', 'intro').label).toBe('Intro')
   })
 
   it('should respect sidebar.position', () => {
@@ -73,7 +107,7 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    const guideSub = entries.guide.subEntry
+    const guideSub = entryAt(entries, 'guide').subEntry
     const keys = Object.keys(guideSub || {})
 
     // Items with explicit positions come first (1, 2), then items without position (Infinity) are sorted alphabetically
@@ -91,7 +125,7 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    expect(entries.page.className).toBe('special-page')
+    expect(entryAt(entries, 'page').className).toBe('special-page')
   })
 
   it('should handle index files correctly', () => {
@@ -101,10 +135,11 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    expect(entries.guide.href).toBe('/docs/guide')
-    expect(entries.guide.label).toBe('Guide Index')
-    expect(entries.guide.subEntry).toBeDefined()
-    expect(entries.guide.subEntry?.other).toBeDefined()
+    const guide = entryAt(entries, 'guide')
+    expect(guide.href).toBe('/docs/guide')
+    expect(guide.label).toBe('Guide Index')
+    expect(guide.subEntry).toBeDefined()
+    expect(guide.subEntry?.other).toBeDefined()
   })
 
   it('should sort alphabetically when positions match', () => {
@@ -189,8 +224,8 @@ describe('toSidebarEntries', () => {
 
     const entries = toSidebarEntries(docs)
 
-    expect(entries.guide.collapsible).toBe(true)
-    expect(entries.guide.collapsed).toBe(false)
+    expect(entryAt(entries, 'guide').collapsible).toBe(true)
+    expect(entryAt(entries, 'guide').collapsed).toBe(false)
   })
 
   it('should apply default collapsible/collapsed values when not specified', () => {
@@ -210,8 +245,8 @@ describe('toSidebarEntries', () => {
     const entries = toSidebarEntries(docs)
 
     // Default values: collapsible: true, collapsed: true
-    expect(entries.guide.collapsible).toBe(true)
-    expect(entries.guide.collapsed).toBe(true)
+    expect(entryAt(entries, 'guide').collapsible).toBe(true)
+    expect(entryAt(entries, 'guide').collapsed).toBe(true)
   })
 
   it('should filter unlisted pages from sidebar', () => {
@@ -235,7 +270,7 @@ describe('toSidebarEntries', () => {
     ]
 
     const entries = toSidebarEntries(docs)
-    const guideSubKeys = Object.keys(entries.guide.subEntry || {})
+    const guideSubKeys = Object.keys(entryAt(entries, 'guide').subEntry || {})
 
     // hidden should not be in the sidebar
     expect(guideSubKeys).toContain('intro')
@@ -261,9 +296,9 @@ describe('toSidebarEntries', () => {
     const entries = toSidebarEntries(docs)
 
     // Category should exist but not have an href
-    expect(entries.guide.label).toBe('Guide')
-    expect(entries.guide.href).toBeUndefined()
-    expect(entries.guide.subEntry?.intro.href).toBe('/docs/guide/intro')
+    expect(entryAt(entries, 'guide').label).toBe('Guide')
+    expect(entryAt(entries, 'guide').href).toBeUndefined()
+    expect(entryAt(entries, 'guide', 'intro').href).toBe('/docs/guide/intro')
   })
 
   it('should apply index.md metadata including collapsible state to parent category', () => {
@@ -287,10 +322,11 @@ describe('toSidebarEntries', () => {
 
     const entries = toSidebarEntries(docs)
 
-    expect(entries.advanced.label).toBe('Advanced')
-    expect(entries.advanced.className).toBe('advanced-section')
-    expect(entries.advanced.collapsible).toBe(false)
-    expect(entries.advanced.collapsed).toBe(false)
+    const advanced = entryAt(entries, 'advanced')
+    expect(advanced.label).toBe('Advanced')
+    expect(advanced.className).toBe('advanced-section')
+    expect(advanced.collapsible).toBe(false)
+    expect(advanced.collapsed).toBe(false)
   })
 
   it('should not include collapsible/collapsed for leaf nodes', () => {
@@ -305,8 +341,8 @@ describe('toSidebarEntries', () => {
     const entries = toSidebarEntries(docs)
 
     // Leaf nodes should not have collapsible/collapsed properties
-    expect(entries.page.collapsible).toBeUndefined()
-    expect(entries.page.collapsed).toBeUndefined()
+    expect(entryAt(entries, 'page').collapsible).toBeUndefined()
+    expect(entryAt(entries, 'page').collapsed).toBeUndefined()
   })
 })
 
@@ -353,8 +389,8 @@ describe('filterDocsForVersion', () => {
 
     const filtered = filterDocsForVersion(docs, 'v2')
 
-    expect(filtered[0].id).toBe('getting-started.md')
-    expect(filtered[1].id).toBe('en/intro.md')
+    expect(at(filtered, 0).id).toBe('getting-started.md')
+    expect(at(filtered, 1).id).toBe('en/intro.md')
   })
 
   it('should preserve other doc properties unchanged', () => {
@@ -366,22 +402,22 @@ describe('filterDocsForVersion', () => {
         sidebarPosition: 5,
         sidebarLabel: 'Custom Label',
         sidebarClassName: 'special-class',
-        pagination_next: 'next-page',
-        pagination_prev: 'prev-page',
+        paginationNext: 'next-page',
+        paginationPrev: 'prev-page',
         link: true,
       },
     ]
 
     const filtered = filterDocsForVersion(docs, 'v1')
-    expect(filtered[0]).toEqual({
+    expect(at(filtered, 0)).toEqual({
       id: 'page.md',
       title: 'Page Title',
       path: '/docs/v1/page',
       sidebarPosition: 5,
       sidebarLabel: 'Custom Label',
       sidebarClassName: 'special-class',
-      pagination_next: 'next-page',
-      pagination_prev: 'prev-page',
+      paginationNext: 'next-page',
+      paginationPrev: 'prev-page',
       link: true,
     })
   })
@@ -435,11 +471,11 @@ describe('filterDocsForVersion', () => {
 
     const v1Docs = filterDocsForVersion(docs, 'v1.0')
     expect(v1Docs).toHaveLength(1)
-    expect(v1Docs[0].title).toBe('Intro v1.0')
+    expect(at(v1Docs, 0).title).toBe('Intro v1.0')
 
     const v2Docs = filterDocsForVersion(docs, 'v2.0.0')
     expect(v2Docs).toHaveLength(1)
-    expect(v2Docs[0].title).toBe('Intro v2.0.0')
+    expect(at(v2Docs, 0).title).toBe('Intro v2.0.0')
   })
 
   it('should work with special version names like latest and next', () => {
@@ -455,10 +491,10 @@ describe('filterDocsForVersion', () => {
 
     const latestDocs = filterDocsForVersion(docs, 'latest')
     expect(latestDocs).toHaveLength(1)
-    expect(latestDocs[0].title).toBe('Latest Intro')
+    expect(at(latestDocs, 0).title).toBe('Latest Intro')
 
     const nextDocs = filterDocsForVersion(docs, 'next')
     expect(nextDocs).toHaveLength(1)
-    expect(nextDocs[0].title).toBe('Next Intro')
+    expect(at(nextDocs, 0).title).toBe('Next Intro')
   })
 })

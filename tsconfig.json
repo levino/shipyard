@@ -1,3 +1,11 @@
 {
-  "extends": ["astro/tsconfigs/strictest"]
+  "extends": ["astro/tsconfigs/strictest"],
+  "include": ["packages/**/*.ts", "types/**/*.d.ts"],
+  "exclude": [
+    "**/node_modules",
+    "**/dist",
+    "**/build",
+    "**/.astro",
+    "**/.docusaurus"
+  ]
 }
