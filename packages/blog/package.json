@@ -34,15 +34,15 @@
   "homepage": "https://shipyard.levinkeller.de",
   "dependencies": {
     "@levino/shipyard-base": "^0.8.5",
-    "ramda": "^0.31",
+    "ramda": "^0.32.0",
     "yaml": "^2.8.3"
   },
   "peerDependencies": {
-    "astro": "^6.1.10"
+    "astro": "^7.2.4"
   },
   "devDependencies": {
-    "@types/ramda": "^0.31",
-    "astro": "^6.1.10"
+    "@types/ramda": "^0.32",
+    "astro": "^7.2.4"
   },
   "repository": {
     "type": "git",

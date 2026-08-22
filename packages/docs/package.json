@@ -21,20 +21,20 @@
   "license": "MIT",
   "homepage": "https://shipyard.levinkeller.de",
   "peerDependencies": {
-    "astro": "^6.1.10"
+    "astro": "^7.2.4"
   },
   "dependencies": {
-    "effect": "^3.20.0",
-    "ramda": "^0.31",
+    "effect": "^3.22.1",
+    "ramda": "^0.32.0",
     "unist-util-visit": "^5.0.0",
     "@levino/shipyard-base": "^0.8.5"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16",
+    "@tailwindcss/typography": "^0.5.20",
     "@types/hast": "^3.0.4",
-    "@types/ramda": "^0.31",
-    "astro": "^6.1.10",
-    "vitest": "^4.1.0"
+    "@types/ramda": "^0.32",
+    "astro": "^7.2.4",
+    "vitest": "^4.1.11"
   },
   "repository": {
     "type": "git",

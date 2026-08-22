@@ -38,8 +38,8 @@
     "./styles/components.css": "./src/styles/components.css"
   },
   "peerDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "astro": "^6.1.10",
+    "@tailwindcss/typography": "^0.5.20",
+    "astro": "^7.2.4",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
@@ -53,21 +53,22 @@
     "url": "https://github.com/levino/shipyard"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "@types/ramda": "^0.31",
+    "@tailwindcss/typography": "^0.5.20",
+    "@types/ramda": "^0.32",
     "daisyui": "^5",
     "remark": "^15.0.1",
     "remark-html": "^16.0.1",
     "tailwindcss": "^4",
-    "typescript": "^5.2.2",
-    "vite": "^7.3.2",
-    "vitest": "^4.1.0"
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "vitest": "^4.1.11"
   },
   "dependencies": {
+    "@astrojs/markdown-remark": "^7.2.4",
     "clsx": "^2.1.0",
     "mdast-util-directive": "^3.0.0",
     "micromark-extension-directive": "^3.0.0",
-    "ramda": "^0.31",
+    "ramda": "^0.32.0",
     "remark-directive": "^3.0.0",
     "tailwind-merge": "^2.2.0",
     "unified": "^11.0.0",

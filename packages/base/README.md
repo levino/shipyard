@@ -10,10 +10,10 @@ npm install @levino/shipyard-base
 
 ## Peer Dependencies
 
-- `astro` ^5.7
-- `tailwindcss` ^3
-- `daisyui` ^4
-- `@tailwindcss/typography` ^0.5.10
+- `astro` ^7.2.4
+- `tailwindcss` ^4
+- `daisyui` ^5
+- `@tailwindcss/typography` ^0.5.20
 
 ## Basic Usage
 

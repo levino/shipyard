@@ -27,7 +27,7 @@ This is a monorepo for shipyard, a general-purpose page builder for Astro. This 
 
 ## Tech Stack
 
-- **Framework**: Astro 5.x
+- **Framework**: Astro 7.x
 - **Styling**: Tailwind CSS with DaisyUI
 - **Language**: TypeScript (strict mode)
 - **Package Manager**: npm with workspaces

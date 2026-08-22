@@ -17,9 +17,8 @@
     "@lavamoat/allow-scripts": "^3.4.1",
     "@lavamoat/preinstall-always-fail": "^2.1.1",
     "lefthook": "^2.1.4",
-    "lint-staged": "^15.2.0",
     "turbo": "^2.8.0",
-    "typescript": "^5.3.3"
+    "typescript": "^7.0.2"
   },
   "workspaces": [
     "packages/*",
@@ -28,7 +27,7 @@
     "apps/test/*"
   ],
   "dependencies": {
-    "@changesets/cli": "^2.27.11"
+    "@changesets/cli": "^3.0.1"
   },
   "lavamoat": {
     "allowScripts": {

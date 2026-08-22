@@ -83,7 +83,7 @@ shipyard/
 ```
 
 ### Key Technology Stack
-- **Framework**: Astro 5.x with TypeScript (strict mode)
+- **Framework**: Astro 7.x with TypeScript (strict mode)
 - **Styling**: Tailwind CSS with DaisyUI components
 - **Package Manager**: npm with workspaces
 - **Testing**: Vitest (unit tests), Playwright (E2E tests)

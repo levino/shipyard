@@ -10,7 +10,7 @@ npm install @levino/shipyard-blog
 
 ## Peer Dependencies
 
-- `astro` ^5.15
+- `astro` ^7.2.4
 
 ## Basic Usage
 
