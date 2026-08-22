@@ -282,3 +282,30 @@ shipyard supports all standard markdown features:
 - Images
 - Horizontal rules
 - Heading anchors (auto-generated)
+
+---
+
+## Der Markdown-Prozessor
+
+Astro 7 rendert Markdown standardmäßig mit [Sätteri](https://docs.astro.build/en/guides/markdown-content/), das keine unified-Plugins (remark/rehype) ausführt. shipyards Admonitions, Tabs und Block-Direktiven sind allesamt remark-Plugins, deshalb konfiguriert `shipyard-base` Astro so, dass stattdessen der `unified()`-Prozessor aus `@astrojs/markdown-remark` verwendet wird. Das geschieht automatisch — du musst nichts installieren oder konfigurieren.
+
+### Eigene remark-Plugins hinzufügen
+
+Übergib sie wie in Astro üblich; shipyard führt sie zusätzlich zu seinen eigenen aus:
+
+```js
+// astro.config.mjs
+import { unified } from '@astrojs/markdown-remark'
+import remarkToc from 'remark-toc'
+
+export default defineConfig({
+  markdown: {
+    processor: unified({ remarkPlugins: [remarkToc] }),
+  },
+  integrations: [shipyard({ /* ... */ })],
+})
+```
+
+:::warning
+Wenn du `markdown.processor` auf einen Prozessor setzt, der nicht auf unified basiert (etwa Sätteri), sind shipyards Markdown-Features deaktiviert. shipyard überschreibt die Einstellung in diesem Fall und gibt eine Warnung aus.
+:::

@@ -13,7 +13,12 @@ const config: Config = {
   projectName: 'shipyard',
 
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
+
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
 
   // No i18n configuration - single language site
   i18n: {

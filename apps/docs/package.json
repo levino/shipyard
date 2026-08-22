@@ -14,12 +14,12 @@
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^6.1.10",
-    "astro-pagefind": "^1.8.5",
+    "astro": "^7.2.4",
+    "astro-pagefind": "^2.0.1",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.16"
+    "@tailwindcss/typography": "^0.5.20"
   }
 }

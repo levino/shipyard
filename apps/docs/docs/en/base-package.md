@@ -23,10 +23,10 @@ npm install tailwindcss daisyui @tailwindcss/typography
 
 | Package | Version |
 |---------|---------|
-| `astro` | ^5.7 |
+| `astro` | ^7.2.4 |
 | `tailwindcss` | ^4 |
 | `daisyui` | ^5 |
-| `@tailwindcss/typography` | ^0.5.10 |
+| `@tailwindcss/typography` | ^0.5.20 |
 
 ### Tailwind Configuration
 
