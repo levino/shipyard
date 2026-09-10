@@ -21,7 +21,7 @@
   "license": "MIT",
   "homepage": "https://shipyard.levinkeller.de",
   "peerDependencies": {
-    "astro": "^7.2.4"
+    "astro": "^7.3.2"
   },
   "dependencies": {
     "effect": "^3.22.1",
@@ -33,7 +33,7 @@
     "@tailwindcss/typography": "^0.5.20",
     "@types/hast": "^3.0.4",
     "@types/ramda": "^0.32",
-    "astro": "^7.2.4",
+    "astro": "^7.3.2",
     "vitest": "^4.1.11"
   },
   "repository": {
