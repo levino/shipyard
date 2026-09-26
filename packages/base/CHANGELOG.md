@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.9.2
+
+### Patch Changes
+
+- 359381a: Long entries in the sidebar (for example blog post titles under "Recent posts" or long doc titles) now wrap onto several lines instead of running out of the sidebar. This happened with daisyUI 5.7 and later.
+
 ## 0.9.1
 
 ### Patch Changes
