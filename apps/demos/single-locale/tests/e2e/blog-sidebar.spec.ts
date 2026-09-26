@@ -23,14 +23,14 @@ test.describe('Blog Sidebar Configuration', () => {
   }) => {
     await page.goto('/blog')
 
-    // With blogSidebarCount: 'ALL', all 3 posts should be shown
+    // With blogSidebarCount: 'ALL', all 4 posts should be shown
     const blogPostLinks = page.locator(
       '[data-testid="sidebar-local-nav"] a[href*="/blog/2"]',
     )
     const postCount = await blogPostLinks.count()
 
-    // Should have all 3 posts
-    expect(postCount).toBe(3)
+    // Should have all 4 posts
+    expect(postCount).toBe(4)
   })
 
   test('does not show "View all posts" link when all posts are displayed', async ({
@@ -73,4 +73,43 @@ test.describe('Blog Sidebar Configuration', () => {
       expect(dates[index] >= dates[index + 1]).toBe(true)
     }
   })
+
+  for (const viewport of [
+    { width: 1280, height: 800 },
+    { width: 390, height: 844 },
+  ]) {
+    test(`long post titles wrap inside the sidebar at ${viewport.width}px`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await page.goto('/blog')
+      await page.evaluate(() => {
+        const toggle = document.getElementById('drawer') as HTMLInputElement
+        toggle.checked = true
+      })
+
+      const longTitleLink = page.locator(
+        '[data-testid="sidebar-local-nav"] a[href="/blog/2024-09-07-long-title"]',
+      )
+      await expect(longTitleLink).toBeVisible()
+
+      const layout = await longTitleLink.evaluate((link) => {
+        const sidebar = link.closest('[data-testid="sidebar-navigation"]')
+        if (!sidebar) throw new Error('sidebar not found')
+        const label = link.firstElementChild
+        if (!label) throw new Error('label not found')
+        const linkRect = link.getBoundingClientRect()
+        const sidebarRect = sidebar.getBoundingClientRect()
+        return {
+          overflow: linkRect.right - sidebarRect.right,
+          lineCount: Math.round(
+            label.getBoundingClientRect().height /
+              Number.parseFloat(getComputedStyle(label).lineHeight),
+          ),
+        }
+      })
+      expect(layout.overflow).toBeLessThanOrEqual(0)
+      expect(layout.lineCount).toBeGreaterThan(1)
+    })
+  }
 })
