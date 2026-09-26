@@ -68,7 +68,7 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
                 : <span class='menu-title'>{renderLabelWithBadge(label)}</span>
             )}
           </summary>
-          <ul>
+          <ul class='whitespace-normal'>
             <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
           </ul>
         </details>
@@ -84,7 +84,7 @@ const isActiveOrHasActiveChild = (entryValue: Entry[string]): boolean => {
               ? <Fragment set:html={entryValue.labelHtml} />
               : <span class='menu-title'>{renderLabelWithBadge(label)}</span>
           )}
-          <ul>
+          <ul class='whitespace-normal'>
             <Astro.self entry={entryValue.subEntry} currentPath={currentPath} />
           </ul>
         </>
