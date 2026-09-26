@@ -1,9 +1,6 @@
 import { fileURLToPath } from 'node:url'
-import { isUnifiedProcessor, unified } from '@astrojs/markdown-remark'
 import type { AstroIntegration } from 'astro'
-import { remarkAdmonitions } from './remark/remarkAdmonitions'
-import { remarkBlockDirective } from './remark/remarkBlockDirective'
-import { remarkNpm2Yarn } from './remark/remarkNpm2Yarn'
+import { shipyardMarkdownProcessor } from './markdownProcessor'
 import type { Config } from './schemas/config'
 import { checkLinks, reportBrokenLinks } from './tools/linkChecker'
 
@@ -46,38 +43,13 @@ export default (config: Config): AstroIntegration => {
           [shipyardCssId]: config.css ? `import '${config.css}';` : '',
         } as Record<string, string | undefined>
 
-        // Astro 7 renders Markdown with Sätteri by default, which does not run
-        // unified plugins. shipyard's admonitions, npm2yarn tabs and block
-        // directives are all remark plugins, so we pin the unified processor
-        // from @astrojs/markdown-remark. Any plugins the user already put on
-        // their own `unified()` processor are carried over so both sets run;
-        // plugins they pass via the deprecated `markdown.remarkPlugins` option
-        // are appended by Astro afterwards.
-        const userProcessor = astroConfig.markdown?.processor
-        const inherited =
-          userProcessor && isUnifiedProcessor(userProcessor)
-            ? userProcessor.options
-            : undefined
-
-        if (userProcessor && !inherited) {
-          logger.warn(
-            `\`markdown.processor\` is set to \`${userProcessor.name}\`, which does not run remark plugins. ` +
-              'Overriding it with `unified()` so shipyard admonitions, npm2yarn tabs and block directives keep working.',
-          )
-        }
+        const processor = shipyardMarkdownProcessor(
+          astroConfig.markdown.processor,
+          logger,
+        )
 
         updateConfig({
-          markdown: {
-            processor: unified({
-              ...inherited,
-              remarkPlugins: [
-                ...(inherited?.remarkPlugins ?? []),
-                remarkBlockDirective,
-                remarkAdmonitions,
-                remarkNpm2Yarn,
-              ],
-            }),
-          },
+          ...(processor && { markdown: { processor } }),
           vite: {
             plugins: [
               {

@@ -65,6 +65,7 @@
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
+    "@astrojs/markdown-satteri": "^0.4.2",
     "clsx": "^2.1.1",
     "mdast-util-directive": "^3.1.0",
     "mdast-util-to-hast": "^13.2.1",
