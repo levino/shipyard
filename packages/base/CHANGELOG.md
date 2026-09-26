@@ -1,5 +1,12 @@
 # @levino/shipyard-base
 
+## 0.9.3
+
+### Patch Changes
+
+- 7973bbe: shipyard now ships with up-to-date dependencies. Class merging in shipyard components follows Tailwind CSS 4 semantics (tailwind-merge 3), and the admonition directive parser is on its current major. Nothing changes in how you configure or use shipyard; the supported Astro range stays the same.
+- 8c12a24: Builds no longer warn that `markdown.processor` is set to `satteri` when you never set it. Astro 7.3 resolves an unset processor to Sätteri, and shipyard mistook that default for your choice. shipyard still switches the default to `unified()` so admonitions, npm2yarn tabs and block directives render. A processor you configure yourself is now left as it is: a `unified()` processor gets the shipyard plugins added, any other processor stays untouched and shipyard warns once that its Markdown features will not render with it.
+
 ## 0.9.2
 
 ### Patch Changes
