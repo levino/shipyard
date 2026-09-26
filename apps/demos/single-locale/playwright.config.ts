@@ -21,7 +21,9 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npx astro preview --host 0.0.0.0 --port 4334',
+    // --ignore-lock keeps Astro from detaching the server when it detects an
+    // AI agent, which Playwright would report as an early exit.
+    command: 'npx astro preview --host 0.0.0.0 --port 4334 --ignore-lock',
     url: 'http://localhost:4334',
     reuseExistingServer: !process.env.CI,
   },

@@ -9,7 +9,7 @@ export default defineConfig({
   workers: process.env.CI ? 4 : undefined,
   reporter: 'html',
   use: {
-    baseURL: 'http://localhost:4321',
+    baseURL: 'http://localhost:4335',
     trace: 'on-first-retry',
   },
 
@@ -21,8 +21,10 @@ export default defineConfig({
   ],
 
   webServer: {
-    command: 'npm run preview',
-    url: 'http://localhost:4321',
+    // --ignore-lock keeps Astro from detaching the server when it detects an
+    // AI agent, which Playwright would report as an early exit.
+    command: 'npx astro preview --host 0.0.0.0 --port 4335 --ignore-lock',
+    url: 'http://localhost:4335',
     reuseExistingServer: !process.env.CI,
   },
 })

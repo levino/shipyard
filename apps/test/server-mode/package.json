@@ -13,17 +13,17 @@
     "type-check": "astro sync && tsc --noEmit"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.4",
+    "@astrojs/node": "^11.1.6",
     "@levino/shipyard-base": "*",
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^7.3.2",
+    "astro": "^7.3.5",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.20",
-    "@playwright/test": "^1.47.2"
+    "@playwright/test": "^1.63.0"
   }
 }
