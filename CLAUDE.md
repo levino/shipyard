@@ -14,8 +14,9 @@ This is a monorepo for shipyard, a general-purpose page builder for Astro. This 
 
 ```
 ├── apps/
-│   ├── demo/           # Demo application showcasing shipyard features
-│   └── docs/           # Documentation site
+│   ├── demos/          # Demo applications (plus Docusaurus counterparts)
+│   ├── docs/           # Documentation site
+│   └── test/           # Test-only apps (e.g. server mode with the Node adapter)
 ├── packages/
 │   ├── base/           # Core shipyard components and layouts
 │   ├── blog/           # Blog-specific components
@@ -33,7 +34,7 @@ This is a monorepo for shipyard, a general-purpose page builder for Astro. This 
 - **Package Manager**: npm with workspaces
 - **Testing**: Playwright (E2E)
 - **Formatting & Linting**: Biome (semiColons: asNeeded, singleQuote: true)
-- **Git Hooks**: Husky with pre-commit biome check
+- **Git Hooks**: Lefthook with pre-commit biome check
 
 ## Development Workflow
 
@@ -47,17 +48,23 @@ Before working with this codebase, ensure you have:
 # Install dependencies and run allowed lifecycle scripts (run from root)
 npm run setup
 
-# Run demo app in development mode
-cd apps/demo
+# Run a demo app in development mode
+cd apps/demos/i18n
 npm run dev
 
 # Run docs app in development mode
 cd apps/docs
 npm run dev
 
-# Build demo app
-cd apps/demo
+# Build a demo app
+cd apps/demos/i18n
 npm run build
+
+# Build everything
+npm run build
+
+# Run unit tests
+npm run test:unit
 
 # Run E2E tests
 npm run test:e2e
@@ -79,7 +86,7 @@ For comprehensive coding conventions, see the [Code Style Guide](apps/docs/docs/
 **Key tooling:**
 
 1. **Formatting & Linting**: Use Biome (configured in `biome.json`)
-   - Run `npx @biomejs/biome@2.2.3 check --write .` before committing
+   - Run `npx biome check --write .` before committing
 
 2. **TypeScript**: Strict mode enabled with Astro's strictest TypeScript config
 
@@ -124,17 +131,17 @@ Documentation features:
 
 3. **Peer Dependencies**: Packages use peer dependencies for Astro, Tailwind, and DaisyUI. Check `peerDependencies` in package.json files.
 
-4. **Testing**: E2E tests are located in `apps/demo/tests/e2e/` using Playwright.
+4. **Testing**: E2E tests are located in `apps/demos/*/tests/e2e/` and `apps/test/*/tests/e2e/` using Playwright.
 
-5. **Build Process**: Each app can be built independently. No global build command is configured.
+5. **Build Process**: Each app can be built independently; `npm run build` at the root builds all workspaces.
 
 6. **Changesets**: The project uses `@changesets/cli` for version management.
 
 7. **Git Hooks**: Lefthook is configured to run `biome check --write` on pre-commit to automatically fix linting/formatting issues.
 
-8. **IMPORTANT - Run Biome Before Committing**: Always run `npx @biomejs/biome@2.2.3 check --write .` before committing to ensure linting passes. The CI uses biome version 2.2.3, so use this exact version to avoid schema mismatches.
+8. **IMPORTANT - Run Biome Before Committing**: Always run `npx biome check --write .` before committing to ensure linting passes. This uses the Biome version pinned in the root `package.json`; CI (`.github/workflows/checks.yml`) pins the same version, so bump both together.
 
-9. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`.
+9. **NPM Scripts Security**: This project uses `@lavamoat/allow-scripts` to disable npm lifecycle scripts by default for security. Use `npm run setup` instead of `npm install` to install dependencies and run allowed scripts. The allowlist is configured in `package.json` under `lavamoat.allowScripts`. Allowed entries are pinned to a version (`lefthook#2.1.14`); after bumping such a package, run `npx allow-scripts auto` and commit the result — CI runs `npx allow-scripts check` and fails otherwise.
 
 10. **IMPORTANT - Run E2E Tests Before Pushing**: Always run `npm run test:e2e` from the repository root before pushing changes to ensure all E2E tests pass. This runs Playwright tests for all demo apps and catches regressions early.
 
