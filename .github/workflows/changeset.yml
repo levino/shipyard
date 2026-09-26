@@ -13,16 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
+    outputs:
+      has-changesets: ${{ steps.changesets.outputs.has-changesets }}
     steps:
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@v3
         id: generate-token
         with:
-          app-id: ${{ vars.APP_ID }}
+          client-id: ${{ vars.APP_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           token: ${{ steps.generate-token.outputs.token }}
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
@@ -30,23 +32,25 @@ jobs:
         run: npm ci
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
-          publish: npx changeset publish
+          publish-script: npx changeset publish
+          github-token: ${{ steps.generate-token.outputs.token }}
         env:
-          GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
           NPM_CONFIG_PROVENANCE: true
 
   release-candidate:
     name: Release Candidate
     needs: release
+    # Snapshots are cut from pending changesets; right after a release there are none.
+    if: needs.release.outputs.has-changesets == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'

@@ -5,17 +5,16 @@
   "private": true,
   "scripts": {
     "dev": "astro dev --host 0.0.0.0",
-    "build": "astro build",
-    "build:expect-fail": "astro build 2>&1 | grep -q 'Broken links found' && echo 'PASS: Build correctly failed on broken links' || (echo 'FAIL: Build should have failed on broken links' && exit 1)",
     "preview": "astro preview --host 0.0.0.0",
     "astro": "astro",
-    "type-check": "astro sync && tsc --noEmit"
+    "type-check": "astro sync && tsc --noEmit",
+    "test:e2e": "astro build 2>&1 | grep -q 'Broken links found' && echo 'PASS: Build correctly failed on broken links' || (echo 'FAIL: Build should have failed on broken links' && exit 1)"
   },
   "dependencies": {
     "@levino/shipyard-base": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^7.3.2",
+    "astro": "^7.3.5",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
