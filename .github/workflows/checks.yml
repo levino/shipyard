@@ -19,19 +19,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Setup Biome
         uses: biomejs/setup-biome@v2
         with:
-          version: 2.2.3
+          version: 2.5.14
       - name: Run Biome
         run: biome ci .
   type-check:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: 'npm'
@@ -43,13 +43,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: 'npm'
       - run: npm ci
-      - run: npm run test --workspaces --if-present
+      - run: npx allow-scripts check
+      - run: npm run test:unit
+      # Needs no browser: asserts that a build with broken links fails.
+      - run: npm run test:e2e --workspace=broken-links-test
   test-e2e:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -62,7 +65,7 @@ jobs:
     # https://playwright.dev/docs/docker
     # Keep the image tag in sync with @playwright/test in package-lock.json.
     container:
-      image: mcr.microsoft.com/playwright:v1.57.0-noble
+      image: mcr.microsoft.com/playwright:v1.63.0-noble
       options: --ipc=host
     strategy:
       matrix:
@@ -80,7 +83,7 @@ jobs:
             workspace: versioned-i18n-demo
             path: apps/demos/versioned-i18n
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         # Full history so the demos' `git log`-based "last updated"/"last
         # author" metadata can be resolved (shallow clones have no file history).
         with:
@@ -90,7 +93,7 @@ jobs:
       # Trust the workspace so the build's `git fetch --unshallow` and `git log`
       # (used for page metadata) work.
       - run: git config --global --add safe.directory '*'
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
           cache: 'npm'

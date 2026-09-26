@@ -14,11 +14,10 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "2.2.3",
-    "@lavamoat/allow-scripts": "^3.4.1",
-    "@lavamoat/preinstall-always-fail": "^2.1.1",
-    "lefthook": "^2.1.4",
-    "turbo": "^2.9.14",
+    "@biomejs/biome": "2.5.14",
+    "@lavamoat/allow-scripts": "^5.1.0",
+    "@lavamoat/preinstall-always-fail": "^3.0.0",
+    "lefthook": "^2.1.14",
     "typescript": "^7.0.2"
   },
   "workspaces": [
@@ -28,16 +27,12 @@
     "apps/test/*"
   ],
   "dependencies": {
-    "@changesets/cli": "^3.0.1"
+    "@changesets/cli": "^3.0.3"
   },
   "lavamoat": {
     "allowScripts": {
       "@lavamoat/preinstall-always-fail": false,
-      "core-js": false,
-      "core-js-pure": false,
-      "esbuild": true,
-      "lefthook": true,
-      "sharp": true
+      "lefthook#2.1.14": true
     }
   }
 }
