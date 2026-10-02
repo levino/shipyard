@@ -17,7 +17,7 @@
     "@biomejs/biome": "2.5.14",
     "@lavamoat/allow-scripts": "^5.1.0",
     "@lavamoat/preinstall-always-fail": "^3.0.0",
-    "lefthook": "^2.1.14",
+    "lefthook": "^2.1.15",
     "typescript": "^7.0.2"
   },
   "workspaces": [
