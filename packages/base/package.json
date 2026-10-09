@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@tailwindcss/typography": "^0.5.20",
-    "astro": "^7.3.2",
+    "astro": "^7.3.6",
     "daisyui": "^5",
     "tailwindcss": "^4"
   },
