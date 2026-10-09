@@ -14,10 +14,10 @@
   "private": true,
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
+    "@biomejs/biome": "2.5.15",
     "@lavamoat/allow-scripts": "^5.1.0",
     "@lavamoat/preinstall-always-fail": "^3.0.0",
-    "lefthook": "^2.1.14",
+    "lefthook": "^2.1.17",
     "typescript": "^7.0.2"
   },
   "workspaces": [
