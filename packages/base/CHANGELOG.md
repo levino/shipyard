@@ -1,5 +1,11 @@
 # @levino/shipyard-base
 
+## 0.9.4
+
+### Patch Changes
+
+- abdf72e: Linked headings now look exactly like plain headings on sites using `@tailwindcss/typography`: no link underline and the heading's own font weight. Only the `#` on hover shows that they are links.
+
 ## 0.9.3
 
 ### Patch Changes
