@@ -48,7 +48,10 @@ test.describe('Mobile Layout', () => {
       expect(scrollWidth).toBeLessThanOrEqual(clientWidth)
     })
 
-    test('drawer-content has overflow-x-hidden style', async ({ page }) => {
+    // `clip` instead of `hidden`: it cuts off horizontal overflow without
+    // making the element a scroll container, which would break `position:
+    // sticky` (e.g. the desktop table of contents) inside it.
+    test('drawer-content clips horizontal overflow', async ({ page }) => {
       await page.goto('/en/docs/')
 
       const drawerContent = page.locator('.drawer-content').first()
@@ -56,7 +59,7 @@ test.describe('Mobile Layout', () => {
         (element) => window.getComputedStyle(element).overflowX,
       )
 
-      expect(overflowX).toBe('hidden')
+      expect(overflowX).toBe('clip')
     })
   })
 })

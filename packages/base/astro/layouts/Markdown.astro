@@ -1,5 +1,6 @@
 ---
 import type { ImageMetadata } from 'astro'
+import { useUiStrings } from '../../src/i18n'
 import type { NavigationTree } from '../../src/schemas/config'
 import Base from './Page.astro'
 
@@ -50,6 +51,7 @@ type Props = {
 }
 
 const props = Astro.props
+const t = useUiStrings(Astro.currentLocale)
 const frontmatter = props.frontmatter
 
 // Check if this is a draft page in production
@@ -89,7 +91,7 @@ const allMetaTags = [
 <Base {...pageProps} customMetaTags={allMetaTags}>
   {isDraft && (
     <div class="alert alert-warning mb-4">
-      <span>This page is a draft and will not be visible in production.</span>
+      <span>{t.draftNotice}</span>
     </div>
   )}
   <div class={wrapperClass}><slot /></div>

@@ -1,4 +1,5 @@
 ---
+import { useUiStrings } from '../../src/i18n'
 import { cn } from '../../src/tools/cn'
 
 interface Link {
@@ -16,7 +17,7 @@ interface Props {
 
 const {
   links,
-  label = 'On this page',
+  label = useUiStrings(Astro.currentLocale).onThisPage,
   class: className,
   desktopOnly = false,
 } = Astro.props

@@ -1,4 +1,5 @@
 ---
+import { useUiStrings } from '../../src/i18n'
 import type { AnnouncementBar } from '../../src/schemas/config'
 
 interface Props {
@@ -6,6 +7,7 @@ interface Props {
 }
 
 const { config } = Astro.props
+const t = useUiStrings(Astro.currentLocale)
 const {
   id = 'announcement-bar',
   content,
@@ -67,7 +69,7 @@ const customStyle = [
       <button
         type="button"
         class="announcement-close absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:opacity-70 transition-opacity"
-        aria-label="Close announcement"
+        aria-label={t.closeAnnouncement}
         data-announcement-id={id}
       >
         <svg

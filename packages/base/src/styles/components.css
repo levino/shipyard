@@ -18,6 +18,35 @@
     @apply block overflow-x-auto;
   }
 
+  /*
+   * Linked headings (rehypeHeadingLinks): the whole heading links to its own
+   * anchor. It keeps the heading's look; a "#" fades in on hover and keyboard
+   * focus. The "#" always takes its space, so nothing shifts, and its empty
+   * alt text keeps it out of the link's accessible name.
+   */
+  .prose :where(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  .prose a.heading-link {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+  }
+
+  .prose a.heading-link::after {
+    content: "#" / "";
+    margin-inline-start: 0.35em;
+    color: var(--color-primary);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .prose a.heading-link:hover::after,
+  .prose a.heading-link:focus-visible::after {
+    opacity: 1;
+  }
+
   /* Admonitions / Callouts */
   .admonition {
     @apply my-4 rounded-lg border-l-4 p-4;
