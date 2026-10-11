@@ -42,6 +42,28 @@ test.describe('Linked headings', () => {
     await expect(link).not.toHaveAccessibleName(/#$/)
   })
 
+  test('the heading link looks like the heading, not like a link', async ({
+    page,
+  }) => {
+    await page.goto('/en/docs/garden-beds')
+
+    const link = page.locator('.prose h2 a.heading-link').first()
+    const styles = await link.evaluate((a) => {
+      const own = getComputedStyle(a)
+      const heading = getComputedStyle(a.parentElement as Element)
+      return {
+        decoration: own.textDecorationLine,
+        weight: own.fontWeight,
+        headingWeight: heading.fontWeight,
+        color: own.color,
+        headingColor: heading.color,
+      }
+    })
+    expect(styles.decoration).toBe('none')
+    expect(styles.weight).toBe(styles.headingWeight)
+    expect(styles.color).toBe(styles.headingColor)
+  })
+
   test('the TOC slugs match the heading anchors', async ({ page }) => {
     await page.goto('/en/docs/garden-beds')
 

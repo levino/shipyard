@@ -18,35 +18,6 @@
     @apply block overflow-x-auto;
   }
 
-  /*
-   * Linked headings (rehypeHeadingLinks): the whole heading links to its own
-   * anchor. It keeps the heading's look; a "#" fades in on hover and keyboard
-   * focus. The "#" always takes its space, so nothing shifts, and its empty
-   * alt text keeps it out of the link's accessible name.
-   */
-  .prose :where(h1, h2, h3, h4, h5, h6)[id] {
-    scroll-margin-top: 5rem;
-  }
-
-  .prose a.heading-link {
-    color: inherit;
-    font-weight: inherit;
-    text-decoration: none;
-  }
-
-  .prose a.heading-link::after {
-    content: "#" / "";
-    margin-inline-start: 0.35em;
-    color: var(--color-primary);
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-
-  .prose a.heading-link:hover::after,
-  .prose a.heading-link:focus-visible::after {
-    opacity: 1;
-  }
-
   /* Admonitions / Callouts */
   .admonition {
     @apply my-4 rounded-lg border-l-4 p-4;
@@ -278,5 +249,40 @@
   /* Hide title feature - hides the first H1 when hide_title: true is set */
   .hide-title h1:first-of-type {
     @apply hidden;
+  }
+}
+
+@layer utilities {
+  /*
+   * Linked headings (rehypeHeadingLinks): the whole heading links to its own
+   * anchor. It keeps the heading's look; a "#" fades in on hover and keyboard
+   * focus. The "#" always takes its space, so nothing shifts, and its empty
+   * alt text keeps it out of the link's accessible name.
+   *
+   * In the utilities layer on purpose: @tailwindcss/typography puts its
+   * `.prose :where(a)` styles (underline, weight 500) there, and a rule in
+   * the components layer would lose against them.
+   */
+  .prose :where(h1, h2, h3, h4, h5, h6)[id] {
+    scroll-margin-top: 5rem;
+  }
+
+  .prose a.heading-link {
+    color: inherit;
+    font-weight: inherit;
+    text-decoration: none;
+  }
+
+  .prose a.heading-link::after {
+    content: "#" / "";
+    margin-inline-start: 0.35em;
+    color: var(--color-primary);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .prose a.heading-link:hover::after,
+  .prose a.heading-link:focus-visible::after {
+    opacity: 1;
   }
 }
