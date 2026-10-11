@@ -1,5 +1,17 @@
 # @levino/shipyard-base
 
+## 0.9.3
+
+### Patch Changes
+
+- bb915a3: Three improvements for docs pages:
+  
+  - The "On this page" table of contents on wide screens now stays in view while you scroll, as it was meant to.
+  - Headings `h2` to `h4` in markdown link to their own anchor. Click a heading to get the URL of that section in the address bar; a `#` fades in on hover and keyboard focus. Headings keep a scroll margin, so a sticky navigation bar no longer covers them after a jump.
+  - shipyard's built-in labels ("On this page", "Next", "Previous", "Edit this page", "Last updated", menu and skip-link labels, …) follow the page's language. English and German ship with shipyard. Sites without Astro `i18n` routing can set the new `locale` option, e.g. `shipyard({ locale: 'de', … })`, which also sets `<html lang>`. Dates under "Last updated" are formatted in the page's language.
+- 7973bbe: shipyard now ships with up-to-date dependencies. Class merging in shipyard components follows Tailwind CSS 4 semantics (tailwind-merge 3), and the admonition directive parser is on its current major. Nothing changes in how you configure or use shipyard; the supported Astro range stays the same.
+- 8c12a24: Builds no longer warn that `markdown.processor` is set to `satteri` when you never set it. Astro 7.3 resolves an unset processor to Sätteri, and shipyard mistook that default for your choice. shipyard still switches the default to `unified()` so admonitions, npm2yarn tabs and block directives render. A processor you configure yourself is now left as it is: a `unified()` processor gets the shipyard plugins added, any other processor stays untouched and shipyard warns once that its Markdown features will not render with it.
+
 ## 0.9.2
 
 ### Patch Changes
