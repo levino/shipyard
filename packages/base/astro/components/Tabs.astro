@@ -18,6 +18,7 @@
  * </Tabs>
  * ```
  */
+import { useUiStrings } from '../../src/i18n'
 
 interface Props {
   /**
@@ -39,6 +40,7 @@ interface Props {
 }
 
 const { items, groupId, queryString, defaultValue } = Astro.props
+const t = useUiStrings(Astro.currentLocale)
 
 const tabId = `tabs-${Math.random().toString(36).slice(2, 9)}`
 const defaultTab = defaultValue ?? items[0]
@@ -50,7 +52,7 @@ const defaultTab = defaultValue ?? items[0]
   data-group-id={groupId}
   data-query-string={queryString === true ? groupId : (queryString || undefined)}
 >
-  <div class="shipyard-tabs-list" role="tablist" aria-label="Content tabs">
+  <div class="shipyard-tabs-list" role="tablist" aria-label={t.contentTabs}>
     {items.map((item, index) => (
       <button
         type="button"

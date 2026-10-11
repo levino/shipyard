@@ -227,8 +227,19 @@ export interface Config {
    */
   defaultImage?: string
   /**
+   * Language of the site when Astro's `i18n` routing is not configured, as a
+   * BCP 47 tag (e.g. `'de'`). Sets `<html lang>` and the language of
+   * shipyard's built-in labels such as "On this page", "Next" or
+   * "Edit this page" (English and German ship with shipyard; other languages
+   * fall back to English). With `i18n` configured, the route's locale wins.
+   *
+   * @example 'de'
+   */
+  locale?: string
+  /**
    * Label for the accessibility "skip to content" link, rendered as the first
-   * focusable element on every page. Set this to localize it.
+   * focusable element on every page. Overrides the built-in label for the
+   * page's locale.
    * @default 'Skip to content'
    */
   skipToContentLabel?: string

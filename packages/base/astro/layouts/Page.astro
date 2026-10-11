@@ -5,6 +5,7 @@ import { i18n } from 'astro:config/server'
 import config from 'virtual:shipyard/config'
 import type { ImageMetadata } from 'astro'
 import { mapObjIndexed } from 'ramda'
+import { getPageLocale, getUiStrings } from '../../src/i18n'
 import type {
   NavigationEntry,
   NavigationTree,
@@ -114,9 +115,11 @@ const navigation = applyLocaleAndSetActive(config.navigation)
 const title = getTitle(config.title, props.title)
 const hasSidebar = !!props.sidebarNavigation
 
-// Language for the <html> element: current locale on i18n sites, otherwise the
-// configured default locale (omitted entirely when i18n is disabled).
-const htmlLang = Astro.currentLocale ?? (i18n ? i18n.defaultLocale : undefined)
+// Language for the <html> element and shipyard's UI labels: current locale on
+// i18n sites, otherwise the i18n default locale, otherwise `locale` from the
+// shipyard config (omitted entirely when none is set).
+const htmlLang = getPageLocale(Astro.currentLocale)
+const t = getUiStrings(htmlLang)
 
 // Absolute URL of the current page (no query string), used for og:url and as
 // the self-referential canonical when no explicit canonicalUrl is provided.
@@ -202,12 +205,12 @@ const renderScriptAttributes = (script: Script) => {
       href="#main-content"
       class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 btn btn-primary btn-sm"
     >
-      {config.skipToContentLabel ?? 'Skip to content'}
+      {config.skipToContentLabel ?? t.skipToContent}
     </a>
     {config.announcementBar && <AnnouncementBar config={config.announcementBar} />}
     <div class={cn("drawer grow", { "lg:drawer-open": hasSidebar })}>
       <input id="drawer" type="checkbox" class="drawer-toggle" />
-      <div class="drawer-content flex flex-col overflow-x-hidden">
+      <div class="drawer-content flex flex-col overflow-x-clip">
         <GlobalDesktopNavigation
           showBrand={!hasSidebar}
           brand={config.brand}
@@ -223,7 +226,7 @@ const renderScriptAttributes = (script: Script) => {
       </div>
 
       <div class="drawer-side z-40">
-        <label for="drawer" aria-label="close sidebar" class="drawer-overlay"
+        <label for="drawer" aria-label={t.closeSidebar} class="drawer-overlay"
         ></label>
         <SidebarNavigation
           brand={config.brand}

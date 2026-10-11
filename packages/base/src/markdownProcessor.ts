@@ -2,6 +2,7 @@ import { isDeepStrictEqual } from 'node:util'
 import { isUnifiedProcessor, unified } from '@astrojs/markdown-remark'
 import { satteri } from '@astrojs/markdown-satteri'
 import type { AstroConfig, AstroIntegrationLogger } from 'astro'
+import { rehypeHeadingLinks } from './rehype/rehypeHeadingLinks'
 import { remarkAdmonitions } from './remark/remarkAdmonitions'
 import { remarkBlockDirective } from './remark/remarkBlockDirective'
 import { remarkNpm2Yarn } from './remark/remarkNpm2Yarn'
@@ -13,6 +14,8 @@ const shipyardRemarkPlugins = [
   remarkAdmonitions,
   remarkNpm2Yarn,
 ]
+
+const shipyardRehypePlugins = [rehypeHeadingLinks]
 
 // Astro fills in a fresh `satteri()` when `markdown.processor` is unset, so
 // the resolved config cannot tell that default apart from an explicit bare
@@ -27,7 +30,8 @@ const isAstroDefault = (processor: MarkdownProcessor) => {
 
 /**
  * shipyard's admonitions, npm2yarn tabs and block directives are remark
- * plugins, and only the `unified()` processor runs those.
+ * plugins, and the linked headings a rehype plugin; only the `unified()`
+ * processor runs those.
  *
  * - Astro's default processor is replaced with `unified()` carrying the
  *   shipyard plugins.
@@ -49,11 +53,18 @@ export const shipyardMarkdownProcessor = (
         ...current.options.remarkPlugins,
         ...shipyardRemarkPlugins,
       ],
+      rehypePlugins: [
+        ...current.options.rehypePlugins,
+        ...shipyardRehypePlugins,
+      ],
     })
   }
 
   if (isAstroDefault(current)) {
-    return unified({ remarkPlugins: shipyardRemarkPlugins })
+    return unified({
+      remarkPlugins: shipyardRemarkPlugins,
+      rehypePlugins: shipyardRehypePlugins,
+    })
   }
 
   logger.warn(

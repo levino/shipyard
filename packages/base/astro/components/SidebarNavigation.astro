@@ -1,4 +1,5 @@
 ---
+import { useUiStrings } from '../../src/i18n'
 import { cn } from '../../src/tools/cn'
 import LanguageSwitcher from './LanguageSwitcher.astro'
 import SidebarElement from './SidebarElement.astro'
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { local, global, brand } = Astro.props
+const t = useUiStrings(Astro.currentLocale)
 
 const withLocale = (path: string) =>
   Astro.currentLocale ? `/${Astro.currentLocale}${path}` : path
@@ -31,7 +33,7 @@ const withLocale = (path: string) =>
       {
         local ? (
           <details>
-            <summary>Main menu</summary>
+            <summary>{t.mainMenu}</summary>
             <SidebarElement entry={global} />
           </details>
         ) : (
@@ -42,7 +44,7 @@ const withLocale = (path: string) =>
     <slot name="sidebarExtra" />
     <LanguageSwitcher variant="list" />
     <li class="flex flex-row items-center gap-2 px-4 py-2">
-      <span class="text-sm opacity-70">Theme</span>
+      <span class="text-sm opacity-70">{t.theme}</span>
       <ThemeToggle />
     </li>
     <div class={cn("divider my-1 block lg:hidden", { hidden: !local })}></div>

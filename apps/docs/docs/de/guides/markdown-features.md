@@ -268,6 +268,12 @@ Standard markdown tables are supported with responsive horizontal scrolling on m
 
 ---
 
+## Verlinkte Überschriften
+
+Jede Überschrift von `h2` bis `h4` im Markdown verlinkt auf ihren eigenen Anker. Ein Klick auf die Überschrift zeigt die URL des Abschnitts in der Adressleiste, fertig zum Kopieren. Beim Überfahren mit der Maus und bei Tastaturfokus blendet sich ein `#` neben der Überschrift ein; es braucht keinen zusätzlichen Platz und wird von Screenreadern nicht vorgelesen. Überschriften halten oben Abstand beim Scrollen, damit eine fixierte Navigationsleiste sie beim Sprung zum Anker nicht verdeckt. Überschriften, die schon einen Link enthalten, bleiben unverändert.
+
+---
+
 ## Other Markdown Features
 
 shipyard supports all standard markdown features:

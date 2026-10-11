@@ -11,6 +11,7 @@ import shipyard from './index'
 import type { Config } from './schemas/config'
 
 const SHIPYARD_PLUGIN_COUNT = 3
+const SHIPYARD_REHYPE_PLUGIN_COUNT = 1
 
 interface ConfigUpdate {
   markdown?: {
@@ -58,6 +59,9 @@ describe('markdown processor', () => {
     expect(update?.markdown?.processor?.options.remarkPlugins).toHaveLength(
       SHIPYARD_PLUGIN_COUNT,
     )
+    expect(update?.markdown?.processor?.options.rehypePlugins).toHaveLength(
+      SHIPYARD_REHYPE_PLUGIN_COUNT,
+    )
     expect(logger.warn).not.toHaveBeenCalled()
   })
 
@@ -69,13 +73,20 @@ describe('markdown processor', () => {
 
   test("keeps the user's own plugins on an existing unified processor", () => {
     const userPlugin = () => undefined
+    const userRehypePlugin = () => undefined
     const { update, logger } = runConfigSetup(
-      unified({ remarkPlugins: [userPlugin] }),
+      unified({
+        remarkPlugins: [userPlugin],
+        rehypePlugins: [userRehypePlugin],
+      }),
     )
 
     const plugins = update?.markdown?.processor?.options.remarkPlugins
     expect(plugins).toHaveLength(SHIPYARD_PLUGIN_COUNT + 1)
     expect(plugins?.[0]).toBe(userPlugin)
+    const rehypePlugins = update?.markdown?.processor?.options.rehypePlugins
+    expect(rehypePlugins).toHaveLength(SHIPYARD_REHYPE_PLUGIN_COUNT + 1)
+    expect(rehypePlugins?.[0]).toBe(userRehypePlugin)
     expect(logger.warn).not.toHaveBeenCalled()
   })
 

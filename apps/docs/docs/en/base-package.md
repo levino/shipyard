@@ -67,6 +67,8 @@ export default defineConfig({
 | `footer` | `FooterConfig` | No | — | Footer configuration (links, copyright, style) |
 | `hideBranding` | `boolean` | No | `false` | Hide the "Built with Shipyard" branding |
 | `defaultImage` | `string` | No | — | Fallback social preview image (URL or `/path` in `public/`) used for pages without their own `image:`. Passed through unchanged — not optimized (config-time imports can't go through Astro's image pipeline) |
+| `locale` | `string` | No | — | Language of the site when Astro's `i18n` routing is not configured (e.g. `'de'`). Sets `<html lang>` and shipyard's built-in labels such as "On this page", "Next" or "Edit this page". English and German are built in; other languages fall back to English. With `i18n` configured, the page's locale is used instead |
+| `skipToContentLabel` | `string` | No | Built-in label | Overrides the label of the "skip to content" link |
 | `onBrokenLinks` | `'ignore' \| 'log' \| 'warn' \| 'throw'` | No | `'warn'` | Behavior when broken internal links are detected during build |
 
 ### Navigation Structure

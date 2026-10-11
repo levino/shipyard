@@ -268,6 +268,12 @@ Standard markdown tables are supported with responsive horizontal scrolling on m
 
 ---
 
+## Linked Headings
+
+Every `h2` to `h4` heading in markdown links to its own anchor. Click a heading and the address bar shows the URL of that section, ready to copy. A `#` fades in next to the heading on hover and keyboard focus; it takes no extra space and is not read out by screen readers. Headings keep a top scroll margin, so a sticky navigation bar does not cover them when you jump to an anchor. Headings that already contain a link stay as they are.
+
+---
+
 ## Other Markdown Features
 
 shipyard supports all standard markdown features:
