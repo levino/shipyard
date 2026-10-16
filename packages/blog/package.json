@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "@types/ramda": "^0.32",
-    "astro": "^7.3.5"
+    "astro": "^7.3.8"
   },
   "repository": {
     "type": "git",
