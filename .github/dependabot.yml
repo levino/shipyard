@@ -24,6 +24,10 @@ updates:
         update-types:
           - minor
           - patch
+    ignore:
+      # Keine Major-Updates: Majors erst, wenn der Support endet (separat verfolgt).
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: 'github-actions'
     directory: '/'
     schedule:
@@ -32,7 +36,27 @@ updates:
       github-actions:
         patterns:
           - '*'
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Keine Major-Updates: Majors erst, wenn der Support endet (separat verfolgt).
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
   - package-ecosystem: 'devcontainers'
     directory: '/'
     schedule:
       interval: weekly
+    groups:
+      # Ein Sammel-PR fuer alle Minor-/Patch-Version-Updates.
+      minor-and-patch:
+        applies-to: version-updates
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+    ignore:
+      # Keine Major-Updates: Majors erst, wenn der Support endet (separat verfolgt).
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
