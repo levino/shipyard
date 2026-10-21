@@ -6,6 +6,18 @@ updates:
     schedule:
       interval: weekly
     groups:
+      # Playwright in its own group: the e2e job runs inside the Playwright
+      # container image, whose browsers belong to one exact Playwright version.
+      # Bumping @playwright/test inside the big minor-and-patch PR broke every
+      # e2e leg ("Executable doesn't exist at /ms-playwright/...", #270) and
+      # blocked 14 unrelated updates with it. checks.yml now installs the
+      # matching browser itself; this group keeps the bump reviewable on its own.
+      # It comes first because a dependency lands in the first group it matches.
+      playwright:
+        patterns:
+          - '@playwright/*'
+          - 'playwright'
+          - 'playwright-core'
       # Astro and its adapters/integrations are released in lockstep and rely on
       # each other's internal exports; bumping astro alone broke the Cloudflare
       # build of the server-mode demo (astro 7.3 with @astrojs/cloudflare 14.2).
@@ -21,6 +33,17 @@ updates:
           - 'react-dom'
           - '@mdx-js/react'
       minor-and-patch:
+        update-types:
+          - minor
+          - patch
+      # One PR per ecosystem for all security updates instead of one per
+      # advisory (#264, #265 and #267 arrived as three separate PRs). Majors are
+      # left out so this PR can be auto-merged; a security fix that only exists
+      # as a major still arrives as its own PR and is labelled `major`.
+      security:
+        applies-to: security-updates
+        patterns:
+          - '*'
         update-types:
           - minor
           - patch
