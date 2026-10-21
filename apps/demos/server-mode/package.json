@@ -11,13 +11,13 @@
     "type-check": "astro sync && tsc --noEmit"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^14.3.3",
+    "@astrojs/cloudflare": "^14.4.0",
     "@levino/shipyard-base": "*",
     "@levino/shipyard-blog": "*",
     "@levino/shipyard-docs": "*",
     "@tailwindcss/vite": "^4",
-    "astro": "^7.3.5",
-    "daisyui": "^5",
+    "astro": "^7.4.0",
+    "daisyui": "^5.7.50",
     "tailwindcss": "^4"
   },
   "devDependencies": {
