@@ -2,6 +2,9 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "description": "Renovate (Mend-App) hält npm (Astro- und Docusaurus-Pakete jeweils gebündelt), Devcontainer und GitHub Actions aktuell. Alles außer Majors merged von selbst, sobald die Pflicht-Checks (lint, test, e2e, Cloudflare Pages) grün sind.",
   "extends": ["config:recommended", ":disableDependencyDashboard"],
+  "vulnerabilityAlerts": {
+    "minimumReleaseAge": null
+  },
   "timezone": "Europe/Berlin",
   "labels": ["dependencies"],
   "osvVulnerabilityAlerts": true,
@@ -41,6 +44,16 @@
       "description": "Keine Major-PRs. Majors erst, wenn der Support der genutzten Version endet.",
       "matchUpdateTypes": ["major"],
       "enabled": false
+    },
+    {
+      "description": "Lieferketten-Schutz: Actions- und npm-Releases erst nach 3 Tagen übernehmen (kompromittierte Releases werden meist in Stunden bis Tagen zurückgezogen). Basis-Image-Digests und Sicherheitsfixes kommen sofort.",
+      "matchManagers": ["github-actions", "npm"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      "description": "Biome-Updates einzeln, damit neue Regeln nicht alle anderen Updates blockieren.",
+      "matchPackageNames": ["@biomejs/biome"],
+      "groupName": "biome"
     }
   ]
 }
