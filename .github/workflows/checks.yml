@@ -61,7 +61,10 @@ jobs:
     # default /dev/shm makes Chromium run out of shared memory and crash under
     # parallel workers (this is what broke the largest demo's e2e leg).
     # https://playwright.dev/docs/docker
-    # Keep the image tag in sync with @playwright/test in package-lock.json.
+    # The image tag cannot be bumped by Dependabot, so it drifts from
+    # @playwright/test in package-lock.json. The "Install Playwright browser"
+    # step below fetches the matching browser when they differ; bump the tag
+    # now and then anyway to keep that step a no-op.
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
       options: --ipc=host
@@ -96,6 +99,10 @@ jobs:
           node-version: 24
           cache: 'npm'
       - run: npm ci
+      # No-op while the image matches @playwright/test; after a Playwright bump
+      # it installs the browser build that version expects (plus OS deps).
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
       - run: npm run build --workspace=${{ matrix.demo.workspace }}
       - name: Run E2E tests
         run: npm run test:e2e
