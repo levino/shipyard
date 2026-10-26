@@ -65,7 +65,7 @@
     "typescript": "^7.0.2",
     "vfile": "^6.0.3",
     "vite": "^8.3.5",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.5"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.1",
